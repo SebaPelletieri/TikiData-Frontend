@@ -14,9 +14,9 @@ import { TeamForm } from '../../components/team-form/team-form';
 })
 export class Teams implements OnInit {
   private teamService = inject(TeamService);
-  equipos = signal<Team[]>([]);
+  equipos = this.teamService.teams; 
 
   ngOnInit(): void {
-    this.teamService.getAll();
-  }
+      this.teamService.getAll();
+}
 }

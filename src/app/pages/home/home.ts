@@ -12,9 +12,10 @@ import { ChampionshipService } from '../../services/championship-service';
   styleUrl: './home.css',
   templateUrl: './home.html',
 })
-export class Home {
-  private championshipService = inject(ChampionshipService);
-  campeonatos = signal<Championship[]>([]);
-
-
+export class Home implements OnInit {
+  championshipService = inject(ChampionshipService);
+  campeonatos = this.championshipService.championships;
+  ngOnInit(): void {
+    this.championshipService.getAll();
+}
 }

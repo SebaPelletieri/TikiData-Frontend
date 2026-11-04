@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, Service, signal } from '@angular/core';
 import { User } from '../models/User';
-import { Observable, tap } from 'rxjs';
+import { map, Observable, tap } from 'rxjs';
 import { LoginRequest } from '../models/Login Request';
 import { RegisterRequest } from '../models/Register Request';
 
@@ -21,19 +21,24 @@ import { RegisterRequest } from '../models/Register Request';
   }
 
   login(credentials: LoginRequest): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/login`, credentials).pipe(
-      tap((response) => {
-        localStorage.setItem('tiki_token', response.token);
-        localStorage.setItem('tiki_user', JSON.stringify(response.user));
-        
-        this.currentUser.set(response.user);
+    return this.http.get<any[]>(`${this.apiUrl}/usuarios?email=${credentials.email}&password=${credentials.password}`).pipe(
+      map((users: string | any[]) => {
+        if (users.length === 0) {
+          throw new Error('Credenciales inválidas');
+        }
+        return users[0]; // Retorna el usuario encontrado
+      }),
+      tap(user => {
+        localStorage.setItem('tiki_token', 'fake-jwt-token-123');
+        localStorage.setItem('tiki_user', JSON.stringify(user));
+        this.currentUser.set(user);
       })
     );
   }
 
   register(userData: RegisterRequest): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/register`, userData);
-  }
+  return this.http.post<any>(`${this.apiUrl}/usuarios`, userData);  
+}
   
 
   logout(): void {

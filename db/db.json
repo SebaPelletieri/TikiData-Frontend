@@ -1,6 +1,32 @@
 {
+  "usuarios": [
+    {
+      "id": 1,
+      "name": "Tobías",
+      "email": "toto@test.com",
+      "password": "password123"
+    },
+    {
+      "id": 2,
+      "name": "Sebastian",
+      "email": "sebaz@test.com",
+      "password": "password123"
+    },
+    {
+      "userName": "Lautaro Fernandez ",
+      "email": "lautaro@gmail.com",
+      "password": "lauti123",
+      "id": 3
+    },
+    {
+      "userName": "Juan De Siena",
+      "email": "juan@gmail.com",
+      "password": "pollo123",
+      "id": 4
+    }
+  ],
   "equipos": [
-  {
+    {
       "id": 1,
       "name": "River Plate",
       "shield": "https://upload.wikimedia.org/wikipedia/commons/3/3f/Logo_River_Plate.png",
@@ -71,7 +97,6 @@
       "yearOfFundation": "1910-01-01T00:00:00Z"
     }
   ],
-
   "campeonatos": [
     {
       "id": 1,
@@ -92,71 +117,388 @@
       "type": "INTERNACIONAL"
     }
   ],
-
   "estadios": [
-    { "id": 1, "name": "Mâs Monumental", "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/d/d1/Estadio_Monumental_2023.jpg", "capacity": "84567" },
-    { "id": 2, "name": "La Bombonera", "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/La_Bombonera_Boca_Juniors.jpg/800px-La_Bombonera_Boca_Juniors.jpg", "capacity": "54000" },
-    { "id": 3, "name": "Presidente Perón (El Cilindro)", "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Estadio_Presidente_Peron_Racing_Club.jpg/800px-Estadio_Presidente_Peron_Racing_Club.jpg", "capacity": "51389" },
-    { "id": 4, "name": "Libertadores de América", "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Estadio_Libertadores_de_America.jpg/800px-Estadio_Libertadores_de_America.jpg", "capacity": "42069" },
-    { "id": 5, "name": "Pedro Bidegain (Nuevo Gasómetro)", "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Nuevo_gasometro.jpg/800px-Nuevo_gasometro.jpg", "capacity": "47964" },
-    { "id": 6, "name": "Jorge Luis Hirschi (UNO)", "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Estadio_UNO_Jorge_Luis_Hirschi.jpg/800px-Estadio_UNO_Jorge_Luis_Hirschi.jpg", "capacity": "32530" },
-    { "id": 7, "name": "Juan Carmelo Zerillo (El Bosque)", "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Estadio_Gimnasia_y_Esgrima_La_Plata.jpg/800px-Estadio_Gimnasia_y_Esgrima_La_Plata.jpg", "capacity": "24544" },
-    { "id": 8, "name": "Gigante de Arroyito", "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Estadio_Gigante_de_Arroyito.jpg/800px-Estadio_Gigante_de_Arroyito.jpg", "capacity": "41654" },
-    { "id": 9, "name": "Marcelo Bielsa (Coloso del Parque)", "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Estadio_Marcelo_Bielsa.jpg/800px-Estadio_Marcelo_Bielsa.jpg", "capacity": "42000" },
-    { "id": 10, "name": "José Amalfitani", "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Estadio_Jos%C3%A9_Amalfitani.jpg/800px-Estadio_Jos%C3%A9_Amalfitani.jpg", "capacity": "49540" }
+    {
+      "id": 1,
+      "name": "Mâs Monumental",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/d/d1/Estadio_Monumental_2023.jpg",
+      "capacity": "84567"
+    },
+    {
+      "id": 2,
+      "name": "La Bombonera",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/La_Bombonera_Boca_Juniors.jpg/800px-La_Bombonera_Boca_Juniors.jpg",
+      "capacity": "54000"
+    },
+    {
+      "id": 3,
+      "name": "Presidente Perón (El Cilindro)",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Estadio_Presidente_Peron_Racing_Club.jpg/800px-Estadio_Presidente_Peron_Racing_Club.jpg",
+      "capacity": "51389"
+    },
+    {
+      "id": 4,
+      "name": "Libertadores de América",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Estadio_Libertadores_de_America.jpg/800px-Estadio_Libertadores_de_America.jpg",
+      "capacity": "42069"
+    },
+    {
+      "id": 5,
+      "name": "Pedro Bidegain (Nuevo Gasómetro)",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Nuevo_gasometro.jpg/800px-Nuevo_gasometro.jpg",
+      "capacity": "47964"
+    },
+    {
+      "id": 6,
+      "name": "Jorge Luis Hirschi (UNO)",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Estadio_UNO_Jorge_Luis_Hirschi.jpg/800px-Estadio_UNO_Jorge_Luis_Hirschi.jpg",
+      "capacity": "32530"
+    },
+    {
+      "id": 7,
+      "name": "Juan Carmelo Zerillo (El Bosque)",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Estadio_Gimnasia_y_Esgrima_La_Plata.jpg/800px-Estadio_Gimnasia_y_Esgrima_La_Plata.jpg",
+      "capacity": "24544"
+    },
+    {
+      "id": 8,
+      "name": "Gigante de Arroyito",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Estadio_Gigante_de_Arroyito.jpg/800px-Estadio_Gigante_de_Arroyito.jpg",
+      "capacity": "41654"
+    },
+    {
+      "id": 9,
+      "name": "Marcelo Bielsa (Coloso del Parque)",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Estadio_Marcelo_Bielsa.jpg/800px-Estadio_Marcelo_Bielsa.jpg",
+      "capacity": "42000"
+    },
+    {
+      "id": 10,
+      "name": "José Amalfitani",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Estadio_Jos%C3%A9_Amalfitani.jpg/800px-Estadio_Jos%C3%A9_Amalfitani.jpg",
+      "capacity": "49540"
+    }
   ],
-
-
   "jugadores": [
-{ "id": 1, "name": "Franco Armani", "photo": "https://example.com/armani.jpg", "age": 37, "position": "ARQ", "teamID": 1 },
-    { "id": 2, "name": "Paulo Díaz", "photo": "https://example.com/diaz.jpg", "age": 29, "position": "DEF", "teamID": 1 },
-    { "id": 3, "name": "Ignacio Fernández", "photo": "https://example.com/nacho.jpg", "age": 34, "position": "MED", "teamID": 1 },
-    { "id": 4, "name": "Miguel Borja", "photo": "https://example.com/borja.jpg", "age": 31, "position": "DEL", "teamID": 1 },
-
-    { "id": 5, "name": "Sergio Romero", "photo": "https://example.com/romero.jpg", "age": 37, "position": "ARQ", "teamID": 2 },
-    { "id": 6, "name": "Marcos Rojo", "photo": "https://example.com/rojo.jpg", "age": 34, "position": "DEF", "teamID": 2 },
-    { "id": 7, "name": "Kevin Zenón", "photo": "https://example.com/zenon.jpg", "age": 22, "position": "MED", "teamID": 2 },
-    { "id": 8, "name": "Edinson Cavani", "photo": "https://example.com/cavani.jpg", "age": 37, "position": "DEL", "teamID": 2 },
-
-    { "id": 9, "name": "Gabriel Arias", "photo": "https://example.com/arias.jpg", "age": 36, "position": "ARQ", "teamID": 3 },
-    { "id": 10, "name": "Leonardo Sigali", "photo": "https://example.com/sigali.jpg", "age": 36, "position": "DEF", "teamID": 3 },
-    { "id": 11, "name": "Juan Fernando Quintero", "photo": "https://example.com/quintero.jpg", "age": 31, "position": "MED", "teamID": 3 },
-    { "id": 12, "name": "Adrián Martínez", "photo": "https://example.com/maravilla.jpg", "age": 31, "position": "DEL", "teamID": 3 },
-
-    { "id": 13, "name": "Rodrigo Rey", "photo": "https://example.com/rey.jpg", "age": 33, "position": "ARQ", "teamID": 4 },
-    { "id": 14, "name": "Mauricio Isla", "photo": "https://example.com/isla.jpg", "age": 35, "position": "DEF", "teamID": 4 },
-    { "id": 15, "name": "Iván Marcone", "photo": "https://example.com/marcone.jpg", "age": 33, "position": "MED", "teamID": 4 },
-    { "id": 16, "name": "Gabriel Ávalos", "photo": "https://example.com/avalos.jpg", "age": 33, "position": "DEL", "teamID": 4 },
-
-    { "id": 17, "name": "Facundo Altamirano", "photo": "https://example.com/altamirano.jpg", "age": 28, "position": "ARQ", "teamID": 5 },
-    { "id": 18, "name": "Jhohan Romaña", "photo": "https://example.com/romana.jpg", "age": 25, "position": "DEF", "teamID": 5 },
-    { "id": 19, "name": "Nahuel Barrios", "photo": "https://example.com/barrios.jpg", "age": 25, "position": "MED", "teamID": 5 },
-    { "id": 20, "name": "Iván Leguizamón", "photo": "https://example.com/leguizamon.jpg", "age": 21, "position": "DEL", "teamID": 5 },
-
-    { "id": 21, "name": "Matías Mansilla", "photo": "https://example.com/mansilla.jpg", "age": 28, "position": "ARQ", "teamID": 6 },
-    { "id": 22, "name": "Zaid Romero", "photo": "https://example.com/zromero.jpg", "age": 24, "position": "DEF", "teamID": 6 },
-    { "id": 23, "name": "Enzo Pérez", "photo": "https://example.com/enzo.jpg", "age": 38, "position": "MED", "teamID": 6 },
-    { "id": 24, "name": "Guido Carrillo", "photo": "https://example.com/carrillo.jpg", "age": 32, "position": "DEL", "teamID": 6 },
-
-    { "id": 25, "name": "Nelson Insfrán", "photo": "https://example.com/insfran.jpg", "age": 28, "position": "ARQ", "teamID": 7 },
-    { "id": 26, "name": "Leonardo Morales", "photo": "https://example.com/morales.jpg", "age": 33, "position": "DEF", "teamID": 7 },
-    { "id": 27, "name": "Pablo De Blasis", "photo": "https://example.com/deblasis.jpg", "age": 36, "position": "MED", "teamID": 7 },
-    { "id": 28, "name": "Cristian Colmán", "photo": "https://example.com/colman.jpg", "age": 30, "position": "DEL", "teamID": 7 },
-
-    { "id": 29, "name": "Jorge Broun", "photo": "https://example.com/broun.jpg", "age": 37, "position": "ARQ", "teamID": 8 },
-    { "id": 30, "name": "Facundo Mallo", "photo": "https://example.com/mallo.jpg", "age": 29, "position": "DEF", "teamID": 8 },
-    { "id": 31, "name": "Ignacio Malcorra", "photo": "https://example.com/malcorra.jpg", "age": 36, "position": "MED", "teamID": 8 },
-    { "id": 32, "name": "Marco Ruben", "photo": "https://example.com/ruben.jpg", "age": 37, "position": "DEL", "teamID": 8 },
-
-    { "id": 33, "name": "Lucas Hoyos", "photo": "https://example.com/hoyos.jpg", "age": 34, "position": "ARQ", "teamID": 9 },
-    { "id": 34, "name": "Armando Méndez", "photo": "https://example.com/mendez.jpg", "age": 28, "position": "DEF", "teamID": 9 },
-    { "id": 35, "name": "Éver Banega", "photo": "https://example.com/banega.jpg", "age": 35, "position": "MED", "teamID": 9 },
-    { "id": 36, "name": "Juan Ignacio Ramírez", "photo": "https://example.com/ramirez.jpg", "age": 27, "position": "DEL", "teamID": 9 },
-
-    { "id": 37, "name": "Tomás Marchiori", "photo": "https://example.com/marchiori.jpg", "age": 28, "position": "ARQ", "teamID": 10 },
-    { "id": 38, "name": "Valentín Gómez", "photo": "https://example.com/vgomez.jpg", "age": 20, "position": "DEF", "teamID": 10 },
-    { "id": 39, "name": "Claudio Aquino", "photo": "https://example.com/aquino.jpg", "age": 32, "position": "MED", "teamID": 10 },
-    { "id": 40, "name": "Braian Romero", "photo": "https://example.com/bromero.jpg", "age": 32, "position": "DEL", "teamID": 10 }  ]
-
-
+    {
+      "id": 1,
+      "name": "Franco Armani",
+      "photo": "https://example.com/armani.jpg",
+      "age": 37,
+      "position": "ARQ",
+      "teamID": 1
+    },
+    {
+      "id": 2,
+      "name": "Paulo Díaz",
+      "photo": "https://example.com/diaz.jpg",
+      "age": 29,
+      "position": "DEF",
+      "teamID": 1
+    },
+    {
+      "id": 3,
+      "name": "Ignacio Fernández",
+      "photo": "https://example.com/nacho.jpg",
+      "age": 34,
+      "position": "MED",
+      "teamID": 1
+    },
+    {
+      "id": 4,
+      "name": "Miguel Borja",
+      "photo": "https://example.com/borja.jpg",
+      "age": 31,
+      "position": "DEL",
+      "teamID": 1
+    },
+    {
+      "id": 5,
+      "name": "Sergio Romero",
+      "photo": "https://example.com/romero.jpg",
+      "age": 37,
+      "position": "ARQ",
+      "teamID": 2
+    },
+    {
+      "id": 6,
+      "name": "Marcos Rojo",
+      "photo": "https://example.com/rojo.jpg",
+      "age": 34,
+      "position": "DEF",
+      "teamID": 2
+    },
+    {
+      "id": 7,
+      "name": "Kevin Zenón",
+      "photo": "https://example.com/zenon.jpg",
+      "age": 22,
+      "position": "MED",
+      "teamID": 2
+    },
+    {
+      "id": 8,
+      "name": "Edinson Cavani",
+      "photo": "https://example.com/cavani.jpg",
+      "age": 37,
+      "position": "DEL",
+      "teamID": 2
+    },
+    {
+      "id": 9,
+      "name": "Gabriel Arias",
+      "photo": "https://example.com/arias.jpg",
+      "age": 36,
+      "position": "ARQ",
+      "teamID": 3
+    },
+    {
+      "id": 10,
+      "name": "Leonardo Sigali",
+      "photo": "https://example.com/sigali.jpg",
+      "age": 36,
+      "position": "DEF",
+      "teamID": 3
+    },
+    {
+      "id": 11,
+      "name": "Juan Fernando Quintero",
+      "photo": "https://example.com/quintero.jpg",
+      "age": 31,
+      "position": "MED",
+      "teamID": 3
+    },
+    {
+      "id": 12,
+      "name": "Adrián Martínez",
+      "photo": "https://example.com/maravilla.jpg",
+      "age": 31,
+      "position": "DEL",
+      "teamID": 3
+    },
+    {
+      "id": 13,
+      "name": "Rodrigo Rey",
+      "photo": "https://example.com/rey.jpg",
+      "age": 33,
+      "position": "ARQ",
+      "teamID": 4
+    },
+    {
+      "id": 14,
+      "name": "Mauricio Isla",
+      "photo": "https://example.com/isla.jpg",
+      "age": 35,
+      "position": "DEF",
+      "teamID": 4
+    },
+    {
+      "id": 15,
+      "name": "Iván Marcone",
+      "photo": "https://example.com/marcone.jpg",
+      "age": 33,
+      "position": "MED",
+      "teamID": 4
+    },
+    {
+      "id": 16,
+      "name": "Gabriel Ávalos",
+      "photo": "https://example.com/avalos.jpg",
+      "age": 33,
+      "position": "DEL",
+      "teamID": 4
+    },
+    {
+      "id": 17,
+      "name": "Facundo Altamirano",
+      "photo": "https://example.com/altamirano.jpg",
+      "age": 28,
+      "position": "ARQ",
+      "teamID": 5
+    },
+    {
+      "id": 18,
+      "name": "Jhohan Romaña",
+      "photo": "https://example.com/romana.jpg",
+      "age": 25,
+      "position": "DEF",
+      "teamID": 5
+    },
+    {
+      "id": 19,
+      "name": "Nahuel Barrios",
+      "photo": "https://example.com/barrios.jpg",
+      "age": 25,
+      "position": "MED",
+      "teamID": 5
+    },
+    {
+      "id": 20,
+      "name": "Iván Leguizamón",
+      "photo": "https://example.com/leguizamon.jpg",
+      "age": 21,
+      "position": "DEL",
+      "teamID": 5
+    },
+    {
+      "id": 21,
+      "name": "Matías Mansilla",
+      "photo": "https://example.com/mansilla.jpg",
+      "age": 28,
+      "position": "ARQ",
+      "teamID": 6
+    },
+    {
+      "id": 22,
+      "name": "Zaid Romero",
+      "photo": "https://example.com/zromero.jpg",
+      "age": 24,
+      "position": "DEF",
+      "teamID": 6
+    },
+    {
+      "id": 23,
+      "name": "Enzo Pérez",
+      "photo": "https://example.com/enzo.jpg",
+      "age": 38,
+      "position": "MED",
+      "teamID": 6
+    },
+    {
+      "id": 24,
+      "name": "Guido Carrillo",
+      "photo": "https://example.com/carrillo.jpg",
+      "age": 32,
+      "position": "DEL",
+      "teamID": 6
+    },
+    {
+      "id": 25,
+      "name": "Nelson Insfrán",
+      "photo": "https://example.com/insfran.jpg",
+      "age": 28,
+      "position": "ARQ",
+      "teamID": 7
+    },
+    {
+      "id": 26,
+      "name": "Leonardo Morales",
+      "photo": "https://example.com/morales.jpg",
+      "age": 33,
+      "position": "DEF",
+      "teamID": 7
+    },
+    {
+      "id": 27,
+      "name": "Pablo De Blasis",
+      "photo": "https://example.com/deblasis.jpg",
+      "age": 36,
+      "position": "MED",
+      "teamID": 7
+    },
+    {
+      "id": 28,
+      "name": "Cristian Colmán",
+      "photo": "https://example.com/colman.jpg",
+      "age": 30,
+      "position": "DEL",
+      "teamID": 7
+    },
+    {
+      "id": 29,
+      "name": "Jorge Broun",
+      "photo": "https://example.com/broun.jpg",
+      "age": 37,
+      "position": "ARQ",
+      "teamID": 8
+    },
+    {
+      "id": 30,
+      "name": "Facundo Mallo",
+      "photo": "https://example.com/mallo.jpg",
+      "age": 29,
+      "position": "DEF",
+      "teamID": 8
+    },
+    {
+      "id": 31,
+      "name": "Ignacio Malcorra",
+      "photo": "https://example.com/malcorra.jpg",
+      "age": 36,
+      "position": "MED",
+      "teamID": 8
+    },
+    {
+      "id": 32,
+      "name": "Marco Ruben",
+      "photo": "https://example.com/ruben.jpg",
+      "age": 37,
+      "position": "DEL",
+      "teamID": 8
+    },
+    {
+      "id": 33,
+      "name": "Lucas Hoyos",
+      "photo": "https://example.com/hoyos.jpg",
+      "age": 34,
+      "position": "ARQ",
+      "teamID": 9
+    },
+    {
+      "id": 34,
+      "name": "Armando Méndez",
+      "photo": "https://example.com/mendez.jpg",
+      "age": 28,
+      "position": "DEF",
+      "teamID": 9
+    },
+    {
+      "id": 35,
+      "name": "Éver Banega",
+      "photo": "https://example.com/banega.jpg",
+      "age": 35,
+      "position": "MED",
+      "teamID": 9
+    },
+    {
+      "id": 36,
+      "name": "Juan Ignacio Ramírez",
+      "photo": "https://example.com/ramirez.jpg",
+      "age": 27,
+      "position": "DEL",
+      "teamID": 9
+    },
+    {
+      "id": 37,
+      "name": "Tomás Marchiori",
+      "photo": "https://example.com/marchiori.jpg",
+      "age": 28,
+      "position": "ARQ",
+      "teamID": 10
+    },
+    {
+      "id": 38,
+      "name": "Valentín Gómez",
+      "photo": "https://example.com/vgomez.jpg",
+      "age": 20,
+      "position": "DEF",
+      "teamID": 10
+    },
+    {
+      "id": 39,
+      "name": "Claudio Aquino",
+      "photo": "https://example.com/aquino.jpg",
+      "age": 32,
+      "position": "MED",
+      "teamID": 10
+    },
+    {
+      "id": 40,
+      "name": "Braian Romero",
+      "photo": "https://example.com/bromero.jpg",
+      "age": 32,
+      "position": "DEL",
+      "teamID": 10
+    }
+  ]
 }

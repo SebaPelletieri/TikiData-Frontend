@@ -5,9 +5,9 @@ import { Championship } from '../models/Championship';
 export class ChampionshipService {
   private http = inject(HttpClient);
   private apiUrl = 'http://localhost:3000/campeonatos';
-  private championships = signal<Championship[]>([]);
-  private championshipActual = signal<Championship | null>(null);
-  private error = signal<string | null>(null);
+  championships = signal<Championship[]>([]);
+  championshipActual = signal<Championship | null>(null);
+  error = signal<string | null>(null);
 
   //Métodos del HTTP
   getAll() {

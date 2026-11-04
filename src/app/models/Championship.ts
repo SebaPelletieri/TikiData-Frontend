@@ -4,4 +4,6 @@ export interface Championship {
   name: string;
   logo: string;
   type: ChampionshipType;
+  teamsIDs: number[];
+  season: string;
 }

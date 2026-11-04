@@ -42,8 +42,22 @@
       </label>
     </div>
 
-    <button class="navbar__profile" aria-label="Perfil de usuario">
-      <i class="fas fa-user"></i>
-    </button>
+      @if (!authService.currentUser()) {
+      <button routerLink="/login" class="navbar__profile" aria-label="Ingresar" title="Ingresar">
+        <i class="fas fa-sign-in-alt"></i>
+      </button>
+    } @else {
+      <button routerLink="/profile" class="navbar__profile" aria-label="Perfil de usuario" title="Mi Perfil">
+        <i class="fas fa-user"></i>
+      </button>
+      
+      <button (click)="onLogout()" class="navbar__profile" aria-label="Cerrar sesión" title="Cerrar sesión">
+        <i class="fas fa-sign-out-alt" style="color: #ff4757;"></i>
+      </button>
+    }
+
+
+
+    
   </div>
 </nav>

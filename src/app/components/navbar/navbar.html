@@ -1,44 +1,49 @@
 <nav class="navbar">
-    <div class="navbar__brand">
-        <img src="Logo_Completo_TikiData.jpg" alt="TikiData Logo" class="navbar__logo">
-           
+  <div class="navbar__brand">
+    <img src="Logo-NavBar.png" alt="TikiData Logo" class="navbar__logo" />
+  </div>
+
+  <ul class="navbar__menu">
+    <li class="navbar__item navbar__item--active">
+      <a routerLink="/" class="navbar__link">
+        <i class="fas fa-home navbar__icon navbar__icon--active"></i> Inicio
+      </a>
+    </li>
+    <li class="navbar__item">
+      <a routerLink="/en-vivo" class="navbar__link">
+        <i class="fas fa-power-off navbar__icon"></i> En Vivo
+      </a>
+    </li>
+    <li class="navbar__item"><a routerLink="/partidos" class="navbar__link">Partidos</a></li>
+    <li class="navbar__item"><a routerLink="/ligas" class="navbar__link">Ligas</a></li>
+    <li class="navbar__item"><a routerLink="/equipos" class="navbar__link">Equipos</a></li>
+    <li class="navbar__item"><a routerLink="/jugadores" class="navbar__link">Jugadores</a></li>
+    <li class="navbar__item">
+      <a routerLink="/estadisticas" class="navbar__link">Estadísticas</a>
+    </li>
+    <li class="navbar__item"><a routerLink="/noticias" class="navbar__link">Noticias</a></li>
+  </ul>
+
+  <div class="navbar__utils">
+    <div class="navbar__search">
+      <i class="fas fa-search navbar__search-icon"></i>
+      <input
+        type="text"
+        class="navbar__search-input"
+        placeholder="Buscar equipos, ligas o jugadores..."
+      />
     </div>
 
-    <ul class="navbar__menu">
-        <li class="navbar__item navbar__item--active">
-            <a routerLink="/" class="navbar__link">
-                <i class="fas fa-home navbar__icon navbar__icon--active"></i> Inicio
-            </a>
-        </li>
-        <li class="navbar__item">
-            <a routerLink="/en-vivo" class="navbar__link">
-                <i class="fas fa-power-off navbar__icon"></i> En Vivo
-            </a>
-        </li>
-        <li class="navbar__item"><a routerLink="/partidos" class="navbar__link">Partidos</a></li>
-        <li class="navbar__item"><a routerLink="/ligas" class="navbar__link">Ligas</a></li>
-        <li class="navbar__item"><a routerLink="/equipos" class="navbar__link">Equipos</a></li>
-        <li class="navbar__item"><a routerLink="/jugadores" class="navbar__link">Jugadores</a></li>
-        <li class="navbar__item"><a routerLink="/estadisticas" class="navbar__link">Estadísticas</a></li>
-        <li class="navbar__item"><a routerLink="/noticias" class="navbar__link">Noticias</a></li>
-    </ul>
-
-    <div class="navbar__utils">
-        <div class="navbar__search">
-            <i class="fas fa-search navbar__search-icon"></i>
-            <input type="text" class="navbar__search-input" placeholder="Buscar equipos, ligas o jugadores...">
-        </div>
-
-        <div class="navbar__theme">
-            <i class="fas fa-sun navbar__theme-icon"></i>
-            <label class="toggle-switch">
-                <input type="checkbox" class="toggle-switch__input" checked>
-                <span class="toggle-switch__slider"></span>
-            </label>
-        </div>
-
-        <button class="navbar__profile" aria-label="Perfil de usuario">
-            <i class="fas fa-user"></i>
-        </button>
+    <div class="navbar__theme">
+      <i class="fas fa-sun navbar__theme-icon"></i>
+      <label class="toggle-switch">
+        <input type="checkbox" class="toggle-switch__input" checked />
+        <span class="toggle-switch__slider"></span>
+      </label>
     </div>
+
+    <button class="navbar__profile" aria-label="Perfil de usuario">
+      <i class="fas fa-user"></i>
+    </button>
+  </div>
 </nav>

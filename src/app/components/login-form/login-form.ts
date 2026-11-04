@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Output, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { LoginRequest } from '../../models/Login Request';
 import { RouterLink } from '@angular/router';
@@ -11,6 +11,7 @@ import { RouterLink } from '@angular/router';
 })
 export class LoginForm {
   private fb = inject(FormBuilder);
+  showPassword = signal(false);
   @Output() formSubmit = new EventEmitter<LoginRequest>();
 
   loginForm = this.fb.group({
@@ -25,4 +26,10 @@ export class LoginForm {
       this.loginForm.markAllAsTouched();
     }
   }
+
+  togglePasswordVisibility() {
+    this.showPassword.update(value => !value);
+  }
+
+  
 }

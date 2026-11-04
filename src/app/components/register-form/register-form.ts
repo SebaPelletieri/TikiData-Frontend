@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Output, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { RegisterRequest } from '../../models/Register Request';
@@ -10,11 +10,11 @@ import { RegisterRequest } from '../../models/Register Request';
   templateUrl: './register-form.html',
 })
 export class RegisterForm {
-private fb = inject(FormBuilder);
-  
+  private fb = inject(FormBuilder);
+  showPassword = signal(false);
+
   @Output() formSubmit = new EventEmitter<RegisterRequest>();
 
-  // Usamos userName según tu interfaz
   registerForm = this.fb.group({
     userName: ['', [Validators.required, Validators.minLength(3)]],
     email: ['', [Validators.required, Validators.email]],
@@ -27,5 +27,10 @@ private fb = inject(FormBuilder);
     } else {
       this.registerForm.markAllAsTouched();
     }
+  }
+
+
+  togglePasswordVisibility() {
+    this.showPassword.update(value => !value);
   }
 }

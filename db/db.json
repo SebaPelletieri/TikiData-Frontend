@@ -1,4 +1,21 @@
 {
+
+  "usuarios": [
+    {
+      "id": 1,
+      "name": "Tobías",
+      "email": "toto@test.com",
+      "password": "password123"
+    },
+    {
+      "id": 2,
+      "name": "Sebastian",
+      "email": "sebaz@test.com",
+      "password": "password123"
+    }
+
+  ],
+
   "equipos": [
   {
       "id": 1,
@@ -159,4 +176,5 @@
     { "id": 40, "name": "Braian Romero", "photo": "https://example.com/bromero.jpg", "age": 32, "position": "DEL", "teamID": 10 }  ]
 
 
+    
 }

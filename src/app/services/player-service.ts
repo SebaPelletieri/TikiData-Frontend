@@ -6,9 +6,9 @@ import { HttpClient } from '@angular/common/http';
 export class PlayerService {
   private http = inject(HttpClient);
   private apiUrl = 'http://localhost:3000/jugadores';
-  private players = signal<Player[]>([]);
-  private playerActual = signal<Player | null>(null);
-  private error = signal<string | null>(null);
+  players = signal<Player[]>([]);
+  playerActual = signal<Player | null>(null);
+  error = signal<string | null>(null);
 
   //Métodos del HTTP
   getAll() {

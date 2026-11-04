@@ -6,9 +6,9 @@ import { Team } from '../models/Team';
 export class TeamService {
   private http = inject(HttpClient);
   private apiUrl = 'http://localhost:3000/equipos';
-  private error = signal<string | null>(null);
-  private teams = signal<Team[]>([]);
-  private teamActual = signal<Team | null>(null);
+  error = signal<string | null>(null);
+  teams = signal<Team[]>([]);
+  teamActual = signal<Team | null>(null);
 
   //Métodos del HTTP 
   getAll() {

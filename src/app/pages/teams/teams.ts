@@ -13,12 +13,9 @@ import { DatePipe } from '@angular/common';
 })
 export class Teams implements OnInit{
   private teamService = inject(TeamService);
-  equipos = signal<Team[]>([]); 
+  equipos = this.teamService.teams; 
 
   ngOnInit(): void {
-    this.teamService.getAll().subscribe({
-      next: (data) => this.equipos.set(data),
-      error: (err) => console.error('Error al cargar equipos', err)
-    });
-  }
+      this.teamService.getAll();
+}
 }

@@ -1,1 +1,353 @@
-<p>team-form works!</p>
+<div class="team-form-container">
+  <div class="form-header">
+    <div class="header-icon">
+      <svg
+        width="22"
+        height="22"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <line x1="12" y1="5" x2="12" y2="19"></line>
+        <line x1="5" y1="12" x2="19" y2="12"></line>
+      </svg>
+    </div>
+    <div>
+      <h2>Nuevo Equipo</h2>
+      <p>Completa la información del equipo.</p>
+    </div>
+  </div>
+
+  <form [formGroup]="formulario" (ngSubmit)="saveTeam()">
+    <!-- Nombre -->
+    <div class="form-group">
+      <label for="name">Nombre del equipo <span class="required">*</span></label>
+      <input id="name" type="text" formControlName="name" placeholder="Ej. River Plate" />
+
+      @if (formulario.controls.name.touched && formulario.controls.name.invalid) {
+        <div class="error-feedback">
+          <svg
+            class="error-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+
+          <span class="error-text">
+            @if (
+              formulario.controls.name.hasError('required') && formulario.controls.name.touched
+            ) {
+              El nombre es obligatorio.
+            }
+            @if (formulario.controls.name.hasError('minlength')) {
+              Mínimo 3 caracteres.
+            }
+            @if (formulario.controls.name.hasError('maxlength')) {
+              Máximo 50 caracteres.
+            }
+          </span>
+        </div>
+      }
+    </div>
+
+    <!-- País y Fundación -->
+    <div class="form-row">
+      <div class="form-group">
+        <label for="country">País <span class="required">*</span></label>
+        <div
+          class="custom-dropdown"
+          [class.open]="isCountryOpen"
+          [class.is-invalid]="
+            formulario.controls['country'].hasError('required') &&
+            formulario.controls['country'].touched
+          "
+        >
+          <!-- Botón disparador con la flecha triangular uniforme -->
+          <button
+            type="button"
+            class="dropdown-trigger"
+            (click)="toggleCountryDropdown()"
+            (blur)="formulario.controls['country'].markAsTouched()"
+          >
+            <span [class.placeholder]="!formulario.controls['country'].value">
+              {{ formulario.controls['country'].value || 'Selecciona un país' }}
+            </span>
+            <span class="triangle-icon"></span>
+          </button>
+
+          <!-- Menú flotante con animación y checkmark -->
+          @if (isCountryOpen) {
+            <ul class="dropdown-menu">
+              @for (item of countries; track item) {
+                <li
+                  class="dropdown-item"
+                  [class.active]="formulario.controls['country'].value === item"
+                  (click)="selectCountry(item)"
+                >
+                  <div class="item-content">
+                    <span>{{ item }}</span>
+                  </div>
+
+                  @if (formulario.controls['country'].value === item) {
+                    <svg
+                      class="check-icon"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                  }
+                </li>
+              }
+            </ul>
+          }
+        </div>
+
+        <!-- Mensaje de error e icono -->
+        @if (
+          formulario.controls['country'].hasError('required') &&
+          formulario.controls['country'].touched
+        ) {
+          <div class="error-feedback">
+            <svg
+              class="error-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="8" x2="12" y2="12"></line>
+              <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+            <span class="error-text">El país es obligatorio.</span>
+          </div>
+        }
+      </div>
+
+      <div class="form-group">
+        <label for="foundation">Fecha de fundación <span class="required">*</span></label>
+        <input id="foundation" type="date" formControlName="yearOfFoundation" />
+      </div>
+    </div>
+
+    <!-- Escudo (Dropzone + Vista Previa interactiva) -->
+    <div class="form-group">
+      <label>Escudo <span class="required">*</span></label>
+      <div class="shield-container">
+        <!-- Zona de carga -->
+        <label class="dropzone" for="shield-file">
+          <input
+            type="file"
+            id="shield-file"
+            accept="image/png, image/jpeg"
+            class="visually-hidden"
+            (change)="onFileSelected($event)"
+          />
+          <svg
+            class="upload-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+            <polyline points="17 8 12 3 7 8" />
+            <line x1="12" y1="3" x2="12" y2="15" />
+          </svg>
+          <span class="dropzone-text">Haz clic para subir el escudo</span>
+          <span class="dropzone-hint">PNG, JPG (máx. 2MB)</span>
+        </label>
+
+        <!-- Vista previa reactiva -->
+        <div class="preview-box">
+          @if (shieldPreview) {
+            <img [src]="shieldPreview" alt="Escudo" class="uploaded-shield-img" />
+            <button type="button" class="btn-remove-shield" (click)="removeShield($event)">
+              ✕
+            </button>
+          } @else {
+            <svg class="shield-icon" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2L4 5v6.09c0 5.05 3.41 9.76 8 10.91 4.59-1.15 8-5.86 8-10.91V5l-8-3z" />
+            </svg>
+            <span class="preview-text">Vista previa</span>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- Estadio -->
+    <div class="form-group">
+      <label for="stadium">Estadio <span class="required">*</span></label>
+      <div
+        class="custom-dropdown"
+        [class.open]="isStadiumOpen"
+        [class.is-invalid]="
+          formulario.controls.stadiumID.touched && formulario.controls.stadiumID.invalid
+        "
+      >
+        <button
+          type="button"
+          id="stadium"
+          class="dropdown-trigger"
+          (click)="toggleStadiumDropdown()"
+          (blur)="formulario.controls.stadiumID.markAsTouched()"
+        >
+          <span [class.placeholder]="!formulario.controls.stadiumID.value">
+            {{ selectedStadiumName || 'Selecciona un estadio' }}
+          </span>
+          <span class="triangle-icon"></span>
+        </button>
+
+        @if (isStadiumOpen) {
+          <ul class="dropdown-menu">
+            @for (item of stadiums; track item.id) {
+              <li
+                class="dropdown-item"
+                [class.active]="
+                  formulario.controls.stadiumID.value.toString() === item.id.toString()
+                "
+                (click)="selectStadium(item.id)"
+              >
+                <div class="item-content">
+                  <span>{{ item.name }}</span>
+                </div>
+
+                @if (formulario.controls.stadiumID.value.toString() === item.id.toString()) {
+                  <svg
+                    class="check-icon"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                }
+              </li>
+            }
+          </ul>
+        }
+      </div>
+
+      @if (formulario.controls.stadiumID.touched && formulario.controls.stadiumID.invalid) {
+        <div class="error-feedback">
+          <svg
+            class="error-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+          <span class="error-text">El estadio es obligatorio.</span>
+        </div>
+      }
+    </div>
+
+    <!-- Campeonatos activos (Soporte selección múltiple) -->
+    <div class="form-group">
+      <label for="championships">Campeonatos activos <span class="required">*</span></label>
+      <div
+        class="custom-dropdown"
+        [class.open]="isChampionshipsOpen"
+        [class.is-invalid]="
+          formulario.controls.championshipsActive.touched &&
+          formulario.controls.championshipsActive.invalid
+        "
+      >
+        <button
+          type="button"
+          id="championships"
+          class="dropdown-trigger"
+          (click)="toggleChampionshipsDropdown()"
+          (blur)="formulario.controls.championshipsActive.markAsTouched()"
+        >
+          <span [class.placeholder]="formulario.controls.championshipsActive.value.length === 0">
+            @if (formulario.controls.championshipsActive.value.length === 0) {
+              Selecciona los campeonatos
+            } @else {
+              {{ formulario.controls.championshipsActive.value.length }} seleccionados
+            }
+          </span>
+          <span class="triangle-icon"></span>
+        </button>
+
+        @if (isChampionshipsOpen) {
+          <ul class="dropdown-menu">
+            @for (item of championships; track item.id) {
+              <li
+                class="dropdown-item"
+                [class.active]="isChampionshipSelected(item.id)"
+                (click)="toggleChampionship(item.id)"
+              >
+                <div class="item-content">
+                  <span>{{ item.name }}</span>
+                </div>
+
+                @if (isChampionshipSelected(item.id)) {
+                  <svg
+                    class="check-icon"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                }
+              </li>
+            }
+          </ul>
+        }
+      </div>
+
+      @if (
+        formulario.controls.championshipsActive.touched &&
+        formulario.controls.championshipsActive.invalid
+      ) {
+        <div class="error-feedback">
+          <svg
+            class="error-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+          <span class="error-text">Los campeonatos son obligatorios.</span>
+        </div>
+      }
+    </div>
+
+    <!-- Botones de acción -->
+    <div class="form-actions">
+      <button type="button" class="btn-cancel" (click)="cancel()">Cancelar</button>
+      <button type="submit" class="btn-save" [disabled]="formulario.invalid">Guardar</button>
+    </div>
+  </form>
+</div>

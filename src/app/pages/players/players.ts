@@ -14,10 +14,8 @@ import { LowerCasePipe } from '@angular/common';
 export class Players implements OnInit {
   private playerService = inject(PlayerService);
   jugadores = signal<Player[]>([]);
+
   ngOnInit(): void {
-    this.playerService.getAll().subscribe({
-      next: (data) => this.jugadores.set(data),
-      error: (err) => console.error('Error al cargar jugadores', err)
-    });  }
-  
+    this.playerService.getAll();
+  }
 }

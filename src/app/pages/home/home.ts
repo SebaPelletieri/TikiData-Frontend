@@ -12,14 +12,9 @@ import { ChampionshipService } from '../../services/championship-service';
   styleUrl: './home.css',
   templateUrl: './home.html',
 })
-export class Home implements OnInit {
+export class Home {
   private championshipService = inject(ChampionshipService);
   campeonatos = signal<Championship[]>([]);
 
-  ngOnInit(): void {
-    this.championshipService.getAll().subscribe({
-      next: (data) => this.campeonatos.set(data),
-      error: (err) => console.error('Error al cargar campeonatos', err)
-    });
-}
+
 }

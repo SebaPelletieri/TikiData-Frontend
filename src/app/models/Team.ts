@@ -1,9 +1,9 @@
 export interface Team {
   id?: number;
-  name: string;
+  name: string | null;
   shield: string;
   country: string;
-  yearOfFundation: Date;
+  yearOfFoundation: Date;
   championshipsActive: number[]
   playerIDs: number[]
   stadiumID: number

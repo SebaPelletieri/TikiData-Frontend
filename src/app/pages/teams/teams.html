@@ -1,1 +1,17 @@
-<p>teams works!</p>
+<div class="page-container">
+  <h2>Equipos de Primera División</h2>
+  
+  <div class="teams-grid">
+    @for (equipo of equipos(); track equipo.id) {
+      <div class="team-card">
+        <img [src]="equipo.shield" [alt]="'Escudo de ' + equipo.name" class="team-shield">
+        <h3>{{ equipo.name }}</h3>
+        <p>{{ equipo.country }}</p>
+        <p>Fundado en: {{ equipo.yearOfFundation | date:'yyyy' }}</p>
+        <a [routerLink]="['/team', equipo.id]" class="btn-secondary">Ver detalles</a>
+      </div>
+    } @empty {
+      <p>Cargando equipos...</p>
+    }
+  </div>
+</div>

@@ -1,4 +1,4 @@
-export interface Equipo {
+export interface Team {
   id?: number;
   name: string;
   shield: string;

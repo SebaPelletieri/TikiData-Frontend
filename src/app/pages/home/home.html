@@ -1,1 +1,22 @@
-<p>home works!</p>
+<div class="home-container">
+  <header class="hero-section">
+    <h1>Bienvenido a TikiData</h1>
+    <p>Resultados, estadísticas, equipos y jugadores en un solo lugar.</p>
+  </header>
+
+  <section class="highlighted-section">
+    <h2>Competiciones Disponibles</h2>
+    <div class="championship-grid">
+      @for (torneo of campeonatos(); track torneo.id) {
+        <div class="championship-card">
+          <img [src]="torneo.logo" [alt]="torneo.name">
+          <h3>{{ torneo.name }}</h3>
+          <p>Tipo: {{ torneo.type }}</p>
+          <a [routerLink]="['/championship', torneo.id]" class="btn-primary">Ver torneo</a>
+        </div>
+      } @empty {
+        <p>Cargando competiciones...</p>
+      }
+    </div>
+  </section>
+</div>

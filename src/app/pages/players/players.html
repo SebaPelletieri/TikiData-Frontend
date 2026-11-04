@@ -1,1 +1,36 @@
-<p>players works!</p>
+<div class="page-container">
+  <h2>Jugadores Destacados</h2>
+  
+  <div class="table-container">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Foto</th>
+          <th>Nombre</th>
+          <th>Edad</th>
+          <th>Posición</th>
+          <th>Acción</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (jugador of jugadores(); track jugador.id) {
+          <tr>
+            <td>
+              <img [src]="jugador.photo" class="player-avatar" [alt]="jugador.name">
+            </td>
+            <td>{{ jugador.name }}</td>
+            <td>{{ jugador.age }} años</td>
+            <td><span class="badge position-{{jugador.position | lowercase}}">{{ jugador.position }}</span></td>
+            <td>
+              <a [routerLink]="['/player', jugador.id]" class="link-action">Ver perfil</a>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="5">Cargando jugadores...</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

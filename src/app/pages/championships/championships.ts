@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
+import { Championship } from '../../models/Championship';
+import { ChampionshipService } from '../../services/championship-service';
 
 @Component({
   imports: [],
@@ -6,4 +8,5 @@ import { Component } from '@angular/core';
   styleUrl: './championships.css',
   templateUrl: './championships.html',
 })
-export class Championships {}
+export class Championships  {
+}

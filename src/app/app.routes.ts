@@ -10,13 +10,19 @@ import { Teams } from './pages/teams/teams';
 import { ChampionshipDetail } from './pages/championship-detail/championship-detail';
 import { Championships } from './pages/championships/championships';
 import { MatchDetail } from './pages/match-detail/match-detail';
+import { authGuard } from './guards/auth-guard';
 
 export const routes: Routes = [
     { path: '', component: Home },
     { path: 'home', redirectTo: '', pathMatch: 'full' },
     { path: 'login', component: Login },
     { path: 'register', component: Register },
-    { path: 'profile', component: Profile },
+    { 
+    path: 'profile', 
+    component: Profile, 
+    canActivate: [authGuard] 
+    },
+    { path: '**', redirectTo: '' },
     { path: 'teams', component: Teams },
     { path: 'team/:id', component: TeamDetail },
     { path: 'players', component: Players },

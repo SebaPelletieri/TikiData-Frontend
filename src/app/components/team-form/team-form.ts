@@ -1,5 +1,13 @@
 import { Component, inject } from '@angular/core';
-import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormsModule,
+  ReactiveFormsModule,
+  ValidationErrors,
+  ValidatorFn,
+  Validators,
+} from '@angular/forms';
 import { TeamService } from '../../services/team-service';
 import { Team } from '../../models/Team';
 
@@ -16,7 +24,7 @@ export class TeamForm {
     name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
     shield: ['', [Validators.required]],
     country: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(30)]],
-    yearOfFoundation: ['', [Validators.required, Validators.min(1800), Validators.max(2027)]],
+    yearOfFoundation: ['', [Validators.required]],
     championshipsActive: [<number[]>[], [Validators.required]],
     stadiumID: ['', [Validators.required]],
   });
@@ -135,5 +143,138 @@ export class TeamForm {
   isChampionshipSelected(championshipId: number): boolean {
     const current: number[] = this.formulario.controls.championshipsActive.value || [];
     return current.includes(championshipId);
+  }
+
+  // Agrega estas propiedades y métodos en tu clase TeamForm:
+
+  isCalendarOpen = false;
+  currentMonth = new Date().getMonth();
+  currentYear = new Date().getFullYear();
+
+  months = [
+    'Enero',
+    'Febrero',
+    'Marzo',
+    'Abril',
+    'Mayo',
+    'Junio',
+    'Julio',
+    'Agosto',
+    'Septiembre',
+    'Octubre',
+    'Noviembre',
+    'Diciembre',
+  ];
+
+  weekDays = ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'];
+
+  toggleCalendar(): void {
+    this.isCalendarOpen = !this.isCalendarOpen;
+    this.isCountryOpen = false;
+    this.isStadiumOpen = false;
+    this.isChampionshipsOpen = false;
+    if (!this.isCalendarOpen) {
+      this.formulario.controls.yearOfFoundation.markAsTouched();
+    }
+  }
+
+  // Genera los días correspondientes al mes y año actuales
+  get calendarDays(): { day: number; date: Date; isCurrentMonth: boolean }[] {
+    const days: { day: number; date: Date; isCurrentMonth: boolean }[] = [];
+    const firstDayIndex = new Date(this.currentYear, this.currentMonth, 1).getDay();
+    const lastDateCurrentMonth = new Date(this.currentYear, this.currentMonth + 1, 0).getDate();
+    const lastDatePrevMonth = new Date(this.currentYear, this.currentMonth, 0).getDate();
+
+    // Días del mes previo para rellenar la primera semana
+    for (let i = firstDayIndex; i > 0; i--) {
+      const day = lastDatePrevMonth - i + 1;
+      days.push({
+        day,
+        date: new Date(this.currentYear, this.currentMonth - 1, day),
+        isCurrentMonth: false,
+      });
+    }
+
+    // Días del mes actual
+    for (let i = 1; i <= lastDateCurrentMonth; i++) {
+      days.push({
+        day: i,
+        date: new Date(this.currentYear, this.currentMonth, i),
+        isCurrentMonth: true,
+      });
+    }
+
+    // Completar hasta la cuadrícula de 35 o 42 casillas
+    const remainingDays = 42 - days.length;
+    for (let i = 1; i <= remainingDays; i++) {
+      days.push({
+        day: i,
+        date: new Date(this.currentYear, this.currentMonth + 1, i),
+        isCurrentMonth: false,
+      });
+    }
+
+    return days;
+  }
+
+  prevMonth(): void {
+    if (this.currentMonth === 0) {
+      this.currentMonth = 11;
+      this.currentYear--;
+    } else {
+      this.currentMonth--;
+    }
+  }
+
+  nextMonth(): void {
+    if (this.currentMonth === 11) {
+      this.currentMonth = 0;
+      this.currentYear++;
+    } else {
+      this.currentMonth++;
+    }
+  }
+
+  selectDate(date: Date): void {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const formattedDate = `${year}-${month}-${day}`;
+
+    this.formulario.controls.yearOfFoundation.setValue(formattedDate);
+    this.formulario.controls.yearOfFoundation.markAsTouched();
+    this.isCalendarOpen = false;
+  }
+
+  isSelectedDate(date: Date): boolean {
+    const currentVal = this.formulario.controls.yearOfFoundation.value;
+    if (!currentVal) return false;
+    const d = new Date(currentVal);
+    return (
+      d.getDate() === date.getDate() &&
+      d.getMonth() === date.getMonth() &&
+      d.getFullYear() === date.getFullYear()
+    );
+  }
+
+  get formattedSelectedDate(): string {
+    const val = this.formulario.controls.yearOfFoundation.value;
+    if (!val) return '';
+    const d = new Date(val);
+    const day = String(d.getDate()).padStart(2, '0');
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    return `${day}/${month}/${d.getFullYear()}`;
+  }
+
+  isDaySelected(date: Date): boolean {
+    const currentValue = this.formulario.controls.yearOfFoundation.value;
+    if (!currentValue) return false;
+
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const formatted = `${year}-${month}-${day}`;
+
+    return currentValue === formatted;
   }
 }

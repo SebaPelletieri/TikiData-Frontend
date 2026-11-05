@@ -13,22 +13,21 @@ import { MatchDetail } from './pages/match-detail/match-detail';
 import { authGuard } from './guards/auth-guard';
 
 export const routes: Routes = [
-    { path: '', component: Home },
-    { path: 'home', redirectTo: '', pathMatch: 'full' },
-    { path: 'login', component: Login },
-    { path: 'register', component: Register },
-    { 
-    path: 'profile', 
-    component: Profile, 
-    canActivate: [authGuard] 
-    },
-    { path: '**', redirectTo: '' },
-    { path: 'teams', component: Teams },
-    { path: 'team/:id', component: TeamDetail },
-    { path: 'players', component: Players },
-    { path: 'player/:id', component: PlayerDetail },
-    { path: 'championships', component: Championships },
-    { path: 'championship/:id', component: ChampionshipDetail },
-    { path: 'match/:id', component: MatchDetail },
-    { path: '**', redirectTo: '' }
+  { path: '', component: Home },
+  { path: 'home', redirectTo: '', pathMatch: 'full' },
+  { path: 'login', component: Login },
+  { path: 'register', component: Register },
+  {
+    path: 'profile',
+    component: Profile,
+    canActivate: [authGuard],
+  },
+  { path: 'teams', component: Teams },
+  { path: 'team/:id', component: TeamDetail },
+  { path: 'players', component: Players },
+  { path: 'player/:id', component: PlayerDetail },
+  { path: 'championships', component: Championships },
+  { path: 'championship/:id', component: ChampionshipDetail },
+  { path: 'match/:id', component: MatchDetail },
+  { path: '**', redirectTo: '' }, // ÚNICO comodín, siempre al final de todo
 ];

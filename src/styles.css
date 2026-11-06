@@ -228,3 +228,49 @@ body {
   filter: brightness(1.2);
   text-decoration: none !important;
 }
+
+/* ==========================================================================
+   Personalización del Scrollbar (TikiData Dark Theme)
+   ========================================================================== */
+
+/* 1. Soporte estándar (Firefox) */
+html {
+  scrollbar-width: thin;
+  /* Color del pulgar (gris azulado oscuro) y color de la pista (fondo navbar) */
+  scrollbar-color: #24344d #060d17;
+}
+
+/* 2. Soporte WebKit (Chrome, Edge, Safari, Brave, Opera) */
+
+/* Ancho total de la barra vertical */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+/* Fondo / Carril por donde corre la barra */
+::-webkit-scrollbar-track {
+  background-color: #060d17; /* Mismo fondo profundo del navbar/página */
+}
+
+/* La pastilla / barra deslizable */
+::-webkit-scrollbar-thumb {
+  background-color: #24344d; /* Azul acero sutil */
+  border-radius: 10px;
+  border: 2px solid #060d17; /* Margen para dar efecto flotante y estilizado */
+  transition: background-color 0.2s ease;
+}
+
+/* Al pasar el mouse por encima (hover) */
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--brand-orange, #ff5e14); /* Destello naranja al arrastrarla */
+}
+
+/* Al hacer clic y arrastrar (active) */
+::-webkit-scrollbar-thumb:active {
+  background-color: #e04f0b;
+}
+
+/* Elimina las flechas cuadradas de arriba y abajo en navegadores basados en Chromium */
+::-webkit-scrollbar-button {
+  display: none;
+}

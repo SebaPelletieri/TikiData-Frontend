@@ -1,6 +1,6 @@
 .navbar {
   display: flex;
-  justify-content: space-between;
+  /* Quita o cambia justify-content: space-between; */
   align-items: center;
   background-color: var(--bg-navbar);
   padding: 0 1.5rem;
@@ -11,13 +11,15 @@
     -apple-system,
     sans-serif;
   border-bottom: 1px solid var(--border-color);
+  box-sizing: border-box;
 }
 
 .navbar__brand {
   display: flex;
   align-items: center;
   height: 100%;
-  overflow: visible; /* Permite que el logo escalado no se recorte */
+  margin-right: 2.5rem;
+  flex-shrink: 0;
 }
 
 .navbar__logo {
@@ -81,6 +83,7 @@
   margin: 0;
   padding: 0;
   height: 100%;
+  margin-left: 4rem; /* 👈 AQUÍ FIJAS LA DISTANCIA EXACTA ENTRE TIKIDATA E INICIO */
 }
 
 .navbar__item {
@@ -120,9 +123,10 @@
 }
 
 .navbar__item--active .navbar__link {
-  color: var(--text-primary);
-  font-weight: 600;
+  color: #ffffff;
+  font-weight: 500;
 }
+
 .navbar__icon--active {
   color: var(--brand-orange);
 }
@@ -139,7 +143,9 @@
 .navbar__utils {
   display: flex;
   align-items: center;
-  gap: 1.5rem;
+  gap: 2rem;
+  margin-right: 1rem;
+  margin-left: 3rem;
 }
 
 .navbar__search {

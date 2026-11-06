@@ -1,6 +1,6 @@
 .navbar {
   display: flex;
-  /* Quita o cambia justify-content: space-between; */
+  justify-content: space-between;
   align-items: center;
   background-color: var(--bg-navbar);
   padding: 0 1.5rem;
@@ -12,78 +12,44 @@
     sans-serif;
   border-bottom: 1px solid var(--border-color);
   box-sizing: border-box;
+  width: 100%;
+  max-width: 100vw;
 }
 
+/* ==========================================================================
+   Logo y Marca
+   ========================================================================== */
 .navbar__brand {
   display: flex;
   align-items: center;
   height: 100%;
-  margin-right: 2.5rem;
   flex-shrink: 0;
+  margin-right: 4.5rem; /* Margen amplio para que scale(1.5) no toque a Inicio */
 }
 
 .navbar__logo {
-  height: 70px;
+  height: 65px;
   width: auto;
   object-fit: contain;
   display: block;
-  /* Agranda visualmente el logo un 70% compensando el borde transparente */
-  transform: scale(1.7);
+  transform: scale(1.5);
   transform-origin: left center;
   margin-left: 10px;
   cursor: pointer;
 }
 
-/* Ajuste automático para celulares y pantallas chicas */
-@media (max-width: 768px) {
-  .navbar {
-    padding: 0 1rem;
-    height: 60px;
-  }
-
-  .navbar__logo {
-    height: 50px;
-    transform: scale(1.3); /* Escala más pequeña para que no tape los botones */
-    margin-left: 5px;
-  }
-}
-
-.navbar__title-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.navbar__title {
-  font-size: 1.6rem;
-  font-weight: 800;
-  margin: 0;
-  line-height: 1.1;
-  letter-spacing: -0.5px;
-  color: var(--text-primary);
-}
-
-.navbar__title-highlight {
-  color: var(--brand-orange);
-}
-
-.navbar__subtitle {
-  font-size: 0.6rem;
-  font-weight: 700;
-  margin: 0;
-  letter-spacing: 0.5px;
-  color: var(--text-micro);
-}
-
+/* ==========================================================================
+   Menú de Enlaces
+   ========================================================================== */
 .navbar__menu {
   display: flex;
   align-items: center;
-  gap: 1.5rem;
+  gap: 1.1rem;
   list-style: none;
   margin: 0;
   padding: 0;
   height: 100%;
-  margin-left: 4rem; /* 👈 AQUÍ FIJAS LA DISTANCIA EXACTA ENTRE TIKIDATA E INICIO */
+  flex-shrink: 0;
 }
 
 .navbar__item {
@@ -91,8 +57,8 @@
   align-items: center;
   height: 100%;
   box-sizing: border-box;
-  /* Borde transparente por defecto para evitar saltos de altura al activarse */
   border-bottom: 3px solid transparent;
+  flex-shrink: 0;
   transition:
     border-color 0.2s ease,
     background-color 0.2s ease;
@@ -101,13 +67,14 @@
 .navbar__link {
   color: var(--text-secondary);
   text-decoration: none;
-  font-size: 0.95rem;
+  font-size: 0.92rem;
   font-weight: 500;
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 0.5rem 0.8rem;
+  padding: 0.45rem 0.65rem;
   border-radius: 6px;
+  white-space: nowrap; /* Evita que "En Vivo" se divida en dos filas */
   transition:
     color 0.2s ease,
     background-color 0.2s ease;
@@ -117,6 +84,7 @@
   color: var(--text-primary);
 }
 
+/* --- Estado Activo --- */
 .navbar__item--active {
   background-color: var(--bg-active-tab);
   border-bottom-color: var(--brand-orange);
@@ -125,10 +93,6 @@
 .navbar__item--active .navbar__link {
   color: #ffffff;
   font-weight: 500;
-}
-
-.navbar__icon--active {
-  color: var(--brand-orange);
 }
 
 .navbar__item--active .navbar__icon {
@@ -140,12 +104,15 @@
   transition: color 0.2s ease;
 }
 
+/* ==========================================================================
+   Utilidades (Buscador, Modo Oscuro, Perfil)
+   ========================================================================== */
 .navbar__utils {
   display: flex;
   align-items: center;
-  gap: 2rem;
-  margin-right: 1rem;
-  margin-left: 3rem;
+  gap: 1.2rem;
+  flex-shrink: 0;
+  transform: translateX(-15px);
 }
 
 .navbar__search {
@@ -154,8 +121,8 @@
   background-color: var(--bg-search);
   border: 1px solid var(--border-color);
   border-radius: 20px;
-  padding: 0.4rem 1.2rem;
-  gap: 10px;
+  padding: 0.4rem 1.1rem;
+  gap: 8px;
   transition: border-color 0.2s;
 }
 
@@ -165,7 +132,7 @@
 
 .navbar__search-icon {
   color: var(--text-secondary);
-  font-size: 0.9rem;
+  font-size: 0.85rem;
 }
 
 .navbar__search-input {
@@ -174,7 +141,8 @@
   color: var(--text-primary);
   outline: none;
   font-size: 0.85rem;
-  width: 240px;
+  width: 400px; /* 👈 Input más largo en PC (antes 240px) */
+  transition: width 0.2s ease;
 }
 
 .navbar__search-input::placeholder {
@@ -247,4 +215,65 @@
 .navbar__profile:hover {
   background-color: var(--bg-search);
   color: var(--text-primary);
+}
+
+/* ==========================================================================
+   Ajuste Especial para Notebooks (Pantallas de 1024px a 1400px)
+   ========================================================================== */
+@media (max-width: 1400px) {
+  .navbar {
+    padding: 0 0.8rem;
+  }
+
+  .navbar__brand {
+    margin-right: 3.5rem;
+  }
+
+  .navbar__menu {
+    gap: 1.1rem;
+  }
+
+  .navbar__link {
+    font-size: 0.82rem;
+    padding: 0.35rem 0.4rem;
+    gap: 4px;
+  }
+
+  .navbar__utils {
+    gap: 0.8rem;
+    transform: translateX(-15px);
+  }
+
+  .navbar__search-input {
+    width: 220px; /* 👈 Input más largo en notebooks (antes 150px) */
+  }
+
+  .navbar__search {
+    padding: 0.35rem 0.65rem;
+  }
+}
+
+/* ==========================================================================
+   Tablets y Celulares
+   ========================================================================== */
+@media (max-width: 768px) {
+  .navbar {
+    padding: 0 0.8rem;
+    height: 60px;
+  }
+
+  .navbar__brand {
+    margin-right: 1.5rem;
+  }
+
+  .navbar__logo {
+    height: 50px;
+    transform: scale(1.3);
+    margin-left: 5px;
+  }
+
+  .navbar__utils {
+    transform: none;
+    margin-right: 0;
+  }
 }

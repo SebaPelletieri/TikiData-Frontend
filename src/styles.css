@@ -13,6 +13,20 @@ body {
   box-sizing: border-box;
   background-color: #020817;
 }
+
+html,
+body {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+html {
+  /* Solución moderna para navegadores actuales: reserva el carril del scrollbar sin mover nada */
+  scrollbar-gutter: stable;
+  
+  /* Respaldo para navegadores que aún no soportan scrollbar-gutter */
+  overflow-y: scroll;
+}
 /* ==========================================================================
    Contenedor Principal y Tarjeta de Autenticación
    ========================================================================== */

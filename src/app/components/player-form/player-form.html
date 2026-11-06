@@ -1,1 +1,200 @@
-<p>player-form works!</p>
+<div class="team-form-container player-form">
+  <div class="form-header">
+    <div class="header-icon">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+        <circle cx="12" cy="7" r="4"></circle>
+      </svg>
+    </div>
+    <div>
+      <h2>Nuevo Jugador</h2>
+      <p>Completa la información del jugador.</p>
+    </div>
+  </div>
+
+  <form [formGroup]="formulario" (ngSubmit)="savePlayer()">
+    
+    <!-- Fila 1: Nombre -->
+    <div class="form-group">
+      <label for="name">Nombre completo <span class="required">*</span></label>
+      <input id="name" type="text" formControlName="name" placeholder="Ej. Lionel Messi" />
+
+      @if (formulario.controls.name.touched && formulario.controls.name.invalid) {
+        <div class="error-feedback">
+          <svg class="error-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+          <span class="error-text">El nombre es obligatorio y debe tener entre 3 y 50 caracteres.</span>
+        </div>
+      }
+    </div>
+
+    <!-- Fila 2: Nacionalidad y Fecha de Nacimiento -->
+    <div class="form-row">
+      <div class="form-group">
+        <label>Nacionalidad <span class="required">*</span></label>
+        <div class="custom-dropdown" [class.open]="isNationalityOpen" [class.is-invalid]="formulario.controls.nacionality.invalid && formulario.controls.nacionality.touched">
+          <button type="button" class="dropdown-trigger" (click)="toggleNationalityDropdown()">
+            <span [class.placeholder]="!formulario.controls.nacionality.value">{{ formulario.controls.nacionality.value || 'Seleccionar' }}</span>
+            <span class="triangle-icon"></span>
+          </button>
+          @if (isNationalityOpen) {
+            <ul class="dropdown-menu">
+              @for (item of nationalities; track item) {
+                <li class="dropdown-item" [class.active]="formulario.controls.nacionality.value === item" (click)="selectNationality(item)">
+                  <div class="item-content"><span>{{ item }}</span></div>
+                </li>
+              }
+            </ul>
+          }
+        </div>
+      </div>
+
+      <div class="form-group calendar-field-container">
+        <label>Fecha de nacimiento <span class="required">*</span></label>
+        <div class="calendar-trigger" [class.open]="isCalendarOpen" [class.input-error]="formulario.controls.bithDate.touched && formulario.controls.bithDate.invalid" (click)="toggleCalendar()">
+          <span [class.placeholder]="!formattedSelectedDate">{{ formattedSelectedDate || 'DD/MM/AAAA' }}</span>
+          <svg class="calendar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+        </div>
+
+        @if (isCalendarOpen) {
+          <div class="calendar-popover">
+            <div class="calendar-header">
+              <button type="button" class="calendar-nav-btn" (click)="prevMonth()">&#8249;</button>
+              <span class="calendar-title">{{ months[currentMonth] }} {{ currentYear }}</span>
+              <button type="button" class="calendar-nav-btn" (click)="nextMonth()">&#8250;</button>
+            </div>
+            <div class="calendar-weekdays">
+              @for (dayName of weekDays; track dayName) { <span class="calendar-weekday">{{ dayName }}</span> }
+            </div>
+            <div class="calendar-grid">
+              @for (item of calendarDays; track $index) {
+                <button type="button" class="calendar-day" [class.other-month]="!item.isCurrentMonth" [class.selected]="isDaySelected(item.date)" (click)="selectDate(item.date)">{{ item.day }}</button>
+              }
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Fila 3: Edad y Posición -->
+    <div class="form-row">
+      <div class="form-group">
+        <label>Edad <span class="required">*</span></label>
+        <input type="number" formControlName="age" class="readonly-input" placeholder="Automático" />
+      </div>
+
+      <div class="form-group">
+        <label>Posición <span class="required">*</span></label>
+        <div class="custom-dropdown" [class.open]="isPositionOpen" [class.is-invalid]="formulario.controls.position.invalid && formulario.controls.position.touched">
+          <button type="button" class="dropdown-trigger" (click)="togglePositionDropdown()">
+            <span [class.placeholder]="!formulario.controls.position.value">{{ formulario.controls.position.value || 'Seleccionar' }}</span>
+            <span class="triangle-icon"></span>
+          </button>
+          @if (isPositionOpen) {
+            <ul class="dropdown-menu">
+              @for (item of positions; track item) {
+                <li class="dropdown-item" [class.active]="formulario.controls.position.value === item" (click)="selectPosition(item)">
+                  <div class="item-content"><span>{{ item }}</span></div>
+                </li>
+              }
+            </ul>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- Fila 4: Pie Hábil y Equipo Actual -->
+    <div class="form-row">
+      <div class="form-group">
+        <label>Pie Hábil <span class="required">*</span></label>
+        <div class="custom-dropdown" [class.open]="isFootOpen" [class.is-invalid]="formulario.controls.preferredFoot.invalid && formulario.controls.preferredFoot.touched">
+          <button type="button" class="dropdown-trigger" (click)="toggleFootDropdown()">
+            <span [class.placeholder]="!formulario.controls.preferredFoot.value">{{ formulario.controls.preferredFoot.value || 'Seleccionar' }}</span>
+            <span class="triangle-icon"></span>
+          </button>
+          @if (isFootOpen) {
+            <ul class="dropdown-menu">
+              @for (item of footOptions; track item) {
+                <li class="dropdown-item" [class.active]="formulario.controls.preferredFoot.value === item" (click)="selectFoot(item)">
+                  <div class="item-content"><span>{{ item }}</span></div>
+                </li>
+              }
+            </ul>
+          }
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Equipo Actual</label>
+        <div class="custom-dropdown" [class.open]="isTeamOpen">
+          <button type="button" class="dropdown-trigger" (click)="toggleTeamDropdown()">
+            <span [class.placeholder]="!formulario.controls.currentTeamID.value">{{ selectedTeamName || 'Agente Libre' }}</span>
+            <span class="triangle-icon"></span>
+          </button>
+          @if (isTeamOpen) {
+            <ul class="dropdown-menu">
+              @for (item of teams; track item.id) {
+                <li class="dropdown-item" [class.active]="formulario.controls.currentTeamID.value === item.id.toString()" (click)="selectTeam(item.id)">
+                  <div class="item-content"><span>{{ item.name }}</span></div>
+                </li>
+              }
+            </ul>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- Fila 5: Estadísticas Rápidas (Grid de 5 columnas) -->
+    <h3 class="section-subtitle">Estadísticas</h3>
+    <div class="stats-grid">
+      <div class="form-group">
+        <label>Partidos</label>
+        <input type="number" formControlName="matchesPlayed" min="0" />
+      </div>
+      <div class="form-group">
+        <label>Goles</label>
+        <input type="number" formControlName="goals" min="0" />
+      </div>
+      <div class="form-group">
+        <label>Asistencias</label>
+        <input type="number" formControlName="assists" min="0" />
+      </div>
+      <div class="form-group">
+        <label>Amarillas</label>
+        <input type="number" formControlName="yellowCards" min="0" />
+      </div>
+      <div class="form-group">
+        <label>Rojas</label>
+        <input type="number" formControlName="redCards" min="0" />
+      </div>
+    </div>
+
+    <!-- Fila 6: Foto -->
+    <div class="form-group">
+      <label>Fotografía <span class="required">*</span></label>
+      <div class="shield-container">
+        <label class="dropzone" for="photo-file">
+          <input type="file" id="photo-file" accept="image/png, image/jpeg" class="visually-hidden" (change)="onFileSelected($event)" />
+          <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="17 8 12 3 7 8" /><line x1="12" y1="3" x2="12" y2="15" /></svg>
+          <span class="dropzone-text">Haz clic para subir la foto</span>
+          <span class="dropzone-hint">PNG, JPG (máx. 2MB)</span>
+        </label>
+        <div class="preview-box">
+          @if (photoPreview) {
+            <img [src]="photoPreview" alt="Foto" class="uploaded-shield-img" />
+            <button type="button" class="btn-remove-shield" (click)="removePhoto($event)">✕</button>
+          } @else {
+            <svg class="shield-icon" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+            </svg>
+            <span class="preview-text">Vista previa</span>
+          }
+        </div>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button type="button" class="btn-cancel" (click)="cancel()">Cancelar</button>
+      <button type="submit" class="btn-save" [disabled]="formulario.invalid">Guardar Jugador</button>
+    </div>
+  </form>
+</div>

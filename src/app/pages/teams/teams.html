@@ -7,7 +7,6 @@
         <img [src]="equipo.shield" [alt]="'Escudo de ' + equipo.name" class="team-shield">
         <h3>{{ equipo.name }}</h3>
         <p>{{ equipo.country }}</p>
-        <p>Fundado en: {{ equipo.yearOfFoundation | date:'yyyy' }}</p>
         <a [routerLink]="['/team', equipo.id]" class="btn-secondary">Ver detalles</a>
       </div>
     } @empty {

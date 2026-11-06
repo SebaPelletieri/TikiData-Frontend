@@ -1,0 +1,41 @@
+.section-subtitle {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #7d96b3;
+  margin: 1.5rem 0 1rem 0;
+  border-bottom: 1px solid #143560;
+  padding-bottom: 0.5rem;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.stats-grid .form-group label {
+  font-size: 0.75rem;
+  color: #c9d8eb;
+}
+
+.stats-grid input[type="number"] {
+  text-align: center;
+  padding: 0;
+}
+
+.stats-grid input[type="number"]::-webkit-inner-spin-button, 
+.stats-grid input[type="number"]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+.stats-grid input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.readonly-input {
+  background-color: #051428 !important;
+  border-color: #0f2c52 !important;
+  color: #637d9d !important;
+  cursor: not-allowed;
+}

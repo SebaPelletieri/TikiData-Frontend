@@ -23,6 +23,11 @@ export class PlayerForm {
   currentMonth = new Date().getMonth();
   currentYear = new Date().getFullYear();
 
+  yearsRange: number[] = Array.from(
+    { length: new Date().getFullYear() - 1969 },
+    (_, i) => new Date().getFullYear() - i
+  );
+
   nationalities = ['Argentina', 'Brasil', 'Uruguay', 'Colombia', 'Chile', 'Paraguay'];
   positions = ['ARQ', 'DEF', 'MED', 'DEL'];
   footOptions = ['Derecho', 'Izquierdo', 'Ambidiestro'];
@@ -31,6 +36,7 @@ export class PlayerForm {
     { id: 2, name: 'Boca Juniors' },
     { id: 3, name: 'Independiente' },
   ];
+
   months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
   weekDays = ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'];
 
@@ -85,7 +91,6 @@ export class PlayerForm {
     this.isPositionOpen = false;
     this.isFootOpen = false;
     this.isTeamOpen = false;
-    this.isCalendarOpen = false;
   }
 
   toggleNationalityDropdown() {
@@ -167,7 +172,9 @@ export class PlayerForm {
     const wasOpen = this.isCalendarOpen;
     this.closeAllDropdowns();
     this.isCalendarOpen = !wasOpen;
-    if (!this.isCalendarOpen) this.formulario.controls.bithDate.markAsTouched();
+    if (!this.isCalendarOpen) {
+      this.formulario.controls.bithDate.markAsTouched();
+    }
   }
 
   get calendarDays(): { day: number; date: Date; isCurrentMonth: boolean }[] {
@@ -189,6 +196,7 @@ export class PlayerForm {
     for (let i = 1; i <= remainingDays; i++) {
       days.push({ day: i, date: new Date(this.currentYear, this.currentMonth + 1, i), isCurrentMonth: false });
     }
+
     return days;
   }
 
@@ -210,6 +218,14 @@ export class PlayerForm {
     }
   }
 
+  onMonthChange(event: Event): void {
+    this.currentMonth = Number((event.target as HTMLSelectElement).value);
+  }
+
+  onYearChange(event: Event): void {
+    this.currentYear = Number((event.target as HTMLSelectElement).value);
+  }
+
   selectDate(date: Date): void {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -218,21 +234,27 @@ export class PlayerForm {
 
     this.formulario.controls.bithDate.setValue(formattedDate);
     this.formulario.controls.bithDate.markAsTouched();
-    
-    // Cálculo automático de la edad
-    const ageDifMs = Date.now() - date.getTime();
-    const ageDate = new Date(ageDifMs); 
-    const calculatedAge = Math.abs(ageDate.getUTCFullYear() - 1970);
-    this.formulario.controls.age.setValue(calculatedAge);
 
+    // Cálculo automático de la edad
+    const birthDate = new Date(date);
+    const ageDifMs = Date.now() - birthDate.getTime();
+    const ageDate = new Date(ageDifMs);
+    const calculatedAge = Math.abs(ageDate.getUTCFullYear() - 1970);
+
+    this.formulario.controls.age.setValue(calculatedAge);
     this.isCalendarOpen = false;
   }
 
   isDaySelected(date: Date): boolean {
-    const currentVal = this.formulario.controls.bithDate.value;
-    if (!currentVal) return false;
-    const d = new Date(currentVal + 'T00:00:00'); 
-    return d.getDate() === date.getDate() && d.getMonth() === date.getMonth() && d.getFullYear() === date.getFullYear();
+    const currentValue = this.formulario.controls.bithDate.value;
+    if (!currentValue) return false;
+
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const formatted = `${year}-${month}-${day}`;
+
+    return currentValue === formatted;
   }
 
   get formattedSelectedDate(): string {
@@ -241,5 +263,9 @@ export class PlayerForm {
     const [year, month, day] = val.split('-');
     return `${day}/${month}/${year}`;
   }
-}
+
+  
+  
+
+  }
 

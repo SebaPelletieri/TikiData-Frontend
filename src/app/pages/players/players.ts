@@ -3,10 +3,11 @@ import { RouterLink } from '@angular/router';
 import { Player } from '../../models/Player';
 import { PlayerService } from '../../services/player-service';
 import { LowerCasePipe } from '@angular/common';
+import { PlayerForm } from '../../components/player-form/player-form';
 
 @Component({
   standalone: true,
-  imports: [RouterLink, LowerCasePipe],
+  imports: [RouterLink, LowerCasePipe, PlayerForm],
   selector: 'app-players',
   styleUrl: './players.css',
   templateUrl: './players.html',

@@ -48,28 +48,79 @@
         </div>
       </div>
 
+      <!-- CALENDARIO PERSONALIZADO TIKIDATA -->
       <div class="form-group calendar-field-container">
-        <label>Fecha de nacimiento <span class="required">*</span></label>
-        <div class="calendar-trigger" [class.open]="isCalendarOpen" [class.input-error]="formulario.controls.bithDate.touched && formulario.controls.bithDate.invalid" (click)="toggleCalendar()">
-          <span [class.placeholder]="!formattedSelectedDate">{{ formattedSelectedDate || 'DD/MM/AAAA' }}</span>
-          <svg class="calendar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+        <label for="bithDate">Fecha de nacimiento <span class="required">*</span></label>
+        
+        <div
+          class="calendar-trigger"
+          [class.open]="isCalendarOpen"
+          [class.input-error]="formulario.controls.bithDate.touched && formulario.controls.bithDate.invalid"
+          (click)="toggleCalendar()"
+        >
+          <span [class.placeholder]="!formattedSelectedDate">
+            {{ formattedSelectedDate || 'Selecciona una fecha' }}
+          </span>
+          <svg class="calendar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+            <line x1="16" y1="2" x2="16" y2="6"></line>
+            <line x1="8" y1="2" x2="8" y2="6"></line>
+            <line x1="3" y1="10" x2="21" y2="10"></line>
+          </svg>
         </div>
 
         @if (isCalendarOpen) {
           <div class="calendar-popover">
+            <!-- Header con Selectores Rápidos de Mes y Año -->
             <div class="calendar-header">
               <button type="button" class="calendar-nav-btn" (click)="prevMonth()">&#8249;</button>
-              <span class="calendar-title">{{ months[currentMonth] }} {{ currentYear }}</span>
+              
+              <div class="calendar-selects">
+                <select [value]="currentMonth" (change)="onMonthChange($event)">
+                  @for (m of months; track $index) {
+                    <option [value]="$index">{{ m }}</option>
+                  }
+                </select>
+                <select [value]="currentYear" (change)="onYearChange($event)">
+                  @for (y of yearsRange; track y) {
+                    <option [value]="y">{{ y }}</option>
+                  }
+                </select>
+              </div>
+
               <button type="button" class="calendar-nav-btn" (click)="nextMonth()">&#8250;</button>
             </div>
+
             <div class="calendar-weekdays">
-              @for (dayName of weekDays; track dayName) { <span class="calendar-weekday">{{ dayName }}</span> }
-            </div>
-            <div class="calendar-grid">
-              @for (item of calendarDays; track $index) {
-                <button type="button" class="calendar-day" [class.other-month]="!item.isCurrentMonth" [class.selected]="isDaySelected(item.date)" (click)="selectDate(item.date)">{{ item.day }}</button>
+              @for (dayName of weekDays; track dayName) {
+                <span class="calendar-weekday">{{ dayName }}</span>
               }
             </div>
+
+            <div class="calendar-grid">
+              @for (item of calendarDays; track $index) {
+                <button
+                  type="button"
+                  class="calendar-day"
+                  [class.other-month]="!item.isCurrentMonth"
+                  [class.selected]="isDaySelected(item.date)"
+                  (click)="selectDate(item.date)"
+                >
+                  {{ item.day }}
+                </button>
+              }
+            </div>
+          </div>
+        }
+
+        @if (formulario.controls.bithDate.touched && formulario.controls.bithDate.invalid) {
+          <div class="error-feedback">
+            <svg class="error-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="8" x2="12" y2="12"></line>
+              <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+            <span class="error-text">La fecha de nacimiento es obligatoria.</span>
           </div>
         }
       </div>

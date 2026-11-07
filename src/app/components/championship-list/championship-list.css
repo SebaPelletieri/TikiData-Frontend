@@ -1,0 +1,177 @@
+* {
+  box-sizing: border-box;
+}
+
+.championship-list-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color: #ffffff;
+}
+
+.header-title-section h2 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: #ffffff;
+}
+
+/* ================= FILTERS BAR ================= */
+.filters-bar {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.search-box {
+  flex: 2;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-icon {
+  position: absolute;
+  left: 14px;
+  width: 18px;
+  height: 18px;
+  color: #7d96b3;
+}
+
+.search-box input {
+  width: 100%;
+  height: 44px;
+  background-color: #06182e;
+  border: 1px solid #143560;
+  border-radius: 10px;
+  padding: 0 14px 0 42px;
+  color: #ffffff;
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.search-box input::placeholder {
+  color: #637d9d;
+}
+
+.search-box input:focus {
+  border-color: #38bdf8;
+}
+
+.select-filters {
+  flex: 1;
+}
+
+.select-filters select {
+  width: 100%;
+  height: 44px;
+  background-color: #06182e;
+  border: 1px solid #143560;
+  border-radius: 10px;
+  padding: 0 14px;
+  color: #ffffff;
+  font-size: 0.9rem;
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.select-filters select:focus {
+  border-color: #38bdf8;
+}
+
+/* ================= GRID DE TARJETAS ================= */
+.championship-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 1.5rem;
+}
+
+.champ-card {
+  background-color: #06182e;
+  border: 1px solid #143560;
+  border-radius: 16px;
+  padding: 1.8rem 1.2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.champ-card:hover {
+  transform: translateY(-4px);
+  border-color: #38bdf8;
+  box-shadow: 0 12px 30px rgba(56, 189, 248, 0.15);
+}
+
+.champ-logo-wrapper {
+  width: 75px;
+  height: 75px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.2rem;
+}
+
+.champ-logo-wrapper img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.4));
+}
+
+.champ-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.champ-name {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0;
+}
+
+.champ-season {
+  font-size: 0.8rem;
+  color: #7d96b3;
+}
+
+.champ-type-badge {
+  margin-top: 8px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.champ-type-badge.league {
+  background-color: rgba(56, 189, 248, 0.12);
+  color: #38bdf8;
+  border: 1px solid rgba(56, 189, 248, 0.25);
+}
+
+.champ-type-badge.cup {
+  background-color: rgba(245, 158, 11, 0.12);
+  color: #f59e0b;
+  border: 1px solid rgba(245, 158, 11, 0.25);
+}
+
+.empty-state {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 3rem;
+  color: #7d96b3;
+  background-color: #06182e;
+  border: 1px solid #143560;
+  border-radius: 14px;
+}

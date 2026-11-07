@@ -1,1 +1,51 @@
-<p>championship-list works!</p>
+<div class="championship-list-container">
+  
+  <div class="header-title-section">
+    <h2>Campeonatos</h2>
+  </div>
+
+  <!-- Barra de Búsqueda y Filtro por Tipo -->
+  <div class="filters-bar">
+    <div class="search-box">
+      <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+      <input 
+        type="text" 
+        [ngModel]="searchText()" 
+        (ngModelChange)="searchText.set($event)" 
+        placeholder="Buscar campeonatos..." 
+      />
+    </div>
+
+    <div class="select-filters">
+      <select [ngModel]="selectedType()" (ngModelChange)="selectedType.set($event)">
+        <option value="ALL">Tipo (Todos)</option>
+        <option value="League">Liga</option>
+        <option value="Cup">Copa</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Grid de Tarjetas de Campeonatos -->
+  <div class="championship-grid">
+    @for (champ of filteredChampionships(); track champ.id) {
+      <!-- Podés cambiar el enlace a la ruta de detalle si la creas luego, ej: [routerLink]="['/championship', champ.id]" -->
+      <div class="champ-card" [routerLink]="['/championship', champ.id]">
+        <div class="champ-logo-wrapper">
+          <img [src]="champ.logo" [alt]="champ.name" />
+        </div>
+        <div class="champ-info">
+          <h3 class="champ-name">{{ champ.name }}</h3>
+          <span class="champ-season">Temporada {{ champ.season }}</span>
+          <span class="champ-type-badge" [class.league]="champ.type === 'League'" [class.cup]="champ.type === 'Cup'">
+            {{ champ.type === 'League' ? 'Liga' : 'Copa' }}
+          </span>
+        </div>
+      </div>
+    } @empty {
+      <div class="empty-state">
+        <p>No se encontraron campeonatos registrados en el sistema.</p>
+      </div>
+    }
+  </div>
+
+</div>

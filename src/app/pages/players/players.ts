@@ -7,7 +7,7 @@ import { PlayerForm } from '../../components/player-form/player-form';
 
 @Component({
   standalone: true,
-imports: [RouterLink, LowerCasePipe, PlayerForm, PlayerList],  selector: 'app-players',
+imports: [PlayerForm, PlayerList],  selector: 'app-players',
   styleUrl: './players.css',
   templateUrl: './players.html',
 })

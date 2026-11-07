@@ -1,108 +1,89 @@
-import { CommonModule, DatePipe } from '@angular/common';
+import { Component, inject, signal, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { Component, inject, OnInit, signal } from '@angular/core';
-import { RouterModule, ActivatedRoute } from '@angular/router';
+import { forkJoin } from 'rxjs';
 import { TeamService } from '../../services/team-service';
-import { Championship } from '../../models/Championship';
 import { Stadium } from '../../models/stadium';
-import { Match } from '../../models/Match';
-import { Team } from '../../models/Team';
-// Interfaz auxiliar para renderizar la tabla de forma limpia
-interface MatchView {
-  date: Date;
-  homeName: string;
-  homeShield: string;
-  score: string;
-  awayName: string;
-  awayShield: string;
-  tournament: string;
-}
+import { TeamDetailComponent } from '../../components/team-detail/team-detail';
+
 @Component({
+  selector: 'app-team-detail-page',
   standalone: true,
-  imports: [CommonModule, RouterModule, DatePipe],
-  selector: 'app-team-detail',
-  styleUrl: './team-detail.css',
+  imports: [CommonModule, TeamDetailComponent],
   templateUrl: './team-detail.html',
+  styleUrl: './team-detail.css',
 })
-export class TeamDetail implements OnInit{
+export class TeamDetail implements OnInit {
   private route = inject(ActivatedRoute);
   private http = inject(HttpClient);
   public teamService = inject(TeamService);
-  recentMatches = signal<any[]>([]);
-  activeTab = signal('general');
+
   stadiumActual = signal<Stadium | null>(null);
-  activeChampionships = signal<Championship[]>([]);
-  allTeams = signal<Team[]>([]);
-  allChampionships = signal<Championship[]>([]);
+  activeChampionships = signal<any[]>([]);
+  recentMatches = signal<any[]>([]);
+  players = signal<any[]>([]);
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
-    if (id) {
-      const teamId = Number(id);
-      this.teamService.getByID(Number(id));
-      this.http.get<Team[]>('http://localhost:3000/equipos').subscribe(t => this.allTeams.set(t));
-      this.http.get<Championship[]>('http://localhost:3000/campeonatos').subscribe(c => this.allChampionships.set(c));
+    if (!id) return;
 
-      setTimeout(() => {
-        const team = this.teamService.teamActual();
-        if (team) {
-          if (team.stadiumID) this.fetchStadium(team.stadiumID);
-          if (team.championshipsActive && team.championshipsActive.length > 0) {
-            this.fetchChampionships(team.championshipsActive);
-          }
-        this.fetchRecentMatches(teamId);        }
-      }, 500);
-    }
-  }
+    const teamId = Number(id);
+    this.teamService.getByID(teamId);
 
-  fetchStadium(stadiumId: number) {
-    // Asumiendo que tu endpoint en json-server es /estadios o /stadiums
-    this.http.get<Stadium>(`http://localhost:3000/estadios/${stadiumId}`).subscribe({
-      next: (data) => this.stadiumActual.set(data),
-      error: (err) => console.error('Error al cargar estadio', err)
-    });
-  }
+    forkJoin({
+      team: this.http.get<any>(`http://localhost:3000/equipos/${teamId}`),
+      teams: this.http.get<any[]>('http://localhost:3000/equipos'),
+      champs: this.http.get<any[]>('http://localhost:3000/campeonatos'),
+      matches: this.http.get<any[]>('http://localhost:3000/partidos'),
+      allPlayers: this.http.get<any[]>('http://localhost:3000/jugadores'),
+    }).subscribe({
+      next: ({ team, teams, champs, matches, allPlayers }) => {
+        // Estadio
+        if (team.stadiumID) {
+          this.http.get<Stadium>(`http://localhost:3000/estadios/${team.stadiumID}`).subscribe({
+            next: (st) => this.stadiumActual.set(st),
+            error: () => console.warn('Estadio no encontrado'),
+          });
+        }
 
-  fetchChampionships(champIds: number[]) {
-    this.http.get<Championship[]>('http://localhost:3000/campeonatos').subscribe({
-      next: (allChamps) => {
-        const filtered = allChamps.filter(c => c.id && champIds.includes(c.id));
-        this.activeChampionships.set(filtered);
-      },
-      error: (err) => console.error('Error al cargar campeonatos', err)
-    });
-  }
+        // Campeonatos activos
+        if (team.championshipsActive?.length) {
+          this.activeChampionships.set(
+            champs.filter((c) => team.championshipsActive.includes(c.id)),
+          );
+        }
 
-  setTab(tab: string) {
-    this.activeTab.set(tab);
-  }
+        // Partidos recientes
+        const teamMatches = (matches || []).filter(
+          (m) => m.localTeamID === teamId || m.awayTeamID === teamId,
+        );
 
-  fetchRecentMatches(teamId: number) {
-    this.http.get<Match[]>('http://localhost:3000/partidos').subscribe({
-      next: (matches) => {
-        // Filtramos los partidos donde el equipo juega de local o visitante
-        const teamMatches = matches.filter(m => m.localTeamID === teamId || m.awayTeamID === teamId);
-        
-        // Transformamos los IDs en datos visuales cruzando con los diccionarios
-        const viewMatches: MatchView[] = teamMatches.map(m => {
-          const local = this.allTeams().find(t => t.id === m.localTeamID);
-          const away = this.allTeams().find(t => t.id === m.awayTeamID);
-          const champ = this.allChampionships().find(c => c.id === m.championshipID);
+        const mappedMatches = teamMatches.slice(0, 5).map((m) => {
+          const home = teams.find((t) => t.id === m.localTeamID);
+          const away = teams.find((t) => t.id === m.awayTeamID);
+          const tournament = champs.find((c) => c.id === m.championshipID);
 
           return {
             date: m.date,
-            homeName: local?.name || 'Desconocido',
-            homeShield: local?.shield || '',
+            homeName: home?.name || 'Local',
+            homeShield: home?.shield || '',
             score: `${m.localGoals} - ${m.awayGoals}`,
-            awayName: away?.name || 'Desconocido',
+            awayName: away?.name || 'Visitante',
             awayShield: away?.shield || '',
-            tournament: champ?.name || 'Amistoso'
+            tournament: tournament?.name || 'Torneo',
           };
         });
 
-        this.recentMatches.set(viewMatches);
+        this.recentMatches.set(mappedMatches);
+
+        // Jugadores del plantel
+        const teamPlayers = (allPlayers || []).filter(
+          (p) => Number(p.teamID) === teamId || Number(p.equipoId) === teamId,
+        );
+        this.players.set(teamPlayers);
       },
-      error: (err) => console.error('Error al cargar partidos', err)
+      error: (err) => console.error('Error cargando detalles:', err),
     });
   }
 }

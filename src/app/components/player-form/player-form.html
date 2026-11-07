@@ -23,9 +23,19 @@
 
   <form [formGroup]="formulario" (ngSubmit)="savePlayer()">
     <!-- Nombre -->
+    <!-- Nombre -->
     <div class="form-group">
       <label for="name">Nombre completo <span class="required">*</span></label>
-      <input id="name" type="text" formControlName="name" placeholder="Ej. Lionel Messi" />
+      <input
+        id="name"
+        type="text"
+        formControlName="name"
+        (input)="onNameInput($event)"
+        placeholder="Ej. Lionel Messi"
+        [class.ng-invalid]="
+          formulario.controls['name'].touched && formulario.controls['name'].invalid
+        "
+      />
 
       @if (formulario.controls['name'].touched && formulario.controls['name'].invalid) {
         <div class="error-feedback">
@@ -40,7 +50,9 @@
             <line x1="12" y1="8" x2="12" y2="12"></line>
             <line x1="12" y1="16" x2="12.01" y2="16"></line>
           </svg>
-          <span class="error-text">El nombre es obligatorio (mínimo 3 caracteres).</span>
+          <span class="error-text"
+            >El nombre es obligatorio (mínimo 3 caracteres sin números).</span
+          >
         </div>
       }
     </div>
@@ -401,6 +413,7 @@
           inputmode="numeric"
           placeholder="0"
           formControlName="matchesPlayed"
+          (input)="onNumericInput('matchesPlayed', $event)"
           [class.ng-invalid]="
             formulario.controls['matchesPlayed'].touched &&
             formulario.controls['matchesPlayed'].invalid
@@ -435,6 +448,7 @@
           inputmode="numeric"
           placeholder="0"
           formControlName="goals"
+          (input)="onNumericInput('goals', $event)"
           [class.ng-invalid]="
             formulario.controls['goals'].touched && formulario.controls['goals'].invalid
           "
@@ -468,6 +482,7 @@
           inputmode="numeric"
           placeholder="0"
           formControlName="assists"
+          (input)="onNumericInput('assists', $event)"
           [class.ng-invalid]="
             formulario.controls['assists'].touched && formulario.controls['assists'].invalid
           "
@@ -498,6 +513,7 @@
           inputmode="numeric"
           placeholder="0"
           formControlName="yellowCards"
+          (input)="onNumericInput('yellowCards', $event)"
           [class.ng-invalid]="
             formulario.controls['yellowCards'].touched && formulario.controls['yellowCards'].invalid
           "

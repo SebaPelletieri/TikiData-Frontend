@@ -11,6 +11,7 @@ import { ChampionshipDetail } from './pages/championship-detail/championship-det
 import { Championships } from './pages/championships/championships';
 import { MatchDetail } from './pages/match-detail/match-detail';
 import { authGuard } from './guards/auth-guard';
+import { TeamList } from './components/team-list/team-list';
 
 export const routes: Routes = [
   { path: '', component: Home },
@@ -22,7 +23,7 @@ export const routes: Routes = [
     component: Profile,
     canActivate: [authGuard],
   },
-  { path: 'teams', component: Teams },
+  { path: 'teams', component: TeamList },
   { path: 'team/:id', component: TeamDetail },
   { path: 'players', component: Players },
   { path: 'player/:id', component: PlayerDetail },

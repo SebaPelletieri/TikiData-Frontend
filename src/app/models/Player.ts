@@ -14,4 +14,5 @@ export interface Player {
   assists: number;
   yellowCards: number;
   redCards: number;
+  dorsals?: Record<number, number>;
 }

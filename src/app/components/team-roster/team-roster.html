@@ -1,0 +1,369 @@
+<div class="roster-wrapper">
+  <!-- Barra superior -->
+  <div class="roster-top-bar">
+    <div class="title-meta">
+      <h2>Plantel Oficial</h2>
+      <span class="total-badge">{{ players().length }} futbolistas</span>
+    </div>
+    <button type="button" class="btn-add-player" (click)="openModal()">+ Fichar Jugador</button>
+  </div>
+
+  <!-- Modal: Buscador de Jugador Libre + Dorsal -->
+  @if (isModalOpen()) {
+    <div class="modal-overlay" (click)="closeModal()">
+      <div class="modal-card" (click)="$event.stopPropagation()">
+        <!-- Cabecera -->
+        <div class="form-header">
+          <div class="header-icon">
+            <svg
+              width="22"
+              height="22"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </div>
+          <div>
+            <h2>Incorporar Jugador</h2>
+            <p>Busca un jugador libre en el mercado para sumarlo al plantel.</p>
+          </div>
+          <button type="button" class="close-btn" (click)="closeModal()">✕</button>
+        </div>
+
+        <div class="modal-body">
+          <!-- Input de Búsqueda con dropdown de resultados -->
+          <div class="form-group search-field-group">
+            <label>Buscar jugador libre <span class="required">*</span></label>
+            <div class="search-input-wrapper">
+              <svg
+                class="search-lens-icon"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+              <input
+                type="text"
+                [(ngModel)]="searchQuery"
+                placeholder="Escribe el nombre del jugador..."
+                [disabled]="!!selectedPlayer()"
+              />
+              @if (selectedPlayer()) {
+                <button type="button" class="btn-clear-search" (click)="clearSelection()">
+                  Cambiar
+                </button>
+              }
+            </div>
+
+            <!-- Lista desplegable de coincidencias -->
+            @if (!selectedPlayer() && searchQuery().trim()) {
+              <div class="search-results-list">
+                @for (p of searchResults(); track p.id) {
+                  <div class="search-result-item" (click)="selectPlayer(p)">
+                    <img
+                      [src]="p.photo || 'https://via.placeholder.com/80'"
+                      class="result-thumb"
+                      alt=""
+                    />
+                    <div class="result-info">
+                      <span class="result-name">{{ p.name }}</span>
+                      <span class="result-meta"
+                        >{{ p.position }} • {{ p.nacionality || 'Argentina' }} •
+                        {{ p.age }} años</span
+                      >
+                    </div>
+                    <span class="free-badge">Libre</span>
+                  </div>
+                } @empty {
+                  <div class="no-results-msg">
+                    No se encontraron jugadores libres con "{{ searchQuery() }}"
+                  </div>
+                }
+              </div>
+            }
+          </div>
+
+          <!-- Vista previa cuando hay un jugador seleccionado -->
+          @if (selectedPlayer(); as sp) {
+            <div class="selected-player-preview">
+              <img
+                [src]="sp.photo || 'https://via.placeholder.com/80'"
+                class="preview-avatar"
+                alt=""
+              />
+              <div class="preview-details">
+                <span class="preview-name">{{ sp.name }}</span>
+                <div class="preview-submeta">
+                  <span class="badge-pos">{{ sp.position }}</span>
+                  <span>{{ sp.nacionality }}</span>
+                  <span>•</span>
+                  <span>Pie {{ sp.preferredFoot || 'Derecho' }}</span>
+                </div>
+              </div>
+            </div>
+          }
+
+          <!-- Campo de Dorsal para este equipo -->
+          <div class="form-group dorsal-assign-group">
+            <label for="dorsal"
+              >Número de Dorsal en el equipo <span class="required">*</span></label
+            >
+            <input
+              id="dorsal"
+              type="text"
+              inputmode="numeric"
+              maxlength="2"
+              [value]="dorsalInput()"
+              (input)="onDorsalInput($event)"
+              (blur)="onDorsalBlur()"
+              placeholder="Ej. 10"
+              [class.input-error]="dorsalTouched() && dorsalError()"
+            />
+
+            @if (dorsalTouched() && dorsalError(); as err) {
+              <div class="error-feedback">
+                <svg
+                  class="error-icon"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="12" y1="8" x2="12" y2="12"></line>
+                  <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                </svg>
+                <span class="error-text">{{ err }}</span>
+              </div>
+            } @else {
+              <span class="field-hint">Asigna el número que llevará en la camiseta (1 al 99).</span>
+            }
+          </div>
+        </div>
+
+        <!-- Botones de Acción -->
+        <div class="form-actions">
+          <button type="button" class="btn-cancel" (click)="closeModal()">Cancelar</button>
+          <button
+            type="button"
+            class="btn-save"
+            [disabled]="!selectedPlayer() || !!dorsalError()"
+            (click)="assignPlayerToTeam()"
+          >
+            Fichar al Equipo
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- Contenedor del Roster (Grilla por Posición) -->
+  <div class="roster-container">
+    @if (players().length === 0) {
+      <div class="empty-roster">
+        <p>No hay jugadores registrados en el plantel de este equipo.</p>
+      </div>
+    } @else {
+      <!-- ARQUEROS -->
+      @if (goalkeepers().length > 0) {
+        <div class="position-section">
+          <div class="section-badge">
+            <h3>Arqueros</h3>
+            <span class="count-badge">{{ goalkeepers().length }}</span>
+          </div>
+          <div class="players-grid">
+            @for (player of goalkeepers(); track player.id) {
+              <div class="player-card">
+                <div class="player-avatar-wrapper">
+                  <span class="dorsal-tag">#{{ getDorsal(player) }}</span>
+                  <img
+                    [src]="player.photo || 'https://via.placeholder.com/120'"
+                    [alt]="player.name"
+                    class="player-avatar"
+                  />
+                  <span class="position-tag">ARQ</span>
+                </div>
+                <div class="player-details">
+                  <h4 class="player-name">{{ player.name }}</h4>
+                  <div class="player-submeta">
+                    <span class="player-nat">{{ player.nacionality || 'Argentina' }}</span>
+                    <span class="dot">•</span>
+                    <span class="player-age">{{ player.age }} años</span>
+                  </div>
+                </div>
+                <div class="player-stats-bar">
+                  <div class="stat-col">
+                    <span class="stat-num">{{ player.matchesPlayed || 0 }}</span
+                    ><span class="stat-lbl">Partidos</span>
+                  </div>
+                  <div class="stat-col">
+                    <span class="stat-num">{{ player.goals || 0 }}</span
+                    ><span class="stat-lbl">Goles</span>
+                  </div>
+                  <div class="stat-col">
+                    <span class="stat-num">{{ player.assists || 0 }}</span
+                    ><span class="stat-lbl">Asist.</span>
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      }
+
+      <!-- DEFENSORES -->
+      @if (defenders().length > 0) {
+        <div class="position-section">
+          <div class="section-badge">
+            <h3>Defensores</h3>
+            <span class="count-badge">{{ defenders().length }}</span>
+          </div>
+          <div class="players-grid">
+            @for (player of defenders(); track player.id) {
+              <div class="player-card">
+                <div class="player-avatar-wrapper">
+                  <span class="dorsal-tag">#{{ getDorsal(player) }}</span>
+                  <img
+                    [src]="player.photo || 'https://via.placeholder.com/120'"
+                    [alt]="player.name"
+                    class="player-avatar"
+                  />
+                  <span class="position-tag">DEF</span>
+                </div>
+                <div class="player-details">
+                  <h4 class="player-name">{{ player.name }}</h4>
+                  <div class="player-submeta">
+                    <span class="player-nat">{{ player.nacionality || 'Argentina' }}</span>
+                    <span class="dot">•</span>
+                    <span class="player-age">{{ player.age }} años</span>
+                  </div>
+                </div>
+                <div class="player-stats-bar">
+                  <div class="stat-col">
+                    <span class="stat-num">{{ player.matchesPlayed || 0 }}</span
+                    ><span class="stat-lbl">Partidos</span>
+                  </div>
+                  <div class="stat-col">
+                    <span class="stat-num">{{ player.goals || 0 }}</span
+                    ><span class="stat-lbl">Goles</span>
+                  </div>
+                  <div class="stat-col">
+                    <span class="stat-num">{{ player.assists || 0 }}</span
+                    ><span class="stat-lbl">Asist.</span>
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      }
+
+      <!-- MEDIOCAMPISTAS -->
+      @if (midfielders().length > 0) {
+        <div class="position-section">
+          <div class="section-badge">
+            <h3>Mediocampistas</h3>
+            <span class="count-badge">{{ midfielders().length }}</span>
+          </div>
+          <div class="players-grid">
+            @for (player of midfielders(); track player.id) {
+              <div class="player-card">
+                <div class="player-avatar-wrapper">
+                  <span class="dorsal-tag">#{{ getDorsal(player) }}</span>
+                  <img
+                    [src]="player.photo || 'https://via.placeholder.com/120'"
+                    [alt]="player.name"
+                    class="player-avatar"
+                  />
+                  <span class="position-tag">MED</span>
+                </div>
+                <div class="player-details">
+                  <h4 class="player-name">{{ player.name }}</h4>
+                  <div class="player-submeta">
+                    <span class="player-nat">{{ player.nacionality || 'Argentina' }}</span>
+                    <span class="dot">•</span>
+                    <span class="player-age">{{ player.age }} años</span>
+                  </div>
+                </div>
+                <div class="player-stats-bar">
+                  <div class="stat-col">
+                    <span class="stat-num">{{ player.matchesPlayed || 0 }}</span
+                    ><span class="stat-lbl">Partidos</span>
+                  </div>
+                  <div class="stat-col">
+                    <span class="stat-num">{{ player.goals || 0 }}</span
+                    ><span class="stat-lbl">Goles</span>
+                  </div>
+                  <div class="stat-col">
+                    <span class="stat-num">{{ player.assists || 0 }}</span
+                    ><span class="stat-lbl">Asist.</span>
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      }
+
+      <!-- DELANTEROS -->
+      @if (forwards().length > 0) {
+        <div class="position-section">
+          <div class="section-badge">
+            <h3>Delanteros</h3>
+            <span class="count-badge">{{ forwards().length }}</span>
+          </div>
+          <div class="players-grid">
+            @for (player of forwards(); track player.id) {
+              <div class="player-card">
+                <div class="player-avatar-wrapper">
+                  <span class="dorsal-tag">#{{ getDorsal(player) }}</span>
+                  <img
+                    [src]="player.photo || 'https://via.placeholder.com/120'"
+                    [alt]="player.name"
+                    class="player-avatar"
+                  />
+                  <span class="position-tag">DEL</span>
+                </div>
+                <div class="player-details">
+                  <h4 class="player-name">{{ player.name }}</h4>
+                  <div class="player-submeta">
+                    <span class="player-nat">{{ player.nacionality || 'Argentina' }}</span>
+                    <span class="dot">•</span>
+                    <span class="player-age">{{ player.age }} años</span>
+                  </div>
+                </div>
+                <div class="player-stats-bar">
+                  <div class="stat-col">
+                    <span class="stat-num">{{ player.matchesPlayed || 0 }}</span
+                    ><span class="stat-lbl">Partidos</span>
+                  </div>
+                  <div class="stat-col">
+                    <span class="stat-num">{{ player.goals || 0 }}</span
+                    ><span class="stat-lbl">Goles</span>
+                  </div>
+                  <div class="stat-col">
+                    <span class="stat-num">{{ player.assists || 0 }}</span
+                    ><span class="stat-lbl">Asist.</span>
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      }
+    }
+  </div>
+</div>

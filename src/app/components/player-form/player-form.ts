@@ -291,4 +291,19 @@ export class PlayerForm implements OnInit {
     const newPlayer: Player = this.formulario.getRawValue();
     console.log('Jugador a guardar:', newPlayer);
   }
+
+  onNumericInput(controlName: string, event: Event): void {
+    const inputEl = event.target as HTMLInputElement;
+    const onlyDigits = inputEl.value.replace(/\D/g, '');
+    inputEl.value = onlyDigits;
+    this.formulario.get(controlName)?.setValue(onlyDigits);
+  }
+
+  onNameInput(event: Event): void {
+    const inputEl = event.target as HTMLInputElement;
+    // Elimina cualquier número (0-9) permitiendo letras, espacios, acentos y caracteres como ' o -
+    const onlyLetters = inputEl.value.replace(/[0-9]/g, '');
+    inputEl.value = onlyLetters;
+    this.formulario.get('name')?.setValue(onlyLetters);
+  }
 }

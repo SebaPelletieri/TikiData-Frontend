@@ -1,1 +1,148 @@
-<p>team-detail works!</p>
+<div class="team-detail-container">
+
+  @if (teamService.error()) {
+    <div class="error-msg">{{ teamService.error() }}</div>
+  }
+
+  @if (teamService.teamActual(); as team) {
+    
+    <!-- ================= HEADER CON BANNER ================= -->
+    <div class="team-banner" 
+         [style.backgroundImage]="'linear-gradient(to top, #041326 0%, rgba(4, 19, 38, 0.4) 100%), url(' + (stadiumActual()?.imageUrl || '') + ')'">
+      
+      <div class="banner-content">
+        <div class="team-shield-wrapper">
+          <img [src]="team.shield" [alt]="team.name" class="team-shield">
+        </div>
+        
+        <div class="team-banner-info">
+          <h1 class="team-title">{{ team.name }}</h1>
+          <div class="team-meta">
+            <span class="meta-item">
+              <img src="https://flagcdn.com/w20/ar.png" alt="Bandera" class="flag-icon">
+              {{ team.country }}
+            </span>
+            <span class="dot-separator">•</span>
+            <span class="meta-item">Fundado en {{ team.yearOfFoundation | date:'yyyy' }}</span>
+          </div>
+          <button class="btn-follow">Seguir</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= NAVEGACIÓN TABS ================= -->
+    <div class="tabs-nav">
+      <button class="tab-btn" [class.active]="activeTab() === 'general'" (click)="setTab('general')">Vista general</button>
+      <button class="tab-btn" [class.active]="activeTab() === 'squad'" (click)="setTab('squad')">Plantel</button>
+      <button class="tab-btn" [class.active]="activeTab() === 'matches'" (click)="setTab('matches')">Partidos</button>
+      <button class="tab-btn" [class.active]="activeTab() === 'champs'" (click)="setTab('champs')">Campeonatos</button>
+    </div>
+
+    <!-- ================= VISTA GENERAL ================= -->
+    <div class="tab-content">
+      @if (activeTab() === 'general') {
+        
+        <!-- GRID INFO & ESTADIO -->
+        <div class="overview-grid">
+          <!-- Tarjeta de Información -->
+          <div class="card info-card">
+            <h3>Información</h3>
+            <ul class="info-list">
+              <li>
+                <span class="label">País</span>
+                <span class="value with-icon">
+                  <img src="https://flagcdn.com/w20/ar.png" alt="Bandera"> {{ team.country }}
+                </span>
+              </li>
+              <li>
+                <span class="label">Fundación</span>
+                <span class="value">{{ team.yearOfFoundation | date:'dd \'de\' MMMM \'de\' yyyy' }}</span>
+              </li>
+              <li>
+                <span class="label">Estadio</span>
+                <span class="value">{{ stadiumActual()?.name || 'Cargando...' }}</span>
+              </li>
+              <li>
+                <span class="label">Capacidad</span>
+                <span class="value">{{ stadiumActual()?.capacity | number:'1.0-0' }}</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Tarjeta del Estadio -->
+          <div class="card stadium-card">
+            <h3>Estadio {{ stadiumActual()?.name }}</h3>
+            <div class="stadium-image-wrapper">
+              @if (stadiumActual(); as stadium) {
+                <img [src]="stadium.imageUrl" [alt]="stadium.name" class="stadium-img">
+              } @else {
+                <div class="stadium-placeholder">Cargando imagen...</div>
+              }
+            </div>
+          </div>
+        </div>
+
+        <!-- CAMPEONATOS ACTIVOS -->
+        <div class="card active-champs-card">
+          <h3>Campeonatos activos</h3>
+          <div class="champs-row">
+            @for (champ of activeChampionships(); track champ.id) {
+              <div class="mini-champ-card" [routerLink]="['/championship', champ.id]">
+                <img [src]="champ.logo" [alt]="champ.name" class="mini-champ-logo">
+                <div class="mini-champ-info">
+                  <span class="champ-name">{{ champ.name }}</span>
+                  <span class="champ-type">{{ champ.type === 'League' ? 'Liga' : 'Copa' }}</span>
+                </div>
+              </div>
+            } @empty {
+              <span class="empty-text" style="color: #7d96b3;">No participa en competiciones actualmente.</span>
+            }
+          </div>
+        </div>
+
+        <!-- ÚLTIMOS PARTIDOS (Dinámico) -->
+        <div class="card recent-matches-card">
+          <div class="card-header">
+            <h3>Últimos partidos</h3>
+            <a href="#" class="view-all-link">Ver todos ➔</a>
+          </div>
+          
+          <table class="matches-table">
+            <tbody>
+              @for (match of recentMatches(); track $index) {
+                <tr class="match-row">
+                  <td class="match-date">{{ match.date | date:'dd MMM' | lowercase }}</td>
+                  
+                  <td class="team-right">
+                    {{ match.homeName }} 
+                    <img [src]="match.homeShield" class="match-mini-shield" alt="">
+                  </td>
+                  
+                  <td class="match-score">{{ match.score }}</td>
+                  
+                  <td class="team-left">
+                    <img [src]="match.awayShield" class="match-mini-shield" alt=""> 
+                    {{ match.awayName }}
+                  </td>
+                  
+                  <td class="match-tournament">{{ match.tournament }}</td>
+                </tr>
+              } @empty {
+                <tr>
+                  <td colspan="5" style="text-align: center; color: #7d96b3; padding: 2rem;">No hay partidos registrados.</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+
+      }
+    </div>
+
+  } @else if (!teamService.error()) {
+    <div class="loading-state">
+      <div class="spinner"></div>
+      <p>Cargando información del equipo...</p>
+    </div>
+  }
+</div>

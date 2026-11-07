@@ -1,5 +1,4 @@
 <div class="player-list-container">
-  
   <div class="header-title-section">
     <h2>Jugadores</h2>
   </div>
@@ -7,30 +6,151 @@
   <!-- Barra de Filtros y Búsqueda -->
   <div class="filters-bar">
     <div class="search-box">
-      <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-      <input 
-        type="text" 
-        [ngModel]="searchText()" 
-        (ngModelChange)="searchText.set($event)" 
-        placeholder="Buscar jugadores..." 
+      <svg
+        class="search-icon"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <circle cx="11" cy="11" r="8"></circle>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+      </svg>
+      <input
+        type="text"
+        [ngModel]="searchText()"
+        (ngModelChange)="searchText.set($event)"
+        placeholder="Buscar jugadores..."
       />
     </div>
 
     <div class="select-filters">
-      <select [ngModel]="selectedPosition()" (ngModelChange)="selectedPosition.set($event)">
-        <option value="ALL">Posición (Todas)</option>
-        <option value="ARQ">Arquero</option>
-        <option value="DEF">Defensor</option>
-        <option value="MED">Mediocampista</option>
-        <option value="DEL">Delantero</option>
-      </select>
+      <!-- Dropdown Personalizado: Posición -->
+      <div class="custom-dropdown" [class.open]="isPositionDropdownOpen()">
+        <button type="button" class="dropdown-trigger" (click)="togglePositionDropdown()">
+          <span [class.placeholder]="selectedPosition() === 'ALL'">
+            {{ selectedPositionLabel }}
+          </span>
+          <span class="triangle-icon"></span>
+        </button>
 
-      <select [ngModel]="selectedTeam()" (ngModelChange)="selectedTeam.set($event)">
-        <option value="ALL">Equipo (Todos)</option>
-        @for (team of teams(); track team.id) {
-          <option [value]="team.id">{{ team.name }}</option>
+        @if (isPositionDropdownOpen()) {
+          <ul class="dropdown-menu">
+            @for (pos of positions; track pos.value) {
+              <li
+                class="dropdown-item"
+                [class.active]="selectedPosition() === pos.value"
+                (click)="selectPosition(pos.value)"
+              >
+                <div class="item-content">
+                  <span>{{ pos.label }}</span>
+                </div>
+                @if (selectedPosition() === pos.value) {
+                  <svg
+                    class="check-icon"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                }
+              </li>
+            }
+          </ul>
         }
-      </select>
+      </div>
+
+      <!-- Dropdown Personalizado: Equipos y Agentes Libres -->
+      <div class="custom-dropdown" [class.open]="isTeamDropdownOpen()">
+        <button type="button" class="dropdown-trigger" (click)="toggleTeamDropdown()">
+          <span [class.placeholder]="selectedTeam() === 'ALL'">
+            {{ selectedTeamLabel }}
+          </span>
+          <span class="triangle-icon"></span>
+        </button>
+
+        @if (isTeamDropdownOpen()) {
+          <ul class="dropdown-menu">
+            <!-- Opción: Todos los equipos -->
+            <li
+              class="dropdown-item"
+              [class.active]="selectedTeam() === 'ALL'"
+              (click)="selectTeam('ALL')"
+            >
+              <div class="item-content">
+                <span>Todos los equipos</span>
+              </div>
+              @if (selectedTeam() === 'ALL') {
+                <svg
+                  class="check-icon"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+              }
+            </li>
+
+            <!-- Opción: Agentes Libres -->
+            <li
+              class="dropdown-item"
+              [class.active]="selectedTeam() === 'FREE_AGENT'"
+              (click)="selectTeam('FREE_AGENT')"
+            >
+              <div class="item-content">
+                <span>Agentes libres</span>
+              </div>
+              @if (selectedTeam() === 'FREE_AGENT') {
+                <svg
+                  class="check-icon"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+              }
+            </li>
+
+            <!-- Lista dinámica de equipos de la base de datos -->
+            @for (team of teams(); track team.id) {
+              <li
+                class="dropdown-item"
+                [class.active]="selectedTeam() === team.id"
+                (click)="selectTeam(team.id!)"
+              >
+                <div class="item-content">
+                  <span>{{ team.name }}</span>
+                </div>
+                @if (selectedTeam() === team.id) {
+                  <svg
+                    class="check-icon"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                }
+              </li>
+            }
+          </ul>
+        }
+      </div>
     </div>
   </div>
 
@@ -48,7 +168,6 @@
         </tr>
       </thead>
       <tbody>
-        <!-- Iteración de la señal filtrada para que funcione el buscador y los selects -->
         @for (player of filteredPlayers(); track player.id) {
           <tr [routerLink]="['/player', player.id]" class="player-row">
             <td class="col-photo">
@@ -63,10 +182,10 @@
               <span class="position-text">{{ player.position }}</span>
             </td>
             <td class="team-cell">
-              {{ getTeamName(player.currentTeamID) }}
+              {{ getTeamName(player) }}
             </td>
             <td>
-              <span class="age-text">{{ player.age }}</span>
+              <span class="age-text">{{ player.age || '-' }}</span>
             </td>
             <td class="col-action">
               <span class="arrow-icon">›</span>
@@ -82,5 +201,4 @@
       </tbody>
     </table>
   </div>
-
 </div>

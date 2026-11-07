@@ -1,3 +1,21 @@
+:host {
+  /* ================= VARIABLES DEL TEMA TIKIDATA ================= */
+  --bg-navbar: #041326;
+  --bg-search: #06182e;
+  --bg-active-tab: rgba(255, 107, 0, 0.08);
+  --border-color: #143560;
+  --text-primary: #ffffff;
+  --text-secondary: #7d96b3;
+  --brand-orange: #ff6b00;
+  --brand-blue: #38bdf8;
+  display: block;
+  width: 100%;
+}
+
+* {
+  box-sizing: border-box;
+}
+
 .navbar {
   display: flex;
   justify-content: space-between;
@@ -6,10 +24,7 @@
   padding: 0 1.5rem;
   height: 70px;
   color: var(--text-primary);
-  font-family:
-    system-ui,
-    -apple-system,
-    sans-serif;
+  font-family: inherit; /* 👈 Hereda la fuente global (Plus Jakarta Sans / Outfit) */
   border-bottom: 1px solid var(--border-color);
   box-sizing: border-box;
   width: 100%;
@@ -24,7 +39,7 @@
   align-items: center;
   height: 100%;
   flex-shrink: 0;
-  margin-right: 4.5rem; /* Margen amplio para que scale(1.5) no toque a Inicio */
+  margin-right: 4.5rem;
 }
 
 .navbar__logo {
@@ -65,6 +80,7 @@
 }
 
 .navbar__link {
+  font-family: inherit;
   color: var(--text-secondary);
   text-decoration: none;
   font-size: 0.92rem;
@@ -74,7 +90,7 @@
   gap: 8px;
   padding: 0.45rem 0.65rem;
   border-radius: 6px;
-  white-space: nowrap; /* Evita que "En Vivo" se divida en dos filas */
+  white-space: nowrap;
   transition:
     color 0.2s ease,
     background-color 0.2s ease;
@@ -92,7 +108,7 @@
 
 .navbar__item--active .navbar__link {
   color: #ffffff;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .navbar__item--active .navbar__icon {
@@ -123,11 +139,14 @@
   border-radius: 20px;
   padding: 0.4rem 1.1rem;
   gap: 8px;
-  transition: border-color 0.2s;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
 }
 
 .navbar__search:focus-within {
   border-color: var(--brand-blue);
+  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
 }
 
 .navbar__search-icon {
@@ -136,17 +155,19 @@
 }
 
 .navbar__search-input {
+  font-family: inherit;
   background: transparent;
   border: none;
   color: var(--text-primary);
   outline: none;
   font-size: 0.85rem;
-  width: 400px; /* 👈 Input más largo en PC (antes 240px) */
+  width: 400px;
   transition: width 0.2s ease;
 }
 
 .navbar__search-input::placeholder {
   color: var(--text-secondary);
+  font-family: inherit;
 }
 
 .navbar__theme {
@@ -215,6 +236,7 @@
 .navbar__profile:hover {
   background-color: var(--bg-search);
   color: var(--text-primary);
+  border-color: var(--brand-blue);
 }
 
 /* ==========================================================================
@@ -245,7 +267,7 @@
   }
 
   .navbar__search-input {
-    width: 220px; /* 👈 Input más largo en notebooks (antes 150px) */
+    width: 220px;
   }
 
   .navbar__search {

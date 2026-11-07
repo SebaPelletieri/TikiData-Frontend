@@ -24,32 +24,88 @@
       />
     </div>
 
+    <!-- Dropdown Personalizado de País -->
     <div class="select-filters">
-      <select [ngModel]="selectedCountry()" (ngModelChange)="selectedCountry.set($event)">
-        <option value="ALL">País (Todos)</option>
-        <option value="Argentina">Argentina</option>
-        <option value="España">España</option>
-        <option value="Inglaterra">Inglaterra</option>
-        <option value="Alemania">Alemania</option>
-        <option value="Italia">Italia</option>
-        <option value="Brasil">Brasil</option>
-      </select>
+      <div class="custom-dropdown" [class.open]="isCountryDropdownOpen()">
+        <button type="button" class="dropdown-trigger" (click)="toggleCountryDropdown()">
+          <span [class.placeholder]="selectedCountry() === 'ALL'">
+            {{ selectedCountry() === 'ALL' ? 'Todos los paises' : selectedCountry() }}
+          </span>
+          <span class="triangle-icon"></span>
+        </button>
+
+        @if (isCountryDropdownOpen()) {
+          <ul class="dropdown-menu">
+            <!-- Opción: Todos los países -->
+            <li
+              class="dropdown-item"
+              [class.active]="selectedCountry() === 'ALL'"
+              (click)="selectCountry('ALL')"
+            >
+              <div class="item-content">
+                <span>Todos los paises</span>
+              </div>
+              @if (selectedCountry() === 'ALL') {
+                <svg
+                  class="check-icon"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+              }
+            </li>
+
+            <!-- Lista dinámica de países -->
+            @for (country of countries; track country) {
+              <li
+                class="dropdown-item"
+                [class.active]="selectedCountry() === country"
+                (click)="selectCountry(country)"
+              >
+                <div class="item-content">
+                  <span>{{ country }}</span>
+                </div>
+                @if (selectedCountry() === country) {
+                  <svg
+                    class="check-icon"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                }
+              </li>
+            }
+          </ul>
+        }
+      </div>
     </div>
   </div>
 
+  <!-- Rejilla de Equipos -->
   <div class="team-grid">
     @for (team of filteredTeams(); track team.id) {
       <div class="team-card" [routerLink]="['/team', team.id]">
         <div class="team-logo-wrapper">
           <img
-            [src]="team.shield"
+            [src]="team.shield || 'https://via.placeholder.com/80?text=Club'"
+            (error)="$any($event.target).src = 'https://via.placeholder.com/80?text=Club'"
             [alt]="team.name"
             class="team-logo"
             referrerpolicy="no-referrer"
           />
         </div>
         <div class="team-info">
-          <h3 class="team-name">{{ team.name }}</h3>
+          <h3 class="team-name" [title]="team.name">{{ team.name }}</h3>
           <span class="team-country">{{ team.country }}</span>
         </div>
       </div>

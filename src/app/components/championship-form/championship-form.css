@@ -3,9 +3,10 @@
 }
 
 .team-form-container {
-  max-width: 500px;
+  max-width: 640px;
+  width: 95%;
   margin: 2rem auto;
-  padding: 2.2rem;
+  padding: 2.4rem;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   background-color: #041326;
   border: 1px solid #0a264a;
@@ -103,7 +104,7 @@
 }
 
 /* =========================================
-   Desplegables (Formato y Equipos)
+   Desplegables (Formato)
    ========================================= */
 .custom-dropdown {
   position: relative;
@@ -244,10 +245,275 @@
   width: 16px;
   height: 16px;
   stroke: #38bdf8;
+  flex-shrink: 0;
 }
 
 /* =========================================
-   Zona de Foto / Logo (Drag & Drop con Animación)
+   Búsqueda Predictiva de Equipos Participantes
+   ========================================= */
+.team-multisearch-group {
+  position: relative;
+  width: 100%;
+}
+
+/* Cabecera con contador de selección */
+.label-with-counter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.label-with-counter label {
+  margin-bottom: 0 !important;
+}
+
+.selection-counter {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #64748b;
+  background-color: rgba(100, 116, 139, 0.12);
+  border: 1px solid rgba(100, 116, 139, 0.25);
+  padding: 2px 8px;
+  border-radius: 12px;
+  transition: all 0.2s ease;
+}
+
+.selection-counter.has-selection {
+  color: #38bdf8;
+  background-color: rgba(56, 189, 248, 0.12);
+  border-color: rgba(56, 189, 248, 0.3);
+  box-shadow: 0 0 8px rgba(56, 189, 248, 0.15);
+}
+
+.search-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.search-lens-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px !important;
+  height: 16px !important;
+  color: #7d96b3;
+  pointer-events: none;
+  z-index: 2;
+  flex-shrink: 0;
+}
+
+.search-input-wrapper input {
+  width: 100%;
+  height: 44px;
+  padding: 0 14px 0 40px !important;
+  background: linear-gradient(180deg, #071a33 0%, #051428 100%);
+  color: #ffffff;
+  border: 1px solid #1e497e;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  outline: none;
+  transition: all 0.25s ease;
+}
+
+.search-input-wrapper input:hover {
+  border-color: #38bdf8;
+  background: linear-gradient(180deg, #092244 0%, #071932 100%);
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.15);
+}
+
+.search-input-wrapper input:focus {
+  border-color: #38bdf8;
+  background: linear-gradient(180deg, #092244 0%, #071932 100%);
+  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
+}
+
+/* Lista desplegable flotante de equipos encontrados */
+.search-results-list {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  width: 100%;
+  max-height: 220px;
+  overflow-y: auto;
+  background-color: #06182e;
+  border: 1px solid #143d73;
+  border-radius: 12px;
+  padding: 6px;
+  margin: 0;
+  list-style: none;
+  z-index: 1000;
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
+}
+
+.search-results-list::-webkit-scrollbar {
+  width: 5px;
+}
+.search-results-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+.search-results-list::-webkit-scrollbar-thumb {
+  background: #143560;
+  border-radius: 4px;
+}
+
+/* El ítem contenedor es totalmente estático (sin animación ni hover) */
+.search-result-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  cursor: default;
+  background: transparent;
+  transition: none;
+}
+
+.result-thumb {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  border-radius: 50%;
+  background-color: #030d1a;
+  border: 1px solid #143560;
+  padding: 2px;
+  flex-shrink: 0;
+}
+
+.result-info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.result-name {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.result-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.76rem;
+  color: #7d96b3;
+  margin-top: 2px;
+}
+
+.result-meta .flag-icon {
+  width: 16px;
+  height: 11px;
+  object-fit: cover;
+  border-radius: 2px;
+  display: inline-block;
+}
+
+/* Único elemento interactivo con animación y hover */
+.add-badge {
+  background-color: rgba(56, 189, 248, 0.12);
+  color: #38bdf8;
+  font-size: 0.74rem;
+  font-weight: 700;
+  padding: 5px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  cursor: pointer;
+  outline: none;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.add-badge:hover {
+  background-color: #38bdf8;
+  color: #041326;
+  border-color: #38bdf8;
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.45);
+  transform: translateY(-1px) scale(1.04);
+}
+
+.add-badge:active {
+  transform: translateY(0) scale(0.96);
+  box-shadow: none;
+}
+
+.no-results-msg {
+  padding: 12px;
+  text-align: center;
+  font-size: 0.85rem;
+  color: #7d96b3;
+}
+
+/* =========================================
+   Chips de Equipos Seleccionados
+   ========================================= */
+.selected-teams-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.team-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #081d38;
+  border: 1px solid #1e497e;
+  border-radius: 20px;
+  padding: 4px 10px 4px 6px;
+  animation: chipIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes chipIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.chip-shield {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+
+.chip-name {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #e2e8f0;
+}
+
+.btn-remove-chip {
+  background: transparent;
+  border: none;
+  color: #7d96b3;
+  font-size: 11px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px;
+  border-radius: 50%;
+  transition:
+    color 0.15s ease,
+    transform 0.15s ease;
+}
+
+.btn-remove-chip:hover {
+  color: #ef4444;
+  transform: scale(1.2);
+}
+
+/* =========================================
+   Zona de Foto / Logo (Drag & Drop)
    ========================================= */
 .shield-container {
   display: grid;
@@ -275,14 +541,12 @@
   transition: all 0.25s ease;
 }
 
-/* Efecto hover idéntico a TeamForm */
 .dropzone:hover {
   border-color: #38bdf8;
   background: linear-gradient(180deg, #092244 0%, #071932 100%);
   transform: translateY(-1px);
 }
 
-/* Animación y color de la flechita idénticos a TeamForm */
 .dropzone:hover .upload-icon {
   color: #38bdf8;
   transform: translateY(-2px);
@@ -376,7 +640,6 @@
   margin-top: 2rem;
 }
 
-/* Efecto del botón cancelar idéntico a TeamForm */
 .btn-cancel {
   flex: 1;
   height: 48px;
@@ -419,13 +682,13 @@
   transition: all 0.2s ease;
 }
 
-.btn-save:hover {
+.btn-save:hover:not(:disabled) {
   background: linear-gradient(180deg, #3b82f6 0%, #2563eb 100%);
   box-shadow: 0 6px 18px rgba(37, 99, 235, 0.45);
   transform: translateY(-1px);
 }
 
-.btn-save:active {
+.btn-save:active:not(:disabled) {
   transform: translateY(0);
   box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
 }
@@ -475,7 +738,8 @@
 }
 
 .form-group input.ng-invalid.ng-touched,
-.custom-dropdown.is-invalid .dropdown-trigger {
+.custom-dropdown.is-invalid .dropdown-trigger,
+.search-input-wrapper input.input-error {
   border-color: #ef4444 !important;
   background-color: #0b1a2f;
   box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15) !important;

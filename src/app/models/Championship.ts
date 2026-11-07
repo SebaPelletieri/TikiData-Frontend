@@ -1,9 +1,10 @@
-export type ChampionshipType = 'League' | 'Cup';
+export type ChampionshipType = 'LIGA' | 'COPA' | 'INTERNACIONAL';
+
 export interface Championship {
   id?: number;
   name: string;
   logo: string;
   type: ChampionshipType;
-  teamsIDs: number[];
-  season: string;
+  teamsIDs?: number[];
+  season?: string;
 }

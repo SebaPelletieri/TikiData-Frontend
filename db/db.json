@@ -138,7 +138,7 @@
       "id": 2,
       "name": "Copa de la Liga",
       "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Liga_Profesional_de_F%C3%BAtbol_Argentina.svg/200px-Liga_Profesional_de_F%C3%BAtbol_Argentina.svg.png",
-      "type": "COPA_NACIONAL"
+      "type": "COPA"
     },
     {
       "id": 3,

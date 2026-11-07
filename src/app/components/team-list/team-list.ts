@@ -11,14 +11,29 @@ import { TeamService } from '../../services/team-service';
   styleUrl: './team-list.css',
   templateUrl: './team-list.html',
 })
-export class TeamList implements OnInit{
+export class TeamList implements OnInit {
   public teamService = inject(TeamService);
 
   searchText = signal('');
   selectedCountry = signal('ALL');
 
+  // Control para abrir y cerrar el dropdown personalizado
+  isCountryDropdownOpen = signal(false);
+
+  // Lista de países para el selector
+  countries: string[] = ['Argentina', 'Brasil', 'España', 'Inglaterra', 'Alemania', 'Italia'];
+
   ngOnInit(): void {
     this.teamService.getAll();
+  }
+
+  toggleCountryDropdown(): void {
+    this.isCountryDropdownOpen.update((open) => !open);
+  }
+
+  selectCountry(country: string): void {
+    this.selectedCountry.set(country);
+    this.isCountryDropdownOpen.set(false);
   }
 
   filteredTeams = computed(() => {
@@ -26,7 +41,7 @@ export class TeamList implements OnInit{
     const search = this.searchText().toLowerCase().trim();
     const country = this.selectedCountry();
 
-    return list.filter(team => {
+    return list.filter((team) => {
       const matchSearch = team.name.toLowerCase().includes(search);
       const matchCountry = country === 'ALL' || team.country === country;
       return matchSearch && matchCountry;

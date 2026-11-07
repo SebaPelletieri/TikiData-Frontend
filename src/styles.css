@@ -1,290 +1,78 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
 :root {
-  --bg-navbar: #041028;
-  --bg-search: #0b1a3d;
-  --text-primary: #ffffff;
-  --text-secondary: #9baec9;
+  --font-main: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --bg-app: #040e1e;
+  --bg-card: #06182e;
+  --border-color: #143560;
+  --brand-blue: #38bdf8;
   --brand-orange: #ff6b00;
-  --border-color: #1c3363;
+  --text-primary: #ffffff;
+  --text-secondary: #7d96b3;
 }
 
-body {
-  margin: 0;
-  padding: 0;
+*,
+*::before,
+*::after {
   box-sizing: border-box;
-  background-color: #020817;
 }
 
 html,
 body {
-  max-width: 100%;
-  overflow-x: auto;
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-main);
+  background-color: var(--bg-app);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-html {
-  /* Solución moderna para navegadores actuales: reserva el carril del scrollbar sin mover nada */
-  scrollbar-gutter: stable;
-  
-  /* Respaldo para navegadores que aún no soportan scrollbar-gutter */
-  overflow-y: scroll;
-}
-/* ==========================================================================
-   Contenedor Principal y Tarjeta de Autenticación
-   ========================================================================== */
-.auth-page {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: calc(100vh - 100px);
-  padding: 2rem;
-}
-
-.auth-card {
-  font-family:
-    system-ui,
-    -apple-system,
-    'Segoe UI',
-    Roboto,
-    Helvetica,
-    Arial,
-    sans-serif;
-  background-color: var(--bg-navbar, #06182e);
-  padding: 2.5rem 2rem;
-  border-radius: 14px;
-  box-shadow:
-    0 16px 36px rgba(0, 0, 0, 0.55),
-    0 0 1px rgba(255, 255, 255, 0.08);
-  width: 100%;
-  max-width: 420px;
-  border: 1px solid var(--border-color, #143560);
-}
-
-.auth-card h2 {
-  color: var(--text-primary, #ffffff);
-  text-align: center;
-  margin-bottom: 2rem;
-  font-family: inherit;
-  font-size: 1.7rem;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-}
-
-/* ==========================================================================
-   Grupos de Campos e Inputs
-   ========================================================================== */
-.form-group {
-  margin-bottom: 1.35rem;
-  display: flex;
-  flex-direction: column;
-}
-
-.form-group label {
-  color: var(--text-secondary, #94a3b8);
-  margin-bottom: 0.5rem;
-  font-size: 0.88rem;
-  font-weight: 500;
-}
-
-.form-group input {
-  background-color: var(--bg-search, #081d38);
-  border: 1px solid var(--border-color, #143560);
-  color: var(--text-primary, #ffffff);
-  padding: 0.8rem 1rem;
-  border-radius: 9px;
-  font-size: 0.95rem;
-  outline: none;
-  font-family: inherit;
-  transition:
-    border-color 0.2s ease,
-    box-shadow 0.2s ease,
-    background-color 0.2s ease;
-}
-
-.form-group input::placeholder {
-  color: #637d9d;
-  opacity: 0.8;
-}
-
-.form-group input:focus {
-  border-color: #38bdf8;
-  background-color: #092244;
-  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
-}
-
-.form-group input.input-error {
-  border-color: #ef4444 !important;
-  background-color: #0b1a2f;
-  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15) !important;
-}
-
-/* ==========================================================================
-   Input de Contraseña con Botón de Ojo
-   ========================================================================== */
-.password-input-wrapper {
-  position: relative;
-  display: flex;
-  align-items: center;
-  width: 100%;
-}
-
-.password-input-wrapper input {
-  width: 100%;
-  padding-right: 44px;
-}
-
-.toggle-password-btn {
-  position: absolute;
-  right: 8px;
-  width: 32px;
-  height: 32px;
-  background: transparent;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #7d96b3;
-  transition:
-    color 0.15s ease,
-    background-color 0.15s ease;
-}
-
-.toggle-password-btn:hover {
-  color: #38bdf8;
-  background-color: rgba(56, 189, 248, 0.08);
-}
-
-.eye-icon {
-  width: 18px;
-  height: 18px;
-}
-
-/* ==========================================================================
-   Mensajes de Error y Validación
-   ========================================================================== */
-.error-feedback {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin-top: 0.45rem;
-}
-
-.error-icon {
-  width: 14px;
-  height: 14px;
-  color: #f87171;
-  flex-shrink: 0;
-}
-
-.error-text {
-  color: #f87171;
-  font-size: 0.8rem;
-  font-weight: 500;
-}
-
-/* ==========================================================================
-   Botón Primario (Naranja de Marca)
-   ========================================================================== */
-.btn-primary {
-  width: 100%;
-  background: var(--brand-orange, #ff6b00);
-  color: #ffffff;
-  border: none;
-  padding: 0.85rem;
-  border-radius: 9px;
-  font-size: 0.95rem;
-  font-weight: 600;
-  cursor: pointer;
-  box-shadow: 0 4px 14px rgba(255, 107, 0, 0.35);
-  transition:
-    transform 0.15s ease,
-    box-shadow 0.15s ease,
-    filter 0.2s ease;
-  margin-top: 1rem;
-}
-
-.btn-primary:hover:not(:disabled) {
-  filter: brightness(1.12);
-  transform: translateY(-1px);
-  box-shadow: 0 6px 18px rgba(255, 107, 0, 0.45);
-}
-
-.btn-primary:disabled {
-  background: #112845;
-  color: #556c88;
-  box-shadow: none;
-  cursor: not-allowed;
-  transform: none;
-  filter: none;
-}
-
-/* ==========================================================================
-   Pie de Formulario y Enlace de Registro
-   ========================================================================== */
-.auth-footer {
-  text-align: center;
-  margin-top: 1.5rem;
-  color: var(--text-secondary, #94a3b8);
-  font-size: 0.9rem;
+/* Herencia uniforme de tipografía */
+input,
+button,
+select,
+textarea {
   font-family: inherit;
 }
 
-.auth-footer a {
-  font-family: inherit;
-  color: var(--brand-orange, #ff6b00);
-  text-decoration: none !important;
-  font-weight: 600;
-  letter-spacing: 0.01em;
-  transition: filter 0.15s ease;
-}
-
-.auth-footer a:hover {
-  filter: brightness(1.2);
-  text-decoration: none !important;
-}
-
 /* ==========================================================================
-   Personalización del Scrollbar (TikiData Dark Theme)
+   Personalización Global de la Barra de Scroll
    ========================================================================== */
 
-/* 1. Soporte estándar (Firefox) */
+/* Firefox */
 html {
   scrollbar-width: thin;
-  /* Color del pulgar (gris azulado oscuro) y color de la pista (fondo navbar) */
-  scrollbar-color: #24344d #060d17;
+  scrollbar-color: #1a4175 #030d1a;
 }
 
-/* 2. Soporte WebKit (Chrome, Edge, Safari, Brave, Opera) */
-
-/* Ancho total de la barra vertical */
+/* Chrome, Edge, Safari, Brave */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 9px;
+  height: 9px;
 }
 
-/* Fondo / Carril por donde corre la barra */
 ::-webkit-scrollbar-track {
-  background-color: #060d17; /* Mismo fondo profundo del navbar/página */
+  background-color: #030d1a;
+  border-left: 1px solid rgba(20, 53, 96, 0.4);
 }
 
-/* La pastilla / barra deslizable */
 ::-webkit-scrollbar-thumb {
-  background-color: #24344d; /* Azul acero sutil */
-  border-radius: 10px;
-  border: 2px solid #060d17; /* Margen para dar efecto flotante y estilizado */
-  transition: background-color 0.2s ease;
+  background: linear-gradient(180deg, #143560 0%, #1e4d88 100%);
+  border-radius: 8px;
+  border: 2px solid #030d1a;
+  transition: background 0.2s ease;
 }
 
-/* Al pasar el mouse por encima (hover) */
 ::-webkit-scrollbar-thumb:hover {
-  background-color: var(--brand-orange, #ff5e14); /* Destello naranja al arrastrarla */
+  background: linear-gradient(180deg, #0284c7 0%, #38bdf8 100%);
+  box-shadow: 0 0 8px rgba(56, 189, 248, 0.4);
 }
 
-/* Al hacer clic y arrastrar (active) */
 ::-webkit-scrollbar-thumb:active {
-  background-color: #e04f0b;
+  background: #38bdf8;
 }
 
-/* Elimina las flechas cuadradas de arriba y abajo en navegadores basados en Chromium */
-::-webkit-scrollbar-button {
-  display: none;
+::-webkit-scrollbar-corner {
+  background-color: #030d1a;
 }

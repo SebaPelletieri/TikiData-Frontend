@@ -1,6 +1,9 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { Team } from '../../models/Team';
+import { HttpClient } from '@angular/common/http';
+import { ActivatedRoute } from '@angular/router';
+import { PlayerService } from '../../services/player-service';
 
 @Component({
   imports: [DatePipe],
@@ -11,12 +14,10 @@ import { Team } from '../../models/Team';
 })
 export class PlayerDetail implements OnInit {
   teamActual = signal<Team | null>(null);
-  
-  // Pestaña activa (Vista general, Estadísticas, etc.)
-  activeTab = 'general'; 
-  route: any;
-  playerService: any;
-  http: any;
+  activeTab = signal('general');
+  private route = inject(ActivatedRoute);
+  private http = inject(HttpClient);
+  public playerService = inject(PlayerService);
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
@@ -33,13 +34,13 @@ export class PlayerDetail implements OnInit {
   }
 
   fetchTeam(teamId: number) {
-    this.http.get(`http://localhost:3000/equipos/${teamId}`).subscribe({
-      next: (data: any) => this.teamActual.set(data as Team),
-      error: (err: any) => console.error('Error cargando equipo', err)
+    this.http.get<Team>(`http://localhost:3000/equipos/${teamId}`).subscribe({
+      next: (data) => this.teamActual.set(data),
+      error: (err) => console.error('Error cargando equipo', err)
     });
   }
 
   setTab(tab: string) {
-    this.activeTab = tab;
+    this.activeTab.set(tab);
   }
 }

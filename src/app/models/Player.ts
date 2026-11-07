@@ -6,7 +6,7 @@ export interface Player {
   age: number;
   position: Position;
   currentTeamID?: number;
-  bithDate: string;
+  birthDate: string; 
   nacionality: string;
   preferredFoot: string;
   matchesPlayed: number;

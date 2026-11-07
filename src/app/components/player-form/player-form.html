@@ -1,251 +1,534 @@
-<div class="team-form-container player-form">
+<div class="team-form-container">
   <div class="form-header">
     <div class="header-icon">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+      <svg
+        width="22"
+        height="22"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
         <circle cx="12" cy="7" r="4"></circle>
       </svg>
     </div>
     <div>
       <h2>Nuevo Jugador</h2>
-      <p>Completa la información del jugador.</p>
+      <p>Completa la ficha técnica y deportiva del jugador.</p>
     </div>
   </div>
 
   <form [formGroup]="formulario" (ngSubmit)="savePlayer()">
-    
-    <!-- Fila 1: Nombre -->
+    <!-- Nombre -->
     <div class="form-group">
       <label for="name">Nombre completo <span class="required">*</span></label>
       <input id="name" type="text" formControlName="name" placeholder="Ej. Lionel Messi" />
 
-      @if (formulario.controls.name.touched && formulario.controls.name.invalid) {
+      @if (formulario.controls['name'].touched && formulario.controls['name'].invalid) {
         <div class="error-feedback">
-          <svg class="error-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
-          <span class="error-text">El nombre es obligatorio y debe tener entre 3 y 50 caracteres.</span>
+          <svg
+            class="error-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+          <span class="error-text">El nombre es obligatorio (mínimo 3 caracteres).</span>
         </div>
       }
     </div>
 
-    <!-- Fila 2: Nacionalidad y Fecha de Nacimiento -->
+    <!-- Nacionalidad y Posición -->
     <div class="form-row">
       <div class="form-group">
-        <label>Nacionalidad <span class="required">*</span></label>
-        <div class="custom-dropdown" [class.open]="isNationalityOpen" [class.is-invalid]="formulario.controls.nacionality.invalid && formulario.controls.nacionality.touched">
-          <button type="button" class="dropdown-trigger" (click)="toggleNationalityDropdown()">
-            <span [class.placeholder]="!formulario.controls.nacionality.value">{{ formulario.controls.nacionality.value || 'Seleccionar' }}</span>
+        <label for="nacionality">Nacionalidad <span class="required">*</span></label>
+        <input
+          id="nacionality"
+          type="text"
+          formControlName="nacionality"
+          placeholder="Ej. Argentina"
+        />
+
+        @if (
+          formulario.controls['nacionality'].touched && formulario.controls['nacionality'].invalid
+        ) {
+          <div class="error-feedback">
+            <svg
+              class="error-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="8" x2="12" y2="12"></line>
+              <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+            <span class="error-text">La nacionalidad es obligatoria.</span>
+          </div>
+        }
+      </div>
+
+      <div class="form-group">
+        <label>Posición <span class="required">*</span></label>
+        <div
+          class="custom-dropdown"
+          [class.open]="isPositionOpen"
+          [class.is-invalid]="
+            formulario.controls['position'].touched && formulario.controls['position'].invalid
+          "
+        >
+          <button type="button" class="dropdown-trigger" (click)="togglePositionDropdown()">
+            <span [class.placeholder]="!formulario.controls['position'].value">
+              {{ selectedPositionLabel || 'Selecciona posición' }}
+            </span>
             <span class="triangle-icon"></span>
           </button>
-          @if (isNationalityOpen) {
+
+          @if (isPositionOpen) {
             <ul class="dropdown-menu">
-              @for (item of nationalities; track item) {
-                <li class="dropdown-item" [class.active]="formulario.controls.nacionality.value === item" (click)="selectNationality(item)">
-                  <div class="item-content"><span>{{ item }}</span></div>
+              @for (pos of positions; track pos.value) {
+                <li
+                  class="dropdown-item"
+                  [class.active]="formulario.controls['position'].value === pos.value"
+                  (click)="selectPosition(pos.value)"
+                >
+                  <div class="item-content">
+                    <span>{{ pos.label }}</span>
+                  </div>
+                  @if (formulario.controls['position'].value === pos.value) {
+                    <svg
+                      class="check-icon"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                  }
                 </li>
               }
             </ul>
           }
         </div>
-      </div>
 
-      <!-- CALENDARIO PERSONALIZADO TIKIDATA -->
+        @if (formulario.controls['position'].touched && formulario.controls['position'].invalid) {
+          <div class="error-feedback">
+            <svg
+              class="error-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="8" x2="12" y2="12"></line>
+              <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+            <span class="error-text">La posición es obligatoria.</span>
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Fecha de Nacimiento y Edad (Calculada Automáticamente) -->
+    <div class="form-row">
       <div class="form-group calendar-field-container">
-        <label for="bithDate">Fecha de nacimiento <span class="required">*</span></label>
-        
-        <div
+        <label>Fecha de nacimiento <span class="required">*</span></label>
+        <button
+          type="button"
           class="calendar-trigger"
           [class.open]="isCalendarOpen"
-          [class.input-error]="formulario.controls.bithDate.touched && formulario.controls.bithDate.invalid"
+          [class.input-error]="
+            formulario.controls['bithDate'].touched && formulario.controls['bithDate'].invalid
+          "
           (click)="toggleCalendar()"
         >
-          <span [class.placeholder]="!formattedSelectedDate">
-            {{ formattedSelectedDate || 'Selecciona una fecha' }}
+          <span [class.placeholder]="!formattedBirthDate">
+            {{ formattedBirthDate || 'Selecciona fecha' }}
           </span>
-          <svg class="calendar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <svg
+            class="calendar-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
             <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
             <line x1="16" y1="2" x2="16" y2="6"></line>
             <line x1="8" y1="2" x2="8" y2="6"></line>
             <line x1="3" y1="10" x2="21" y2="10"></line>
           </svg>
-        </div>
+        </button>
 
         @if (isCalendarOpen) {
           <div class="calendar-popover">
-            <!-- Header con Selectores Rápidos de Mes y Año -->
             <div class="calendar-header">
-              <button type="button" class="calendar-nav-btn" (click)="prevMonth()">&#8249;</button>
-              
+              <button type="button" class="calendar-nav-btn" (click)="prevMonth()">‹</button>
               <div class="calendar-selects">
-                <select [value]="currentMonth" (change)="onMonthChange($event)">
-                  @for (m of months; track $index) {
+                <select
+                  class="header-select"
+                  [value]="currentDate.getMonth()"
+                  (change)="onMonthChange($any($event.target).value)"
+                >
+                  @for (m of monthsNames; track $index) {
                     <option [value]="$index">{{ m }}</option>
                   }
                 </select>
-                <select [value]="currentYear" (change)="onYearChange($event)">
-                  @for (y of yearsRange; track y) {
+                <select
+                  class="header-select"
+                  [value]="currentDate.getFullYear()"
+                  (change)="onYearChange($any($event.target).value)"
+                >
+                  @for (y of yearsList; track y) {
                     <option [value]="y">{{ y }}</option>
                   }
                 </select>
               </div>
-
-              <button type="button" class="calendar-nav-btn" (click)="nextMonth()">&#8250;</button>
+              <button type="button" class="calendar-nav-btn" (click)="nextMonth()">›</button>
             </div>
 
             <div class="calendar-weekdays">
-              @for (dayName of weekDays; track dayName) {
-                <span class="calendar-weekday">{{ dayName }}</span>
-              }
+              <span class="calendar-weekday">Do</span>
+              <span class="calendar-weekday">Lu</span>
+              <span class="calendar-weekday">Ma</span>
+              <span class="calendar-weekday">Mi</span>
+              <span class="calendar-weekday">Ju</span>
+              <span class="calendar-weekday">Vi</span>
+              <span class="calendar-weekday">Sá</span>
             </div>
 
             <div class="calendar-grid">
-              @for (item of calendarDays; track $index) {
+              @for (day of calendarDays; track $index) {
                 <button
                   type="button"
                   class="calendar-day"
-                  [class.other-month]="!item.isCurrentMonth"
-                  [class.selected]="isDaySelected(item.date)"
-                  (click)="selectDate(item.date)"
+                  [class.other-month]="!day.isCurrentMonth"
+                  [class.selected]="isSelected(day.date)"
+                  (click)="selectDate(day.date)"
                 >
-                  {{ item.day }}
+                  {{ day.day }}
                 </button>
               }
             </div>
           </div>
         }
 
-        @if (formulario.controls.bithDate.touched && formulario.controls.bithDate.invalid) {
+        @if (formulario.controls['bithDate'].touched && formulario.controls['bithDate'].invalid) {
           <div class="error-feedback">
-            <svg class="error-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <svg
+              class="error-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
               <circle cx="12" cy="12" r="10"></circle>
               <line x1="12" y1="8" x2="12" y2="12"></line>
               <line x1="12" y1="16" x2="12.01" y2="16"></line>
             </svg>
-            <span class="error-text">La fecha de nacimiento es obligatoria.</span>
+            <span class="error-text">Fecha obligatoria.</span>
           </div>
         }
       </div>
-    </div>
-
-    <!-- Fila 3: Edad y Posición -->
-    <div class="form-row">
-      <div class="form-group">
-        <label>Edad <span class="required">*</span></label>
-        <input type="number" formControlName="age" class="readonly-input" placeholder="Automático" />
-      </div>
 
       <div class="form-group">
-        <label>Posición <span class="required">*</span></label>
-        <div class="custom-dropdown" [class.open]="isPositionOpen" [class.is-invalid]="formulario.controls.position.invalid && formulario.controls.position.touched">
-          <button type="button" class="dropdown-trigger" (click)="togglePositionDropdown()">
-            <span [class.placeholder]="!formulario.controls.position.value">{{ formulario.controls.position.value || 'Seleccionar' }}</span>
-            <span class="triangle-icon"></span>
-          </button>
-          @if (isPositionOpen) {
-            <ul class="dropdown-menu">
-              @for (item of positions; track item) {
-                <li class="dropdown-item" [class.active]="formulario.controls.position.value === item" (click)="selectPosition(item)">
-                  <div class="item-content"><span>{{ item }}</span></div>
-                </li>
-              }
-            </ul>
-          }
-        </div>
+        <label for="age">Edad (Años)</label>
+        <input
+          id="age"
+          type="number"
+          formControlName="age"
+          placeholder="Auto"
+          readonly
+          class="input-readonly"
+        />
       </div>
     </div>
 
-    <!-- Fila 4: Pie Hábil y Equipo Actual -->
-    <div class="form-row">
-      <div class="form-group">
-        <label>Pie Hábil <span class="required">*</span></label>
-        <div class="custom-dropdown" [class.open]="isFootOpen" [class.is-invalid]="formulario.controls.preferredFoot.invalid && formulario.controls.preferredFoot.touched">
-          <button type="button" class="dropdown-trigger" (click)="toggleFootDropdown()">
-            <span [class.placeholder]="!formulario.controls.preferredFoot.value">{{ formulario.controls.preferredFoot.value || 'Seleccionar' }}</span>
-            <span class="triangle-icon"></span>
-          </button>
-          @if (isFootOpen) {
-            <ul class="dropdown-menu">
-              @for (item of footOptions; track item) {
-                <li class="dropdown-item" [class.active]="formulario.controls.preferredFoot.value === item" (click)="selectFoot(item)">
-                  <div class="item-content"><span>{{ item }}</span></div>
-                </li>
-              }
-            </ul>
-          }
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label>Equipo Actual</label>
-        <div class="custom-dropdown" [class.open]="isTeamOpen">
-          <button type="button" class="dropdown-trigger" (click)="toggleTeamDropdown()">
-            <span [class.placeholder]="!formulario.controls.currentTeamID.value">{{ selectedTeamName || 'Agente Libre' }}</span>
-            <span class="triangle-icon"></span>
-          </button>
-          @if (isTeamOpen) {
-            <ul class="dropdown-menu">
-              @for (item of teams; track item.id) {
-                <li class="dropdown-item" [class.active]="formulario.controls.currentTeamID.value === item.id.toString()" (click)="selectTeam(item.id)">
-                  <div class="item-content"><span>{{ item.name }}</span></div>
-                </li>
-              }
-            </ul>
-          }
-        </div>
-      </div>
-    </div>
-
-    <!-- Fila 5: Estadísticas Rápidas (Grid de 5 columnas) -->
-    <h3 class="section-subtitle">Estadísticas</h3>
-    <div class="stats-grid">
-      <div class="form-group">
-        <label>Partidos</label>
-        <input type="number" formControlName="matchesPlayed" min="0" />
-      </div>
-      <div class="form-group">
-        <label>Goles</label>
-        <input type="number" formControlName="goals" min="0" />
-      </div>
-      <div class="form-group">
-        <label>Asistencias</label>
-        <input type="number" formControlName="assists" min="0" />
-      </div>
-      <div class="form-group">
-        <label>Amarillas</label>
-        <input type="number" formControlName="yellowCards" min="0" />
-      </div>
-      <div class="form-group">
-        <label>Rojas</label>
-        <input type="number" formControlName="redCards" min="0" />
-      </div>
-    </div>
-
-    <!-- Fila 6: Foto -->
+    <!-- Pie Hábil -->
     <div class="form-group">
-      <label>Fotografía <span class="required">*</span></label>
+      <label>Pie hábil <span class="required">*</span></label>
+      <div
+        class="custom-dropdown"
+        [class.open]="isFootOpen"
+        [class.is-invalid]="
+          formulario.controls['preferredFoot'].touched &&
+          formulario.controls['preferredFoot'].invalid
+        "
+      >
+        <button type="button" class="dropdown-trigger" (click)="toggleFootDropdown()">
+          <span [class.placeholder]="!formulario.controls['preferredFoot'].value">
+            {{ formulario.controls['preferredFoot'].value || 'Selecciona pie hábil' }}
+          </span>
+          <span class="triangle-icon"></span>
+        </button>
+
+        @if (isFootOpen) {
+          <ul class="dropdown-menu">
+            @for (foot of preferredFeet; track foot) {
+              <li
+                class="dropdown-item"
+                [class.active]="formulario.controls['preferredFoot'].value === foot"
+                (click)="selectFoot(foot)"
+              >
+                <div class="item-content">
+                  <span>{{ foot }}</span>
+                </div>
+                @if (formulario.controls['preferredFoot'].value === foot) {
+                  <svg
+                    class="check-icon"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                }
+              </li>
+            }
+          </ul>
+        }
+      </div>
+
+      @if (
+        formulario.controls['preferredFoot'].touched && formulario.controls['preferredFoot'].invalid
+      ) {
+        <div class="error-feedback">
+          <svg
+            class="error-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+          <span class="error-text">El pie hábil es obligatorio.</span>
+        </div>
+      }
+    </div>
+
+    <!-- Foto del Jugador -->
+    <div class="form-group">
+      <label>Foto del jugador <span class="required">*</span></label>
       <div class="shield-container">
         <label class="dropzone" for="photo-file">
-          <input type="file" id="photo-file" accept="image/png, image/jpeg" class="visually-hidden" (change)="onFileSelected($event)" />
-          <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="17 8 12 3 7 8" /><line x1="12" y1="3" x2="12" y2="15" /></svg>
+          <input
+            type="file"
+            id="photo-file"
+            accept="image/png, image/jpeg"
+            class="visually-hidden"
+            (change)="onFileSelected($event)"
+          />
+          <svg
+            class="upload-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+            <polyline points="17 8 12 3 7 8" />
+            <line x1="12" y1="3" x2="12" y2="15" />
+          </svg>
           <span class="dropzone-text">Haz clic para subir la foto</span>
           <span class="dropzone-hint">PNG, JPG (máx. 2MB)</span>
         </label>
         <div class="preview-box">
           @if (photoPreview) {
-            <img [src]="photoPreview" alt="Foto" class="uploaded-shield-img" />
+            <img [src]="photoPreview" alt="Foto Jugador" class="uploaded-shield-img" />
             <button type="button" class="btn-remove-shield" (click)="removePhoto($event)">✕</button>
           } @else {
-            <svg class="shield-icon" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+            <svg
+              class="shield-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+            >
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
             </svg>
             <span class="preview-text">Vista previa</span>
           }
         </div>
       </div>
+      @if (formulario.controls['photo'].touched && formulario.controls['photo'].invalid) {
+        <div class="error-feedback">
+          <svg
+            class="error-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+          <span class="error-text">La foto del jugador es obligatoria.</span>
+        </div>
+      }
     </div>
 
+    <!-- Estadísticas Iniciales -->
+    <div class="section-subtitle">Estadísticas iniciales</div>
+
+    <!-- Fila: Partidos y Goles -->
+    <div class="form-row">
+      <div class="form-group">
+        <label for="matchesPlayed">Partidos jugados</label>
+        <input
+          id="matchesPlayed"
+          type="text"
+          inputmode="numeric"
+          placeholder="0"
+          formControlName="matchesPlayed"
+          [class.ng-invalid]="
+            formulario.controls['matchesPlayed'].touched &&
+            formulario.controls['matchesPlayed'].invalid
+          "
+        />
+        @if (
+          formulario.controls['matchesPlayed'].touched &&
+          formulario.controls['matchesPlayed'].invalid
+        ) {
+          <div class="error-feedback">
+            <svg
+              class="error-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="8" x2="12" y2="12"></line>
+              <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+            <span class="error-text">Debe ser un número válido (≥ 0).</span>
+          </div>
+        }
+      </div>
+
+      <div class="form-group">
+        <label for="goals">Goles</label>
+        <input
+          id="goals"
+          type="text"
+          inputmode="numeric"
+          placeholder="0"
+          formControlName="goals"
+          [class.ng-invalid]="
+            formulario.controls['goals'].touched && formulario.controls['goals'].invalid
+          "
+        />
+        @if (formulario.controls['goals'].touched && formulario.controls['goals'].invalid) {
+          <div class="error-feedback">
+            <svg
+              class="error-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="8" x2="12" y2="12"></line>
+              <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+            <span class="error-text">Debe ser un número válido (≥ 0).</span>
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Fila: Asistencias y Tarjetas Amarillas -->
+    <div class="form-row">
+      <div class="form-group">
+        <label for="assists">Asistencias</label>
+        <input
+          id="assists"
+          type="text"
+          inputmode="numeric"
+          placeholder="0"
+          formControlName="assists"
+          [class.ng-invalid]="
+            formulario.controls['assists'].touched && formulario.controls['assists'].invalid
+          "
+        />
+        @if (formulario.controls['assists'].touched && formulario.controls['assists'].invalid) {
+          <div class="error-feedback">
+            <svg
+              class="error-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="8" x2="12" y2="12"></line>
+              <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+            <span class="error-text">Debe ser un número válido (≥ 0).</span>
+          </div>
+        }
+      </div>
+
+      <div class="form-group">
+        <label for="yellowCards">Tarjetas amarillas</label>
+        <input
+          id="yellowCards"
+          type="text"
+          inputmode="numeric"
+          placeholder="0"
+          formControlName="yellowCards"
+          [class.ng-invalid]="
+            formulario.controls['yellowCards'].touched && formulario.controls['yellowCards'].invalid
+          "
+        />
+        @if (
+          formulario.controls['yellowCards'].touched && formulario.controls['yellowCards'].invalid
+        ) {
+          <div class="error-feedback">
+            <svg
+              class="error-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="8" x2="12" y2="12"></line>
+              <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+            <span class="error-text">Debe ser un número válido (≥ 0).</span>
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Botones de Acción -->
     <div class="form-actions">
       <button type="button" class="btn-cancel" (click)="cancel()">Cancelar</button>
-      <button type="submit" class="btn-save" [disabled]="formulario.invalid">Guardar Jugador</button>
+      <button type="submit" class="btn-save" [disabled]="formulario.invalid">
+        Guardar Jugador
+      </button>
     </div>
   </form>
 </div>

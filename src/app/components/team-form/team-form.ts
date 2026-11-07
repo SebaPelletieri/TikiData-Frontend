@@ -1,25 +1,26 @@
 import { Component, inject } from '@angular/core';
-import {
-  AbstractControl,
-  FormBuilder,
-  FormsModule,
-  ReactiveFormsModule,
-  ValidationErrors,
-  ValidatorFn,
-  Validators,
-} from '@angular/forms';
+import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 import { TeamService } from '../../services/team-service';
 import { Team } from '../../models/Team';
 
+interface CalendarDay {
+  day: number;
+  date: Date;
+  isCurrentMonth: boolean;
+}
+
 @Component({
-  imports: [ReactiveFormsModule, FormsModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule],
   selector: 'app-team-form',
+  standalone: true,
   styleUrl: './team-form.css',
   templateUrl: './team-form.html',
 })
 export class TeamForm {
   teamService = inject(TeamService);
   fb = inject(FormBuilder);
+
   formulario = this.fb.nonNullable.group({
     name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
     shield: ['', [Validators.required]],
@@ -41,26 +42,43 @@ export class TeamForm {
     };
     this.teamService.saveTeam(teamActual);
     this.formulario.reset();
+    this.shieldPreview = null;
   }
 
   cancel() {
     this.formulario.reset();
+    this.shieldPreview = null;
   }
 
-  // Define las opciones de países en tu clase
+  // --- PAÍSES ---
   countries = ['Argentina', 'Brasil', 'Uruguay', 'Chile'];
   isCountryOpen = false;
 
-  toggleCountryDropdown() {
+  // En tu clase TeamForm:
+  isCountryInvalid(): boolean {
+    const control = this.formulario.controls['country'];
+    return !!(control.touched && control.invalid);
+  }
+
+  toggleCountryDropdown(): void {
     this.isCountryOpen = !this.isCountryOpen;
+    this.isStadiumOpen = false;
+    this.isChampionshipsOpen = false;
+    this.isCalendarOpen = false;
+
+    // Si se cierra sin elegir opción, marca el error
+    if (!this.isCountryOpen) {
+      this.formulario.controls['country'].markAsTouched();
+    }
   }
 
   selectCountry(country: string) {
-    this.formulario.get('country')?.setValue(country);
-    this.formulario.get('country')?.markAsTouched();
+    this.formulario.controls['country'].setValue(country);
+    this.formulario.controls['country'].markAsTouched();
     this.isCountryOpen = false;
   }
 
+  // --- ESCUDO ---
   shieldPreview: string | null = null;
 
   onFileSelected(event: Event) {
@@ -78,10 +96,10 @@ export class TeamForm {
   removeShield(event: Event) {
     event.stopPropagation();
     this.shieldPreview = null;
+    this.formulario.patchValue({ shield: '' });
   }
 
-  // --- ESTADOS Y MÉTODOS PARA ESTADIO ---
-  // Lista de ejemplo si aún no la recibes desde un servicio:
+  // --- ESTADIO ---
   stadiums = [
     { id: 1, name: 'Estadio Monumental' },
     { id: 2, name: 'La Bombonera' },
@@ -93,23 +111,24 @@ export class TeamForm {
     this.isStadiumOpen = !this.isStadiumOpen;
     this.isCountryOpen = false;
     this.isChampionshipsOpen = false;
+    this.isCalendarOpen = false;
     if (!this.isStadiumOpen) {
-      this.formulario.controls.stadiumID.markAsTouched();
+      this.formulario.controls['stadiumID'].markAsTouched();
     }
   }
 
   selectStadium(stadiumId: number) {
-    this.formulario.controls.stadiumID.setValue(stadiumId.toString());
-    this.formulario.controls.stadiumID.markAsTouched();
+    this.formulario.controls['stadiumID'].setValue(stadiumId.toString());
+    this.formulario.controls['stadiumID'].markAsTouched();
     this.isStadiumOpen = false;
   }
 
   get selectedStadiumName(): string | undefined {
-    const selectedId = this.formulario.controls.stadiumID.value;
+    const selectedId = this.formulario.controls['stadiumID'].value;
     return this.stadiums.find((s) => s.id.toString() === selectedId.toString())?.name;
   }
 
-  // --- ESTADOS Y MÉTODOS PARA CAMPEONATOS ACTIVOS ---
+  // --- CAMPEONATOS ACTIVOS ---
   championships = [
     { id: 1, name: 'Liga Profesional' },
     { id: 2, name: 'Copa Libertadores' },
@@ -121,13 +140,14 @@ export class TeamForm {
     this.isChampionshipsOpen = !this.isChampionshipsOpen;
     this.isCountryOpen = false;
     this.isStadiumOpen = false;
+    this.isCalendarOpen = false;
     if (!this.isChampionshipsOpen) {
-      this.formulario.controls.championshipsActive.markAsTouched();
+      this.formulario.controls['championshipsActive'].markAsTouched();
     }
   }
 
   toggleChampionship(championshipId: number) {
-    const current: number[] = [...(this.formulario.controls.championshipsActive.value || [])];
+    const current: number[] = [...(this.formulario.controls['championshipsActive'].value || [])];
     const index = current.indexOf(championshipId);
 
     if (index > -1) {
@@ -136,17 +156,16 @@ export class TeamForm {
       current.push(championshipId);
     }
 
-    this.formulario.controls.championshipsActive.setValue(current);
-    this.formulario.controls.championshipsActive.markAsTouched();
+    this.formulario.controls['championshipsActive'].setValue(current);
+    this.formulario.controls['championshipsActive'].markAsTouched();
   }
 
   isChampionshipSelected(championshipId: number): boolean {
-    const current: number[] = this.formulario.controls.championshipsActive.value || [];
+    const current: number[] = this.formulario.controls['championshipsActive'].value || [];
     return current.includes(championshipId);
   }
 
-  // Agrega estas propiedades y métodos en tu clase TeamForm:
-
+  // --- CALENDARIO INTERACTIVO ---
   isCalendarOpen = false;
   currentMonth = new Date().getMonth();
   currentYear = new Date().getFullYear();
@@ -168,24 +187,39 @@ export class TeamForm {
 
   weekDays = ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'];
 
+  get yearsList(): number[] {
+    const current = new Date().getFullYear();
+    const years: number[] = [];
+    for (let y = current; y >= 1850; y--) {
+      years.push(y);
+    }
+    return years;
+  }
+
   toggleCalendar(): void {
     this.isCalendarOpen = !this.isCalendarOpen;
     this.isCountryOpen = false;
     this.isStadiumOpen = false;
     this.isChampionshipsOpen = false;
     if (!this.isCalendarOpen) {
-      this.formulario.controls.yearOfFoundation.markAsTouched();
+      this.formulario.controls['yearOfFoundation'].markAsTouched();
     }
   }
 
-  // Genera los días correspondientes al mes y año actuales
-  get calendarDays(): { day: number; date: Date; isCurrentMonth: boolean }[] {
-    const days: { day: number; date: Date; isCurrentMonth: boolean }[] = [];
+  onMonthChange(monthIndex: any): void {
+    this.currentMonth = Number(monthIndex);
+  }
+
+  onYearChange(year: any): void {
+    this.currentYear = Number(year);
+  }
+
+  get calendarDays(): CalendarDay[] {
+    const days: CalendarDay[] = [];
     const firstDayIndex = new Date(this.currentYear, this.currentMonth, 1).getDay();
     const lastDateCurrentMonth = new Date(this.currentYear, this.currentMonth + 1, 0).getDate();
     const lastDatePrevMonth = new Date(this.currentYear, this.currentMonth, 0).getDate();
 
-    // Días del mes previo para rellenar la primera semana
     for (let i = firstDayIndex; i > 0; i--) {
       const day = lastDatePrevMonth - i + 1;
       days.push({
@@ -195,7 +229,6 @@ export class TeamForm {
       });
     }
 
-    // Días del mes actual
     for (let i = 1; i <= lastDateCurrentMonth; i++) {
       days.push({
         day: i,
@@ -204,7 +237,6 @@ export class TeamForm {
       });
     }
 
-    // Completar hasta la cuadrícula de 35 o 42 casillas
     const remainingDays = 42 - days.length;
     for (let i = 1; i <= remainingDays; i++) {
       days.push({
@@ -241,33 +273,13 @@ export class TeamForm {
     const day = String(date.getDate()).padStart(2, '0');
     const formattedDate = `${year}-${month}-${day}`;
 
-    this.formulario.controls.yearOfFoundation.setValue(formattedDate);
-    this.formulario.controls.yearOfFoundation.markAsTouched();
+    this.formulario.controls['yearOfFoundation'].setValue(formattedDate);
+    this.formulario.controls['yearOfFoundation'].markAsTouched();
     this.isCalendarOpen = false;
   }
 
-  isSelectedDate(date: Date): boolean {
-    const currentVal = this.formulario.controls.yearOfFoundation.value;
-    if (!currentVal) return false;
-    const d = new Date(currentVal);
-    return (
-      d.getDate() === date.getDate() &&
-      d.getMonth() === date.getMonth() &&
-      d.getFullYear() === date.getFullYear()
-    );
-  }
-
-  get formattedSelectedDate(): string {
-    const val = this.formulario.controls.yearOfFoundation.value;
-    if (!val) return '';
-    const d = new Date(val);
-    const day = String(d.getDate()).padStart(2, '0');
-    const month = String(d.getMonth() + 1).padStart(2, '0');
-    return `${day}/${month}/${d.getFullYear()}`;
-  }
-
   isDaySelected(date: Date): boolean {
-    const currentValue = this.formulario.controls.yearOfFoundation.value;
+    const currentValue = this.formulario.controls['yearOfFoundation'].value;
     if (!currentValue) return false;
 
     const year = date.getFullYear();
@@ -276,5 +288,18 @@ export class TeamForm {
     const formatted = `${year}-${month}-${day}`;
 
     return currentValue === formatted;
+  }
+
+  get formattedSelectedDate(): string {
+    const val = this.formulario.controls['yearOfFoundation'].value;
+    if (!val) return '';
+    const parts = val.split('-');
+    if (parts.length === 3) {
+      return `${parts[2]}/${parts[1]}/${parts[0]}`;
+    }
+    const d = new Date(val);
+    const day = String(d.getDate()).padStart(2, '0');
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    return `${day}/${month}/${d.getFullYear()}`;
   }
 }

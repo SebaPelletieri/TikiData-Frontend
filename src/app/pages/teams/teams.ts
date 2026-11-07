@@ -6,7 +6,7 @@ import { DatePipe } from '@angular/common';
 import { TeamForm } from '../../components/team-form/team-form';
 
 @Component({
-  imports: [RouterLink, DatePipe, TeamForm],
+  imports: [RouterLink, TeamForm],
   standalone: true,
   selector: 'app-teams',
   styleUrl: './teams.css',
@@ -14,9 +14,9 @@ import { TeamForm } from '../../components/team-form/team-form';
 })
 export class Teams implements OnInit {
   private teamService = inject(TeamService);
-  equipos = this.teamService.teams; 
+  equipos = this.teamService.teams;
 
   ngOnInit(): void {
-      this.teamService.getAll();
-}
+    this.teamService.getAll();
+  }
 }

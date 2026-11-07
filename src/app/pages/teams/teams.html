@@ -1,17 +1,16 @@
 <div class="page-container">
-  <h2>Equipos de Primera División</h2>
   
-  <div class="teams-grid">
-    @for (equipo of equipos(); track equipo.id) {
-      <div class="team-card">
-        <img [src]="equipo.shield" [alt]="'Escudo de ' + equipo.name" class="team-shield">
-        <h3>{{ equipo.name }}</h3>
-        <p>{{ equipo.country }}</p>
-        <a [routerLink]="['/team', equipo.id]" class="btn-secondary">Ver detalles</a>
-      </div>
-    } @empty {
-      <p>Cargando equipos...</p>
-    }
+  <div class="page-header-actions">
+    <h2>Gestión de Equipos</h2>
+    <button class="btn-toggle-form" (click)="toggleForm()">
+      {{ showForm() ? '← Volver al listado' : '+ Nuevo Equipo' }}
+    </button>
   </div>
+
+  @if (showForm()) {
+    <app-team-form></app-team-form>
+  } @else {
+    <app-team-list></app-team-list>
+  }
+
 </div>
-<app-team-form></app-team-form>

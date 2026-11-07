@@ -1,1 +1,52 @@
-<p>team-list works!</p>
+<div class="team-list-container">
+  
+  <div class="header-title-section">
+    <h2>Equipos</h2>
+  </div>
+
+  <!-- Barra de Filtros y Búsqueda -->
+  <div class="filters-bar">
+    <div class="search-box">
+      <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+      <input 
+        type="text" 
+        [ngModel]="searchText()" 
+        (ngModelChange)="searchText.set($event)" 
+        placeholder="Buscar equipos..." 
+      />
+    </div>
+
+    <div class="select-filters">
+      <select [ngModel]="selectedCountry()" (ngModelChange)="selectedCountry.set($event)">
+        <option value="ALL">País (Todos)</option>
+        <option value="Argentina">Argentina</option>
+        <option value="España">España</option>
+        <option value="Inglaterra">Inglaterra</option>
+        <option value="Alemania">Alemania</option>
+        <option value="Italia">Italia</option>
+        <option value="Brasil">Brasil</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="team-grid">
+    @for (team of filteredTeams(); track team.id) {
+      <div class="team-card" [routerLink]="['/team', team.id]">
+        
+        <div class="team-logo-wrapper">
+          <img [src]="team.shield" [alt]="team.name" class="team-logo" />
+        </div>
+        
+        <div class="team-info">
+          <h3 class="team-name">{{ team.name }}</h3>
+          <span class="team-country">{{ team.country }}</span>
+        </div>
+      </div>
+    } @empty {
+      <div class="empty-state">
+        <p>No se encontraron equipos registrados.</p>
+      </div>
+    }
+  </div>
+
+</div>

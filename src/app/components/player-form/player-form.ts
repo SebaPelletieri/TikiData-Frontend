@@ -34,7 +34,7 @@ interface CalendarDay {
   templateUrl: './player-form.html',
   styleUrls: ['./player-form.css'],
 })
-export class PlayerFormComponent implements OnInit {
+export class PlayerForm implements OnInit {
   private fb = inject(FormBuilder);
   formulario!: FormGroup;
 

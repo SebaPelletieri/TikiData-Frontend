@@ -1,6 +1,6 @@
 export interface Team {
   id?: number;
-  name: string | null;
+  name: string ;
   shield: string;
   country: string;
   yearOfFoundation: Date;

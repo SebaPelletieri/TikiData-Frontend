@@ -81,9 +81,14 @@
   font-size: 0.9rem;
   outline: none;
   transition:
-    border-color 0.2s,
-    box-shadow 0.2s,
-    background-color 0.2s;
+    border-color 0.2s ease,
+    background-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.form-group input:hover {
+  border-color: #38bdf8;
+  background-color: #092244;
 }
 
 .form-group input::placeholder {
@@ -96,88 +101,9 @@
   box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
 }
 
-input[type='date']::-webkit-calendar-picker-indicator {
-  opacity: 0.65;
-  filter: invert(65%) sepia(18%) saturate(900%) hue-rotate(175deg) brightness(95%);
-  cursor: pointer;
-  transition: opacity 0.2s;
-}
-
-input[type='date']:hover::-webkit-calendar-picker-indicator {
-  opacity: 1;
-}
-
-.select-wrapper {
-  position: relative;
-  width: 100%;
-}
-
-.select-wrapper select {
-  width: 100%;
-  height: 44px;
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  padding: 0 38px 0 14px;
-  background-color: #081d38;
-  color: #ffffff;
-  border: 1px solid #143560;
-  border-radius: 10px;
-  font-size: 0.9rem;
-  outline: none;
-  cursor: pointer;
-  transition:
-    border-color 0.2s,
-    background-color 0.2s,
-    box-shadow 0.2s;
-}
-
-.select-wrapper::after {
-  content: '';
-  position: absolute;
-  right: 14px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 10px;
-  height: 6px;
-  background-color: #7d96b3;
-  clip-path: polygon(0 0, 100% 0, 50% 100%);
-  pointer-events: none;
-  transition:
-    transform 0.2s ease,
-    background-color 0.2s ease;
-}
-
-.select-wrapper select:hover {
-  border-color: #1d4f91;
-}
-
-.select-wrapper select:focus {
-  border-color: #38bdf8;
-  background-color: #092244;
-  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
-}
-
-.select-wrapper select:focus + .select-wrapper::after,
-.select-wrapper:focus-within::after {
-  transform: translateY(-50%) rotate(180deg);
-  background-color: #38bdf8;
-}
-
-.select-wrapper select:has(option[value='']:checked) {
-  color: #637d9d;
-}
-
-.select-wrapper select option {
-  background-color: #071930;
-  color: #ffffff;
-  padding: 12px 14px;
-}
-
-.select-wrapper select option[disabled] {
-  color: #4b6485;
-}
-
+/* =========================================
+   Menús Desplegables (Dropdowns)
+   ========================================= */
 .custom-dropdown {
   position: relative;
   width: 100%;
@@ -199,9 +125,14 @@ input[type='date']:hover::-webkit-calendar-picker-indicator {
   cursor: pointer;
   outline: none;
   transition:
-    border-color 0.2s,
-    background-color 0.2s,
-    box-shadow 0.2s;
+    border-color 0.2s ease,
+    background-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.dropdown-trigger:hover {
+  border-color: #38bdf8;
+  background-color: #092244;
 }
 
 .custom-dropdown.open .dropdown-trigger,
@@ -316,6 +247,9 @@ input[type='date']:hover::-webkit-calendar-picker-indicator {
   stroke: #38bdf8;
 }
 
+/* =========================================
+   Zona de Foto / Escudo (Drag & Drop)
+   ========================================= */
 .shield-container {
   display: grid;
   grid-template-columns: 1.8fr 1fr;
@@ -383,7 +317,6 @@ input[type='date']:hover::-webkit-calendar-picker-indicator {
   border: 1px solid #143560;
   border-radius: 12px;
   background: radial-gradient(circle at center, #0a213f 0%, #061528 100%);
-  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.4);
   padding: 1rem;
   position: relative;
 }
@@ -392,9 +325,7 @@ input[type='date']:hover::-webkit-calendar-picker-indicator {
   width: 42px;
   height: 42px;
   color: #1c3c66;
-  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.3));
   margin-bottom: 6px;
-  transition: color 0.2s ease;
 }
 
 .preview-text {
@@ -406,7 +337,6 @@ input[type='date']:hover::-webkit-calendar-picker-indicator {
   max-width: 60px;
   max-height: 60px;
   object-fit: contain;
-  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.4));
 }
 
 .btn-remove-shield {
@@ -432,36 +362,9 @@ input[type='date']:hover::-webkit-calendar-picker-indicator {
   color: #fff;
 }
 
-.chips-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin-top: 8px;
-}
-
-.chip {
-  background-color: #0f325e;
-  border: 1px solid #1d4f91;
-  color: #dbeafe;
-  font-size: 0.78rem;
-  font-weight: 500;
-  padding: 4px 10px;
-  border-radius: 20px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.chip-remove {
-  cursor: pointer;
-  color: #7d96b3;
-  font-size: 12px;
-}
-
-.chip-remove:hover {
-  color: #ef4444;
-}
-
+/* =========================================
+   Botones de Acción
+   ========================================= */
 .form-actions {
   display: flex;
   gap: 1rem;
@@ -471,19 +374,29 @@ input[type='date']:hover::-webkit-calendar-picker-indicator {
 .btn-cancel {
   flex: 1;
   height: 48px;
-  background: transparent;
+  background-color: transparent;
   border: 1px solid #1a3d6b;
   color: #ffffff;
   border-radius: 12px;
   font-size: 0.95rem;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
 }
 
 .btn-cancel:hover {
-  background-color: #0b2240;
-  border-color: #2b558c;
+  border-color: #38bdf8;
+  background-color: #092244;
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.2);
+  transform: translateY(-1px);
+}
+
+.btn-cancel:active {
+  transform: translateY(0);
 }
 
 .btn-save {
@@ -500,13 +413,13 @@ input[type='date']:hover::-webkit-calendar-picker-indicator {
   transition: all 0.2s ease;
 }
 
-.btn-save:hover {
+.btn-save:hover:not(:disabled) {
   background: linear-gradient(180deg, #3b82f6 0%, #2563eb 100%);
   box-shadow: 0 6px 18px rgba(37, 99, 235, 0.45);
   transform: translateY(-1px);
 }
 
-.btn-save:active {
+.btn-save:active:not(:disabled) {
   transform: translateY(0);
   box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
 }
@@ -519,6 +432,202 @@ input[type='date']:hover::-webkit-calendar-picker-indicator {
   transform: none;
 }
 
+/* =========================================
+   Calendario Desplegable (Estilo Player Form)
+   ========================================= */
+.calendar-field-container {
+  position: relative;
+  width: 100%;
+}
+
+.calendar-trigger {
+  width: 100%;
+  height: 44px;
+  background-color: #081d38;
+  color: #ffffff;
+  border: 1px solid #143560;
+  border-radius: 10px;
+  padding: 0 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  font-family: inherit;
+  cursor: pointer;
+  outline: none;
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.calendar-trigger:hover,
+.calendar-trigger.open {
+  border-color: #38bdf8;
+  background-color: #092244;
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.15);
+}
+
+.calendar-trigger .placeholder {
+  color: #637d9d;
+}
+
+.calendar-trigger.input-error {
+  border-color: #ef4444 !important;
+  background-color: #0b1a2f;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15) !important;
+}
+
+.calendar-icon {
+  width: 18px;
+  height: 18px;
+  color: #7d96b3;
+  flex-shrink: 0;
+}
+
+.calendar-popover {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  width: 100%;
+  background-color: #06182e;
+  border: 1px solid #143560;
+  border-radius: 12px;
+  box-shadow:
+    0 14px 32px rgba(0, 0, 0, 0.65),
+    0 0 1px rgba(255, 255, 255, 0.1);
+  padding: 1rem;
+  z-index: 1000;
+  animation: dropdownFadeIn 0.18s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.8rem;
+  gap: 6px;
+}
+
+/* Selectores de Mes y Año */
+.calendar-selects {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.header-select {
+  background-color: #081d38;
+  color: #ffffff;
+  border: 1px solid #143560;
+  border-radius: 6px;
+  padding: 4px 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  font-family: inherit;
+  outline: none;
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.header-select:hover,
+.header-select:focus {
+  border-color: #38bdf8;
+  background-color: #092244;
+  box-shadow: 0 0 8px rgba(56, 189, 248, 0.15);
+}
+
+.header-select option {
+  background-color: #06182e;
+  color: #ffffff;
+}
+
+.calendar-nav-btn {
+  background: transparent;
+  border: 1px solid #143560;
+  color: #ffffff;
+  border-radius: 6px;
+  width: 28px;
+  height: 28px;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition:
+    border-color 0.15s ease,
+    background-color 0.15s ease;
+}
+
+.calendar-nav-btn:hover {
+  border-color: #38bdf8;
+  background-color: rgba(56, 189, 248, 0.1);
+}
+
+.calendar-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+
+.calendar-weekday {
+  color: #94a3b8;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+.calendar-day {
+  aspect-ratio: 1;
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  font-size: 0.88rem;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.calendar-day:hover {
+  background-color: rgba(255, 107, 0, 0.18);
+  color: #ff6b00;
+}
+
+.calendar-day.other-month {
+  color: #3b506d;
+}
+
+.calendar-day.other-month:hover {
+  color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.calendar-day.selected {
+  background-color: #ff6b00 !important;
+  color: #ffffff !important;
+  font-weight: 700;
+  box-shadow: 0 2px 10px rgba(255, 107, 0, 0.45);
+}
+
+/* =========================================
+   Mensajes de Validación y Error
+   ========================================= */
 .error-feedback {
   display: flex;
   align-items: center;
@@ -552,267 +661,9 @@ input[type='date']:hover::-webkit-calendar-picker-indicator {
   letter-spacing: 0.01em;
 }
 
-/* Resalta inputs, selects y el dropdown de país en rojo si están inválidos y tocados */
 .form-group input.ng-invalid.ng-touched,
-.form-group select.ng-invalid.ng-touched,
 .custom-dropdown.is-invalid .dropdown-trigger {
   border-color: #ef4444 !important;
   background-color: #0b1a2f;
   box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15) !important;
-}
-
-/* 1. Forzar popup nativo del sistema en modo oscuro y tipografía uniforme */
-#foundation[type='date'] {
-  color-scheme: dark;
-  position: relative;
-  font-family: inherit;
-  cursor: pointer;
-}
-
-/* 2. Estilos para los textos internos (dd / mm / aaaa y separadores '/') */
-#foundation[type='date']::-webkit-datetime-edit {
-  color: #c9d8eb;
-  padding: 0;
-}
-
-#foundation[type='date']::-webkit-datetime-edit-fields-wrapper {
-  padding: 0;
-}
-
-#foundation[type='date']::-webkit-datetime-edit-text {
-  color: #637d9d; /* Barras separadoras '/' */
-  padding: 0 4px;
-}
-
-#foundation[type='date']::-webkit-datetime-edit-month-field,
-#foundation[type='date']::-webkit-datetime-edit-day-field,
-#foundation[type='date']::-webkit-datetime-edit-year-field {
-  color: #ffffff;
-  padding: 2px 3px;
-  border-radius: 4px;
-}
-
-/* Resaltado azul al hacer clic o navegar con teclado entre día, mes o año */
-#foundation[type='date']::-webkit-datetime-edit-month-field:focus,
-#foundation[type='date']::-webkit-datetime-edit-day-field:focus,
-#foundation[type='date']::-webkit-datetime-edit-year-field:focus {
-  background-color: #1d4ed8;
-  color: #ffffff;
-  outline: none;
-}
-
-/* 3. Icono del calendario alineado al diseño oscuro */
-#foundation[type='date']::-webkit-calendar-picker-indicator {
-  opacity: 0.7;
-  cursor: pointer;
-  padding: 4px;
-  border-radius: 6px;
-  /* Filtro celeste neón acorde a la paleta */
-  filter: invert(70%) sepia(45%) saturate(1000%) hue-rotate(175deg) brightness(100%);
-  transition:
-    opacity 0.2s ease,
-    transform 0.15s ease,
-    background-color 0.2s ease;
-}
-
-#foundation[type='date']::-webkit-calendar-picker-indicator:hover {
-  opacity: 1;
-  background-color: #0f2c52;
-  transform: scale(1.08);
-}
-
-/* 4. Estado cuando el campo es inválido y fue tocado */
-#foundation[type='date'].ng-invalid.ng-touched {
-  border-color: #ef4444 !important;
-  background-color: #0b1a2f;
-  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15) !important;
-}
-
-#foundation[type='date'].ng-invalid.ng-touched::-webkit-calendar-picker-indicator {
-  /* El icono se torna rojo si el campo está con error */
-  filter: invert(45%) sepia(85%) saturate(2000%) hue-rotate(330deg) brightness(95%);
-}
-
-/* ==========================================================================
-   Contenedor y Trigger del Calendario
-   ========================================================================== */
-.calendar-field-container {
-  position: relative;
-  width: 100%;
-}
-
-.calendar-trigger {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background-color: var(--bg-search, #081d38);
-  border: 1px solid var(--border-color, #143560);
-  color: var(--text-primary, #ffffff);
-  padding: 0.8rem 1rem;
-  border-radius: 9px;
-  font-size: 0.95rem;
-  cursor: pointer;
-  user-select: none;
-  transition:
-    border-color 0.2s ease,
-    box-shadow 0.2s ease,
-    background-color 0.2s ease;
-}
-
-.calendar-trigger:hover,
-.calendar-trigger.open {
-  border-color: #38bdf8;
-  background-color: #092244;
-}
-
-.calendar-trigger .placeholder {
-  color: #637d9d;
-}
-
-.calendar-trigger.input-error {
-  border-color: #ef4444 !important;
-  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15) !important;
-}
-
-.calendar-icon {
-  width: 18px;
-  height: 18px;
-  color: #7d96b3;
-}
-
-/* ==========================================================================
-   Menú Flotante (Popover)
-   ========================================================================== */
-.calendar-popover {
-  position: absolute;
-  top: calc(100% + 6px);
-  left: 0;
-  width: 100%;
-  max-width: 320px;
-  background-color: var(--bg-navbar, #06182e);
-  border: 1px solid var(--border-color, #143560);
-  border-radius: 12px;
-  box-shadow:
-    0 14px 32px rgba(0, 0, 0, 0.65),
-    0 0 1px rgba(255, 255, 255, 0.1);
-  padding: 1rem;
-  z-index: 1000;
-}
-
-/* Header de Navegación */
-.calendar-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 0.8rem;
-}
-
-.calendar-title {
-  color: var(--text-primary, #ffffff);
-  font-weight: 600;
-  font-size: 0.95rem;
-}
-
-.calendar-nav-btn {
-  background: transparent;
-  border: 1px solid var(--border-color, #143560);
-  color: var(--text-primary, #ffffff);
-  border-radius: 6px;
-  width: 28px;
-  height: 28px;
-  font-size: 1.1rem;
-  line-height: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition:
-    border-color 0.15s ease,
-    background-color 0.15s ease;
-}
-
-.calendar-nav-btn:hover {
-  border-color: #38bdf8;
-  background-color: rgba(56, 189, 248, 0.1);
-}
-
-/* Días de la Semana */
-.calendar-weekdays {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  text-align: center;
-  margin-bottom: 0.5rem;
-}
-
-.calendar-weekday {
-  color: var(--text-secondary, #94a3b8);
-  font-size: 0.75rem;
-  font-weight: 600;
-  text-transform: uppercase;
-}
-
-/* Grilla de Días */
-.calendar-grid {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 4px;
-}
-
-.calendar-day {
-  aspect-ratio: 1;
-  background: transparent;
-  border: none;
-  color: var(--text-primary, #ffffff);
-  font-size: 0.88rem;
-  border-radius: 6px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition:
-    background-color 0.15s ease,
-    color 0.15s ease,
-    transform 0.1s ease;
-}
-
-.calendar-day:hover {
-  background-color: rgba(255, 107, 0, 0.18);
-  color: var(--brand-orange, #ff6b00);
-}
-
-.calendar-day.other-month {
-  color: #3b506d;
-}
-
-.calendar-day.other-month:hover {
-  color: var(--text-primary, #ffffff);
-  background-color: rgba(255, 255, 255, 0.05);
-}
-
-.calendar-day.selected {
-  background-color: var(--brand-orange, #ff6b00) !important;
-  color: #ffffff !important;
-  font-weight: 700;
-  box-shadow: 0 2px 10px rgba(255, 107, 0, 0.45);
-}
-
-/* Mensajes de Validación */
-.error-feedback {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin-top: 0.45rem;
-}
-
-.error-icon {
-  width: 14px;
-  height: 14px;
-  color: #f87171;
-  flex-shrink: 0;
-}
-
-.error-text {
-  color: #f87171;
-  font-size: 0.8rem;
-  font-weight: 500;
 }

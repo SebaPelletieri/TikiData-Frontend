@@ -27,7 +27,7 @@
       <label for="name">Nombre del equipo <span class="required">*</span></label>
       <input id="name" type="text" formControlName="name" placeholder="Ej. River Plate" />
 
-      @if (formulario.controls.name.touched && formulario.controls.name.invalid) {
+      @if (formulario.controls['name'].touched && formulario.controls['name'].invalid) {
         <div class="error-feedback">
           <svg
             class="error-icon"
@@ -42,15 +42,13 @@
           </svg>
 
           <span class="error-text">
-            @if (
-              formulario.controls.name.hasError('required') && formulario.controls.name.touched
-            ) {
+            @if (formulario.controls['name'].hasError('required')) {
               El nombre es obligatorio.
             }
-            @if (formulario.controls.name.hasError('minlength')) {
+            @if (formulario.controls['name'].hasError('minlength')) {
               Mínimo 3 caracteres.
             }
-            @if (formulario.controls.name.hasError('maxlength')) {
+            @if (formulario.controls['name'].hasError('maxlength')) {
               Máximo 50 caracteres.
             }
           </span>
@@ -58,7 +56,7 @@
       }
     </div>
 
-    <!-- País y Fundación -->
+    <!-- Fila: País y Fundación -->
     <div class="form-row">
       <div class="form-group">
         <label for="country">País <span class="required">*</span></label>
@@ -66,24 +64,16 @@
           class="custom-dropdown"
           [class.open]="isCountryOpen"
           [class.is-invalid]="
-            formulario.controls['country'].hasError('required') &&
-            formulario.controls['country'].touched
+            formulario.controls['country'].touched && formulario.controls['country'].invalid
           "
         >
-          <!-- Botón disparador con la flecha triangular uniforme -->
-          <button
-            type="button"
-            class="dropdown-trigger"
-            (click)="toggleCountryDropdown()"
-            (blur)="formulario.controls['country'].markAsTouched()"
-          >
+          <button type="button" class="dropdown-trigger" (click)="toggleCountryDropdown()">
             <span [class.placeholder]="!formulario.controls['country'].value">
               {{ formulario.controls['country'].value || 'Selecciona un país' }}
             </span>
             <span class="triangle-icon"></span>
           </button>
 
-          <!-- Menú flotante con animación y checkmark -->
           @if (isCountryOpen) {
             <ul class="dropdown-menu">
               @for (item of countries; track item) {
@@ -115,11 +105,7 @@
           }
         </div>
 
-        <!-- Mensaje de error e icono -->
-        @if (
-          formulario.controls['country'].hasError('required') &&
-          formulario.controls['country'].touched
-        ) {
+        @if (formulario.controls['country'].touched && formulario.controls['country'].invalid) {
           <div class="error-feedback">
             <svg
               class="error-icon"
@@ -140,8 +126,8 @@
       <div class="form-group calendar-field-container">
         <label for="foundation">Fecha de fundación <span class="required">*</span></label>
 
-        <!-- Disparador que abre/cierra el calendario -->
-        <div
+        <button
+          type="button"
           class="calendar-trigger"
           [class.open]="isCalendarOpen"
           [class.input-error]="
@@ -165,26 +151,44 @@
             <line x1="8" y1="2" x2="8" y2="6"></line>
             <line x1="3" y1="10" x2="21" y2="10"></line>
           </svg>
-        </div>
+        </button>
 
-        <!-- Popover desplegable -->
         @if (isCalendarOpen) {
           <div class="calendar-popover">
-            <!-- Encabezado con navegación de mes y año -->
             <div class="calendar-header">
               <button type="button" class="calendar-nav-btn" (click)="prevMonth()">&#8249;</button>
-              <span class="calendar-title"> {{ months[currentMonth] }} {{ currentYear }} </span>
+
+              <div class="calendar-selects">
+                <select
+                  class="header-select"
+                  [value]="currentMonth"
+                  (change)="onMonthChange($any($event.target).value)"
+                >
+                  @for (m of months; track $index) {
+                    <option [value]="$index">{{ m }}</option>
+                  }
+                </select>
+
+                <select
+                  class="header-select"
+                  [value]="currentYear"
+                  (change)="onYearChange($any($event.target).value)"
+                >
+                  @for (y of yearsList; track y) {
+                    <option [value]="y">{{ y }}</option>
+                  }
+                </select>
+              </div>
+
               <button type="button" class="calendar-nav-btn" (click)="nextMonth()">&#8250;</button>
             </div>
 
-            <!-- Nombres de los días -->
             <div class="calendar-weekdays">
               @for (dayName of weekDays; track dayName) {
                 <span class="calendar-weekday">{{ dayName }}</span>
               }
             </div>
 
-            <!-- Días del mes (previos, actuales y posteriores) -->
             <div class="calendar-grid">
               @for (item of calendarDays; track $index) {
                 <button
@@ -201,7 +205,6 @@
           </div>
         }
 
-        <!-- Mensajes de error -->
         @if (
           formulario.controls['yearOfFoundation'].touched &&
           formulario.controls['yearOfFoundation'].invalid
@@ -224,11 +227,10 @@
       </div>
     </div>
 
-    <!-- Escudo (Dropzone + Vista Previa interactiva) -->
+    <!-- Escudo (Dropzone + Vista Previa) -->
     <div class="form-group">
       <label>Escudo <span class="required">*</span></label>
       <div class="shield-container">
-        <!-- Zona de carga -->
         <label class="dropzone" for="shield-file">
           <input
             type="file"
@@ -254,7 +256,6 @@
           <span class="dropzone-hint">PNG, JPG (máx. 2MB)</span>
         </label>
 
-        <!-- Vista previa reactiva -->
         <div class="preview-box">
           @if (shieldPreview) {
             <img [src]="shieldPreview" alt="Escudo" class="uploaded-shield-img" />
@@ -278,7 +279,7 @@
         class="custom-dropdown"
         [class.open]="isStadiumOpen"
         [class.is-invalid]="
-          formulario.controls.stadiumID.touched && formulario.controls.stadiumID.invalid
+          formulario.controls['stadiumID'].touched && formulario.controls['stadiumID'].invalid
         "
       >
         <button
@@ -286,9 +287,9 @@
           id="stadium"
           class="dropdown-trigger"
           (click)="toggleStadiumDropdown()"
-          (blur)="formulario.controls.stadiumID.markAsTouched()"
+          (blur)="formulario.controls['stadiumID'].markAsTouched()"
         >
-          <span [class.placeholder]="!formulario.controls.stadiumID.value">
+          <span [class.placeholder]="!formulario.controls['stadiumID'].value">
             {{ selectedStadiumName || 'Selecciona un estadio' }}
           </span>
           <span class="triangle-icon"></span>
@@ -300,7 +301,7 @@
               <li
                 class="dropdown-item"
                 [class.active]="
-                  formulario.controls.stadiumID.value.toString() === item.id.toString()
+                  formulario.controls['stadiumID'].value.toString() === item.id.toString()
                 "
                 (click)="selectStadium(item.id)"
               >
@@ -308,7 +309,7 @@
                   <span>{{ item.name }}</span>
                 </div>
 
-                @if (formulario.controls.stadiumID.value.toString() === item.id.toString()) {
+                @if (formulario.controls['stadiumID'].value.toString() === item.id.toString()) {
                   <svg
                     class="check-icon"
                     viewBox="0 0 24 24"
@@ -327,7 +328,7 @@
         }
       </div>
 
-      @if (formulario.controls.stadiumID.touched && formulario.controls.stadiumID.invalid) {
+      @if (formulario.controls['stadiumID'].touched && formulario.controls['stadiumID'].invalid) {
         <div class="error-feedback">
           <svg
             class="error-icon"
@@ -345,15 +346,15 @@
       }
     </div>
 
-    <!-- Campeonatos activos (Soporte selección múltiple) -->
+    <!-- Campeonatos activos -->
     <div class="form-group">
       <label for="championships">Campeonatos activos <span class="required">*</span></label>
       <div
         class="custom-dropdown"
         [class.open]="isChampionshipsOpen"
         [class.is-invalid]="
-          formulario.controls.championshipsActive.touched &&
-          formulario.controls.championshipsActive.invalid
+          formulario.controls['championshipsActive'].touched &&
+          formulario.controls['championshipsActive'].invalid
         "
       >
         <button
@@ -361,13 +362,13 @@
           id="championships"
           class="dropdown-trigger"
           (click)="toggleChampionshipsDropdown()"
-          (blur)="formulario.controls.championshipsActive.markAsTouched()"
+          (blur)="formulario.controls['championshipsActive'].markAsTouched()"
         >
-          <span [class.placeholder]="formulario.controls.championshipsActive.value.length === 0">
-            @if (formulario.controls.championshipsActive.value.length === 0) {
+          <span [class.placeholder]="formulario.controls['championshipsActive'].value.length === 0">
+            @if (formulario.controls['championshipsActive'].value.length === 0) {
               Selecciona los campeonatos
             } @else {
-              {{ formulario.controls.championshipsActive.value.length }} seleccionados
+              {{ formulario.controls['championshipsActive'].value.length }} seleccionados
             }
           </span>
           <span class="triangle-icon"></span>
@@ -405,8 +406,8 @@
       </div>
 
       @if (
-        formulario.controls.championshipsActive.touched &&
-        formulario.controls.championshipsActive.invalid
+        formulario.controls['championshipsActive'].touched &&
+        formulario.controls['championshipsActive'].invalid
       ) {
         <div class="error-feedback">
           <svg

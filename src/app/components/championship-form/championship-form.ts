@@ -10,12 +10,11 @@ import { ChampionshipService } from '../../services/championship-service';
   templateUrl: './championship-form.html',
 })
 export class ChampionshipForm {
-
   championshipService = inject(ChampionshipService);
   fb = inject(FormBuilder);
 
   logoPreview: string | null = null;
-  
+
   // Estados de los dropdowns
   isTypeOpen = false;
   isTeamsOpen = false;
@@ -29,7 +28,7 @@ export class ChampionshipForm {
     { id: 2, name: 'Boca Juniors' },
     { id: 3, name: 'Independiente' },
     { id: 4, name: 'Racing Club' },
-    { id: 5, name: 'San Lorenzo' }
+    { id: 5, name: 'San Lorenzo' },
   ];
 
   formulario = this.fb.nonNullable.group({
@@ -45,8 +44,8 @@ export class ChampionshipForm {
   }
 
   saveChampionship() {
-    const formValue = this.formulario.getRawValue(); 
-    
+    const formValue = this.formulario.getRawValue();
+
     let championshipActual: Championship = {
       name: formValue.name,
       logo: formValue.logo,
@@ -72,16 +71,19 @@ export class ChampionshipForm {
   }
 
   // --- TIPO DE CAMPEONATO (Selección Única) ---
-  toggleTypeDropdown() {
-    const wasOpen = this.isTypeOpen;
-    this.closeAllDropdowns();
-    this.isTypeOpen = !wasOpen;
-    if (!this.isTypeOpen) this.formulario.controls.type.markAsTouched();
+  toggleTypeDropdown(): void {
+    this.isTypeOpen = !this.isTypeOpen;
+    this.isTeamsOpen = false;
+
+    // Si se cierra el desplegable sin elegir opción, se marca como tocado
+    if (!this.isTypeOpen) {
+      this.formulario.controls['type'].markAsTouched();
+    }
   }
 
-  selectType(type: ChampionshipType) {
-    this.formulario.controls.type.setValue(type);
-    this.formulario.controls.type.markAsTouched();
+  selectType(type: string): void {
+    this.formulario.controls['type'].setValue(type);
+    this.formulario.controls['type'].markAsTouched();
     this.isTypeOpen = false;
   }
 

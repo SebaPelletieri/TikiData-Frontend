@@ -1,229 +1,133 @@
-import { Component, inject } from '@angular/core';
-import { ReactiveFormsModule, FormsModule, FormBuilder, Validators } from '@angular/forms';
-import { PlayerService } from '../../services/player-service';
-import { Player, Position } from '../../models/Player';
+import { Component, OnInit, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+
+export type Position = 'ARQ' | 'DEF' | 'MED' | 'DEL';
+
+export interface Player {
+  id?: number;
+  name: string;
+  photo: string;
+  age: number;
+  position: Position;
+  currentTeamID?: number;
+  bithDate: string;
+  nacionality: string;
+  preferredFoot: string;
+  matchesPlayed: number;
+  goals: number;
+  assists: number;
+  yellowCards: number;
+  redCards: number;
+}
+
+interface CalendarDay {
+  day: number;
+  date: Date;
+  isCurrentMonth: boolean;
+}
 
 @Component({
-  imports: [ReactiveFormsModule, FormsModule],
   selector: 'app-player-form',
-  styleUrl: './player-form.css',
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './player-form.html',
+  styleUrls: ['./player-form.css'],
 })
-export class PlayerForm {
+export class PlayerFormComponent implements OnInit {
+  private fb = inject(FormBuilder);
+  formulario!: FormGroup;
 
-  playerService = inject(PlayerService)
-  fb = inject(FormBuilder);
-
-  photoPreview: string | null = null;
-  isNationalityOpen = false;
-  isPositionOpen = false;
-  isFootOpen = false;
-  isTeamOpen = false;
-  isCalendarOpen = false;
-  currentMonth = new Date().getMonth();
-  currentYear = new Date().getFullYear();
-
-  yearsRange: number[] = Array.from(
-    { length: new Date().getFullYear() - 1969 },
-    (_, i) => new Date().getFullYear() - i
-  );
-
-  nationalities = ['Argentina', 'Brasil', 'Uruguay', 'Colombia', 'Chile', 'Paraguay'];
-  positions = ['ARQ', 'DEF', 'MED', 'DEL'];
-  footOptions = ['Derecho', 'Izquierdo', 'Ambidiestro'];
-  teams = [
-    { id: 1, name: 'River Plate' },
-    { id: 2, name: 'Boca Juniors' },
-    { id: 3, name: 'Independiente' },
+  // Listas de selección
+  positions: { value: Position; label: string }[] = [
+    { value: 'ARQ', label: 'Arquero (ARQ)' },
+    { value: 'DEF', label: 'Defensor (DEF)' },
+    { value: 'MED', label: 'Mediocampista (MED)' },
+    { value: 'DEL', label: 'Delantero (DEL)' },
   ];
 
-  months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
-  weekDays = ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'];
+  preferredFeet: string[] = ['Derecho', 'Izquierdo', 'Ambidiestro'];
 
-  formulario = this.fb.nonNullable.group({
-    name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
-    photo: ['', [Validators.required]],
-    age: [{ value: 0, disabled: true }, [Validators.required, Validators.min(15)]],
-    position: ['', [Validators.required]],
-    currentTeamID: [''], 
-    bithDate: ['', [Validators.required]], // Escrito exactamente en la interfaz
-    nacionality: ['', [Validators.required]],
-    preferredFoot: ['', [Validators.required]],
-    matchesPlayed: [0, [Validators.required, Validators.min(0)]],
-    goals: [0, [Validators.required, Validators.min(0)]],
-    assists: [0, [Validators.required, Validators.min(0)]],
-    yellowCards: [0, [Validators.required, Validators.min(0)]],
-    redCards: [0, [Validators.required, Validators.min(0)]],
-  });
+  // Estados de dropdowns
+  isPositionOpen: boolean = false;
+  isFootOpen: boolean = false;
 
-  savePlayer() {
-    const formValue = this.formulario.getRawValue(); 
-    
-    let playerActual: Player = {
-      name: formValue.name,
-      photo: formValue.photo,
-      age: formValue.age,
-      position: formValue.position as Position,
-      currentTeamID: formValue.currentTeamID ? Number(formValue.currentTeamID) : undefined,
-      bithDate: formValue.bithDate,
-      nacionality: formValue.nacionality,
-      preferredFoot: formValue.preferredFoot,
-      matchesPlayed: formValue.matchesPlayed,
-      goals: formValue.goals,
-      assists: formValue.assists,
-      yellowCards: formValue.yellowCards,
-      redCards: formValue.redCards,
-    };
+  // Estados del calendario
+  isCalendarOpen: boolean = false;
+  currentDate: Date = new Date();
+  calendarDays: CalendarDay[] = [];
+  yearsList: number[] = [];
+  monthsNames: string[] = [
+    'Enero',
+    'Febrero',
+    'Marzo',
+    'Abril',
+    'Mayo',
+    'Junio',
+    'Julio',
+    'Agosto',
+    'Septiembre',
+    'Octubre',
+    'Noviembre',
+    'Diciembre',
+  ];
 
-    this.playerService.savePlayer(playerActual);
-    this.formulario.reset();
+  photoPreview: string | null = null;
+
+  ngOnInit(): void {
+    this.initForm();
+    this.generateYearsList();
+    this.generateCalendar();
+  }
+
+  // En tu método initForm():
+  initForm(): void {
+    this.formulario = this.fb.group({
+      name: ['', [Validators.required, Validators.minLength(3)]],
+      photo: ['', [Validators.required]],
+      age: [{ value: '', disabled: true }, [Validators.required, Validators.min(10)]],
+      position: ['', [Validators.required]],
+      currentTeamID: [null],
+      bithDate: ['', [Validators.required]],
+      nacionality: ['', [Validators.required, Validators.minLength(3)]],
+      preferredFoot: ['', [Validators.required]],
+
+      // Validadores numéricos con patrón de solo dígitos enteros:
+      matchesPlayed: ['', [Validators.pattern(/^[0-9]+$/)]],
+      goals: ['', [Validators.pattern(/^[0-9]+$/)]],
+      assists: ['', [Validators.pattern(/^[0-9]+$/)]],
+      yellowCards: ['', [Validators.pattern(/^[0-9]+$/)]],
+      redCards: [0, [Validators.pattern(/^[0-9]+$/)]],
+    });
+  }
+
+  cancel(): void {
+    this.formulario.reset({
+      matchesPlayed: null,
+      goals: null,
+      assists: null,
+      yellowCards: null,
+      redCards: 0,
+    });
     this.photoPreview = null;
   }
 
-  cancel() {
-    this.formulario.reset();
-    this.photoPreview = null;
-  }
-
-  // --- CONTROL DE MENÚS DESPLEGABLES ---
-  closeAllDropdowns() {
-    this.isNationalityOpen = false;
-    this.isPositionOpen = false;
-    this.isFootOpen = false;
-    this.isTeamOpen = false;
-  }
-
-  toggleNationalityDropdown() {
-    const wasOpen = this.isNationalityOpen;
-    this.closeAllDropdowns();
-    this.isNationalityOpen = !wasOpen;
-  }
-
-  selectNationality(country: string) {
-    this.formulario.controls.nacionality.setValue(country);
-    this.formulario.controls.nacionality.markAsTouched();
-    this.isNationalityOpen = false;
-  }
-
-  togglePositionDropdown() {
-    const wasOpen = this.isPositionOpen;
-    this.closeAllDropdowns();
-    this.isPositionOpen = !wasOpen;
-    if (!this.isPositionOpen) this.formulario.controls.position.markAsTouched();
-  }
-
-  selectPosition(pos: string) {
-    this.formulario.controls.position.setValue(pos);
-    this.formulario.controls.position.markAsTouched();
-    this.isPositionOpen = false;
-  }
-
-  toggleFootDropdown() {
-    const wasOpen = this.isFootOpen;
-    this.closeAllDropdowns();
-    this.isFootOpen = !wasOpen;
-    if (!this.isFootOpen) this.formulario.controls.preferredFoot.markAsTouched();
-  }
-
-  selectFoot(foot: string) {
-    this.formulario.controls.preferredFoot.setValue(foot);
-    this.formulario.controls.preferredFoot.markAsTouched();
-    this.isFootOpen = false;
-  }
-
-  toggleTeamDropdown() {
-    const wasOpen = this.isTeamOpen;
-    this.closeAllDropdowns();
-    this.isTeamOpen = !wasOpen;
-  }
-
-  selectTeam(teamId: number) {
-    this.formulario.controls.currentTeamID.setValue(teamId.toString());
-    this.formulario.controls.currentTeamID.markAsTouched();
-    this.isTeamOpen = false;
-  }
-
-  get selectedTeamName(): string | undefined {
-    const selectedId = this.formulario.controls.currentTeamID.value;
-    return this.teams.find((t) => t.id.toString() === selectedId?.toString())?.name;
-  }
-
-  // --- FOTO (DRAG & DROP) ---
-  onFileSelected(event: Event) {
-    const file = (event.target as HTMLInputElement).files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        this.photoPreview = reader.result as string;
-        this.formulario.patchValue({ photo: this.photoPreview });
-      };
-      reader.readAsDataURL(file);
+  generateYearsList(): void {
+    const currentYear = new Date().getFullYear();
+    for (let y = currentYear; y >= 1950; y--) {
+      this.yearsList.push(y);
     }
   }
 
-  removePhoto(event: Event) {
-    event.stopPropagation();
-    this.photoPreview = null;
-    this.formulario.patchValue({ photo: '' });
-  }
-
-  // --- CALENDARIO (FECHA DE NACIMIENTO) ---
+  // --- CALENDARIO & EDAD ---
   toggleCalendar(): void {
-    const wasOpen = this.isCalendarOpen;
-    this.closeAllDropdowns();
-    this.isCalendarOpen = !wasOpen;
+    this.isCalendarOpen = !this.isCalendarOpen;
+    this.isPositionOpen = false;
+    this.isFootOpen = false;
+
     if (!this.isCalendarOpen) {
-      this.formulario.controls.bithDate.markAsTouched();
+      this.formulario.controls['bithDate'].markAsTouched();
     }
-  }
-
-  get calendarDays(): { day: number; date: Date; isCurrentMonth: boolean }[] {
-    const days: { day: number; date: Date; isCurrentMonth: boolean }[] = [];
-    const firstDayIndex = new Date(this.currentYear, this.currentMonth, 1).getDay();
-    const lastDateCurrentMonth = new Date(this.currentYear, this.currentMonth + 1, 0).getDate();
-    const lastDatePrevMonth = new Date(this.currentYear, this.currentMonth, 0).getDate();
-
-    for (let i = firstDayIndex; i > 0; i--) {
-      const day = lastDatePrevMonth - i + 1;
-      days.push({ day, date: new Date(this.currentYear, this.currentMonth - 1, day), isCurrentMonth: false });
-    }
-
-    for (let i = 1; i <= lastDateCurrentMonth; i++) {
-      days.push({ day: i, date: new Date(this.currentYear, this.currentMonth, i), isCurrentMonth: true });
-    }
-
-    const remainingDays = 42 - days.length;
-    for (let i = 1; i <= remainingDays; i++) {
-      days.push({ day: i, date: new Date(this.currentYear, this.currentMonth + 1, i), isCurrentMonth: false });
-    }
-
-    return days;
-  }
-
-  prevMonth(): void {
-    if (this.currentMonth === 0) {
-      this.currentMonth = 11;
-      this.currentYear--;
-    } else {
-      this.currentMonth--;
-    }
-  }
-
-  nextMonth(): void {
-    if (this.currentMonth === 11) {
-      this.currentMonth = 0;
-      this.currentYear++;
-    } else {
-      this.currentMonth++;
-    }
-  }
-
-  onMonthChange(event: Event): void {
-    this.currentMonth = Number((event.target as HTMLSelectElement).value);
-  }
-
-  onYearChange(event: Event): void {
-    this.currentYear = Number((event.target as HTMLSelectElement).value);
   }
 
   selectDate(date: Date): void {
@@ -232,40 +136,159 @@ export class PlayerForm {
     const day = String(date.getDate()).padStart(2, '0');
     const formattedDate = `${year}-${month}-${day}`;
 
-    this.formulario.controls.bithDate.setValue(formattedDate);
-    this.formulario.controls.bithDate.markAsTouched();
-
     // Cálculo automático de la edad
-    const birthDate = new Date(date);
-    const ageDifMs = Date.now() - birthDate.getTime();
-    const ageDate = new Date(ageDifMs);
-    const calculatedAge = Math.abs(ageDate.getUTCFullYear() - 1970);
+    const today = new Date();
+    let calculatedAge = today.getFullYear() - date.getFullYear();
+    const m = today.getMonth() - date.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < date.getDate())) {
+      calculatedAge--;
+    }
 
-    this.formulario.controls.age.setValue(calculatedAge);
+    this.formulario.patchValue({
+      bithDate: formattedDate,
+      age: calculatedAge,
+    });
+    this.formulario.controls['bithDate'].markAsTouched();
     this.isCalendarOpen = false;
   }
 
-  isDaySelected(date: Date): boolean {
-    const currentValue = this.formulario.controls.bithDate.value;
-    if (!currentValue) return false;
-
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    const formatted = `${year}-${month}-${day}`;
-
-    return currentValue === formatted;
+  isSelected(date: Date): boolean {
+    const val = this.formulario.controls['bithDate'].value;
+    if (!val) return false;
+    const [y, m, d] = val.split('-').map(Number);
+    return date.getFullYear() === y && date.getMonth() === m - 1 && date.getDate() === d;
   }
 
-  get formattedSelectedDate(): string {
-    const val = this.formulario.controls.bithDate.value;
+  get formattedBirthDate(): string {
+    const val = this.formulario.controls['bithDate'].value;
     if (!val) return '';
-    const [year, month, day] = val.split('-');
-    return `${day}/${month}/${year}`;
+    const [y, m, d] = val.split('-');
+    return `${d}/${m}/${y}`;
   }
 
-  
-  
-
+  onMonthChange(monthIndex: any): void {
+    this.currentDate = new Date(this.currentDate.getFullYear(), Number(monthIndex), 1);
+    this.generateCalendar();
   }
 
+  onYearChange(year: any): void {
+    this.currentDate = new Date(Number(year), this.currentDate.getMonth(), 1);
+    this.generateCalendar();
+  }
+
+  prevMonth(): void {
+    this.currentDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth() - 1, 1);
+    this.generateCalendar();
+  }
+
+  nextMonth(): void {
+    this.currentDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth() + 1, 1);
+    this.generateCalendar();
+  }
+
+  generateCalendar(): void {
+    const year = this.currentDate.getFullYear();
+    const month = this.currentDate.getMonth();
+
+    const firstDayIndex = new Date(year, month, 1).getDay();
+    const totalDaysInMonth = new Date(year, month + 1, 0).getDate();
+    const totalDaysPrevMonth = new Date(year, month, 0).getDate();
+
+    const days: CalendarDay[] = [];
+
+    for (let i = firstDayIndex - 1; i >= 0; i--) {
+      days.push({
+        day: totalDaysPrevMonth - i,
+        date: new Date(year, month - 1, totalDaysPrevMonth - i),
+        isCurrentMonth: false,
+      });
+    }
+
+    for (let i = 1; i <= totalDaysInMonth; i++) {
+      days.push({
+        day: i,
+        date: new Date(year, month, i),
+        isCurrentMonth: true,
+      });
+    }
+
+    const remainingDays = 42 - days.length;
+    for (let i = 1; i <= remainingDays; i++) {
+      days.push({
+        day: i,
+        date: new Date(year, month + 1, i),
+        isCurrentMonth: false,
+      });
+    }
+
+    this.calendarDays = days;
+  }
+
+  // --- DROPDOWNS ---
+  togglePositionDropdown(): void {
+    this.isPositionOpen = !this.isPositionOpen;
+    this.isFootOpen = false;
+    this.isCalendarOpen = false;
+    if (!this.isPositionOpen) {
+      this.formulario.controls['position'].markAsTouched();
+    }
+  }
+
+  selectPosition(pos: Position): void {
+    this.formulario.controls['position'].setValue(pos);
+    this.formulario.controls['position'].markAsTouched();
+    this.isPositionOpen = false;
+  }
+
+  get selectedPositionLabel(): string {
+    const val = this.formulario.controls['position'].value;
+    return this.positions.find((p) => p.value === val)?.label || '';
+  }
+
+  toggleFootDropdown(): void {
+    this.isFootOpen = !this.isFootOpen;
+    this.isPositionOpen = false;
+    this.isCalendarOpen = false;
+    if (!this.isFootOpen) {
+      this.formulario.controls['preferredFoot'].markAsTouched();
+    }
+  }
+
+  selectFoot(foot: string): void {
+    this.formulario.controls['preferredFoot'].setValue(foot);
+    this.formulario.controls['preferredFoot'].markAsTouched();
+    this.isFootOpen = false;
+  }
+
+  // --- FOTO ---
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files[0]) {
+      const file = input.files[0];
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.photoPreview = reader.result as string;
+        this.formulario.patchValue({ photo: this.photoPreview });
+        this.formulario.controls['photo'].markAsTouched();
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  removePhoto(event: Event): void {
+    event.stopPropagation();
+    this.photoPreview = null;
+    this.formulario.patchValue({ photo: '' });
+  }
+
+  savePlayer(): void {
+    if (this.formulario.invalid) {
+      this.formulario.markAllAsTouched();
+      return;
+    }
+
+    // getRawValue extrae también campos disabled como 'age'
+    const newPlayer: Player = this.formulario.getRawValue();
+    console.log('Jugador a guardar:', newPlayer);
+  }
+}

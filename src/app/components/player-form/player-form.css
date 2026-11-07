@@ -1,16 +1,16 @@
-/* =========================================
-   Contenedor Principal de la Tarjeta
-   ========================================= */
 * {
   box-sizing: border-box;
 }
 
+/* =========================================
+   Contenedor Principal de la Tarjeta
+   ========================================= */
 .team-form-container {
-  max-width: 500px; /* Define el ancho de la tarjeta */
-  margin: 2rem auto; /* Lo centra horizontalmente */
+  max-width: 500px;
+  margin: 2rem auto;
   padding: 2.2rem;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background-color: #041326; /* Fondo azul muy oscuro de la tarjeta */
+  background-color: #041326;
   border: 1px solid #0a264a;
   border-radius: 20px;
   color: #fff;
@@ -63,7 +63,7 @@
 
 .form-row {
   display: grid;
-  grid-template-columns: 1fr 1fr; /* Divide la fila en dos mitades iguales */
+  grid-template-columns: 1fr 1fr;
   gap: 1rem;
 }
 
@@ -79,8 +79,15 @@
   margin-left: 2px;
 }
 
+.section-subtitle {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #d1dced;
+  margin: 1.5rem 0 0.8rem;
+}
+
 /* =========================================
-   Inputs Genéricos
+   Inputs Genéricos y Específicos
    ========================================= */
 .form-group input {
   width: 100%;
@@ -92,11 +99,20 @@
   border-radius: 10px;
   font-size: 0.9rem;
   outline: none;
-  transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s;
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .form-group input::placeholder {
   color: #637d9d;
+}
+
+.form-group input:hover {
+  border-color: #38bdf8;
+  background-color: #092244;
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.15);
 }
 
 .form-group input:focus {
@@ -128,7 +144,16 @@
   font-family: inherit;
   cursor: pointer;
   outline: none;
-  transition: border-color 0.2s, background-color 0.2s, box-shadow 0.2s;
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.dropdown-trigger:hover {
+  border-color: #38bdf8;
+  background-color: #092244;
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.15);
 }
 
 .custom-dropdown.open .dropdown-trigger,
@@ -148,7 +173,9 @@
   background-color: #7d96b3;
   clip-path: polygon(0 0, 100% 0, 50% 100%);
   display: inline-block;
-  transition: transform 0.2s ease, background-color 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    background-color 0.2s ease;
   flex-shrink: 0;
 }
 
@@ -171,20 +198,37 @@
   margin: 0;
   list-style: none;
   z-index: 100;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.65), 0 0 1px rgba(255, 255, 255, 0.1);
+  box-shadow:
+    0 12px 30px rgba(0, 0, 0, 0.65),
+    0 0 1px rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(8px);
   animation: dropdownFadeIn 0.18s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 @keyframes dropdownFadeIn {
-  from { opacity: 0; transform: translateY(-6px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.dropdown-menu::-webkit-scrollbar { width: 5px; }
-.dropdown-menu::-webkit-scrollbar-track { background: transparent; }
-.dropdown-menu::-webkit-scrollbar-thumb { background: #143560; border-radius: 4px; }
-.dropdown-menu::-webkit-scrollbar-thumb:hover { background: #1d4f91; }
+.dropdown-menu::-webkit-scrollbar {
+  width: 5px;
+}
+.dropdown-menu::-webkit-scrollbar-track {
+  background: transparent;
+}
+.dropdown-menu::-webkit-scrollbar-thumb {
+  background: #143560;
+  border-radius: 4px;
+}
+.dropdown-menu::-webkit-scrollbar-thumb:hover {
+  background: #1d4f91;
+}
 
 .dropdown-item {
   display: flex;
@@ -196,7 +240,9 @@
   border-radius: 8px;
   cursor: pointer;
   user-select: none;
-  transition: background-color 0.15s ease, color 0.15s ease;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease;
 }
 
 .dropdown-item .item-content {
@@ -217,147 +263,7 @@
 }
 
 /* =========================================
-   Calendario
-   ========================================= */
-.calendar-field-container {
-  position: relative;
-  width: 100%;
-}
-
-.calendar-trigger {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background-color: #081d38;
-  border: 1px solid #143560;
-  color: #ffffff;
-  padding: 0 14px;
-  height: 44px;
-  border-radius: 10px;
-  font-size: 0.9rem;
-  cursor: pointer;
-  user-select: none;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
-}
-
-.calendar-trigger:hover,
-.calendar-trigger.open {
-  border-color: #38bdf8;
-  background-color: #092244;
-}
-
-.calendar-trigger .placeholder {
-  color: #637d9d;
-}
-
-.calendar-trigger.input-error {
-  border-color: #ef4444 !important;
-  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15) !important;
-}
-
-.calendar-icon {
-  width: 18px;
-  height: 18px;
-  color: #7d96b3;
-}
-
-.calendar-popover {
-  position: absolute;
-  top: calc(100% + 6px);
-  left: 0;
-  width: 100%;
-  min-width: 280px;
-  background-color: #06182e;
-  border: 1px solid #143560;
-  border-radius: 12px;
-  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.65), 0 0 1px rgba(255, 255, 255, 0.1);
-  padding: 1rem;
-  z-index: 1000;
-}
-
-.calendar-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 0.8rem;
-}
-
-.calendar-title {
-  color: #ffffff;
-  font-weight: 600;
-  font-size: 0.95rem;
-}
-
-.calendar-nav-btn {
-  background: transparent;
-  border: 1px solid #143560;
-  color: #ffffff;
-  border-radius: 6px;
-  width: 28px;
-  height: 28px;
-  font-size: 1.1rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-}
-
-.calendar-nav-btn:hover {
-  border-color: #38bdf8;
-  background-color: rgba(56, 189, 248, 0.1);
-}
-
-.calendar-weekdays {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  text-align: center;
-  margin-bottom: 0.5rem;
-}
-
-.calendar-weekday {
-  color: #94a3b8;
-  font-size: 0.75rem;
-  font-weight: 600;
-  text-transform: uppercase;
-}
-
-.calendar-grid {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 4px;
-}
-
-.calendar-day {
-  aspect-ratio: 1;
-  background: transparent;
-  border: none;
-  color: #ffffff;
-  font-size: 0.88rem;
-  border-radius: 6px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background-color 0.15s ease, color 0.15s ease;
-}
-
-.calendar-day:hover {
-  background-color: rgba(255, 107, 0, 0.18);
-  color: #ff6b00;
-}
-
-.calendar-day.other-month {
-  color: #3b506d;
-}
-
-.calendar-day.selected {
-  background-color: #ff6b00 !important;
-  color: #ffffff !important;
-  font-weight: 700;
-}
-
-/* =========================================
-   Zona de Foto (Drag & Drop)
+   Zona de Foto (Drag & Drop con Animación)
    ========================================= */
 .shield-container {
   display: grid;
@@ -378,6 +284,8 @@
   padding: 1.25rem 0.5rem;
   cursor: pointer;
   text-align: center;
+  position: relative;
+  overflow: hidden;
   border: 1.5px dashed #1e497e;
   background: linear-gradient(180deg, #071a33 0%, #051428 100%);
   transition: all 0.25s ease;
@@ -386,6 +294,12 @@
 .dropzone:hover {
   border-color: #38bdf8;
   background: linear-gradient(180deg, #092244 0%, #071932 100%);
+  transform: translateY(-1px);
+}
+
+.dropzone:hover .upload-icon {
+  color: #38bdf8;
+  transform: translateY(-2px);
 }
 
 .upload-icon {
@@ -393,6 +307,9 @@
   height: 26px;
   color: #7d96b3;
   margin-bottom: 8px;
+  transition:
+    transform 0.2s ease,
+    color 0.2s ease;
 }
 
 .dropzone-text {
@@ -452,103 +369,17 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-remove-shield:hover {
+  background: #ef4444;
+  color: #fff;
 }
 
 /* =========================================
-   Estilos Adicionales para el Jugador
+   Botones de Acción
    ========================================= */
-.section-subtitle {
-  font-size: 0.95rem;
-  font-weight: 6}
-
-  input[type='date'] {
-  color-scheme: dark; /* Obliga al calendario nativo del navegador a abrirse en modo oscuro */
-  font-family: inherit;
-  cursor: text;
-}
-
-/* Da estilo al icono de calendario que aparece dentro del input */
-input[type='date']::-webkit-calendar-picker-indicator {
-  opacity: 0.7;
-  cursor: pointer;
-  padding: 4px;
-  border-radius: 6px;
-  /* El filtro cambia el icono negro nativo al tono celeste del diseño */
-  filter: invert(70%) sepia(45%) saturate(1000%) hue-rotate(175deg) brightness(100%);
-  transition: opacity 0.2s ease, transform 0.15s ease;
-}
-
-input[type='date']::-webkit-calendar-picker-indicator:hover {
-  opacity: 1;
-  transform: scale(1.08);
-}
-
-/* NUEVO: =========================================
-   Estilo personalizado para el input de Fecha Nativo
-   ========================================= */
-
-/* Le damos las dimensiones, colores y bordes del botón original */
-.calendar-input {
-  width: 100%;
-  height: 44px;
-  padding: 0 14px;
-  background-color: #081d38;
-  color: #ffffff;
-  border: 1px solid #143560;
-  border-radius: 10px;
-  font-size: 0.9rem;
-  outline: none;
-  font-family: inherit;
-  color-scheme: dark;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
-}
-
-/* Efecto al pasar el mouse por encima (como el botón viejo) */
-.calendar-input:hover {
-  border-color: #38bdf8;
-  background-color: #092244;
-}
-
-/* Efecto al hacer clic para escribir */
-.calendar-input:focus {
-  border-color: #38bdf8;
-  background-color: #092244;
-  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
-}
-
-/* Estilo del texto "dd/mm/aaaa" y las barras separadoras */
-.calendar-input::-webkit-datetime-edit-fields-wrapper {
-  color: #ffffff;
-}
-.calendar-input::-webkit-datetime-edit-text {
-  color: #637d9d; /* Color gris azulado para las barras '/' */
-  padding: 0 4px;
-}
-
-/* Color azul resaltado cuando seleccionas el día, mes o año con el teclado */
-.calendar-input::-webkit-datetime-edit-month-field:focus,
-.calendar-input::-webkit-datetime-edit-day-field:focus,
-.calendar-input::-webkit-datetime-edit-year-field:focus {
-  background-color: #38bdf8;
-  color: #041326;
-  border-radius: 4px;
-}
-
-/* El icono del calendario nativo convertido al celeste del diseño */
-.calendar-input::-webkit-calendar-picker-indicator {
-  opacity: 0.7;
-  cursor: pointer;
-  padding: 4px;
-  border-radius: 6px;
-  filter: invert(70%) sepia(45%) saturate(1000%) hue-rotate(175deg) brightness(100%);
-  transition: opacity 0.2s ease, transform 0.15s ease;
-}
-
-.calendar-input::-webkit-calendar-picker-indicator:hover {
-  opacity: 1;
-  transform: scale(1.08);
-}
-
 .form-actions {
   display: flex;
   gap: 1rem;
@@ -558,19 +389,29 @@ input[type='date']::-webkit-calendar-picker-indicator:hover {
 .btn-cancel {
   flex: 1;
   height: 48px;
-  background: transparent;
+  background-color: transparent;
   border: 1px solid #1a3d6b;
   color: #ffffff;
   border-radius: 12px;
   font-size: 0.95rem;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
 }
 
 .btn-cancel:hover {
-  background-color: #0b2240;
-  border-color: #2b558c;
+  border-color: #38bdf8;
+  background-color: #092244;
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.2);
+  transform: translateY(-1px);
+}
+
+.btn-cancel:active {
+  transform: translateY(0);
 }
 
 .btn-save {
@@ -604,4 +445,251 @@ input[type='date']::-webkit-calendar-picker-indicator:hover {
   box-shadow: none;
   cursor: not-allowed;
   transform: none;
+}
+
+/* =========================================
+   Calendario Desplegable (Fecha de Nacimiento)
+   ========================================= */
+.calendar-field-container {
+  position: relative;
+  width: 100%;
+}
+
+.calendar-trigger {
+  width: 100%;
+  height: 44px;
+  background-color: #081d38;
+  color: #ffffff;
+  border: 1px solid #143560;
+  border-radius: 10px;
+  padding: 0 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  font-family: inherit;
+  cursor: pointer;
+  outline: none;
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.calendar-trigger:hover,
+.calendar-trigger.open {
+  border-color: #38bdf8;
+  background-color: #092244;
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.15);
+}
+
+.calendar-trigger .placeholder {
+  color: #637d9d;
+}
+
+.calendar-trigger.input-error {
+  border-color: #ef4444 !important;
+  background-color: #0b1a2f;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15) !important;
+}
+
+.calendar-icon {
+  width: 18px;
+  height: 18px;
+  color: #7d96b3;
+  flex-shrink: 0;
+}
+
+.calendar-popover {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  width: 100%;
+  min-width: 290px;
+  background-color: #06182e;
+  border: 1px solid #143560;
+  border-radius: 12px;
+  box-shadow:
+    0 14px 32px rgba(0, 0, 0, 0.65),
+    0 0 1px rgba(255, 255, 255, 0.1);
+  padding: 1rem;
+  z-index: 1000;
+  animation: dropdownFadeIn 0.18s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.8rem;
+  gap: 6px;
+}
+
+/* =========================================
+   Selectores Rápidos de Mes y Año
+   ========================================= */
+.calendar-selects {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.header-select {
+  background-color: #081d38;
+  color: #ffffff;
+  border: 1px solid #143560;
+  border-radius: 6px;
+  padding: 4px 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  font-family: inherit;
+  outline: none;
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.header-select:hover,
+.header-select:focus {
+  border-color: #38bdf8;
+  background-color: #092244;
+  box-shadow: 0 0 8px rgba(56, 189, 248, 0.15);
+}
+
+.header-select option {
+  background-color: #06182e;
+  color: #ffffff;
+}
+
+.calendar-nav-btn {
+  background: transparent;
+  border: 1px solid #143560;
+  color: #ffffff;
+  border-radius: 6px;
+  width: 28px;
+  height: 28px;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition:
+    border-color 0.15s ease,
+    background-color 0.15s ease;
+}
+
+.calendar-nav-btn:hover {
+  border-color: #38bdf8;
+  background-color: rgba(56, 189, 248, 0.1);
+}
+
+.calendar-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+
+.calendar-weekday {
+  color: #94a3b8;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+.calendar-day {
+  aspect-ratio: 1;
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  font-size: 0.88rem;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.calendar-day:hover {
+  background-color: rgba(255, 107, 0, 0.18);
+  color: #ff6b00;
+}
+
+.calendar-day.other-month {
+  color: #3b506d;
+}
+
+.calendar-day.other-month:hover {
+  color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.calendar-day.selected {
+  background-color: #ff6b00 !important;
+  color: #ffffff !important;
+  font-weight: 700;
+  box-shadow: 0 2px 10px rgba(255, 107, 0, 0.45);
+}
+
+/* =========================================
+   Mensajes de Validación y Error
+   ========================================= */
+.error-feedback {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+  animation: errorSlideIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes errorSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.error-icon {
+  width: 14px;
+  height: 14px;
+  stroke: #f87171;
+  flex-shrink: 0;
+}
+
+.error-text {
+  color: #fca5a5;
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+
+.form-group input.ng-invalid.ng-touched,
+.custom-dropdown.is-invalid .dropdown-trigger {
+  border-color: #ef4444 !important;
+  background-color: #0b1a2f;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15) !important;
+}
+
+.input-readonly {
+  opacity: 0.75;
+  cursor: not-allowed;
+  background-color: #061528 !important;
+  color: #38bdf8 !important;
+  font-weight: 600;
 }

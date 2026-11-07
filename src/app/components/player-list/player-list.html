@@ -1,1 +1,86 @@
-<p>player-list works!</p>
+<div class="player-list-container">
+  
+  <div class="header-title-section">
+    <h2>Jugadores</h2>
+  </div>
+
+  <!-- Barra de Filtros y Búsqueda -->
+  <div class="filters-bar">
+    <div class="search-box">
+      <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+      <input 
+        type="text" 
+        [ngModel]="searchText()" 
+        (ngModelChange)="searchText.set($event)" 
+        placeholder="Buscar jugadores..." 
+      />
+    </div>
+
+    <div class="select-filters">
+      <select [ngModel]="selectedPosition()" (ngModelChange)="selectedPosition.set($event)">
+        <option value="ALL">Posición (Todas)</option>
+        <option value="ARQ">Arquero</option>
+        <option value="DEF">Defensor</option>
+        <option value="MED">Mediocampista</option>
+        <option value="DEL">Delantero</option>
+      </select>
+
+      <select [ngModel]="selectedTeam()" (ngModelChange)="selectedTeam.set($event)">
+        <option value="ALL">Equipo (Todos)</option>
+        @for (team of teams(); track team.id) {
+          <option [value]="team.id">{{ team.name }}</option>
+        }
+      </select>
+    </div>
+  </div>
+
+  <!-- Contenedor Principal de la Tabla  -->
+  <div class="table-card">
+    <table class="styled-table">
+      <thead>
+        <tr>
+          <th class="col-photo">Jugador</th>
+          <th></th>
+          <th>Posición</th>
+          <th>Equipo</th>
+          <th>Edad</th>
+          <th class="col-action"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Iteración de la señal filtrada para que funcione el buscador y los selects -->
+        @for (player of filteredPlayers(); track player.id) {
+          <tr [routerLink]="['/player', player.id]" class="player-row">
+            <td class="col-photo">
+              <div class="avatar-wrapper">
+                <img [src]="player.photo" [alt]="player.name" />
+              </div>
+            </td>
+            <td class="player-name-cell">
+              <span class="name">{{ player.name }}</span>
+            </td>
+            <td>
+              <span class="position-text">{{ player.position }}</span>
+            </td>
+            <td class="team-cell">
+              {{ getTeamName(player.currentTeamID) }}
+            </td>
+            <td>
+              <span class="age-text">{{ player.age }}</span>
+            </td>
+            <td class="col-action">
+              <span class="arrow-icon">›</span>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="6" class="empty-state">
+              No se encontraron jugadores registrados que coincidan con la búsqueda.
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+</div>

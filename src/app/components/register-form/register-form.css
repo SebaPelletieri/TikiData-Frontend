@@ -1,0 +1,249 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+* {
+  box-sizing: border-box;
+}
+
+/* ================= CONTENEDOR PRINCIPAL ================= */
+.auth-form {
+  font-family:
+    'Plus Jakarta Sans',
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
+  max-width: 440px;
+  width: 100%;
+  margin: 3.5rem auto;
+  background: linear-gradient(180deg, #071a33 0%, #041224 100%);
+  border: 1px solid #143560;
+  border-radius: 20px;
+  padding: 2.4rem 2.2rem;
+  box-shadow:
+    0 16px 40px rgba(0, 0, 0, 0.55),
+    0 0 1px rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 1.35rem;
+}
+
+/* ================= TÍTULO DENTRO DE LA TARJETA ================= */
+.auth-header {
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+
+.auth-title {
+  margin: 0;
+  font-size: 1.65rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+}
+
+.auth-subtitle {
+  margin: 0.4rem 0 0;
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: #7d96b3;
+}
+
+/* ================= GRUPOS DE CAMPOS ================= */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  width: 100%;
+}
+
+.form-group label {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #c9d8eb;
+  letter-spacing: -0.01em;
+}
+
+/* ================= INPUTS ================= */
+.form-group input {
+  font-family: inherit;
+  width: 100%;
+  height: 46px;
+  background: linear-gradient(180deg, #051428 0%, #030d1a 100%);
+  border: 1px solid #1e497e;
+  border-radius: 12px;
+  padding: 0 14px;
+  color: #ffffff;
+  font-size: 0.95rem;
+  font-weight: 500;
+  outline: none;
+  transition: all 0.22s ease;
+}
+
+.form-group input::placeholder {
+  color: #557094;
+  font-weight: 400;
+}
+
+.form-group input:hover {
+  border-color: #38bdf8;
+  background: linear-gradient(180deg, #071a33 0%, #051428 100%);
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.15);
+}
+
+.form-group input:focus {
+  border-color: #38bdf8;
+  background: linear-gradient(180deg, #071a33 0%, #051428 100%);
+  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.22);
+}
+
+.form-group input.input-error {
+  border-color: #ef4444 !important;
+  background: linear-gradient(180deg, #1f0d14 0%, #15060b 100%) !important;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2) !important;
+}
+
+/* ================= CAMPO CONTRASEÑA ================= */
+.password-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.password-input-wrapper input {
+  padding-right: 46px;
+}
+
+.toggle-password-btn {
+  position: absolute;
+  right: 10px;
+  background: transparent;
+  border: none;
+  color: #7d96b3;
+  cursor: pointer;
+  padding: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.toggle-password-btn:hover {
+  color: #f97316;
+  background-color: rgba(249, 115, 22, 0.1);
+}
+
+.eye-icon {
+  width: 20px;
+  height: 20px;
+}
+
+/* ================= FEEDBACK DE ERROR ================= */
+.error-feedback {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 0.2rem;
+  animation: fadeInError 0.2s ease-out forwards;
+}
+
+@keyframes fadeInError {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.error-icon {
+  width: 16px;
+  height: 16px;
+  color: #ef4444;
+  flex-shrink: 0;
+}
+
+.error-text {
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: #f87171;
+}
+
+/* ================= BOTÓN CREAR CUENTA (NARANJA TIKIDATA) ================= */
+.btn-primary {
+  font-family: inherit;
+  width: 100%;
+  height: 48px;
+  margin-top: 0.6rem;
+  background: linear-gradient(180deg, #f97316 0%, #ea580c 100%);
+  border: 1px solid #fb923c;
+  border-radius: 12px;
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(234, 88, 12, 0.4);
+  transition: all 0.22s ease;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: linear-gradient(180deg, #fb923c 0%, #f97316 100%);
+  border-color: #fdba74;
+  box-shadow: 0 6px 22px rgba(249, 115, 22, 0.45);
+  transform: translateY(-2px);
+}
+
+.btn-primary:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.btn-primary:disabled {
+  background: #0d223d;
+  border-color: #143560;
+  color: #4b6485;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+/* ================= ENLACE INICIA SESIÓN AQUÍ ================= */
+.auth-footer {
+  text-align: center;
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: #7d96b3;
+  margin: 0.4rem 0 0;
+}
+
+.auth-footer a {
+  color: #f97316;
+  text-decoration: none;
+  font-weight: 600;
+  transition:
+    color 0.2s ease,
+    filter 0.2s ease;
+}
+
+.auth-footer a:hover {
+  color: #fb923c;
+  text-decoration: none;
+  filter: drop-shadow(0 0 6px rgba(249, 115, 22, 0.4));
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 480px) {
+  .auth-form {
+    padding: 2rem 1.4rem;
+    margin: 2rem auto;
+    width: 92%;
+  }
+
+  .auth-title {
+    font-size: 1.45rem;
+  }
+}

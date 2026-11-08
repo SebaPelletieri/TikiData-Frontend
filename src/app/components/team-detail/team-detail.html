@@ -22,7 +22,14 @@
         <span class="dot-separator">•</span>
         <span class="meta-item">Fundado en {{ team().yearOfFoundation | date: 'yyyy' }}</span>
       </div>
-      <button class="btn-follow">Seguir</button>
+      <button
+        type="button"
+        class="btn-follow"
+        [class.following]="isFollowing()"
+        (click)="toggleFollowTeam()"
+      >
+        {{ isFollowing() ? 'Siguiendo' : 'Seguir' }}
+      </button>
     </div>
   </div>
 </div>

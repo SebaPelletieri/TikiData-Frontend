@@ -53,36 +53,77 @@
       />
     </div>
 
+    <!-- Interruptor de Tema (Luna / Sol) -->
+    <!-- Interruptor de Tema (Luna / Sol) -->
     <div class="navbar__theme">
-      <i class="fas fa-sun navbar__theme-icon"></i>
       <label class="toggle-switch">
-        <input type="checkbox" class="toggle-switch__input" checked />
-        <span class="toggle-switch__slider"></span>
+        <input
+          type="checkbox"
+          class="toggle-switch__input"
+          [checked]="isLightMode()"
+          (change)="toggleTheme()"
+        />
+        <span class="toggle-switch__slider">
+          <span class="toggle-switch__circle">
+            <i class="fas fa-moon toggle-switch__icon-moon"></i>
+            <i class="fas fa-sun toggle-switch__icon-sun"></i>
+          </span>
+        </span>
       </label>
     </div>
 
     @if (!authService.currentUser()) {
-      <button routerLink="/login" class="navbar__profile" aria-label="Ingresar" title="Ingresar">
+      <!-- Botón de Iniciar Sesión -->
+      <a routerLink="/login" class="navbar__profile" aria-label="Ingresar" title="Ingresar">
         <i class="fas fa-sign-in-alt"></i>
-      </button>
+      </a>
     } @else {
-      <button
-        routerLink="/profile"
-        class="navbar__profile"
-        aria-label="Perfil de usuario"
-        title="Mi Perfil"
-      >
-        <i class="fas fa-user"></i>
-      </button>
+      <!-- Menú Desplegable de Usuario Logueado -->
+      <div class="navbar__user-dropdown">
+        <button
+          type="button"
+          (click)="toggleProfileMenu($event)"
+          class="navbar__profile"
+          [class.navbar__profile--active]="isProfileMenuOpen()"
+          aria-label="Perfil de usuario"
+          title="Mi Cuenta"
+        >
+          <i class="fas fa-user"></i>
+        </button>
 
-      <button
-        (click)="onLogout()"
-        class="navbar__profile"
-        aria-label="Cerrar sesión"
-        title="Cerrar sesión"
-      >
-        <i class="fas fa-sign-out-alt" style="color: #ff4757"></i>
-      </button>
+        @if (isProfileMenuOpen()) {
+          <div class="navbar__dropdown-menu">
+            <div class="navbar__dropdown-user">
+              <span class="navbar__dropdown-name">
+                {{
+                  authService.currentUser()?.username ||
+                    authService.currentUser()?.username ||
+                    'Mi Perfil'
+                }}
+              </span>
+              <span class="navbar__dropdown-email">
+                {{ authService.currentUser()?.email }}
+              </span>
+            </div>
+
+            <hr class="navbar__dropdown-divider" />
+
+            <a routerLink="/profile" class="navbar__dropdown-link" (click)="closeProfileMenu()">
+              <i class="fas fa-id-card"></i>
+              <span>Ver Perfil</span>
+            </a>
+
+            <button
+              type="button"
+              class="navbar__dropdown-link navbar__dropdown-link--logout"
+              (click)="onLogout()"
+            >
+              <i class="fas fa-sign-out-alt"></i>
+              <span>Cerrar Sesión</span>
+            </button>
+          </div>
+        }
+      </div>
     }
   </div>
 </nav>

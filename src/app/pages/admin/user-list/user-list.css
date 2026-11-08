@@ -1,0 +1,110 @@
+.admin-container {
+  max-width: 1400px;
+  width: 94%;
+  margin: 2rem auto;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  color: #ffffff;
+}
+.header-section {
+  margin-bottom: 2rem;
+}
+.header-section h2 {
+  font-size: 2rem;
+  font-weight: 800;
+  margin: 0;
+}
+.header-section p {
+  color: #7d96b3;
+  font-size: 0.9rem;
+  margin-top: 4px;
+}
+
+.table-wrapper {
+  background: linear-gradient(180deg, #06182e 0%, #041224 100%);
+  border: 1px solid #143560;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+}
+.users-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+.users-table th {
+  background: #071a33;
+  color: #7d96b3;
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid #143560;
+}
+.users-table td {
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid #143560;
+  font-size: 0.9rem;
+  color: #c9d8eb;
+}
+.users-table tr:last-child td {
+  border-bottom: none;
+}
+
+.username {
+  font-weight: 700;
+  color: #ffffff;
+}
+.role-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  background: rgba(56, 189, 248, 0.15);
+  color: #38bdf8;
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  text-transform: uppercase;
+}
+.role-badge.admin {
+  background: rgba(249, 115, 22, 0.15);
+  color: #f97316;
+  border-color: rgba(249, 115, 22, 0.3);
+}
+
+.action-buttons {
+  display: flex;
+  gap: 8px;
+}
+.btn-role {
+  background: rgba(56, 189, 248, 0.1);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  color: #38bdf8;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-role:hover {
+  background: rgba(56, 189, 248, 0.2);
+}
+.btn-delete {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #f87171;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-delete:hover {
+  background: rgba(239, 68, 68, 0.2);
+}
+.empty-state {
+  text-align: center;
+  color: #7d96b3;
+  padding: 3rem;
+}

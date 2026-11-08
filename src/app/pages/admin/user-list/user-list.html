@@ -1,0 +1,54 @@
+<div class="admin-container">
+  <div class="header-section">
+    <h2>Gestión de Usuarios</h2>
+    <p>Panel de control exclusivo para administradores del sistema.</p>
+  </div>
+
+  @if (errorMessage()) {
+    <div class="alert-error">{{ errorMessage() }}</div>
+  }
+
+  <div class="table-wrapper">
+    <table class="users-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Usuario</th>
+          <th>Email</th>
+          <th>País</th>
+          <th>Rol</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (u of users(); track u.id) {
+          <tr>
+            <td>#{{ u.id }}</td>
+            <td class="user-cell">
+              <span class="username">{{ u.username }}</span>
+            </td>
+            <td>{{ u.email }}</td>
+            <td>{{ u.country || 'No especificado' }}</td>
+            <td>
+              <span class="role-badge" [class.admin]="u.role === 'Administrador'">
+                {{ u.role }}
+              </span>
+            </td>
+            <td>
+              <div class="action-buttons">
+                <button type="button" class="btn-role" (click)="toggleRole(u)">Cambiar Rol</button>
+                <button type="button" class="btn-delete" (click)="deleteUser(u.id)">
+                  Eliminar
+                </button>
+              </div>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="6" class="empty-state">No hay usuarios registrados.</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

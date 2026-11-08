@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
+import { ProfileDetail } from '../../components/profile-detail/profile-detail';
 
 @Component({
-  imports: [],
+  imports: [ProfileDetail],
   selector: 'app-profile',
   styleUrl: './profile.css',
   templateUrl: './profile.html',

@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { Team } from '../models/Team';
+import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class TeamService {
@@ -10,14 +11,14 @@ export class TeamService {
   teams = signal<Team[]>([]);
   teamActual = signal<Team | null>(null);
 
-  //Métodos del HTTP 
+  // Métodos del HTTP
   getAll() {
     this.http.get<Team[]>(this.apiUrl).subscribe({
       next: (data) => {
         this.teams.set(data);
         this.error.set(null);
       },
-      error: (error) => {
+      error: () => {
         this.error.set('No se pudieron obtener los equipos de la base de datos');
       },
     });
@@ -29,7 +30,7 @@ export class TeamService {
         this.getAll();
         this.error.set(null);
       },
-      error: (error) => {
+      error: () => {
         this.error.set('No se pudo agregar un nuevo equipo al sistema');
       },
     });
@@ -42,7 +43,7 @@ export class TeamService {
         this.getAll();
         this.error.set(null);
       },
-      error: (error) => {
+      error: () => {
         this.error.set('No se puedo actualizar el equipo en el sistema');
       },
     });
@@ -54,21 +55,14 @@ export class TeamService {
         this.error.set(null);
         this.getAll();
       },
-      error: (error) => {
+      error: () => {
         this.error.set('No se puedo eliminar el equipo del sistema');
       },
     });
   }
 
-  getByID(id: number) {
-    this.http.get<Team>(`${this.apiUrl}/${id}`).subscribe({
-      next: (data) => {
-        this.teamActual.set(data);
-        this.error.set(null);
-      },
-      error: (error) => {
-        this.error.set('No se encontro el equipo buscado');
-      },
-    });
+  // 👈 Ahora retorna el Observable para poder suscribirse desde el componente
+  getById(id: number): Observable<Team> {
+    return this.http.get<Team>(`${this.apiUrl}/${id}`);
   }
 }

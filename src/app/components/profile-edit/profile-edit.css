@@ -1,0 +1,408 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+* {
+  box-sizing: border-box;
+}
+
+/* =========================================
+   Contenedor Principal de la Tarjeta
+   ========================================= */
+.profile-edit-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 3rem 1rem;
+  background-color: #041224;
+  min-height: calc(100vh - 70px);
+}
+
+.edit-card {
+  max-width: 680px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 2.5rem;
+  font-family:
+    'Plus Jakarta Sans',
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
+  background: linear-gradient(180deg, #06182e 0%, #041224 100%);
+  border: 1px solid #143560;
+  border-radius: 20px;
+  color: #fff;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.55);
+}
+
+/* =========================================
+   Cabecera del Formulario
+   ========================================= */
+.edit-header {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid #143560;
+  padding-bottom: 1.2rem;
+}
+
+.header-icon-circle {
+  width: 50px;
+  height: 50px;
+  border-radius: 14px;
+  background: #030d1a;
+  border: 1px solid #1e497e;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #38bdf8;
+  flex-shrink: 0;
+}
+
+.edit-header h2 {
+  font-family: inherit;
+  font-size: 1.6rem;
+  font-weight: 800;
+  margin: 0 0 4px 0;
+  color: #ffffff;
+}
+
+.edit-subtitle {
+  font-family: inherit;
+  margin: 0;
+  font-size: 0.88rem;
+  color: #7d96b3;
+}
+
+/* =========================================
+   Estructura de Filas y Columnas
+   ========================================= */
+.edit-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.form-group label {
+  font-family: inherit;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #c9d8eb;
+}
+
+.required {
+  color: #ef4444;
+  margin-left: 2px;
+}
+
+/* =========================================
+   Inputs Genéricos
+   ========================================= */
+.form-group input {
+  font-family: inherit;
+  width: 100%;
+  height: 46px;
+  background: linear-gradient(180deg, #051428 0%, #030d1a 100%);
+  border: 1px solid #1e497e;
+  border-radius: 12px;
+  padding: 0 14px;
+  color: #ffffff;
+  font-size: 0.95rem;
+  outline: none;
+  transition: all 0.22s ease;
+}
+
+.form-group input::placeholder {
+  color: #557094;
+}
+
+.form-group input:hover {
+  border-color: #38bdf8;
+  background: linear-gradient(180deg, #071a33 0%, #051428 100%);
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.15);
+}
+
+.form-group input:focus {
+  border-color: #38bdf8;
+  background: linear-gradient(180deg, #071a33 0%, #051428 100%);
+  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.22);
+}
+
+/* =========================================
+   Password Wrapper & Ojito
+   ========================================= */
+.password-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.password-input-wrapper input {
+  padding-right: 46px;
+}
+
+.toggle-password-btn {
+  position: absolute;
+  right: 10px;
+  background: transparent;
+  border: none;
+  color: #7d96b3;
+  cursor: pointer;
+  padding: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.toggle-password-btn:hover {
+  color: #f97316;
+  background-color: rgba(249, 115, 22, 0.1);
+}
+
+.eye-icon {
+  width: 20px;
+  height: 20px;
+}
+
+/* =========================================
+   Zona de Foto (Drag & Drop / Subida)
+   ========================================= */
+.upload-section-full {
+  grid-column: span 2;
+}
+
+.shield-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.visually-hidden {
+  display: none;
+}
+
+.dropzone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 130px;
+  background: linear-gradient(180deg, #051428 0%, #030d1a 100%);
+  border: 1.5px dashed #1e497e;
+  border-radius: 12px;
+  color: #7d96b3;
+  cursor: pointer;
+  text-align: center;
+  padding: 1rem;
+  transition: all 0.25s ease;
+}
+
+.dropzone:hover {
+  border-color: #38bdf8;
+  color: #38bdf8;
+  background: linear-gradient(180deg, #071a33 0%, #051428 100%);
+  transform: translateY(-1px);
+}
+
+.upload-icon {
+  width: 26px;
+  height: 26px;
+  color: #7d96b3;
+  margin-bottom: 2px;
+  transition:
+    transform 0.2s ease,
+    color 0.2s ease;
+}
+
+.dropzone:hover .upload-icon {
+  color: #38bdf8;
+  transform: translateY(-2px);
+}
+
+.dropzone-text {
+  font-family: inherit;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #d1dced;
+}
+
+.dropzone-hint {
+  font-family: inherit;
+  font-size: 0.68rem;
+  color: #617b9b;
+}
+
+.preview-box {
+  height: 130px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #143560;
+  border-radius: 12px;
+  background: radial-gradient(circle at center, #0a213f 0%, #061528 100%);
+  padding: 1rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.shield-icon {
+  width: 36px;
+  height: 36px;
+  color: #557094;
+  margin-bottom: 6px;
+}
+
+.preview-text {
+  font-family: inherit;
+  font-size: 0.75rem;
+  color: #7d96b3;
+}
+
+.uploaded-shield-img {
+  width: 70px;
+  height: 70px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid #38bdf8;
+}
+
+.btn-remove-shield {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(239, 68, 68, 0.2);
+  border: 1px solid #ef4444;
+  color: #ef4444;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  font-size: 12px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-remove-shield:hover {
+  background: #ef4444;
+  color: #fff;
+}
+
+/* =========================================
+   Botones de Acción
+   ========================================= */
+.form-actions-full {
+  grid-column: span 2;
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.btn-cancel {
+  flex: 1;
+  height: 48px;
+  background: transparent;
+  border: 1px solid #143560;
+  border-radius: 12px;
+  color: #7d96b3;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-cancel:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: #ffffff;
+  border-color: #38bdf8;
+}
+
+.btn-save-championship {
+  flex: 1;
+  height: 48px;
+  background: linear-gradient(180deg, #f97316 0%, #ea580c 100%);
+  border: 1px solid #fb923c;
+  border-radius: 12px;
+  color: #ffffff;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(234, 88, 12, 0.4);
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-save-championship:hover:not(:disabled) {
+  background: linear-gradient(180deg, #fb923c 0%, #f97316 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 22px rgba(249, 115, 22, 0.45);
+}
+
+.btn-save-championship:disabled {
+  background: #0d223d;
+  border-color: #143560;
+  color: #4b6485;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* =========================================
+   Alertas
+   ========================================= */
+.alert-success,
+.alert-error {
+  grid-column: span 2;
+  padding: 10px;
+  border-radius: 10px;
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+
+.alert-success {
+  background: rgba(16, 185, 129, 0.15);
+  border: 1px solid #10b981;
+  color: #10b981;
+}
+
+.alert-error {
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid #ef4444;
+  color: #f87171;
+}
+
+/* =========================================
+   Responsive
+   ========================================= */
+@media (max-width: 768px) {
+  .edit-form-grid {
+    grid-template-columns: 1fr;
+  }
+  .form-actions-full,
+  .upload-section-full,
+  .alert-success,
+  .alert-error {
+    grid-column: span 1;
+  }
+  .shield-container {
+    grid-template-columns: 1fr;
+  }
+}

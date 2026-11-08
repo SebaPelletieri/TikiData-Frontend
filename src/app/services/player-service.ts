@@ -1,6 +1,7 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { Player } from '../models/Player';
 import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class PlayerService {
@@ -10,29 +11,26 @@ export class PlayerService {
   playerActual = signal<Player | null>(null);
   error = signal<string | null>(null);
 
-  //Métodos del HTTP
+  // Métodos del HTTP
   getAll() {
     this.http.get<Player[]>(this.apiUrl).subscribe({
       next: (data) => {
         this.players.set(data);
         this.error.set(null);
       },
-      error: (error) => {
+      error: () => {
         this.error.set('No se pudieron obtener los datos de la base de datos');
       },
     });
   }
 
-  getByID(id: number) {
-    this.http.get<Player>(`${this.apiUrl}/${id}`).subscribe({
-      next: (data) => {
-        this.playerActual.set(data);
-        this.error.set(null);
-      },
-      error: (error) => {
-        this.error.set('No se encontro el jugador buscado');
-      },
-    });
+  // 👈 Retorna el Observable con todos los jugadores
+  getAllPlayers(): Observable<Player[]> {
+    return this.http.get<Player[]>(this.apiUrl);
+  }
+
+  getByID(id: number): Observable<Player> {
+    return this.http.get<Player>(`${this.apiUrl}/${id}`);
   }
 
   savePlayer(player: Player) {
@@ -41,7 +39,7 @@ export class PlayerService {
         this.getAll();
         this.error.set(null);
       },
-      error: (error) => {
+      error: () => {
         this.error.set('No se pudo guardar el jugador en la base de datos');
       },
     });
@@ -54,7 +52,7 @@ export class PlayerService {
         this.playerActual.set(data);
         this.error.set(null);
       },
-      error: (error) => {
+      error: () => {
         this.error.set('No se pudo actualizar el jugador en la base de datos');
       },
     });
@@ -66,7 +64,7 @@ export class PlayerService {
         this.getAll();
         this.error.set(null);
       },
-      error: (error) => {
+      error: () => {
         this.error.set('No se pudo eliminar el jugador de la base de datos');
       },
     });

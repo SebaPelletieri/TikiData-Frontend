@@ -1,0 +1,148 @@
+<div class="profile-edit-container">
+  <div class="edit-card">
+    <!-- Cabecera del Formulario -->
+    <div class="edit-header">
+      <div class="header-icon-circle">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+          <path
+            d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"
+          ></path>
+        </svg>
+      </div>
+      <div>
+        <h2>Editar Perfil</h2>
+        <p class="edit-subtitle">Actualiza la información y preferencias de tu cuenta.</p>
+      </div>
+    </div>
+
+    @if (successMessage) {
+      <div class="alert-success">{{ successMessage }}</div>
+    }
+    @if (errorMessage) {
+      <div class="alert-error">{{ errorMessage }}</div>
+    }
+
+    <form [formGroup]="profileForm" (ngSubmit)="onSave()" class="edit-form-grid">
+      <!-- Nombre de usuario -->
+      <div class="form-group">
+        <label>Nombre de usuario <span class="required">*</span></label>
+        <input type="text" formControlName="username" placeholder="Ej. Sebastian" />
+      </div>
+
+      <!-- Correo electrónico -->
+      <div class="form-group">
+        <label>Correo electrónico <span class="required">*</span></label>
+        <input type="email" formControlName="email" placeholder="Ej. correo@ejemplo.com" />
+      </div>
+
+      <!-- Contraseña -->
+      <div class="form-group" style="grid-column: span 2">
+        <label>Nueva contraseña (opcional)</label>
+        <div class="password-input-wrapper">
+          <input
+            [type]="showPassword ? 'text' : 'password'"
+            formControlName="password"
+            placeholder="••••••••"
+          />
+          <button
+            type="button"
+            class="toggle-password-btn"
+            (click)="togglePasswordVisibility()"
+            title="Mostrar/Ocultar contraseña"
+          >
+            @if (showPassword) {
+              <svg
+                class="eye-icon"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+            } @else {
+              <svg
+                class="eye-icon"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"
+                ></path>
+                <line x1="1" y1="1" x2="23" y2="23"></line>
+              </svg>
+            }
+          </button>
+        </div>
+      </div>
+
+      <!-- Zona de Foto de Perfil (Drag & Drop con el mismo efecto hover) -->
+      <div class="form-group upload-section-full">
+        <label>Foto de Perfil</label>
+        <div class="shield-container">
+          <label class="dropzone" for="avatar-file">
+            <input
+              type="file"
+              id="avatar-file"
+              accept="image/png, image/jpeg"
+              class="visually-hidden"
+              (change)="onFileSelected($event)"
+            />
+            <svg
+              class="upload-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="17 8 12 3 7 8"></polyline>
+              <line x1="12" y1="3" x2="12" y2="15"></line>
+            </svg>
+            <span class="dropzone-text">Haz clic para subir la foto</span>
+            <span class="dropzone-hint">PNG, JPG (máx. 2MB)</span>
+          </label>
+
+          <div class="preview-box">
+            @if (previewAvatar) {
+              <img [src]="previewAvatar" alt="Vista previa" class="uploaded-shield-img" />
+              <button
+                type="button"
+                class="btn-remove-shield"
+                (click)="removeAvatar()"
+                title="Quitar foto"
+              >
+                ✕
+              </button>
+            } @else {
+              <svg
+                class="shield-icon"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+              >
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+              <span class="preview-text">Vista previa</span>
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- Botones de Acción -->
+      <div class="form-actions-full">
+        <button type="button" class="btn-cancel" routerLink="/profile">Cancelar</button>
+        <button type="submit" class="btn-save-championship" [disabled]="profileForm.invalid">
+          Guardar Cambios
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

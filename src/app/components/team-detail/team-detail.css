@@ -452,3 +452,27 @@
   background-color: rgba(56, 189, 248, 0.1);
   text-decoration: none;
 }
+
+.btn-follow {
+  background-color: #2563eb;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 6px 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.btn-follow:hover {
+  background-color: #1d4ed8;
+}
+
+.btn-follow.following {
+  background-color: #065f46; /* Verde oscuro o el color que prefieras para indicar que ya se sigue */
+  border: 1px solid #10b981;
+}
+
+.btn-follow.following:hover {
+  background-color: #047857;
+}

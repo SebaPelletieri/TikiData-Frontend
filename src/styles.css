@@ -76,3 +76,31 @@ html {
 ::-webkit-scrollbar-corner {
   background-color: #030d1a;
 }
+
+/* ================= MODO CLARO (LIGHT THEME) ================= */
+body.light-theme {
+  background-color: #f1f5f9 !important;
+  color: #0f172a !important;
+}
+
+/* Ejemplo para las tarjetas y contenedores en modo claro */
+body.light-theme .profile-section-card,
+body.light-theme .stat-card,
+body.light-theme .content-panel {
+  background: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  color: #0f172a !important;
+}
+
+body.light-theme .item-name,
+body.light-theme .stat-number,
+body.light-theme .user-main-info h3,
+body.light-theme .section-header h3 {
+  color: #0f172a !important;
+}
+
+body.light-theme .item-country,
+body.light-theme .stat-label,
+body.light-theme .subtitle {
+  color: #64748b !important;
+}

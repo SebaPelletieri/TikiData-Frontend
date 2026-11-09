@@ -30,6 +30,39 @@
       "favoriteChampionships": [],
       "createdAt": "2026-11-09T19:06:00.457Z",
       "id": "nq0DE94q0Cc"
+    },
+    {
+      "userName": "lay",
+      "email": "asdasdsad@g",
+      "password": "dadadsads",
+      "role": "Usuario",
+      "favoriteTeams": [],
+      "favoritePlayers": [],
+      "favoriteChampionships": [],
+      "createdAt": "2026-11-09T19:47:34.362Z",
+      "id": "K7PnS_s"
+    },
+    {
+      "userName": "Seba Pelletieri",
+      "email": "toto190603@gmail.com",
+      "password": "asdasdadsad",
+      "role": "Usuario",
+      "favoriteTeams": [],
+      "favoritePlayers": [],
+      "favoriteChampionships": [],
+      "createdAt": "2026-11-09T20:04:10.401Z",
+      "id": "ve-16Gf"
+    },
+    {
+      "userName": "Seba Pelletieri",
+      "email": "toto190603@gmail.com",
+      "password": "adasdadasasd",
+      "role": "Usuario",
+      "favoriteTeams": [],
+      "favoritePlayers": [],
+      "favoriteChampionships": [],
+      "createdAt": "2026-11-09T20:05:59.400Z",
+      "id": "5skq52i"
     }
   ],
   "equipos": [

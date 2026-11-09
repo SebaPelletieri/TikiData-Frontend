@@ -5,6 +5,17 @@
     <p class="auth-subtitle">Crea tu cuenta para acceder a todas las funciones</p>
   </div>
 
+  @if (serverError()) {
+    <div class="server-error-banner">
+      <svg class="error-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="8" x2="12" y2="12"></line>
+        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+      </svg>
+      <span>{{ serverError() }}</span>
+    </div>
+  }
+
   <!-- Nombre de Usuario -->
   <div class="form-group">
     <label for="userName">Nombre de Usuario</label>
@@ -45,21 +56,26 @@
       placeholder="usuario@email.com"
       [class.input-error]="registerForm.get('email')?.invalid && registerForm.get('email')?.touched"
     />
-    @if (registerForm.get('email')?.invalid && registerForm.get('email')?.touched) {
-      <div class="error-feedback">
-        <svg
-          class="error-icon"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-        >
-          <circle cx="12" cy="12" r="10"></circle>
-          <line x1="12" y1="8" x2="12" y2="12"></line>
-          <line x1="12" y1="16" x2="12.01" y2="16"></line>
-        </svg>
-        <span class="error-text">Por favor, ingresa un correo electrónico válido.</span>
-      </div>
+    @if (registerForm.get('email')?.touched) {
+      @if (registerForm.get('email')?.errors?.['required']) {
+        <div class="error-feedback">
+          <svg class="error-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+          <span class="error-text">El correo electrónico es obligatorio.</span>
+        </div>
+      } @else if (registerForm.get('email')?.errors?.['pattern']) {
+        <div class="error-feedback">
+          <svg class="error-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+          <span class="error-text">Ingresá un correo válido (ej: usuario@gmail.com).</span>
+        </div>
+      }
     }
   </div>
 

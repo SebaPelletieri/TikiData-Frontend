@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { User } from '../models/User';
-import { map, Observable, tap } from 'rxjs';
+import { map, Observable, switchMap, tap, throwError } from 'rxjs';
 import { LoginRequest } from '../models/Login Request';
 import { RegisterRequest } from '../models/Register Request';
 
@@ -22,6 +22,31 @@ export class AuthService {
         localStorage.removeItem('tiki_user');
       }
     }
+  }
+
+  checkUsernameExists(userName: string): Observable<boolean> {
+    return this.http
+      .get<any[]>(`${this.apiUrl}/usuarios`)
+      .pipe(
+        map((users) =>
+          users.some(
+            (u) =>
+              (u.userName && u.userName.toLowerCase() === userName.toLowerCase()) ||
+              (u.username && u.username.toLowerCase() === userName.toLowerCase()) ||
+              (u.name && u.name.toLowerCase() === userName.toLowerCase())
+          )
+        )
+      );
+  }
+
+  checkEmailExists(email: string): Observable<boolean> {
+    return this.http
+      .get<any[]>(`${this.apiUrl}/usuarios`)
+      .pipe(
+        map((users) =>
+          users.some((u) => u.email && u.email.toLowerCase() === email.toLowerCase())
+        )
+      );
   }
 
   login(credentials: LoginRequest): Observable<User> {
@@ -45,16 +70,30 @@ export class AuthService {
   }
 
   register(userData: RegisterRequest | any): Observable<User> {
-    const dataWithRole = {
-      ...userData,
-      role: userData.role || 'Usuario',
-      favoriteTeams: [],
-      favoritePlayers: [],
-      favoriteChampionships: [],
-      createdAt: new Date().toISOString(),
-    };
+    return this.checkUsernameExists(userData.userName).pipe(
+      switchMap((usernameExists) => {
+        if (usernameExists) {
+          return throwError(() => new Error('El nombre de usuario ya está registrado.'));
+        }
+        return this.checkEmailExists(userData.email);
+      }),
+      switchMap((emailExists) => {
+        if (emailExists) {
+          return throwError(() => new Error('El correo electrónico ya está registrado.'));
+        }
 
-    return this.http.post<User>(`${this.apiUrl}/usuarios`, dataWithRole);
+        const dataWithRole = {
+          ...userData,
+          role: userData.role || 'Usuario',
+          favoriteTeams: [],
+          favoritePlayers: [],
+          favoriteChampionships: [],
+          createdAt: new Date().toISOString(),
+        };
+
+        return this.http.post<User>(`${this.apiUrl}/usuarios`, dataWithRole);
+      })
+    );
   }
 
   logout(): void {

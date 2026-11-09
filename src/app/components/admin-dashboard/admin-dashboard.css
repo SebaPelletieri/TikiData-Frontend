@@ -208,7 +208,9 @@
 }
 
 .admin-right-pane ::ng-deep .team-form-container,
-.admin-right-pane ::ng-deep .championship-form-container {
+.admin-right-pane ::ng-deep .championship-form-container,
+.admin-right-pane ::ng-deep .player-form-container,
+.admin-right-pane ::ng-deep .admin-form-container {
   background: transparent !important;
   border: none !important;
   box-shadow: none !important;
@@ -491,6 +493,7 @@
 .btn-action-edit-custom:hover {
   background-color: rgba(37, 99, 235, 0.15);
   border-color: #38bdf8;
+  color: #38bdf8;
 }
 
 .btn-action-delete-custom {
@@ -703,4 +706,44 @@
     gap: 1rem;
     align-items: center;
   }
+}
+
+/* ================= BOTONES UNIFICADOS DE CAMBIO DE ROL ================= */
+.btn-action-role-custom {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border-radius: 10px;
+  padding: 6px 14px;
+  font-weight: 600;
+  font-size: 0.84rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  background-color: transparent;
+  min-width: 165px;
+  white-space: nowrap;
+}
+
+.btn-action-role-custom.make-admin {
+  color: #34d399;
+  border: 1px solid #059669;
+}
+
+.btn-action-role-custom.make-admin:hover {
+  background-color: rgba(5, 150, 105, 0.15);
+  border-color: #34d399;
+  color: #6ee7b7;
+}
+
+.btn-action-role-custom.make-user {
+  color: #38bdf8;
+  border: 1px solid #2563eb;
+}
+
+.btn-action-role-custom.make-user:hover {
+  background-color: rgba(37, 99, 235, 0.15);
+  border-color: #38bdf8;
+  color: #38bdf8;
 }

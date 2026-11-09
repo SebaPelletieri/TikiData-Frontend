@@ -29,11 +29,17 @@ export const routes: Routes = [
   },
   { path: 'profile/edit', component: ProfileEdit },
   { path: 'teams', component: Teams },
-  { path: 'team/:id', component: TeamDetailPage },
+
+  /* Modificado: ahora usa :name en lugar de :id */
+  { path: 'team/:name', component: TeamDetailPage },
+  { path: 'teams/:name', redirectTo: 'team/:name', pathMatch: 'full' },
+
   { path: 'players', component: Players },
   { path: 'player/:id', component: PlayerDetail },
+  { path: 'players/:id', redirectTo: 'player/:id', pathMatch: 'full' },
   { path: 'championships', component: Championships },
   { path: 'championship/:id', component: ChampionshipDetail },
+  { path: 'championships/:id', redirectTo: 'championship/:id', pathMatch: 'full' },
   { path: 'match/:id', component: MatchDetail },
   {
     path: 'admin',

@@ -15,7 +15,6 @@
           <th>ID</th>
           <th>Usuario</th>
           <th>Email</th>
-          <th>País</th>
           <th>Rol</th>
           <th>Acciones</th>
         </tr>
@@ -28,7 +27,6 @@
               <span class="username">{{ u.username }}</span>
             </td>
             <td>{{ u.email }}</td>
-            <td>{{ u.country || 'No especificado' }}</td>
             <td>
               <span class="role-badge" [class.admin]="u.role === 'Administrador'">
                 {{ u.role }}
@@ -45,7 +43,7 @@
           </tr>
         } @empty {
           <tr>
-            <td colspan="6" class="empty-state">No hay usuarios registrados.</td>
+            <td colspan="5" class="empty-state">No hay usuarios registrados.</td>
           </tr>
         }
       </tbody>

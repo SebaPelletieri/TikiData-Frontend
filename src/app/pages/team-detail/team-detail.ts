@@ -29,30 +29,35 @@ export class TeamDetailPage implements OnInit {
   squadPlayers = signal<Player[]>([]);
 
   ngOnInit() {
+    // Capturamos el parámetro 'name' de la URL en lugar de 'id'
     this.route.paramMap.subscribe((params) => {
-      const idParam = params.get('id');
-      if (idParam) {
-        const teamId = Number(idParam);
-        this.loadTeamData(teamId);
+      const teamSlug = params.get('name');
+      if (teamSlug) {
+        this.loadTeamBySlug(teamSlug);
       }
     });
   }
 
-  loadTeamData(id: number) {
-    this.teamService.getById(id).subscribe({
-      next: (team: Team) => {
-        if (team) {
-          this.teamService.teamActual.set(team);
+  loadTeamBySlug(slug: string) {
+    // CORREGIDO: Usamos getAllTeams() en lugar de getAll() para poder hacer .subscribe()
+    this.teamService.getAllTeams().subscribe({
+      next: (teams: Team[]) => {
+        const foundTeam = teams.find((t) => t.name.toLowerCase().replace(/\s+/g, '-') === slug);
 
-          // Cargar jugadores del equipo
+        if (foundTeam && foundTeam.id) {
+          this.teamService.teamActual.set(foundTeam);
+
+          // Cargar jugadores del equipo usando el ID real del equipo encontrado
           this.playerService.getAllPlayers().subscribe((players: Player[]) => {
-            const filtered = players.filter((p: any) => p.teamId === id || p.team === id);
+            const filtered = players.filter(
+              (p: any) => p.teamId === foundTeam.id || p.team === foundTeam.id,
+            );
             this.squadPlayers.set(filtered);
           });
         }
       },
       error: (err: any) => {
-        console.error('Error cargando detalles:', err);
+        console.error('Error cargando equipos:', err);
       },
     });
   }

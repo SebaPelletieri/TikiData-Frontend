@@ -11,6 +11,11 @@ export class TeamService {
   teams = signal<Team[]>([]);
   teamActual = signal<Team | null>(null);
 
+  // Método para obtener todos los equipos como Observable (nuevo)
+  getAllTeams(): Observable<Team[]> {
+    return this.http.get<Team[]>(this.apiUrl);
+  }
+
   // Métodos del HTTP
   getAll() {
     this.http.get<Team[]>(this.apiUrl).subscribe({
@@ -66,8 +71,8 @@ export class TeamService {
   }
 
   getTeamsSortedByPoints(): Observable<Team[]> {
-  return this.http.get<Team[]>(this.apiUrl).pipe(
-    map(teams => teams.sort((a: any, b: any) => (b.points || 0) - (a.points || 0)))
-  );
-}
+    return this.http
+      .get<Team[]>(this.apiUrl)
+      .pipe(map((teams) => teams.sort((a: any, b: any) => (b.points || 0) - (a.points || 0))));
+  }
 }

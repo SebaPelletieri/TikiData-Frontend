@@ -3,17 +3,10 @@
     <div class="error-msg">{{ teamService.error() }}</div>
   }
 
-  @if (teamService.teamActual(); as team) {
-    <app-team-detail
-      [team]="team"
-      [stadium]="stadiumActual()"
-      [championships]="activeChampionships()"
-      [matches]="recentMatches()"
-    />
-  } @else if (!teamService.error()) {
-    <div class="loading-state">
-      <div class="spinner"></div>
-      <p>Cargando información del equipo...</p>
-    </div>
-  }
+  <!-- El componente hijo ahora maneja la carga y visualización basándose en el nombre de la URL -->
+  <app-team-detail
+    [stadium]="stadiumActual()"
+    [championships]="activeChampionships()"
+    [matches]="recentMatches()"
+  />
 </div>

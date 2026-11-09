@@ -11,7 +11,7 @@
       <span class="breadcrumb">Administración > Panel General</span>
       <h2>Panel de Administración</h2>
       <p class="subtitle">
-        Gestiona la información de equipos, jugadores y campeonatos del sistema.
+        Gestiona la información de equipos, jugadores, campeonatos y usuarios del sistema.
       </p>
     </div>
   </div>
@@ -219,7 +219,10 @@
                     <td>{{ team.yearOfFoundation | date: 'yyyy' }}</td>
                     <td>
                       <div class="table-actions">
-                        <button class="btn-action-view-custom" [routerLink]="['/teams', team.id]">
+                        <button
+                          class="btn-action-view-custom"
+                          [routerLink]="['/team', team.name.toLowerCase().replace(/\s+/g, '-')]"
+                        >
                           <svg
                             viewBox="0 0 24 24"
                             width="15"
@@ -565,6 +568,487 @@
     </div>
   </div>
 
+  <!-- ======================================================== -->
+  <!-- SECCIÓN JUGADORES: Tabla a la izq. y Form a la der.      -->
+  <!-- ======================================================== -->
+  <div class="admin-split-layout-container always-with-form" style="margin-top: 2.5rem">
+    <div class="admin-left-pane">
+      <div class="teams-admin-header-row">
+        <div class="teams-title-block">
+          <div class="team-shield-icon-box">👥</div>
+          <div>
+            <h3>Jugadores</h3>
+            <p>Lista de futbolistas registrados en el sistema.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Barra de filtros y búsqueda de jugadores -->
+      <div class="teams-filters-bar">
+        <div class="search-input-wrapper">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input
+            type="text"
+            [ngModel]="playerSearchText()"
+            (ngModelChange)="playerSearchText.set($event); currentPlayerPage.set(1)"
+            placeholder="Buscar jugador..."
+          />
+        </div>
+
+        <!-- Filtro de Posición -->
+        <div
+          class="filter-dropdown-container-admin custom-dropdown"
+          [class.open]="isPlayerPositionDropdownOpen"
+        >
+          <div
+            class="filter-dropdown-box dropdown-trigger"
+            (click)="togglePlayerPositionDropdown($event)"
+          >
+            <span>{{ selectedPlayerPositionLabel }}</span>
+            <span class="triangle-icon"></span>
+          </div>
+          @if (isPlayerPositionDropdownOpen) {
+            <ul class="admin-dropdown-menu">
+              @for (opt of playerPositionOptions(); track opt.value) {
+                <li
+                  class="admin-dropdown-item"
+                  [class.active]="selectedPlayerPosition() === opt.value"
+                  (click)="selectPlayerPosition(opt.value)"
+                >
+                  <span>{{ opt.label }}</span>
+                  @if (selectedPlayerPosition() === opt.value) {
+                    <svg
+                      class="check-icon"
+                      viewBox="0 0 24 24"
+                      width="14"
+                      height="14"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="3"
+                    >
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                  }
+                </li>
+              }
+            </ul>
+          }
+        </div>
+
+        <!-- Filtro de Nacionalidad -->
+        <div
+          class="filter-dropdown-container-admin custom-dropdown"
+          [class.open]="isPlayerNationalityDropdownOpen"
+        >
+          <div
+            class="filter-dropdown-box dropdown-trigger"
+            (click)="togglePlayerNationalityDropdown($event)"
+          >
+            <span>{{ selectedPlayerNationalityLabel }}</span>
+            <span class="triangle-icon"></span>
+          </div>
+          @if (isPlayerNationalityDropdownOpen) {
+            <ul class="admin-dropdown-menu">
+              @for (opt of playerNationalityOptions(); track opt.value) {
+                <li
+                  class="admin-dropdown-item"
+                  [class.active]="selectedPlayerNationality() === opt.value"
+                  (click)="selectPlayerNationality(opt.value)"
+                >
+                  <span>{{ opt.label }}</span>
+                  @if (selectedPlayerNationality() === opt.value) {
+                    <svg
+                      class="check-icon"
+                      viewBox="0 0 24 24"
+                      width="14"
+                      height="14"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="3"
+                    >
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                  }
+                </li>
+              }
+            </ul>
+          }
+        </div>
+      </div>
+
+      <!-- Tabla fija de jugadores paginada -->
+      <div class="admin-table-fixed-container">
+        @if (paginatedPlayersForAdmin().length === 0) {
+          <p class="empty-msg">No se encontraron jugadores con los filtros seleccionados.</p>
+        } @else {
+          <div class="admin-table-wrapper">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Foto</th>
+                  <th>Nombre</th>
+                  <th>Posición</th>
+                  <th>Edad</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (player of paginatedPlayersForAdmin(); track player.id; let idx = $index) {
+                  <tr>
+                    <td>{{ (currentPlayerPage() - 1) * itemsPerPagePlayers + idx + 1 }}</td>
+                    <td>
+                      <div class="table-logo"><img [src]="player.photo" [alt]="player.name" /></div>
+                    </td>
+                    <td>
+                      <strong>{{ player.name }}</strong>
+                    </td>
+                    <td>{{ player.position }}</td>
+                    <td>{{ player.age }}</td>
+                    <td>
+                      <div class="table-actions">
+                        <button
+                          class="btn-action-view-custom"
+                          [routerLink]="['/players', player.id]"
+                        >
+                          <svg
+                            viewBox="0 0 24 24"
+                            width="15"
+                            height="15"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                          >
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                          </svg>
+                          Ver
+                        </button>
+                        <button
+                          class="btn-action-edit-custom"
+                          [routerLink]="['/players/edit', player.id]"
+                        >
+                          <svg
+                            viewBox="0 0 24 24"
+                            width="15"
+                            height="15"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                          >
+                            <path
+                              d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"
+                            ></path>
+                            <path
+                              d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"
+                            ></path>
+                          </svg>
+                          Editar
+                        </button>
+                        <button
+                          class="btn-action-delete-custom"
+                          (click)="confirmDeletePlayer(player.id!)"
+                        >
+                          <svg
+                            viewBox="0 0 24 24"
+                            width="15"
+                            height="15"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                          >
+                            <polyline points="3 6 5 6 21 6"></polyline>
+                            <path
+                              d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
+                            ></path>
+                          </svg>
+                          Eliminar
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        }
+      </div>
+
+      <!-- Paginación de jugadores -->
+      <div class="teams-pagination-bar">
+        <span class="pagination-info-text">{{ playerPaginationInfoText() }}</span>
+        <div class="pagination-buttons-group">
+          <button
+            type="button"
+            class="pagination-arrow-btn"
+            [disabled]="currentPlayerPage() === 1"
+            (click)="changePlayerPage(currentPlayerPage() - 1)"
+          >
+            ‹
+          </button>
+          @for (page of playerPagesArray(); track page) {
+            <button
+              type="button"
+              class="pagination-page-btn"
+              [class.active]="currentPlayerPage() === page"
+              (click)="changePlayerPage(page)"
+            >
+              {{ page }}
+            </button>
+          }
+          <button
+            type="button"
+            class="pagination-arrow-btn"
+            [disabled]="currentPlayerPage() === totalPlayerPages()"
+            (click)="changePlayerPage(currentPlayerPage() + 1)"
+          >
+            ›
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- COLUMNA DERECHA: Formulario integrado de Jugadores -->
+    <div class="admin-right-pane">
+      <app-player-form (closePanel)="loadAdminData()"></app-player-form>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- SECCIÓN USUARIOS: Tabla a la izq. y Form a la der.      -->
+  <!-- ======================================================== -->
+  <div class="admin-split-layout-container always-with-form" style="margin-top: 2.5rem">
+    <div class="admin-left-pane">
+      <div class="teams-admin-header-row">
+        <div class="teams-title-block">
+          <div class="team-shield-icon-box">👤</div>
+          <div>
+            <h3>Usuarios</h3>
+            <p>Lista de usuarios registrados en el sistema.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Barra de filtros y búsqueda de usuarios -->
+      <div class="teams-filters-bar" style="grid-template-columns: 2fr 1fr">
+        <div class="search-input-wrapper">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input
+            type="text"
+            [ngModel]="userSearchText()"
+            (ngModelChange)="userSearchText.set($event); currentUserPage.set(1)"
+            placeholder="Buscar por nombre o email..."
+          />
+        </div>
+
+        <!-- Filtro de Rol -->
+        <div
+          class="filter-dropdown-container-admin custom-dropdown"
+          [class.open]="isUserRoleDropdownOpen"
+        >
+          <div
+            class="filter-dropdown-box dropdown-trigger"
+            (click)="toggleUserRoleDropdown($event)"
+          >
+            <span>{{ selectedUserRoleLabel }}</span>
+            <span class="triangle-icon"></span>
+          </div>
+          @if (isUserRoleDropdownOpen) {
+            <ul class="admin-dropdown-menu">
+              @for (opt of userRoleOptions(); track opt.value) {
+                <li
+                  class="admin-dropdown-item"
+                  [class.active]="selectedUserRole() === opt.value"
+                  (click)="selectUserRole(opt.value)"
+                >
+                  <span>{{ opt.label }}</span>
+                  @if (selectedUserRole() === opt.value) {
+                    <svg
+                      class="check-icon"
+                      viewBox="0 0 24 24"
+                      width="14"
+                      height="14"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="3"
+                    >
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                  }
+                </li>
+              }
+            </ul>
+          }
+        </div>
+      </div>
+
+      <!-- Tabla fija de usuarios paginada -->
+      <div class="admin-table-fixed-container">
+        @if (paginatedUsersForAdmin().length === 0) {
+          <p class="empty-msg">No se encontraron usuarios con los filtros seleccionados.</p>
+        } @else {
+          <div class="admin-table-wrapper">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Usuario</th>
+                  <th>Correo Electrónico</th>
+                  <th>Rol</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (user of paginatedUsersForAdmin(); track user.id; let idx = $index) {
+                  <tr>
+                    <td>{{ (currentUserPage() - 1) * itemsPerPageUsers + idx + 1 }}</td>
+                    <td>
+                      <strong>{{ user.username }}</strong>
+                    </td>
+                    <td>{{ user.email }}</td>
+                    <td>
+                      <span [style.color]="user.role === 'Administrador' ? '#38bdf8' : '#c9d8eb'">
+                        {{ user.role }}
+                      </span>
+                    </td>
+                    <td>
+                      <div class="table-actions">
+                        <button class="btn-action-view-custom" [routerLink]="['/users', user.id]">
+                          <svg
+                            viewBox="0 0 24 24"
+                            width="15"
+                            height="15"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                          >
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                          </svg>
+                          Ver
+                        </button>
+
+                        <!-- Botón Unificado de Cambio de Rol -->
+                        <button
+                          class="btn-action-role-custom"
+                          [class.make-admin]="user.role !== 'Administrador'"
+                          [class.make-user]="user.role === 'Administrador'"
+                          (click)="confirmToggleRole(user)"
+                        >
+                          @if (user.role === 'Administrador') {
+                            <span>Convertir en Usuario</span>
+                          } @else {
+                            <span>Convertir en Admin</span>
+                          }
+                        </button>
+
+                        <button
+                          class="btn-action-delete-custom"
+                          (click)="confirmDeleteUser(user.id!)"
+                        >
+                          <svg
+                            viewBox="0 0 24 24"
+                            width="15"
+                            height="15"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                          >
+                            <polyline points="3 6 5 6 21 6"></polyline>
+                            <path
+                              d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
+                            ></path>
+                          </svg>
+                          Eliminar
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        }
+      </div>
+
+      <!-- Paginación de usuarios -->
+      <div class="teams-pagination-bar">
+        <span class="pagination-info-text">{{ userPaginationInfoText() }}</span>
+        <div class="pagination-buttons-group">
+          <button
+            type="button"
+            class="pagination-arrow-btn"
+            [disabled]="currentUserPage() === 1"
+            (click)="changeUserPage(currentUserPage() - 1)"
+          >
+            ‹
+          </button>
+          @for (page of userPagesArray(); track page) {
+            <button
+              type="button"
+              class="pagination-page-btn"
+              [class.active]="currentUserPage() === page"
+              (click)="changeUserPage(page)"
+            >
+              {{ page }}
+            </button>
+          }
+          <button
+            type="button"
+            class="pagination-arrow-btn"
+            [disabled]="currentUserPage() === totalUserPages()"
+            (click)="changeUserPage(currentUserPage() + 1)"
+          >
+            ›
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- COLUMNA DERECHA: Formulario integrado para Crear Nuevo Administrador -->
+    <div class="admin-right-pane">
+      <app-admin-form (closePanel)="loadAdminData()"></app-admin-form>
+    </div>
+  </div>
+
+  <!-- ================= MODAL DE CONFIRMACIÓN (CAMBIO DE ROL) ================= -->
+  @if (userToChangeRole() !== null) {
+    <div class="custom-modal-backdrop">
+      <div class="custom-modal-box">
+        <div class="modal-icon-warning">🔄</div>
+        <h3>¿Estás seguro?</h3>
+        <p>
+          Estás a punto de cambiar el rol de
+          <strong>{{ userToChangeRole()?.user?.username }}</strong> a
+          <strong>{{ userToChangeRole()?.newRole }}</strong
+          >.
+        </p>
+        <div class="modal-actions">
+          <button type="button" class="btn-modal-cancel" (click)="cancelToggleRole()">
+            Cancelar
+          </button>
+          <button
+            type="button"
+            class="btn-modal-confirm"
+            style="
+              background: linear-gradient(180deg, #2563eb 0%, #1d4ed8 100%);
+              border-color: #3b82f6;
+            "
+            (click)="executeToggleRole()"
+          >
+            Sí, cambiar rol
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+
   <!-- ================= MODAL DE CONFIRMACIÓN (EQUIPOS) ================= -->
   @if (teamToDeleteId() !== null) {
     <div class="custom-modal-backdrop">
@@ -594,6 +1078,44 @@
             Cancelar
           </button>
           <button type="button" class="btn-modal-confirm" (click)="executeDeleteChampionship()">
+            Sí, eliminar
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- ================= MODAL DE CONFIRMACIÓN (JUGADORES) ================= -->
+  @if (playerToDeleteId() !== null) {
+    <div class="custom-modal-backdrop">
+      <div class="custom-modal-box">
+        <div class="modal-icon-warning">⚠️</div>
+        <h3>¿Estás seguro?</h3>
+        <p>Esta acción eliminará al jugador del sistema de forma permanente.</p>
+        <div class="modal-actions">
+          <button type="button" class="btn-modal-cancel" (click)="cancelDeletePlayer()">
+            Cancelar
+          </button>
+          <button type="button" class="btn-modal-confirm" (click)="executeDeletePlayer()">
+            Sí, eliminar
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- ================= MODAL DE CONFIRMACIÓN (USUARIOS) ================= -->
+  @if (userToDeleteId() !== null) {
+    <div class="custom-modal-backdrop">
+      <div class="custom-modal-box">
+        <div class="modal-icon-warning">⚠️</div>
+        <h3>¿Estás seguro?</h3>
+        <p>Esta acción eliminará al usuario del sistema de forma permanente.</p>
+        <div class="modal-actions">
+          <button type="button" class="btn-modal-cancel" (click)="cancelDeleteUser()">
+            Cancelar
+          </button>
+          <button type="button" class="btn-modal-confirm" (click)="executeDeleteUser()">
             Sí, eliminar
           </button>
         </div>

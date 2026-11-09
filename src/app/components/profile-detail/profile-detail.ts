@@ -44,11 +44,6 @@ export class ProfileDetail implements OnInit {
     const user = this.currentUser;
     if (!user) return;
 
-    // 👀 Esto te imprimirá en la consola del navegador qué IDs tiene el usuario guardados
-    console.log('IDs de equipos favoritos del usuario:', user.favoriteTeams);
-    console.log('IDs de campeonatos favoritos:', user.favoriteChampionships);
-    console.log('IDs de jugadores favoritos:', user.favoritePlayers);
-
     // 1. Cargar Equipos Favoritos
     if (user.favoriteTeams && user.favoriteTeams.length > 0) {
       const loadedTeams: Team[] = [];
@@ -125,7 +120,6 @@ export class ProfileDetail implements OnInit {
         userValue.userName ||
         userValue.email?.split('@')[0] ||
         'Usuario',
-      country: userValue.country || 'Argentina',
       role: userValue.role || 'Usuario',
     } as User;
   }

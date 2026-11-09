@@ -1,10 +1,12 @@
-import { Component, input, signal, inject, computed } from '@angular/core';
+import { Component, input, signal, inject, computed, OnInit } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
 import { Team } from '../../models/Team';
 import { Stadium } from '../../models/stadium';
 import { Player } from '../../models/Player';
 import { TeamRoster } from '../team-roster/team-roster';
-import { AuthService } from '../../services/auth-service'; 
+import { AuthService } from '../../services/auth-service';
+import { TeamService } from '../../services/team-service'; // Importamos tu TeamService
 
 @Component({
   selector: 'app-team-detail',
@@ -13,10 +15,13 @@ import { AuthService } from '../../services/auth-service';
   templateUrl: './team-detail.html',
   styleUrl: './team-detail.css',
 })
-export class TeamDetail {
-  private authService = inject(AuthService) as AuthService; 
+export class TeamDetail implements OnInit {
+  private authService = inject(AuthService) as AuthService;
+  private route = inject(ActivatedRoute);
+  private teamService = inject(TeamService); // Inyectamos el servicio aquí
 
-  team = input.required<Team>();
+  team = signal<Team | null>(null);
+
   stadium = input<Stadium | null>(null);
   championships = input<any[]>([]);
   matches = input<any[]>([]);
@@ -24,17 +29,37 @@ export class TeamDetail {
 
   activeTab = signal<'general' | 'squad' | 'matches'>('general');
 
+  ngOnInit(): void {
+    // Capturamos el parámetro 'name' de la URL (ej: "estudiantes-de-la-plata")
+    this.route.paramMap.subscribe((params) => {
+      const teamNameSlug = params.get('name');
+      if (teamNameSlug) {
+        this.loadTeamByName(teamNameSlug);
+      }
+    });
+  }
+
+  loadTeamByName(slug: string): void {
+    // Obtenemos todos los equipos y buscamos el que coincida con el slug
+    this.teamService.getAllTeams().subscribe((teams: Team[]) => {
+      const found = teams.find((t) => t.name.toLowerCase().replace(/\s+/g, '-') === slug);
+      if (found) {
+        this.team.set(found);
+      }
+    });
+  }
+
   setTab(tab: 'general' | 'squad' | 'matches'): void {
     this.activeTab.set(tab);
   }
 
-  // 3. Obtener el usuario actual reactivamente
+  // Obtener el usuario actual reactivamente
   currentUser = computed(() => {
     const userFn = this.authService.currentUser as any;
     return typeof userFn === 'function' ? userFn() : userFn;
   });
 
-  // 4. Saber si el equipo actual ya está en los favoritos del usuario
+  // Saber si el equipo actual ya está en los favoritos del usuario
   isFollowing = computed(() => {
     const user = this.currentUser();
     const currentTeam = this.team();
@@ -42,7 +67,7 @@ export class TeamDetail {
     return user.favoriteTeams.includes(currentTeam.id);
   });
 
-  // 5. Método para alternar entre Seguir / Dejar de seguir
+  // Método para alternar entre Seguir / Dejar de seguir
   toggleFollowTeam() {
     const user = this.currentUser();
     const currentTeam = this.team();
@@ -51,14 +76,11 @@ export class TeamDetail {
     let favoriteTeams: number[] = [...(user.favoriteTeams || [])];
 
     if (this.isFollowing()) {
-      // Si ya lo sigue, lo quitamos
       favoriteTeams = favoriteTeams.filter((id: number) => id !== currentTeam.id);
     } else {
-      // Si no lo sigue, lo agregamos
       favoriteTeams.push(currentTeam.id);
     }
 
-    // Actualizamos al usuario mediante el servicio
     this.authService.updateUser(user.id, { favoriteTeams }).subscribe();
   }
 

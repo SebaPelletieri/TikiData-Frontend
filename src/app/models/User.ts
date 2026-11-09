@@ -9,6 +9,5 @@ export interface User {
   favoritePlayers: number[];
   favoriteChampionships: number[]; 
   avatar?: string;
-  country: string;
   createdAt?: string;
 }

@@ -44,8 +44,17 @@ export class AuthService {
       );
   }
 
-  register(userData: RegisterRequest): Observable<User> {
-    return this.http.post<User>(`${this.apiUrl}/usuarios`, userData);
+  register(userData: RegisterRequest | any): Observable<User> {
+    const dataWithRole = {
+      ...userData,
+      role: userData.role || 'Usuario',
+      favoriteTeams: [],
+      favoritePlayers: [],
+      favoriteChampionships: [],
+      createdAt: new Date().toISOString(),
+    };
+
+    return this.http.post<User>(`${this.apiUrl}/usuarios`, dataWithRole);
   }
 
   logout(): void {
@@ -70,7 +79,14 @@ export class AuthService {
   }
 
   getAllUsers(): Observable<User[]> {
-    return this.http.get<User[]>(`${this.apiUrl}/usuarios`);
+    return this.http.get<any[]>(`${this.apiUrl}/usuarios`).pipe(
+      map((users) =>
+        users.map((u) => ({
+          ...u,
+          username: u.username || u.name || 'Sin nombre',
+        })),
+      ),
+    );
   }
 
   // Cambiar el rol de un usuario específico (Administrador / Usuario)

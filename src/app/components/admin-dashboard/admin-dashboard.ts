@@ -8,11 +8,21 @@ import { ChampionshipService } from '../../services/championship-service';
 import { PlayerService } from '../../services/player-service';
 import { TeamForm } from '../team-form/team-form';
 import { ChampionshipForm } from '../../components/championship-form/championship-form';
+import { PlayerForm } from '../player-form/player-form';
+import { AdminForm } from '../admin-form/admin-form';
 
 @Component({
   selector: 'app-admin-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, TeamForm, ChampionshipForm],
+  imports: [
+    CommonModule,
+    RouterModule,
+    FormsModule,
+    TeamForm,
+    ChampionshipForm,
+    PlayerForm,
+    AdminForm,
+  ],
   templateUrl: './admin-dashboard.html',
   styleUrl: './admin-dashboard.css',
 })
@@ -26,66 +36,70 @@ export class AdminDashboard implements OnInit {
   successMessage = '';
   errorMessage = '';
 
-  // Datos generales del sistema y listas auxiliares
   allUsersForAdmin = signal<any[]>([]);
 
-  // ==========================================
-  // ESTADÍSTICAS GLOBALES CONECTADAS A LOS SERVICIOS
-  // ==========================================
   totalTeamsCount = computed(() => this.teamService.teams().length);
   totalUsersCount = computed(() => this.allUsersForAdmin().length);
   totalPlayersCount = computed(() => this.playerService.players().length);
   totalChampionshipsCount = computed(() => this.championshipService.championships().length);
 
-  // Estados de búsqueda y filtros de equipos
+  // Equipos
   adminSearchText = signal('');
   selectedAdminCountry = signal('ALL');
   selectedAdminChampionship = signal('ALL');
-
   currentPage = signal(1);
-  itemsPerPage = 6; // 👈 Configurado en 6 registros por página
-
+  itemsPerPage = 6;
   isCountryDropdownOpen = false;
   isChampionshipDropdownOpen = false;
-
   selectedCountryLabel = 'Todos los países';
   selectedChampionshipLabel = 'Todos los campeonatos';
-
   teamToDeleteId = signal<number | null>(null);
 
-  // ==========================================
-  // ESTADOS Y FILTROS PARA CAMPEONATOS
-  // ==========================================
+  // Campeonatos
   championshipSearchText = signal('');
   selectedChampionshipCountry = signal('ALL');
   selectedChampionshipType = signal('ALL');
-
   currentChampPage = signal(1);
-  itemsPerPageChamps = 6; // 👈 Configurado en 6 registros por página
-
+  itemsPerPageChamps = 6;
   isChampCountryDropdownOpen = false;
   isChampTypeDropdownOpen = false;
-
   selectedChampCountryLabel = 'Todos los países';
   selectedChampTypeLabel = 'Todos los tipos';
-
   championshipToDeleteId = signal<number | null>(null);
+
+  // Jugadores
+  playerSearchText = signal('');
+  selectedPlayerPosition = signal('ALL');
+  selectedPlayerNationality = signal('ALL');
+  currentPlayerPage = signal(1);
+  itemsPerPagePlayers = 10;
+  isPlayerPositionDropdownOpen = false;
+  isPlayerNationalityDropdownOpen = false;
+  selectedPlayerPositionLabel = 'Todas las posiciones';
+  selectedPlayerNationalityLabel = 'Todas las nacionalidades';
+  playerToDeleteId = signal<number | null>(null);
+
+  // Usuarios
+  userSearchText = signal('');
+  selectedUserRole = signal('ALL');
+  currentUserPage = signal(1);
+  itemsPerPageUsers = 10;
+  isUserRoleDropdownOpen = false;
+  selectedUserRoleLabel = 'Todos los roles';
+  userToDeleteId = signal<number | null>(null);
+
+  // Estado para la modal de confirmación de cambio de rol
+  userToChangeRole = signal<{ user: any; newRole: 'Administrador' | 'Usuario' } | null>(null);
 
   ngOnInit(): void {
     this.loadAdminData();
   }
 
   loadAdminData(): void {
-    // 1. Cargar equipos desde el servicio
     this.teamService.getAll();
-
-    // 2. Cargar campeonatos desde el servicio
     this.championshipService.getAll();
-
-    // 3. Cargar jugadores
     this.playerService.getAll();
 
-    // 4. Cargar usuarios del sistema
     if (this.authService.getAllUsers) {
       this.authService.getAllUsers().subscribe({
         next: (users: any[]) => this.allUsersForAdmin.set(users),
@@ -94,7 +108,40 @@ export class AdminDashboard implements OnInit {
     }
   }
 
-  // Opciones reactivas para los dropdowns de Equipos
+  // Métodos para la confirmación del cambio de rol estilo modal de eliminación
+  confirmToggleRole(user: any): void {
+    const newRole = user.role === 'Administrador' ? 'Usuario' : 'Administrador';
+    this.userToChangeRole.set({ user, newRole });
+  }
+
+  cancelToggleRole(): void {
+    this.userToChangeRole.set(null);
+  }
+
+  executeToggleRole(): void {
+    const data = this.userToChangeRole();
+    if (!data) return;
+
+    const { user, newRole } = data;
+
+    if (this.authService.updateUserRole) {
+      this.authService.updateUserRole(user.id, newRole).subscribe({
+        next: () => {
+          this.successMessage = `Rol de ${user.username} actualizado a ${newRole} con éxito.`;
+          this.loadAdminData();
+          this.userToChangeRole.set(null);
+          setTimeout(() => (this.successMessage = ''), 3000);
+        },
+        error: (err) => {
+          console.error('Error al actualizar rol:', err);
+          this.errorMessage = 'No se pudo actualizar el rol del usuario.';
+          this.userToChangeRole.set(null);
+          setTimeout(() => (this.errorMessage = ''), 3000);
+        },
+      });
+    }
+  }
+
   adminCountryOptions = computed(() => [
     { value: 'ALL', label: 'Todos los países' },
     { value: 'Argentina', label: 'Argentina' },
@@ -108,7 +155,6 @@ export class AdminDashboard implements OnInit {
     { value: 'Copa Libertadores', label: 'Copa Libertadores' },
   ]);
 
-  // Opciones reactivas para los dropdowns de Campeonatos
   champCountryOptions = computed(() => [
     { value: 'ALL', label: 'Todos los países' },
     { value: 'Argentina', label: 'Argentina' },
@@ -121,7 +167,29 @@ export class AdminDashboard implements OnInit {
     { value: 'Copa', label: 'Copa' },
   ]);
 
-  // Manejo de dropdowns de Equipos
+  playerPositionOptions = computed(() => [
+    { value: 'ALL', label: 'Todas las posiciones' },
+    { value: 'ARQ', label: 'ARQ' },
+    { value: 'DEF', label: 'DEF' },
+    { value: 'MED', label: 'MED' },
+    { value: 'DEL', label: 'DEL' },
+  ]);
+
+  playerNationalityOptions = computed(() => {
+    const players = this.playerService.players();
+    const uniqueNationalities = Array.from(
+      new Set(players.map((p) => p.nationality).filter(Boolean)),
+    );
+    const options = uniqueNationalities.map((nat) => ({ value: nat, label: nat }));
+    return [{ value: 'ALL', label: 'Todas las nacionalidades' }, ...options];
+  });
+
+  userRoleOptions = computed(() => [
+    { value: 'ALL', label: 'Todos los roles' },
+    { value: 'Administrador', label: 'Administrador' },
+    { value: 'Usuario', label: 'Usuario' },
+  ]);
+
   toggleCountryDropdown(event: MouseEvent): void {
     event.stopPropagation();
     this.isCountryDropdownOpen = !this.isCountryDropdownOpen;
@@ -148,7 +216,6 @@ export class AdminDashboard implements OnInit {
     this.isChampionshipDropdownOpen = false;
   }
 
-  // Manejo de dropdowns de Campeonatos
   toggleChampCountryDropdown(event: MouseEvent): void {
     event.stopPropagation();
     this.isChampCountryDropdownOpen = !this.isChampCountryDropdownOpen;
@@ -175,26 +242,54 @@ export class AdminDashboard implements OnInit {
     this.isChampTypeDropdownOpen = false;
   }
 
-  // Paginación y filtrado de equipos
-  filteredTeams = computed(() => {
-    return this.teamService.teams();
-  });
+  togglePlayerPositionDropdown(event: MouseEvent): void {
+    event.stopPropagation();
+    this.isPlayerPositionDropdownOpen = !this.isPlayerPositionDropdownOpen;
+    this.isPlayerNationalityDropdownOpen = false;
+  }
 
+  togglePlayerNationalityDropdown(event: MouseEvent): void {
+    event.stopPropagation();
+    this.isPlayerNationalityDropdownOpen = !this.isPlayerNationalityDropdownOpen;
+    this.isPlayerPositionDropdownOpen = false;
+  }
+
+  selectPlayerPosition(pos: string): void {
+    this.selectedPlayerPosition.set(pos);
+    const found = this.playerPositionOptions().find((o) => o.value === pos);
+    this.selectedPlayerPositionLabel = found ? found.label : 'Todas las posiciones';
+    this.isPlayerPositionDropdownOpen = false;
+  }
+
+  selectPlayerNationality(nationality: string): void {
+    this.selectedPlayerNationality.set(nationality);
+    const found = this.playerNationalityOptions().find((o) => o.value === nationality);
+    this.selectedPlayerNationalityLabel = found ? found.label : 'Todas las nacionalidades';
+    this.isPlayerNationalityDropdownOpen = false;
+  }
+
+  toggleUserRoleDropdown(event: MouseEvent): void {
+    event.stopPropagation();
+    this.isUserRoleDropdownOpen = !this.isUserRoleDropdownOpen;
+  }
+
+  selectUserRole(role: string): void {
+    this.selectedUserRole.set(role);
+    const found = this.userRoleOptions().find((o) => o.value === role);
+    this.selectedUserRoleLabel = found ? found.label : 'Todos los roles';
+    this.isUserRoleDropdownOpen = false;
+  }
+
+  filteredTeams = computed(() => this.teamService.teams());
   paginatedTeamsForAdmin = computed(() => {
     const teams = this.filteredTeams();
     const start = (this.currentPage() - 1) * this.itemsPerPage;
     return teams.slice(start, start + this.itemsPerPage);
   });
-
-  totalPages = computed(() => {
-    const total = this.filteredTeams().length;
-    return Math.max(1, Math.ceil(total / this.itemsPerPage));
-  });
-
-  pagesArray = computed(() => {
-    return Array.from({ length: this.totalPages() }, (_, i) => i + 1);
-  });
-
+  totalPages = computed(() =>
+    Math.max(1, Math.ceil(this.filteredTeams().length / this.itemsPerPage)),
+  );
+  pagesArray = computed(() => Array.from({ length: this.totalPages() }, (_, i) => i + 1));
   paginationInfoText = computed(() => {
     const total = this.filteredTeams().length;
     if (total === 0) return 'No hay registros';
@@ -202,33 +297,20 @@ export class AdminDashboard implements OnInit {
     const end = Math.min(this.currentPage() * this.itemsPerPage, total);
     return `Mostrando ${start} - ${end} de ${total} registros`;
   });
-
   changePage(page: number): void {
-    if (page >= 1 && page <= this.totalPages()) {
-      this.currentPage.set(page);
-    }
+    if (page >= 1 && page <= this.totalPages()) this.currentPage.set(page);
   }
 
-  // Paginación y filtrado de campeonatos
-  filteredChampionships = computed(() => {
-    return this.championshipService.championships();
-  });
-
+  filteredChampionships = computed(() => this.championshipService.championships());
   paginatedChampionshipsForAdmin = computed(() => {
     const champs = this.filteredChampionships();
     const start = (this.currentChampPage() - 1) * this.itemsPerPageChamps;
     return champs.slice(start, start + this.itemsPerPageChamps);
   });
-
-  totalChampPages = computed(() => {
-    const total = this.filteredChampionships().length;
-    return Math.max(1, Math.ceil(total / this.itemsPerPageChamps));
-  });
-
-  champPagesArray = computed(() => {
-    return Array.from({ length: this.totalChampPages() }, (_, i) => i + 1);
-  });
-
+  totalChampPages = computed(() =>
+    Math.max(1, Math.ceil(this.filteredChampionships().length / this.itemsPerPageChamps)),
+  );
+  champPagesArray = computed(() => Array.from({ length: this.totalChampPages() }, (_, i) => i + 1));
   champPaginationInfoText = computed(() => {
     const total = this.filteredChampionships().length;
     if (total === 0) return 'No hay registros';
@@ -236,44 +318,136 @@ export class AdminDashboard implements OnInit {
     const end = Math.min(this.currentChampPage() * this.itemsPerPageChamps, total);
     return `Mostrando ${start} - ${end} de ${total} registros`;
   });
-
   changeChampPage(page: number): void {
-    if (page >= 1 && page <= this.totalChampPages()) {
-      this.currentChampPage.set(page);
-    }
+    if (page >= 1 && page <= this.totalChampPages()) this.currentChampPage.set(page);
   }
 
-  // Lógica de eliminación de Equipos
+  filteredPlayers = computed(() => {
+    const players = this.playerService.players();
+    const search = this.playerSearchText().toLowerCase().trim();
+    const pos = this.selectedPlayerPosition();
+    const nat = this.selectedPlayerNationality();
+
+    return players.filter((p) => {
+      const playerName = (p.name || '').toLowerCase();
+      const matchesSearch = !search || playerName.includes(search);
+      const matchesPos = pos === 'ALL' || p.position === pos;
+      const matchesNationality = nat === 'ALL' || p.nationality === nat;
+      return matchesSearch && matchesPos && matchesNationality;
+    });
+  });
+  paginatedPlayersForAdmin = computed(() => {
+    const players = this.filteredPlayers();
+    const start = (this.currentPlayerPage() - 1) * this.itemsPerPagePlayers;
+    return players.slice(start, start + this.itemsPerPagePlayers);
+  });
+  totalPlayerPages = computed(() =>
+    Math.max(1, Math.ceil(this.filteredPlayers().length / this.itemsPerPagePlayers)),
+  );
+  playerPagesArray = computed(() =>
+    Array.from({ length: this.totalPlayerPages() }, (_, i) => i + 1),
+  );
+  playerPaginationInfoText = computed(() => {
+    const total = this.filteredPlayers().length;
+    if (total === 0) return 'No hay registros';
+    const start = (this.currentPlayerPage() - 1) * this.itemsPerPagePlayers + 1;
+    const end = Math.min(this.currentPlayerPage() * this.itemsPerPagePlayers, total);
+    return `Mostrando ${start} - ${end} de ${total} registros`;
+  });
+  changePlayerPage(page: number): void {
+    if (page >= 1 && page <= this.totalPlayerPages()) this.currentPlayerPage.set(page);
+  }
+
+  filteredUsers = computed(() => {
+    const users = this.allUsersForAdmin();
+    const search = this.userSearchText().toLowerCase().trim();
+    const role = this.selectedUserRole();
+
+    return users.filter((u) => {
+      const username = (u.username || '').toLowerCase();
+      const email = (u.email || '').toLowerCase();
+      const matchesSearch = !search || username.includes(search) || email.includes(search);
+      const matchesRole = role === 'ALL' || u.role === role;
+      return matchesSearch && matchesRole;
+    });
+  });
+  paginatedUsersForAdmin = computed(() => {
+    const users = this.filteredUsers();
+    const start = (this.currentUserPage() - 1) * this.itemsPerPageUsers;
+    return users.slice(start, start + this.itemsPerPageUsers);
+  });
+  totalUserPages = computed(() =>
+    Math.max(1, Math.ceil(this.filteredUsers().length / this.itemsPerPageUsers)),
+  );
+  userPagesArray = computed(() => Array.from({ length: this.totalUserPages() }, (_, i) => i + 1));
+  userPaginationInfoText = computed(() => {
+    const total = this.filteredUsers().length;
+    if (total === 0) return 'No hay registros';
+    const start = (this.currentUserPage() - 1) * this.itemsPerPageUsers + 1;
+    const end = Math.min(this.currentUserPage() * this.itemsPerPageUsers, total);
+    return `Mostrando ${start} - ${end} de ${total} registros`;
+  });
+  changeUserPage(page: number): void {
+    if (page >= 1 && page <= this.totalUserPages()) this.currentUserPage.set(page);
+  }
+
   confirmDelete(id: number): void {
     this.teamToDeleteId.set(id);
   }
-
   cancelDelete(): void {
     this.teamToDeleteId.set(null);
   }
-
   executeDelete(): void {
     const id = this.teamToDeleteId();
-    if (id !== null) {
-      this.teamService.deleteTeam(id);
-    }
+    if (id !== null) this.teamService.deleteTeam(id);
     this.teamToDeleteId.set(null);
   }
 
-  // Lógica de eliminación de Campeonatos
   confirmDeleteChampionship(id: number): void {
     this.championshipToDeleteId.set(id);
   }
-
   cancelDeleteChampionship(): void {
     this.championshipToDeleteId.set(null);
   }
-
   executeDeleteChampionship(): void {
     const id = this.championshipToDeleteId();
-    if (id !== null) {
-      this.championshipService.deleteChampionship(id);
-    }
+    if (id !== null) this.championshipService.deleteChampionship(id);
     this.championshipToDeleteId.set(null);
+  }
+
+  confirmDeletePlayer(id: number): void {
+    this.playerToDeleteId.set(id);
+  }
+  cancelDeletePlayer(): void {
+    this.playerToDeleteId.set(null);
+  }
+  executeDeletePlayer(): void {
+    const id = this.playerToDeleteId();
+    if (id !== null) this.playerService.deletePlayer(id);
+    this.playerToDeleteId.set(null);
+  }
+
+  confirmDeleteUser(id: number): void {
+    this.userToDeleteId.set(id);
+  }
+  cancelDeleteUser(): void {
+    this.userToDeleteId.set(null);
+  }
+  executeDeleteUser(): void {
+    const id = this.userToDeleteId();
+    if (id !== null && this.authService.deleteUser) {
+      this.authService.deleteUser(id).subscribe({
+        next: () => {
+          this.loadAdminData();
+          this.userToDeleteId.set(null);
+        },
+        error: (err) => {
+          console.error('Error al eliminar usuario:', err);
+          this.userToDeleteId.set(null);
+        },
+      });
+    } else {
+      this.userToDeleteId.set(null);
+    }
   }
 }

@@ -5,7 +5,7 @@
       "name": "Tobías",
       "email": "toto@test.com",
       "password": "password123",
-      "role": "Administrador",
+      "role": "Usuario",
       "favoriteTeams": [
         "4"
       ]
@@ -21,31 +21,15 @@
       ]
     },
     {
-      "id": "3",
-      "name": "Lautaro Fernandez",
-      "email": "lautaro@gmail.com",
-      "password": "lauti123",
-      "favoriteTeams": [
-        "2"
-      ]
-    },
-    {
-      "id": "4",
-      "name": "Juan De Siena",
-      "email": "juan@gmail.com",
-      "password": "pollo123"
-    },
-    {
-      "userName": "ttt",
-      "email": "toto@test.com",
-      "password": "Toto190603",
-      "id": "L4d9pHr"
-    },
-    {
-      "userName": "Lautaro Fernandez ",
-      "email": "dasdsadasdasdadsdas@g",
-      "password": "asdasdadsda",
-      "id": "cO4Ea6x"
+      "userName": "Seba Pelletieri",
+      "email": "seba@tikidata.com",
+      "password": "password123",
+      "role": "Usuario",
+      "favoriteTeams": [],
+      "favoritePlayers": [],
+      "favoriteChampionships": [],
+      "createdAt": "2026-11-09T19:06:00.457Z",
+      "id": "nq0DE94q0Cc"
     }
   ],
   "equipos": [

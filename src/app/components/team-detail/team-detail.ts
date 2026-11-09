@@ -6,7 +6,7 @@ import { Stadium } from '../../models/stadium';
 import { Player } from '../../models/Player';
 import { TeamRoster } from '../team-roster/team-roster';
 import { AuthService } from '../../services/auth-service';
-import { TeamService } from '../../services/team-service'; // Importamos tu TeamService
+import { TeamService } from '../../services/team-service';
 
 @Component({
   selector: 'app-team-detail',
@@ -18,9 +18,14 @@ import { TeamService } from '../../services/team-service'; // Importamos tu Team
 export class TeamDetail implements OnInit {
   private authService = inject(AuthService) as AuthService;
   private route = inject(ActivatedRoute);
-  private teamService = inject(TeamService); // Inyectamos el servicio aquí
+  public teamService = inject(TeamService); // Público para usarlo en el HTML si lo necesitas
 
-  team = signal<Team | null>(null);
+  // Usamos un computed que prioriza el teamActual del servicio (que la página ya cargó)
+  team = computed(() => {
+    return this.teamService.teamActual() || this.localTeam();
+  });
+
+  localTeam = signal<Team | null>(null);
 
   stadium = input<Stadium | null>(null);
   championships = input<any[]>([]);
@@ -30,21 +35,30 @@ export class TeamDetail implements OnInit {
   activeTab = signal<'general' | 'squad' | 'matches'>('general');
 
   ngOnInit(): void {
-    // Capturamos el parámetro 'name' de la URL (ej: "estudiantes-de-la-plata")
-    this.route.paramMap.subscribe((params) => {
-      const teamNameSlug = params.get('name');
-      if (teamNameSlug) {
-        this.loadTeamByName(teamNameSlug);
-      }
-    });
+    // Si por alguna razón el servicio no tiene el equipo cargado, lo buscamos de forma segura por ID o Slug
+    if (!this.teamService.teamActual()) {
+      this.route.paramMap.subscribe((params) => {
+        const paramValue = params.get('id') || params.get('name');
+        if (paramValue) {
+          this.loadTeamFlexible(paramValue);
+        }
+      });
+    }
   }
 
-  loadTeamByName(slug: string): void {
-    // Obtenemos todos los equipos y buscamos el que coincida con el slug
+  loadTeamFlexible(paramValue: string): void {
     this.teamService.getAllTeams().subscribe((teams: Team[]) => {
-      const found = teams.find((t) => t.name.toLowerCase().replace(/\s+/g, '-') === slug);
+      const found = teams.find((t: any) => {
+        const matchId = String(t.id) === String(paramValue);
+        const matchSlug =
+          t.name &&
+          t.name.toLowerCase().replace(/[^a-z0-9]+/g, '-') === String(paramValue).toLowerCase();
+        return matchId || matchSlug;
+      });
+
       if (found) {
-        this.team.set(found);
+        this.localTeam.set(found);
+        this.teamService.teamActual.set(found); // Sincronizamos con el servicio
       }
     });
   }
@@ -53,41 +67,37 @@ export class TeamDetail implements OnInit {
     this.activeTab.set(tab);
   }
 
-  // Obtener el usuario actual reactivamente
   currentUser = computed(() => {
     const userFn = this.authService.currentUser as any;
     return typeof userFn === 'function' ? userFn() : userFn;
   });
 
-  // Saber si el equipo actual ya está en los favoritos del usuario
   isFollowing = computed(() => {
     const user = this.currentUser();
     const currentTeam = this.team();
     if (!user || !user.favoriteTeams || !currentTeam || !currentTeam.id) return false;
-    return user.favoriteTeams.includes(currentTeam.id);
+    return user.favoriteTeams.includes(Number(currentTeam.id));
   });
 
-  // Método para alternar entre Seguir / Dejar de seguir
   toggleFollowTeam() {
     const user = this.currentUser();
     const currentTeam = this.team();
     if (!user || !user.id || !currentTeam || !currentTeam.id) return;
 
     let favoriteTeams: number[] = [...(user.favoriteTeams || [])];
+    const teamIdNum = Number(currentTeam.id);
 
     if (this.isFollowing()) {
-      favoriteTeams = favoriteTeams.filter((id: number) => id !== currentTeam.id);
+      favoriteTeams = favoriteTeams.filter((id: number) => id !== teamIdNum);
     } else {
-      favoriteTeams.push(currentTeam.id);
+      favoriteTeams.push(teamIdNum);
     }
 
     this.authService.updateUser(user.id, { favoriteTeams }).subscribe();
   }
 
-  // Método para formatear en español nativo
   formatSpanishDate(dateInput: string | Date | undefined): string {
     if (!dateInput) return '';
-
     let date: Date;
 
     if (typeof dateInput === 'string') {

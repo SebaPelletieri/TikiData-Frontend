@@ -125,7 +125,10 @@
                 <!-- Cuadrícula de equipos de esta liga -->
                 <div class="team-grid">
                   @for (team of league.teams; track team.id) {
-                    <div class="team-card" [routerLink]="['/team', team.id]">
+                    <div
+                      class="team-card"
+                      [routerLink]="['/team', team.name.toLowerCase().replace(/\s+/g, '-')]"
+                    >
                       <div class="team-logo-wrapper">
                         <img
                           [src]="team.shield || 'https://via.placeholder.com/80?text=Club'"

@@ -1,0 +1,333 @@
+/* =========================================
+   Contenedor Principal y Banner
+   ========================================= */
+.champ-detail-container {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 1.5rem;
+  font-family:
+    'Plus Jakarta Sans',
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
+  color: #fff;
+}
+
+.champ-header-banner {
+  background: linear-gradient(135deg, #071a36 0%, #041022 100%);
+  border: 1px solid #0d2a52;
+  border-radius: 16px;
+  padding: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  margin-bottom: 1.5rem;
+}
+
+.champ-main-info {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.champ-logo-wrapper {
+  width: 75px;
+  height: 75px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  border: 1px solid #173867;
+}
+
+.champ-logo {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.champ-text-data h1 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 0 0 6px 0;
+  color: #ffffff;
+}
+
+.champ-meta-badges {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.88rem;
+  color: #8da6c4;
+}
+
+.separator {
+  color: #38bdf8;
+}
+
+/* Botón Seguir */
+.btn-follow-champ {
+  background-color: #3b82f6;
+  color: #ffffff;
+  border: none;
+  padding: 0.65rem 1.8rem;
+  font-weight: 600;
+  font-size: 0.92rem;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.btn-follow-champ:hover {
+  background-color: #2563eb;
+  transform: translateY(-1px);
+}
+
+.btn-follow-champ.following {
+  background-color: #0d2a52;
+  color: #38bdf8;
+  border: 1px solid #38bdf8;
+}
+
+/* =========================================
+   Pestañas de Navegación (Tabs)
+   ========================================= */
+.champ-tabs-nav {
+  display: flex;
+  gap: 8px;
+  border-bottom: 1px solid #0d2a52;
+  margin-bottom: 2rem;
+  padding-bottom: 0.5rem;
+}
+
+.tab-btn {
+  background: transparent;
+  border: none;
+  color: #8da6c4;
+  font-size: 0.95rem;
+  font-weight: 600;
+  padding: 0.75rem 1.25rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.tab-btn:hover {
+  color: #ffffff;
+  background: rgba(56, 189, 248, 0.05);
+}
+
+.tab-btn.active {
+  color: #ffffff;
+  background: #0d2a52;
+  border-bottom: 2px solid #38bdf8;
+}
+
+/* =========================================
+   Contenedores y Tarjetas (Cards)
+   ========================================= */
+.champ-content-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1.8rem;
+}
+
+.card-box {
+  background-color: #041326;
+  border: 1px solid #0d2a52;
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.card-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.card-header-row h3 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin: 0;
+  color: #ffffff;
+}
+
+.link-action-btn {
+  background: transparent;
+  border: none;
+  color: #38bdf8;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+  transition: opacity 0.2s;
+}
+
+.link-action-btn:hover {
+  opacity: 0.8;
+  text-decoration: underline;
+}
+
+/* =========================================
+   Tablas de Datos
+   ========================================= */
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.custom-data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+  color: #d1dced;
+}
+
+.custom-data-table th {
+  text-align: left;
+  padding: 10px 12px;
+  color: #7d96b3;
+  font-weight: 600;
+  border-bottom: 1px solid #0d2a52;
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.custom-data-table td {
+  padding: 12px;
+  border-bottom: 1px solid #081d3a;
+  vertical-align: middle;
+}
+
+.custom-data-table tr:last-child td {
+  border-bottom: none;
+}
+
+.team-cell,
+.player-cell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.mini-shield {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+.player-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #0d2a52;
+}
+
+.text-center {
+  text-align: center;
+}
+.text-end {
+  text-align: right;
+}
+.fw-bold {
+  font-weight: 700;
+}
+.text-accent {
+  color: #38bdf8;
+}
+
+.card-footer-link {
+  margin-top: 1rem;
+  text-align: right;
+}
+
+/* =========================================
+   Grilla Inferior (2 Columnas)
+   ========================================= */
+.lower-grid-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.8rem;
+}
+
+@media (max-width: 900px) {
+  .lower-grid-row {
+    grid-template-columns: 100%;
+  }
+}
+
+.matches-mini-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.match-mini-row {
+  display: flex;
+  align-items: center;
+  background: #071932;
+  border: 1px solid #0d2a52;
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: 0.85rem;
+}
+
+.match-date-badge {
+  color: #7d96b3;
+  font-weight: 600;
+  min-width: 65px;
+}
+
+.match-teams-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex: 1;
+  color: #ffffff;
+}
+
+.team-right-side,
+.team-left-side {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 42%;
+}
+
+.team-right-side {
+  justify-content: flex-end;
+  text-align: right;
+}
+.team-left-side {
+  justify-content: flex-start;
+  text-align: left;
+}
+
+.tiny-shield {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+
+.vs-text {
+  color: #536d8d;
+  font-weight: 700;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+}
+
+.placeholder-text {
+  color: #7d96b3;
+  font-size: 0.9rem;
+  margin: 1rem 0;
+}

@@ -1,1 +1,26 @@
-<p>match-list works!</p>
+<div class="match-list-container">
+  
+  @if (matchService.loading()) {
+    <div class="loading-state">
+      <div class="spinner"></div>
+      <p>Cargando partidos...</p>
+    </div>
+  }
+
+  @if (matchService.error()) {
+    <div class="error-msg">{{ matchService.error() }}</div>
+  }
+
+  @if (!matchService.loading() && !matchService.error()) {
+    <div class="matches-grid">
+      @for (match of matchService.matches(); track match.id) {
+        <app-match-card [match]="match"></app-match-card>
+      } @empty {
+        <div class="empty-state">
+          <p>No hay partidos registrados en este momento.</p>
+        </div>
+      }
+    </div>
+  }
+
+</div>

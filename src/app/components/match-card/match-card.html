@@ -7,22 +7,33 @@
       </span>
     </div>
 
-    <div class="scoreboard">
-      <div class="team-info local">
-        <span class="team-name">Local (ID: {{ match.localTeamID }})</span>
-        <span class="score">{{ match.localGoals }}</span>
+    <div class="scoreboard-grid">
+      <!-- EQUIPO LOCAL -->
+      <div class="team-column">
+        <div class="shield-container">
+          <img [src]="localTeam()?.shield || 'https://via.placeholder.com/45'" class="team-shield" [alt]="localTeam()?.name" />
+        </div>
+        <span class="team-title">{{ localTeam()?.name || 'Cargando...' }}</span>
       </div>
-      
-      <div class="vs-divider">VS</div>
 
-      <div class="team-info away">
-        <span class="score">{{ match.awayGoals }}</span>
-        <span class="team-name">Visitante (ID: {{ match.awayTeamID }})</span>
+      <!-- MARCADOR CENTRAL -->
+      <div class="score-center">
+        <span class="score-num">{{ match.localGoals }}</span>
+        <span class="score-separator">-</span>
+        <span class="score-num">{{ match.awayGoals }}</span>
+      </div>
+
+      <!-- EQUIPO VISITANTE -->
+      <div class="team-column">
+        <div class="shield-container">
+          <img [src]="awayTeam()?.shield || 'https://via.placeholder.com/45'" class="team-shield" [alt]="awayTeam()?.name" />
+        </div>
+        <span class="team-title">{{ awayTeam()?.name || 'Cargando...' }}</span>
       </div>
     </div>
 
     <div class="match-card-footer">
-      <span>{{ match.date | date:'dd/MM/yyyy HH:mm' }}</span>
+      <span>{{ match.date | date:'dd/MM/yyyy - HH:mm' }}</span>
     </div>
   </div>
 }

@@ -17,6 +17,7 @@
   color: #ffffff;
 }
 
+/* ================= ENCABEZADO ================= */
 .header-title-section {
   display: flex;
   justify-content: space-between;
@@ -85,16 +86,21 @@
   box-shadow: 0 0 12px rgba(56, 189, 248, 0.15);
 }
 
+.search-box:hover .search-icon {
+  color: #38bdf8;
+}
+
 .search-box input:focus {
   border-color: #38bdf8;
   background: linear-gradient(180deg, #092244 0%, #071932 100%);
   box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
 }
 
-/* ================= DROPDOWN PERSONALIZADO ================= */
+/* ================= DROPDOWN DE PAÍS ================= */
 .select-filters {
   flex: 1;
-  min-width: 200px;
+  min-width: 220px;
+  max-width: 220px;
 }
 
 .custom-dropdown {
@@ -127,17 +133,6 @@
   box-shadow: 0 0 12px rgba(56, 189, 248, 0.15);
 }
 
-.custom-dropdown.open .dropdown-trigger,
-.dropdown-trigger:focus {
-  border-color: #38bdf8;
-  background: linear-gradient(180deg, #092244 0%, #071932 100%);
-  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
-}
-
-.dropdown-trigger .placeholder {
-  color: #c9d8eb;
-}
-
 .triangle-icon {
   width: 10px;
   height: 6px;
@@ -150,9 +145,15 @@
   flex-shrink: 0;
 }
 
-.custom-dropdown.open .triangle-icon {
-  transform: rotate(180deg);
+.dropdown-trigger:hover .triangle-icon,
+.custom-dropdown.open .triangle-icon,
+.country-header:hover .triangle-icon {
   background-color: #38bdf8;
+}
+
+.triangle-icon.rotate {
+  transform: rotate(180deg);
+  background-color: #38bdf8 !important;
 }
 
 .dropdown-menu {
@@ -169,36 +170,8 @@
   margin: 0;
   list-style: none;
   z-index: 100;
-  box-shadow:
-    0 12px 30px rgba(0, 0, 0, 0.65),
-    0 0 1px rgba(255, 255, 255, 0.1);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.65);
   backdrop-filter: blur(8px);
-  animation: dropdownFadeIn 0.18s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-@keyframes dropdownFadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-6px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.dropdown-menu::-webkit-scrollbar {
-  width: 5px;
-}
-.dropdown-menu::-webkit-scrollbar-track {
-  background: transparent;
-}
-.dropdown-menu::-webkit-scrollbar-thumb {
-  background: #143560;
-  border-radius: 4px;
-}
-.dropdown-menu::-webkit-scrollbar-thumb:hover {
-  background: #1d4f91;
 }
 
 .dropdown-item {
@@ -211,16 +184,9 @@
   color: #c9d8eb;
   border-radius: 8px;
   cursor: pointer;
-  user-select: none;
   transition:
     background-color 0.15s ease,
     color 0.15s ease;
-}
-
-.dropdown-item .item-content {
-  display: flex;
-  align-items: center;
-  gap: 10px;
 }
 
 .dropdown-item:hover {
@@ -235,13 +201,117 @@
 }
 
 .check-icon {
-  width: 16px;
-  height: 16px;
+  width: 16px !important;
+  height: 16px !important;
   stroke: #38bdf8;
   flex-shrink: 0;
 }
 
-/* ================= GRID DE TARJETAS ================= */
+/* ================= BLOQUES JERÁRQUICOS (PAÍS -> LIGA) ================= */
+.hierarchy-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.country-block {
+  background: linear-gradient(180deg, #051428 0%, #030e1d 100%);
+  border: 1px solid #143560;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.country-header {
+  padding: 1.2rem 1.6rem;
+  background-color: rgba(6, 24, 46, 0.7);
+  border-bottom: 1px solid #143560;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.2s ease;
+}
+
+.country-header:hover {
+  background-color: rgba(15, 44, 82, 0.7);
+}
+
+.country-title-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.country-flag-icon {
+  font-size: 1.4rem;
+}
+
+.country-header h3 {
+  margin: 0;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: -0.01em;
+}
+
+.country-content {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* Sub-bloque de Liga */
+.league-subblock {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.league-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(20, 53, 96, 0.5);
+}
+
+.league-icon {
+  font-size: 1.1rem;
+}
+
+.league-header h4 {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #38bdf8;
+  letter-spacing: -0.01em;
+}
+
+/* Logos de la Liga */
+.league-logo-wrapper {
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #030d1a;
+  border: 1px solid #143560;
+  border-radius: 50%;
+  padding: 3px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.league-logo-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* ================= GRID DE EQUIPOS ================= */
 .team-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -251,33 +321,33 @@
 .team-card {
   background: linear-gradient(180deg, #06182e 0%, #041224 100%);
   border: 1px solid #143560;
-  border-radius: 16px;
-  padding: 1.6rem 1rem 1.4rem;
+  border-radius: 14px;
+  padding: 1.4rem 1rem 1.2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
   cursor: pointer;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
   transition:
-    transform 0.22s cubic-bezier(0.16, 1, 0.3, 1),
-    border-color 0.22s ease,
-    box-shadow 0.22s ease;
+    transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .team-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-4px);
   border-color: #38bdf8;
-  box-shadow: 0 14px 30px rgba(56, 189, 248, 0.18);
+  box-shadow: 0 12px 26px rgba(56, 189, 248, 0.15);
 }
 
 .team-logo-wrapper {
-  width: 86px;
-  height: 86px;
+  width: 76px;
+  height: 76px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 1.1rem;
+  margin-bottom: 1rem;
   background-color: #030d1a;
   border: 1px solid #143560;
   border-radius: 50%;
@@ -289,8 +359,7 @@
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
-  background-color: transparent;
-  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5));
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.4));
 }
 
 .team-info {
@@ -303,9 +372,8 @@
 
 .team-name {
   font-family: inherit;
-  font-size: 1.05rem;
+  font-size: 0.98rem;
   font-weight: 700;
-  letter-spacing: -0.01em;
   color: #ffffff;
   margin: 0;
   white-space: nowrap;
@@ -316,13 +384,12 @@
 
 .team-country {
   font-family: inherit;
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   font-weight: 500;
   color: #7d96b3;
 }
 
 .empty-state {
-  font-family: inherit;
   grid-column: 1 / -1;
   text-align: center;
   padding: 3.5rem 1rem;
@@ -339,13 +406,30 @@
     width: 96%;
     padding: 1.5rem 0.5rem;
   }
-
   .filters-bar {
     flex-direction: column;
   }
-
-  .team-grid {
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 0.9rem;
+  .select-filters {
+    max-width: 100%;
   }
+}
+
+/* ================= BANDERA DE PAÍS ================= */
+.country-flag-wrapper {
+  width: 28px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  flex-shrink: 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.country-flag-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }

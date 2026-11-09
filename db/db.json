@@ -11,18 +11,17 @@
       "name": "Sebastian",
       "email": "sebaz@test.com",
       "password": "password123",
-      "favoriteTeams": [
-        "2"
-      ]
+      "favoriteTeams": ["2"]
     },
     {
-      "userName": "Lautaro Fernandez ",
+      "id": "3",
+      "name": "Lautaro Fernandez",
       "email": "lautaro@gmail.com",
-      "password": "lauti123",
-      "id": "3"
+      "password": "lauti123"
     },
     {
-      "userName": "Juan De Siena",
+      "id": "4",
+      "name": "Juan De Siena",
       "email": "juan@gmail.com",
       "password": "pollo123",
       "id": "4"
@@ -36,10 +35,7 @@
       "country": "Argentina",
       "yearOfFoundation": "1901-05-25T00:00:00Z",
       "stadiumID": 1,
-      "championshipsActive": [
-        1,
-        2
-      ],
+      "championshipsActive": [1, 2],
       "playerIDs": []
     },
     {
@@ -49,10 +45,7 @@
       "country": "Argentina",
       "yearOfFoundation": "1905-04-03T00:00:00Z",
       "stadiumID": 2,
-      "championshipsActive": [
-        1,
-        2
-      ],
+      "championshipsActive": [1, 2],
       "playerIDs": []
     },
     {
@@ -62,10 +55,7 @@
       "country": "Argentina",
       "yearOfFoundation": "1903-03-25T00:00:00Z",
       "stadiumID": 3,
-      "championshipsActive": [
-        1,
-        2
-      ],
+      "championshipsActive": [1, 2],
       "playerIDs": []
     },
     {
@@ -75,9 +65,7 @@
       "country": "Argentina",
       "yearOfFoundation": "1905-01-01T00:00:00Z",
       "stadiumID": 4,
-      "championshipsActive": [
-        1
-      ],
+      "championshipsActive": [1],
       "playerIDs": []
     },
     {
@@ -87,9 +75,7 @@
       "country": "Argentina",
       "yearOfFoundation": "1908-04-01T00:00:00Z",
       "stadiumID": 5,
-      "championshipsActive": [
-        1
-      ],
+      "championshipsActive": [1],
       "playerIDs": []
     },
     {
@@ -99,10 +85,7 @@
       "country": "Argentina",
       "yearOfFoundation": "1905-08-04T00:00:00Z",
       "stadiumID": 6,
-      "championshipsActive": [
-        1,
-        2
-      ],
+      "championshipsActive": [1, 2],
       "playerIDs": []
     },
     {
@@ -112,9 +95,7 @@
       "country": "Argentina",
       "yearOfFoundation": "1887-06-03T00:00:00Z",
       "stadiumID": 7,
-      "championshipsActive": [
-        1
-      ],
+      "championshipsActive": [1],
       "playerIDs": []
     },
     {
@@ -124,9 +105,7 @@
       "country": "Argentina",
       "yearOfFoundation": "1889-12-24T00:00:00Z",
       "stadiumID": 8,
-      "championshipsActive": [
-        1
-      ],
+      "championshipsActive": [1],
       "playerIDs": []
     },
     {
@@ -136,9 +115,7 @@
       "country": "Argentina",
       "yearOfFoundation": "1903-11-03T00:00:00Z",
       "stadiumID": 9,
-      "championshipsActive": [
-        1
-      ],
+      "championshipsActive": [1],
       "playerIDs": []
     },
     {
@@ -148,10 +125,7 @@
       "country": "Argentina",
       "yearOfFoundation": "1910-01-01T00:00:00Z",
       "stadiumID": 10,
-      "championshipsActive": [
-        1,
-        2
-      ],
+      "championshipsActive": [1, 2],
       "playerIDs": []
     }
   ],
@@ -160,19 +134,22 @@
       "id": "1",
       "name": "Liga Profesional de Fútbol",
       "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Liga_Profesional_de_F%C3%BAtbol_Argentina.svg/200px-Liga_Profesional_de_F%C3%BAtbol_Argentina.svg.png",
-      "type": "LIGA"
+      "type": "LIGA",
+      "country": "Argentina"
     },
     {
       "id": "2",
       "name": "Copa de la Liga",
       "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Liga_Profesional_de_F%C3%BAtbol_Argentina.svg/200px-Liga_Profesional_de_F%C3%BAtbol_Argentina.svg.png",
-      "type": "COPA"
+      "type": "COPA",
+      "country": "Argentina"
     },
     {
       "id": "3",
       "name": "Copa Libertadores",
       "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/CONMEBOL_Libertadores_logo.svg/200px-CONMEBOL_Libertadores_logo.svg.png",
-      "type": "INTERNACIONAL"
+      "type": "COPA",
+      "country": "Internacional"
     }
   ],
   "estadios": [

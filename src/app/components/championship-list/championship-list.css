@@ -85,39 +85,28 @@
   box-shadow: 0 0 12px rgba(56, 189, 248, 0.15);
 }
 
-.search-box:hover .search-icon {
-  color: #38bdf8;
-}
-
 .search-box input:focus {
   border-color: #38bdf8;
   background: linear-gradient(180deg, #092244 0%, #071932 100%);
   box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
 }
 
-.search-box input:focus + .search-icon {
-  color: #38bdf8;
-}
-
-/* ================= DROPDOWN PERSONALIZADO ================= */
-.select-filters {
-  flex: 1;
-  min-width: 200px;
-}
-
-.custom-dropdown {
+/* ================= BOTÓN PRINCIPAL DE FILTRAR Y PANEL ================= */
+.filter-dropdown-container {
   position: relative;
-  width: 100%;
+  flex: 1;
+  min-width: 220px;
+  max-width: 220px;
 }
 
-.dropdown-trigger {
+.filter-main-btn {
   width: 100%;
   height: 44px;
   background: linear-gradient(180deg, #071a33 0%, #051428 100%);
   color: #ffffff;
   border: 1px solid #1e497e;
   border-radius: 12px;
-  padding: 0 14px;
+  padding: 0 16px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -129,23 +118,23 @@
   transition: all 0.25s ease;
 }
 
-.dropdown-trigger:hover {
+.trigger-content {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.trigger-content i {
+  color: #7d96b3;
+}
+
+.filter-main-btn:hover {
   border-color: #38bdf8;
   background: linear-gradient(180deg, #092244 0%, #071932 100%);
   box-shadow: 0 0 12px rgba(56, 189, 248, 0.15);
 }
 
-.custom-dropdown.open .dropdown-trigger,
-.dropdown-trigger:focus {
-  border-color: #38bdf8;
-  background: linear-gradient(180deg, #092244 0%, #071932 100%);
-  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
-}
-
-.dropdown-trigger .placeholder {
-  color: #c9d8eb;
-}
-
+/* Triángulo indicador unificado */
 .triangle-icon {
   width: 10px;
   height: 6px;
@@ -158,92 +147,218 @@
   flex-shrink: 0;
 }
 
-.custom-dropdown.open .triangle-icon {
+.filter-main-btn:hover .triangle-icon,
+.sub-dropdown.open .triangle-icon,
+.country-header:hover .triangle-icon {
+  background-color: #38bdf8;
+}
+
+.triangle-icon.rotate {
+  transform: rotate(180deg);
+  background-color: #38bdf8 !important;
+}
+
+/* Panel flotante que contiene las secciones de filtros */
+.filter-panel {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  width: 100%;
+  background-color: #06182e;
+  border: 1px solid #143d73;
+  border-radius: 14px;
+  padding: 12px;
+  box-shadow:
+    0 12px 30px rgba(0, 0, 0, 0.65),
+    0 0 1px rgba(255, 255, 255, 0.1);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  backdrop-filter: blur(8px);
+}
+
+.filter-panel-section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.filter-panel-title {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #7d96b3;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 0 4px;
+}
+
+/* ================= SUB-DROPDOWNS INTERNOS ================= */
+.sub-dropdown {
+  position: relative;
+  width: 100%;
+}
+
+.sub-dropdown-trigger {
+  width: 100%;
+  height: 38px;
+  background: linear-gradient(180deg, #041326 0%, #030d1a 100%);
+  color: #ffffff;
+  border: 1px solid #143560;
+  border-radius: 10px;
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.sub-dropdown-trigger:hover {
+  border-color: #38bdf8;
+}
+
+.sub-dropdown.open .triangle-icon {
   transform: rotate(180deg);
   background-color: #38bdf8;
 }
 
-.dropdown-menu {
+.sub-dropdown-menu {
   position: absolute;
-  top: calc(100% + 6px);
+  top: calc(100% + 4px);
   left: 0;
   width: 100%;
-  max-height: 240px;
+  max-height: 200px;
   overflow-y: auto;
-  background-color: #06182e;
+  background-color: #041326;
   border: 1px solid #143d73;
-  border-radius: 12px;
-  padding: 6px;
+  border-radius: 10px;
+  padding: 4px;
   margin: 0;
   list-style: none;
-  z-index: 100;
-  box-shadow:
-    0 12px 30px rgba(0, 0, 0, 0.65),
-    0 0 1px rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(8px);
-  animation: dropdownFadeIn 0.18s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  z-index: 105;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
-@keyframes dropdownFadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-6px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.sub-dropdown-menu::-webkit-scrollbar {
+  width: 4px;
 }
-
-.dropdown-menu::-webkit-scrollbar {
-  width: 5px;
-}
-.dropdown-menu::-webkit-scrollbar-thumb {
+.sub-dropdown-menu::-webkit-scrollbar-thumb {
   background: #143560;
   border-radius: 4px;
 }
-.dropdown-menu::-webkit-scrollbar-thumb:hover {
-  background: #1d4f91;
-}
 
-.dropdown-item {
+.sub-dropdown-item {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 14px;
-  font-size: 0.88rem;
+  padding: 8px 10px;
+  font-size: 0.84rem;
   font-weight: 500;
   color: #c9d8eb;
-  border-radius: 8px;
+  border-radius: 6px;
   cursor: pointer;
-  user-select: none;
   transition:
     background-color 0.15s ease,
     color 0.15s ease;
 }
 
-.dropdown-item .item-content {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.dropdown-item:hover {
+.sub-dropdown-item:hover {
   background-color: #0f2c52;
   color: #ffffff;
 }
 
-.dropdown-item.active {
+.sub-dropdown-item.active {
   background-color: #163a6b;
-  color: #ffffff;
+  color: #38bdf8;
   font-weight: 600;
 }
 
 .check-icon {
-  width: 16px !important;
-  height: 16px !important;
-  stroke: #38bdf8;
+  font-size: 0.75rem;
+  color: #38bdf8;
+}
+
+/* ================= BLOQUES JERÁRQUICOS (INTERNACIONALES Y PAÍSES) ================= */
+.hierarchy-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.country-block {
+  background: linear-gradient(180deg, #051428 0%, #030e1d 100%);
+  border: 1px solid #143560;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.country-header {
+  padding: 1.2rem 1.6rem;
+  background-color: rgba(6, 24, 46, 0.7);
+  border-bottom: 1px solid #143560;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.2s ease;
+}
+
+.country-header:hover {
+  background-color: rgba(15, 44, 82, 0.7);
+}
+
+.country-title-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.country-flag-icon {
+  font-size: 1.4rem;
+}
+
+.country-flag-wrapper {
+  width: 28px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.15);
   flex-shrink: 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.country-flag-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.country-header h3 {
+  margin: 0;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: -0.01em;
+}
+
+.country-content {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
 /* ================= GRID DE TARJETAS ================= */
@@ -339,40 +454,16 @@
   transition: all 0.2s ease;
 }
 
-/* Liga */
 .champ-type-badge.league {
   background-color: rgba(56, 189, 248, 0.12);
   color: #38bdf8;
   border: 1px solid rgba(56, 189, 248, 0.3);
 }
 
-.champ-card:hover .champ-type-badge.league {
-  background-color: rgba(56, 189, 248, 0.22);
-  box-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
-}
-
-/* Copa */
 .champ-type-badge.cup {
   background-color: rgba(245, 158, 11, 0.12);
   color: #f59e0b;
   border: 1px solid rgba(245, 158, 11, 0.3);
-}
-
-.champ-card:hover .champ-type-badge.cup {
-  background-color: rgba(245, 158, 11, 0.22);
-  box-shadow: 0 0 10px rgba(245, 158, 11, 0.3);
-}
-
-/* Internacional */
-.champ-type-badge.international {
-  background-color: rgba(16, 185, 129, 0.12);
-  color: #10b981;
-  border: 1px solid rgba(16, 185, 129, 0.3);
-}
-
-.champ-card:hover .champ-type-badge.international {
-  background-color: rgba(16, 185, 129, 0.22);
-  box-shadow: 0 0 10px rgba(16, 185, 129, 0.3);
 }
 
 .empty-state {
@@ -387,24 +478,15 @@
   border-radius: 14px;
 }
 
-/* ================= RESPONSIVE ================= */
 @media (max-width: 768px) {
   .championship-list-container {
     width: 96%;
     padding: 1.5rem 0.5rem;
   }
-
-  .header-title-section {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
   .filters-bar {
     flex-direction: column;
   }
-
-  .championship-grid {
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 0.9rem;
+  .filter-dropdown-container {
+    max-width: 100%;
   }
 }

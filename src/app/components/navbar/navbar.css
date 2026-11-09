@@ -11,10 +11,8 @@
   --brand-blue: #38bdf8;
   display: block;
   width: 100%;
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 10000; /* Super alto para que el navbar mande en toda la página */
+  position: relative; /* 👈 Vuelve a su lugar natural sin tapar contenido */
+  z-index: 1000;
 }
 
 * {

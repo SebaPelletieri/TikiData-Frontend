@@ -1,4 +1,4 @@
-export type ChampionshipType = 'LIGA' | 'COPA' | 'INTERNACIONAL';
+export type ChampionshipType = 'LIGA' | 'COPA'; 
 
 export interface Championship {
   id?: number;
@@ -7,4 +7,5 @@ export interface Championship {
   type: ChampionshipType;
   teamsIDs?: number[];
   season?: string;
+  country: string; 
 }

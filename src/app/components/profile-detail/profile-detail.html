@@ -150,13 +150,17 @@
       <div class="items-grid" [style.max-height]="showAllTeams() ? 'none' : '280px'">
         @for (team of favoriteTeamsList(); track team.id) {
           <div class="item-card">
-            <button
-              type="button"
-              class="btn-remove-fav"
-              (click)="removeFavorite('team', team.id!)"
-              title="Quitar"
-            >
-              &times;
+            <button class="btn-remove-fav" (click)="removeFavorite('team', team.id!)">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
             </button>
             <div class="item-logo-container">
               <img [src]="team.shield" [alt]="team.name" />

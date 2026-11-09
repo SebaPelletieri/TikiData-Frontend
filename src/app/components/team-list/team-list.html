@@ -31,12 +31,11 @@
           <span [class.placeholder]="selectedCountry() === 'ALL'">
             {{ selectedCountry() === 'ALL' ? 'Todos los paises' : selectedCountry() }}
           </span>
-          <span class="triangle-icon"></span>
+          <span class="triangle-icon" [class.rotate]="isCountryDropdownOpen()"></span>
         </button>
 
         @if (isCountryDropdownOpen()) {
           <ul class="dropdown-menu">
-            <!-- Opción: Todos los países -->
             <li
               class="dropdown-item"
               [class.active]="selectedCountry() === 'ALL'"
@@ -60,8 +59,8 @@
               }
             </li>
 
-            <!-- Lista dinámica de países -->
-            @for (country of countries; track country) {
+            <!-- 👈 CORREGIDO: Se invoca como countries() por ser computed signal -->
+            @for (country of countries(); track country) {
               <li
                 class="dropdown-item"
                 [class.active]="selectedCountry() === country"
@@ -91,27 +90,68 @@
     </div>
   </div>
 
-  <!-- Rejilla de Equipos -->
-  <div class="team-grid">
-    @for (team of filteredTeams(); track team.id) {
-      <div class="team-card" [routerLink]="['/team', team.id]">
-        <div class="team-logo-wrapper">
-          <img
-            [src]="team.shield || 'https://via.placeholder.com/80?text=Club'"
-            (error)="$any($event.target).src = 'https://via.placeholder.com/80?text=Club'"
-            [alt]="team.name"
-            class="team-logo"
-            referrerpolicy="no-referrer"
-          />
+  <!-- Contenedor Jerárquico por País y Ligas -->
+  <div class="hierarchy-container">
+    @for (group of groupedTeams(); track group.countryName) {
+      <div class="country-block">
+        <!-- Cabecera de País con Bandera -->
+        <div class="country-header" (click)="toggleCountrySection(group.countryName)">
+          <div class="country-title-wrapper">
+            <div class="country-flag-wrapper">
+              <img [src]="group.countryFlag" [alt]="group.countryName" />
+            </div>
+            <h3>{{ group.countryName }}</h3>
+          </div>
+          <span class="triangle-icon" [class.rotate]="isCountryOpen(group.countryName)"></span>
         </div>
-        <div class="team-info">
-          <h3 class="team-name" [title]="team.name">{{ team.name }}</h3>
-          <span class="team-country">{{ team.country }}</span>
-        </div>
+
+        <!-- Contenido del País -->
+        @if (isCountryOpen(group.countryName)) {
+          <div class="country-content">
+            @for (league of group.leagues; track league.leagueName) {
+              <div class="league-subblock">
+                <!-- Título de la Liga con Logo -->
+                <div class="league-header">
+                  @if (league.leagueLogo) {
+                    <div class="league-logo-wrapper">
+                      <img [src]="league.leagueLogo" [alt]="league.leagueName" />
+                    </div>
+                  } @else {
+                    <span class="league-icon">🏆</span>
+                  }
+                  <h4>{{ league.leagueName }}</h4>
+                </div>
+
+                <!-- Cuadrícula de equipos de esta liga -->
+                <div class="team-grid">
+                  @for (team of league.teams; track team.id) {
+                    <div class="team-card" [routerLink]="['/team', team.id]">
+                      <div class="team-logo-wrapper">
+                        <img
+                          [src]="team.shield || 'https://via.placeholder.com/80?text=Club'"
+                          (error)="
+                            $any($event.target).src = 'https://via.placeholder.com/80?text=Club'
+                          "
+                          [alt]="team.name"
+                          class="team-logo"
+                          referrerpolicy="no-referrer"
+                        />
+                      </div>
+                      <div class="team-info">
+                        <h5 class="team-name" [title]="team.name">{{ team.name }}</h5>
+                        <span class="team-country">{{ team.country }}</span>
+                      </div>
+                    </div>
+                  }
+                </div>
+              </div>
+            }
+          </div>
+        }
       </div>
     } @empty {
       <div class="empty-state">
-        <p>No se encontraron equipos registrados.</p>
+        <p>No se encontraron equipos registrados que coincidan con la búsqueda.</p>
       </div>
     }
   </div>

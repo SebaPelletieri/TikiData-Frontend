@@ -240,7 +240,6 @@
 
 .items-grid {
   display: grid;
-  /* Cambiamos repeat(4, 1fr) por auto-fill o más columnas para que ocupen menos ancho individual */
   grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
   gap: 1.25rem;
   max-height: none;
@@ -252,8 +251,8 @@
   position: relative;
   background: transparent;
   border: none;
-  padding: 0.8rem 0.5rem 0.5rem 0.5rem; /* Un poco más de espacio arriba */
-  max-width: 200px; /* 👈 Ampliamos el ancho de la tarjeta */
+  padding: 1.5rem 0.5rem 0.5rem 0.5rem; /* 👈 Aumentamos el padding superior para dar aire */
+  max-width: 200px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -273,7 +272,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 0.5rem; /* 👈 Lo bajamos sutilmente para dejar espacio libre arriba */
+  margin-top: 0.5rem;
   margin-bottom: 0.75rem;
 }
 
@@ -296,37 +295,41 @@
   color: #7d96b3;
 }
 
-/* Botón de eliminar (La X) */
+/* Botón de eliminar (La X) perfectamente posicionado arriba a la derecha */
 .btn-remove-fav {
   position: absolute;
-  top: -4px;
-  right: -4px; /* 👈 Al ponerlo en negativo o reducir el valor, la desplazas hacia la derecha fuera del escudo */
+  top: 4px;
+  right: 8px;
   width: 26px;
   height: 26px;
-  background: rgba(239, 68, 68, 0.2);
-  border: 1px solid rgba(239, 68, 68, 0.4);
-  color: #f87171;
+  background: #ef4444;
+  border: 2px solid #06182e;
+  color: #ffffff;
   border-radius: 50%;
-  font-size: 12px;
-  font-weight: 700;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   opacity: 0;
   transition: all 0.2s ease;
-  z-index: 10; /* 👈 Asegura que siempre esté por encima del escudo */
+  z-index: 10;
 }
+
+.btn-remove-fav svg {
+  width: 10px;
+  height: 10px;
+  stroke: currentColor;
+  stroke-width: 3;
+}
+
 .item-card:hover .btn-remove-fav {
   opacity: 1;
 }
 
 .btn-remove-fav:hover {
-  background: #ef4444;
-  color: #ffffff;
+  background: #dc2626;
   transform: scale(1.1);
 }
-
 .empty-msg {
   font-size: 0.88rem;
   color: #7d96b3;

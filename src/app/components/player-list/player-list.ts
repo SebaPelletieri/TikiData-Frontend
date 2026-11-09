@@ -1,13 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal, HostListener } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { PlayerService } from '../../services/player-service';
 import { Team } from '../../models/Team';
 
-interface PositionOption {
-  value: string;
+interface FilterOption {
+  value: string | number;
   label: string;
 }
 
@@ -24,19 +24,32 @@ export class PlayerList implements OnInit {
 
   teams = signal<Team[]>([]);
   searchText = signal('');
-  selectedPosition = signal('ALL');
-  // 'ALL' | 'FREE_AGENT' | number
+
+  // Estados de los filtros seleccionados
+  selectedPosition = signal<string>('ALL');
   selectedTeam = signal<string | number>('ALL');
+  selectedNationality = signal<string>('ALL'); // 👈 Estado para la nacionalidad
 
-  isPositionDropdownOpen = signal(false);
-  isTeamDropdownOpen = signal(false);
+  // Estados visuales de los paneles desplegables
+  isFilterPanelOpen = signal(false);
+  isPositionDropdownOpen = false;
+  isTeamDropdownOpen = false;
+  isNationalityDropdownOpen = false; // 👈 Estado visual para nacionalidad
 
-  positions: PositionOption[] = [
+  positions: FilterOption[] = [
     { value: 'ALL', label: 'Todas las posiciones' },
     { value: 'Arquero', label: 'Arquero' },
     { value: 'Defensor', label: 'Defensor' },
     { value: 'Mediocampista', label: 'Mediocampista' },
     { value: 'Delantero', label: 'Delantero' },
+  ];
+
+  nationalityOptions: FilterOption[] = [
+    { value: 'ALL', label: 'Todas las nacionalidades' },
+    { value: 'Argentina', label: 'Argentina' },
+    { value: 'Chile', label: 'Chile' },
+    { value: 'Colombia', label: 'Colombia' },
+    { value: 'Uruguay', label: 'Uruguay' },
   ];
 
   ngOnInit(): void {
@@ -48,39 +61,73 @@ export class PlayerList implements OnInit {
     });
   }
 
-  getTeamName(player: any): string {
-    const teamId = player.teamID ?? player.currentTeamID;
-    if (!teamId) return 'Agente libre';
-    const found = this.teams().find((t) => String(t.id) === String(teamId));
-    return found?.name || 'Agente libre';
+  // Cierra los paneles si se hace clic fuera
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent): void {
+    const target = event.target as HTMLElement;
+    if (!target.closest('.filter-dropdown-container')) {
+      this.closeFilterPanel();
+    }
   }
 
-  // --- Dropdown Posiciones ---
-  togglePositionDropdown(): void {
-    this.isPositionDropdownOpen.update((open) => !open);
-    this.isTeamDropdownOpen.set(false);
+  toggleFilterPanel(event: MouseEvent): void {
+    event.stopPropagation();
+    this.isFilterPanelOpen.update((open) => !open);
+    if (!this.isFilterPanelOpen()) {
+      this.closeSubDropdowns();
+    }
   }
 
-  selectPosition(pos: string): void {
-    this.selectedPosition.set(pos);
-    this.isPositionDropdownOpen.set(false);
+  closeFilterPanel(): void {
+    this.isFilterPanelOpen.set(false);
+    this.closeSubDropdowns();
+  }
+
+  closeSubDropdowns(): void {
+    this.isPositionDropdownOpen = false;
+    this.isTeamDropdownOpen = false;
+    this.isNationalityDropdownOpen = false;
+  }
+
+  togglePositionDropdown(event: MouseEvent): void {
+    event.stopPropagation();
+    this.isPositionDropdownOpen = !this.isPositionDropdownOpen;
+    this.isTeamDropdownOpen = false;
+    this.isNationalityDropdownOpen = false;
+  }
+
+  toggleTeamDropdown(event: MouseEvent): void {
+    event.stopPropagation();
+    this.isTeamDropdownOpen = !this.isTeamDropdownOpen;
+    this.isPositionDropdownOpen = false;
+    this.isNationalityDropdownOpen = false;
+  }
+
+  toggleNationalityDropdown(event: MouseEvent): void {
+    event.stopPropagation();
+    this.isNationalityDropdownOpen = !this.isNationalityDropdownOpen;
+    this.isPositionDropdownOpen = false;
+    this.isTeamDropdownOpen = false;
+  }
+
+  selectPosition(pos: string | number): void {
+    this.selectedPosition.set(String(pos));
+    this.isPositionDropdownOpen = false;
+  }
+
+  selectTeam(teamId: string | number): void {
+    this.selectedTeam.set(teamId);
+    this.isTeamDropdownOpen = false;
+  }
+
+  selectNationality(nat: string | number): void {
+    this.selectedNationality.set(String(nat));
+    this.isNationalityDropdownOpen = false;
   }
 
   get selectedPositionLabel(): string {
     const current = this.selectedPosition();
     return this.positions.find((p) => p.value === current)?.label || 'Todas las posiciones';
-  }
-
-  // --- Dropdown Equipos ---
-  toggleTeamDropdown(): void {
-    this.isTeamDropdownOpen.update((open) => !open);
-    this.isPositionDropdownOpen.set(false);
-  }
-
-  selectTeam(teamId: string | number | undefined): void {
-    if (teamId === undefined) return;
-    this.selectedTeam.set(teamId);
-    this.isTeamDropdownOpen.set(false);
   }
 
   get selectedTeamLabel(): string {
@@ -91,36 +138,50 @@ export class PlayerList implements OnInit {
     return found?.name || 'Todos los equipos';
   }
 
+  get selectedNationalityLabel(): string {
+    const current = this.selectedNationality();
+    return (
+      this.nationalityOptions.find((n) => n.value === current)?.label || 'Todas las nacionalidades'
+    );
+  }
+
+  getTeamName(player: any): string {
+    const teamId = player.teamID ?? player.currentTeamID;
+    if (!teamId) return 'Agente libre';
+    const found = this.teams().find((t) => String(t.id) === String(teamId));
+    return found?.name || 'Agente libre';
+  }
+
   // --- Filtro reactivo ---
   filteredPlayers = computed(() => {
     const list = this.playerService.players ? this.playerService.players() : [];
     const search = this.searchText().toLowerCase().trim();
     const pos = this.selectedPosition();
     const teamFilter = this.selectedTeam();
+    const natFilter = this.selectedNationality();
 
     return list.filter((player: any) => {
-      // 1. Filtro por nombre
       const name = (player.name || '').toLowerCase();
       const matchesSearch = !search || name.includes(search);
-
-      // 2. Filtro por posición
       const matchesPosition = pos === 'ALL' || player.position === pos;
 
-      // 3. Filtro por equipo / Agente libre
+      // Filtro de nacionalidad (soporta 'nationality' o 'nacionality' por si acaso)
+      const pNat = player.nationality || player.nacionality || '';
+      const matchesNationality =
+        natFilter === 'ALL' || pNat.toLowerCase() === natFilter.toLowerCase();
+
       const pTeamId = player.teamID ?? player.currentTeamID;
       let matchesTeam = false;
 
       if (teamFilter === 'ALL') {
         matchesTeam = true;
       } else if (teamFilter === 'FREE_AGENT') {
-        // Es agente libre si no tiene teamID o es null/0
         matchesTeam = !pTeamId || pTeamId === 0;
       } else {
-        // Pertenece al equipo seleccionado
         matchesTeam = pTeamId !== undefined && String(pTeamId) === String(teamFilter);
       }
 
-      return matchesSearch && matchesPosition && matchesTeam;
+      return matchesSearch && matchesPosition && matchesTeam && matchesNationality;
     });
   });
 }

@@ -4,6 +4,11 @@ import { Championship, ChampionshipType } from '../../models/Championship';
 import { ChampionshipService } from '../../services/championship-service';
 import { TeamService } from '../../services/team-service';
 
+interface CountryOption {
+  value: string;
+  label: string;
+}
+
 @Component({
   imports: [ReactiveFormsModule, FormsModule],
   selector: 'app-championship-form',
@@ -17,6 +22,7 @@ export class ChampionshipForm implements OnInit {
 
   logoPreview: string | null = null;
   isTypeOpen = false;
+  isCountryOpen = false; // 👈 Estado para el desplegable de país en el formulario
 
   // Búsqueda
   teamSearchQuery = signal<string>('');
@@ -28,7 +34,15 @@ export class ChampionshipForm implements OnInit {
   // Equipos cargados desde db.json
   teams = this.teamService.teams;
 
-  types: ChampionshipType[] = ['LIGA', 'COPA', 'INTERNACIONAL'];
+  types: ChampionshipType[] = ['LIGA', 'COPA'];
+
+  countryOptions: CountryOption[] = [
+    { value: 'Internacional', label: 'Internacional / Global' },
+    { value: 'Argentina', label: 'Argentina' },
+    { value: 'Brasil', label: 'Brasil' },
+    { value: 'España', label: 'España' },
+    { value: 'Inglaterra', label: 'Inglaterra' },
+  ];
 
   formulario = this.fb.nonNullable.group({
     name: [
@@ -37,20 +51,13 @@ export class ChampionshipForm implements OnInit {
         Validators.required,
         Validators.minLength(3),
         Validators.maxLength(50),
-        // Permite letras (con acentos/diéresis/ñ), espacios y guiones comunes, sin números
         Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s\-\.]+$/),
       ],
     ],
     logo: ['', [Validators.required]],
     type: ['', [Validators.required]],
-    season: [
-      '',
-      [
-        Validators.required,
-        // Admite año de 4 dígitos (ej: 2020, 2026) o temporada compuesta (ej: 2026/2027)
-        Validators.pattern(/^\d{4}(\/\d{4})?$/),
-      ],
-    ],
+    country: ['', [Validators.required]], // 👈 Añadido al formulario
+    season: ['', [Validators.required, Validators.pattern(/^\d{4}(\/\d{4})?$/)]],
     teamsIDs: [<number[]>[], [Validators.required, Validators.minLength(1)]],
   });
 
@@ -137,6 +144,7 @@ export class ChampionshipForm implements OnInit {
       type: formValue.type as ChampionshipType,
       season: formValue.season.trim(),
       teamsIDs: this.selectedTeamIds(),
+      country: formValue.country, // 👈 Ahora toma correctamente el valor del formulario
     };
 
     this.championshipService.saveChampionship(championshipActual);
@@ -150,10 +158,12 @@ export class ChampionshipForm implements OnInit {
     this.teamSearchQuery.set('');
     this.isTeamSearchOpen.set(false);
     this.isTypeOpen = false;
+    this.isCountryOpen = false;
   }
 
   toggleTypeDropdown(): void {
     this.isTypeOpen = !this.isTypeOpen;
+    this.isCountryOpen = false;
     this.isTeamSearchOpen.set(false);
     if (!this.isTypeOpen) {
       this.formulario.controls.type.markAsTouched();
@@ -164,6 +174,21 @@ export class ChampionshipForm implements OnInit {
     this.formulario.controls.type.setValue(type);
     this.formulario.controls.type.markAsTouched();
     this.isTypeOpen = false;
+  }
+
+  toggleCountryDropdown(): void {
+    this.isCountryOpen = !this.isCountryOpen;
+    this.isTypeOpen = false;
+    this.isTeamSearchOpen.set(false);
+    if (!this.isCountryOpen) {
+      this.formulario.controls.country.markAsTouched();
+    }
+  }
+
+  selectCountry(country: string): void {
+    this.formulario.controls.country.setValue(country);
+    this.formulario.controls.country.markAsTouched();
+    this.isCountryOpen = false;
   }
 
   onTeamSearchInput(event: Event): void {
@@ -227,9 +252,7 @@ export class ChampionshipForm implements OnInit {
     this.formulario.patchValue({ logo: '' });
   }
 
-  // Bloquea números y caracteres inválidos en el nombre
   onlyLetters(event: KeyboardEvent): void {
-    // Permite comandos de teclado especiales y atajos (Ctrl+A, Ctrl+C, Ctrl+V, etc.)
     if (
       event.ctrlKey ||
       event.metaKey ||
@@ -239,13 +262,11 @@ export class ChampionshipForm implements OnInit {
     ) {
       return;
     }
-    // Si presiona un número u otro carácter no permitido, se cancela la pulsación
     if (!/^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s\-\.]$/.test(event.key)) {
       event.preventDefault();
     }
   }
 
-  // Bloquea letras en temporada (permite solo dígitos y la barra '/')
   onlySeasonChars(event: KeyboardEvent): void {
     if (
       event.ctrlKey ||
@@ -256,7 +277,6 @@ export class ChampionshipForm implements OnInit {
     ) {
       return;
     }
-    // Si intenta ingresar una letra o símbolo que no sea dígito ni barra, se cancela
     if (!/^[0-9\/]$/.test(event.key)) {
       event.preventDefault();
     }

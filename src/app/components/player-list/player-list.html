@@ -3,7 +3,7 @@
     <h2>Jugadores</h2>
   </div>
 
-  <!-- Barra de Filtros y Búsqueda -->
+  <!-- Barra de Búsqueda y Botón de Filtrar Unificado -->
   <div class="filters-bar">
     <div class="search-box">
       <svg
@@ -24,133 +24,137 @@
       />
     </div>
 
-    <div class="select-filters">
-      <!-- Dropdown Personalizado: Posición -->
-      <div class="custom-dropdown" [class.open]="isPositionDropdownOpen()">
-        <button type="button" class="dropdown-trigger" (click)="togglePositionDropdown()">
-          <span [class.placeholder]="selectedPosition() === 'ALL'">
-            {{ selectedPositionLabel }}
-          </span>
-          <span class="triangle-icon"></span>
-        </button>
+    <!-- Botón de Filtrar con Panel Desplegable -->
+    <div class="filter-dropdown-container">
+      <button type="button" class="filter-main-btn" (click)="toggleFilterPanel($event)">
+        <div class="trigger-content">
+          <i class="fas fa-filter"></i>
+          <span>Filtrar</span>
+        </div>
+        <span class="triangle-icon" [class.rotate]="isFilterPanelOpen()"></span>
+      </button>
 
-        @if (isPositionDropdownOpen()) {
-          <ul class="dropdown-menu">
-            @for (pos of positions; track pos.value) {
-              <li
-                class="dropdown-item"
-                [class.active]="selectedPosition() === pos.value"
-                (click)="selectPosition(pos.value)"
+      @if (isFilterPanelOpen()) {
+        <div class="filter-panel" (click)="$event.stopPropagation()">
+          <!-- Sección 1: Posición -->
+          <div class="filter-panel-section">
+            <span class="filter-panel-title">Posición</span>
+            <div class="sub-dropdown" [class.open]="isPositionDropdownOpen">
+              <button
+                type="button"
+                class="sub-dropdown-trigger"
+                (click)="togglePositionDropdown($event)"
               >
-                <div class="item-content">
-                  <span>{{ pos.label }}</span>
-                </div>
-                @if (selectedPosition() === pos.value) {
-                  <svg
-                    class="check-icon"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  >
-                    <polyline points="20 6 9 17 4 12"></polyline>
-                  </svg>
-                }
-              </li>
-            }
-          </ul>
-        }
-      </div>
+                <span>{{ selectedPositionLabel }}</span>
+                <span class="triangle-icon"></span>
+              </button>
 
-      <!-- Dropdown Personalizado: Equipos y Agentes Libres -->
-      <div class="custom-dropdown" [class.open]="isTeamDropdownOpen()">
-        <button type="button" class="dropdown-trigger" (click)="toggleTeamDropdown()">
-          <span [class.placeholder]="selectedTeam() === 'ALL'">
-            {{ selectedTeamLabel }}
-          </span>
-          <span class="triangle-icon"></span>
-        </button>
-
-        @if (isTeamDropdownOpen()) {
-          <ul class="dropdown-menu">
-            <!-- Opción: Todos los equipos -->
-            <li
-              class="dropdown-item"
-              [class.active]="selectedTeam() === 'ALL'"
-              (click)="selectTeam('ALL')"
-            >
-              <div class="item-content">
-                <span>Todos los equipos</span>
-              </div>
-              @if (selectedTeam() === 'ALL') {
-                <svg
-                  class="check-icon"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <polyline points="20 6 9 17 4 12"></polyline>
-                </svg>
+              @if (isPositionDropdownOpen) {
+                <ul class="sub-dropdown-menu">
+                  @for (pos of positions; track pos.value) {
+                    <li
+                      class="sub-dropdown-item"
+                      [class.active]="selectedPosition() === pos.value"
+                      (click)="selectPosition(pos.value)"
+                    >
+                      <span>{{ pos.label }}</span>
+                      @if (selectedPosition() === pos.value) {
+                        <i class="fas fa-check check-icon"></i>
+                      }
+                    </li>
+                  }
+                </ul>
               }
-            </li>
+            </div>
+          </div>
 
-            <!-- Opción: Agentes Libres -->
-            <li
-              class="dropdown-item"
-              [class.active]="selectedTeam() === 'FREE_AGENT'"
-              (click)="selectTeam('FREE_AGENT')"
-            >
-              <div class="item-content">
-                <span>Agentes libres</span>
-              </div>
-              @if (selectedTeam() === 'FREE_AGENT') {
-                <svg
-                  class="check-icon"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <polyline points="20 6 9 17 4 12"></polyline>
-                </svg>
-              }
-            </li>
-
-            <!-- Lista dinámica de equipos de la base de datos -->
-            @for (team of teams(); track team.id) {
-              <li
-                class="dropdown-item"
-                [class.active]="selectedTeam() === team.id"
-                (click)="selectTeam(team.id!)"
+          <!-- Sección 2: Equipo / Agentes Libres -->
+          <div class="filter-panel-section">
+            <span class="filter-panel-title">Equipo</span>
+            <div class="sub-dropdown" [class.open]="isTeamDropdownOpen">
+              <button
+                type="button"
+                class="sub-dropdown-trigger"
+                (click)="toggleTeamDropdown($event)"
               >
-                <div class="item-content">
-                  <span>{{ team.name }}</span>
-                </div>
-                @if (selectedTeam() === team.id) {
-                  <svg
-                    class="check-icon"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                <span>{{ selectedTeamLabel }}</span>
+                <span class="triangle-icon"></span>
+              </button>
+
+              @if (isTeamDropdownOpen) {
+                <ul class="sub-dropdown-menu">
+                  <li
+                    class="sub-dropdown-item"
+                    [class.active]="selectedTeam() === 'ALL'"
+                    (click)="selectTeam('ALL')"
                   >
-                    <polyline points="20 6 9 17 4 12"></polyline>
-                  </svg>
-                }
-              </li>
-            }
-          </ul>
-        }
-      </div>
+                    <span>Todos los equipos</span>
+                    @if (selectedTeam() === 'ALL') {
+                      <i class="fas fa-check check-icon"></i>
+                    }
+                  </li>
+
+                  <li
+                    class="sub-dropdown-item"
+                    [class.active]="selectedTeam() === 'FREE_AGENT'"
+                    (click)="selectTeam('FREE_AGENT')"
+                  >
+                    <span>Agentes libres</span>
+                    @if (selectedTeam() === 'FREE_AGENT') {
+                      <i class="fas fa-check check-icon"></i>
+                    }
+                  </li>
+
+                  @for (team of teams(); track team.id) {
+                    <li
+                      class="sub-dropdown-item"
+                      [class.active]="selectedTeam() === team.id"
+                      (click)="selectTeam(team.id!)"
+                    >
+                      <span>{{ team.name }}</span>
+                      @if (selectedTeam() === team.id) {
+                        <i class="fas fa-check check-icon"></i>
+                      }
+                    </li>
+                  }
+                </ul>
+              }
+            </div>
+          </div>
+
+          <!-- Sección 3: Nacionalidad -->
+          <div class="filter-panel-section">
+            <span class="filter-panel-title">Nacionalidad</span>
+            <div class="sub-dropdown" [class.open]="isNationalityDropdownOpen">
+              <button
+                type="button"
+                class="sub-dropdown-trigger"
+                (click)="toggleNationalityDropdown($event)"
+              >
+                <span>{{ selectedNationalityLabel }}</span>
+                <span class="triangle-icon"></span>
+              </button>
+
+              @if (isNationalityDropdownOpen) {
+                <ul class="sub-dropdown-menu">
+                  @for (nat of nationalityOptions; track nat.value) {
+                    <li
+                      class="sub-dropdown-item"
+                      [class.active]="selectedNationality() === nat.value"
+                      (click)="selectNationality(nat.value)"
+                    >
+                      <span>{{ nat.label }}</span>
+                      @if (selectedNationality() === nat.value) {
+                        <i class="fas fa-check check-icon"></i>
+                      }
+                    </li>
+                  }
+                </ul>
+              }
+            </div>
+          </div>
+        </div>
+      }
     </div>
   </div>
 

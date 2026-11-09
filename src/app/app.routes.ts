@@ -5,7 +5,7 @@ import { Profile } from './pages/profile/profile';
 import { Register } from './pages/register/register';
 import { PlayerDetail } from './pages/player-detail/player-detail';
 import { Players } from './pages/players/players';
-import { ChampionshipDetail } from './pages/championship-detail/championship-detail';
+import { ChampionshipDetailPage } from './pages/championship-detail/championship-detail';
 import { Championships } from './pages/championships/championships';
 import { MatchDetail } from './pages/match-detail/match-detail';
 import { ProfileEdit } from './components/profile-edit/profile-edit';
@@ -31,15 +31,18 @@ export const routes: Routes = [
   { path: 'profile/edit', component: ProfileEdit },
   { path: 'teams', component: Teams },
 
-  /* Modificado: ahora usa :name en lugar de :id */
-  { path: 'team/:name', component: TeamDetailPage },
-  { path: 'teams/:name', redirectTo: 'team/:name', pathMatch: 'full' },
+  /* Rutas de equipos (Soporta tanto por ID como por nombre/slug) */
+  { path: 'team/:id', component: TeamDetailPage },
+  { path: 'team/name/:name', component: TeamDetailPage },
+  { path: 'teams/:id', redirectTo: 'team/:id', pathMatch: 'full' },
 
   { path: 'players', component: Players },
   { path: 'player/:id', component: PlayerDetail },
   { path: 'players/:id', redirectTo: 'player/:id', pathMatch: 'full' },
   { path: 'championships', component: Championships },
-  { path: 'championship/:id', component: ChampionshipDetail },
+
+  /* Ruta de detalles de campeonato apuntando a la page */
+  { path: 'championship/:id', component: ChampionshipDetailPage },
   { path: 'championships/:id', redirectTo: 'championship/:id', pathMatch: 'full' },
   { path: 'matches', component: MatchList },
   { path: 'match/:id', component: MatchDetail },

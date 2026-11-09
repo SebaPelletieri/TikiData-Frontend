@@ -5,8 +5,6 @@ import { TeamDetail } from '../../components/team-detail/team-detail';
 import { Team } from '../../models/Team';
 import { Player } from '../../models/Player';
 import { TeamService } from '../../services/team-service';
-import { ChampionshipService } from '../../services/championship-service';
-import { MatchService } from '../../services/match-service';
 import { PlayerService } from '../../services/player-service';
 
 @Component({
@@ -19,46 +17,74 @@ import { PlayerService } from '../../services/player-service';
 export class TeamDetailPage implements OnInit {
   private route = inject(ActivatedRoute);
   public teamService = inject(TeamService);
-  private championshipService = inject(ChampionshipService);
-  private matchService = inject(MatchService);
   private playerService = inject(PlayerService);
 
-  stadiumActual = signal<any | null>(null);
-  activeChampionships = signal<any[]>([]);
-  recentMatches = signal<any[]>([]);
   squadPlayers = signal<Player[]>([]);
 
   ngOnInit() {
-    // Capturamos el parámetro 'name' de la URL en lugar de 'id'
     this.route.paramMap.subscribe((params) => {
-      const teamSlug = params.get('name');
-      if (teamSlug) {
-        this.loadTeamBySlug(teamSlug);
+      // Obtenemos el parámetro que venga (puede ser 'id' o 'name' según cómo responda la ruta)
+      const paramValue = params.get('id') || params.get('name');
+
+      if (paramValue) {
+        // Verificamos si es un número o un texto (slug)
+        if (!isNaN(Number(paramValue))) {
+          this.loadTeamById(paramValue);
+        } else {
+          this.loadTeamBySlug(paramValue);
+        }
       }
     });
   }
 
-  loadTeamBySlug(slug: string) {
-    // CORREGIDO: Usamos getAllTeams() en lugar de getAll() para poder hacer .subscribe()
+  loadTeamById(targetId: string) {
     this.teamService.getAllTeams().subscribe({
       next: (teams: Team[]) => {
-        const foundTeam = teams.find((t) => t.name.toLowerCase().replace(/\s+/g, '-') === slug);
+        const foundTeam = teams.find((t: any) => String(t.id) === String(targetId));
 
-        if (foundTeam && foundTeam.id) {
+        if (foundTeam) {
+          console.log('¡Equipo encontrado por ID con éxito!', foundTeam);
           this.teamService.teamActual.set(foundTeam);
-
-          // Cargar jugadores del equipo usando el ID real del equipo encontrado
-          this.playerService.getAllPlayers().subscribe((players: Player[]) => {
-            const filtered = players.filter(
-              (p: any) => p.teamId === foundTeam.id || p.team === foundTeam.id,
-            );
-            this.squadPlayers.set(filtered);
-          });
+          if (foundTeam.id) {
+            this.loadPlayers(foundTeam.id);
+          }
+        } else {
+          console.warn(`No se encontró el equipo con ID: ${targetId}`);
         }
       },
-      error: (err: any) => {
-        console.error('Error cargando equipos:', err);
+      error: (err) => console.error('Error cargando equipos:', err),
+    });
+  }
+
+  loadTeamBySlug(slug: string) {
+    this.teamService.getAllTeams().subscribe({
+      next: (teams: Team[]) => {
+        // Limpiamos y comparamos el slug de la URL con el nombre del equipo transformado
+        const foundTeam = teams.find(
+          (t: any) =>
+            t.name && t.name.toLowerCase().replace(/[^a-z0-9]+/g, '-') === slug.toLowerCase(),
+        );
+
+        if (foundTeam) {
+          console.log('¡Equipo encontrado por Slug con éxito!', foundTeam);
+          this.teamService.teamActual.set(foundTeam);
+          if (foundTeam.id) {
+            this.loadPlayers(foundTeam.id);
+          }
+        } else {
+          console.warn(`No se encontró el equipo con slug: ${slug}`);
+        }
       },
+      error: (err) => console.error('Error cargando equipos:', err),
+    });
+  }
+
+  loadPlayers(teamId: any) {
+    this.playerService.getAllPlayers().subscribe((players: Player[]) => {
+      const filtered = players.filter(
+        (p: any) => String(p.teamId) === String(teamId) || String(p.team) === String(teamId),
+      );
+      this.squadPlayers.set(filtered);
     });
   }
 }

@@ -3,10 +3,6 @@
     <div class="error-msg">{{ teamService.error() }}</div>
   }
 
-  <!-- El componente hijo ahora maneja la carga y visualización basándose en el nombre de la URL -->
-  <app-team-detail
-    [stadium]="stadiumActual()"
-    [championships]="activeChampionships()"
-    [matches]="recentMatches()"
-  />
+  <!-- Renderizamos el componente hijo pasándole únicamente los jugadores de la plantilla -->
+  <app-team-detail [players]="squadPlayers()" />
 </div>

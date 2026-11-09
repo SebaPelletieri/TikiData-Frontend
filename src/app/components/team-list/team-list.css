@@ -79,22 +79,26 @@
 }
 
 .search-box input:hover {
-  border-color: #38bdf8;
+  border-color: #f97316;
   background: linear-gradient(180deg, #092244 0%, #071932 100%);
-  box-shadow: 0 0 12px rgba(56, 189, 248, 0.15);
+  box-shadow: 0 0 12px rgba(249, 115, 22, 0.15);
 }
 
 .search-box:hover .search-icon {
-  color: #38bdf8;
+  color: #f97316;
 }
 
 .search-box input:focus {
-  border-color: #38bdf8;
+  border-color: #f97316;
   background: linear-gradient(180deg, #092244 0%, #071932 100%);
-  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.2);
 }
 
-/* ================= DROPDOWN DE PAÍS ================= */
+.search-box input:focus + .search-icon {
+  color: #f97316;
+}
+
+/* ================= DROPDOWN DE PAÍS (Con animación suave) ================= */
 .select-filters {
   flex: 1;
   min-width: 220px;
@@ -126,9 +130,9 @@
 }
 
 .dropdown-trigger:hover {
-  border-color: #38bdf8;
+  border-color: #f97316;
   background: linear-gradient(180deg, #092244 0%, #071932 100%);
-  box-shadow: 0 0 12px rgba(56, 189, 248, 0.15);
+  box-shadow: 0 0 12px rgba(249, 115, 22, 0.15);
 }
 
 .triangle-icon {
@@ -146,12 +150,19 @@
 .dropdown-trigger:hover .triangle-icon,
 .custom-dropdown.open .triangle-icon,
 .country-header:hover .triangle-icon {
-  background-color: #38bdf8;
+  background-color: #f97316 !important;
 }
 
 .triangle-icon.rotate {
   transform: rotate(180deg);
-  background-color: #38bdf8 !important;
+  background-color: #f97316 !important;
+}
+
+/* ================= DROPDOWN DE PAÍS (Apertura ultra suave) ================= */
+/* ================= DROPDOWN DE PAÍS (Apertura ultra sedosa) ================= */
+.custom-dropdown {
+  position: relative;
+  width: 100%;
 }
 
 .dropdown-menu {
@@ -159,17 +170,40 @@
   top: calc(100% + 6px);
   left: 0;
   width: 100%;
-  max-height: 240px;
-  overflow-y: auto;
   background-color: #06182e;
   border: 1px solid #143d73;
   border-radius: 12px;
-  padding: 6px;
   margin: 0;
   list-style: none;
   z-index: 100;
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.65);
   backdrop-filter: blur(8px);
+
+  /* Truco de CSS Grid para animar altura de forma fluida y nativa */
+  display: grid;
+  grid-template-rows: 0fr;
+  padding: 0 6px;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    grid-template-rows 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.3s ease-in-out,
+    padding 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+    visibility 0.4s ease;
+}
+
+/* Contenedor interno invisible para permitir la transición fluida de la grilla */
+.dropdown-menu > * {
+  overflow: hidden;
+  min-height: 0;
+}
+
+/* Estado abierto con curva de aceleración suave (ease-out orgánico) */
+.custom-dropdown.open .dropdown-menu {
+  grid-template-rows: 1fr;
+  opacity: 1;
+  visibility: visible;
+  padding: 6px;
 }
 
 .dropdown-item {
@@ -201,7 +235,7 @@
 .check-icon {
   width: 16px !important;
   height: 16px !important;
-  stroke: #38bdf8;
+  stroke: #f97316;
   flex-shrink: 0;
 }
 
@@ -218,6 +252,7 @@
   border-radius: 16px;
   overflow: hidden;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  transition: border-color 0.2s ease;
 }
 
 .country-header {
@@ -259,6 +294,18 @@
   display: flex;
   flex-direction: column;
   gap: 2rem;
+  animation: fadeInContent 0.3s ease forwards;
+}
+
+@keyframes fadeInContent {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Sub-bloque de Liga */
@@ -284,7 +331,7 @@
   margin: 0;
   font-size: 1.05rem;
   font-weight: 600;
-  color: #38bdf8;
+  color: #f97316;
   letter-spacing: -0.01em;
 }
 
@@ -335,8 +382,8 @@
 
 .team-card:hover {
   transform: translateY(-4px);
-  border-color: #38bdf8;
-  box-shadow: 0 12px 26px rgba(56, 189, 248, 0.15);
+  border-color: #f97316;
+  box-shadow: 0 12px 26px rgba(249, 115, 22, 0.15);
 }
 
 .team-logo-wrapper {

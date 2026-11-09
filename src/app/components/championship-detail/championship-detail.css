@@ -68,29 +68,51 @@
   color: #38bdf8;
 }
 
-/* Botón Seguir */
+/* =========================================
+   Botón Seguir Unificado
+   ========================================= */
 .btn-follow-champ {
-  background-color: #3b82f6;
+  font-family: inherit;
+  background-color: #2563eb;
   color: #ffffff;
   border: none;
-  padding: 0.65rem 1.8rem;
+  padding: 6px 16px;
+  border-radius: 8px;
   font-weight: 600;
-  font-size: 0.92rem;
-  border-radius: 10px;
+  font-size: 0.9rem;
   cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+  width: fit-content;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+  transition:
+    transform 0.2s,
+    background-color 0.2s;
+}
+
+.follow-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  transform: translateY(-1px);
 }
 
 .btn-follow-champ:hover {
-  background-color: #2563eb;
+  background-color: #1d4ed8;
   transform: translateY(-1px);
 }
 
 .btn-follow-champ.following {
-  background-color: #0d2a52;
-  color: #38bdf8;
-  border: 1px solid #38bdf8;
+  background-color: #065f46;
+  border: 1px solid #10b981;
+}
+
+.btn-follow-champ.following:hover {
+  background-color: #047857;
 }
 
 /* =========================================
@@ -172,20 +194,29 @@
   color: #ffffff;
 }
 
+/* Botones de acción (Ver todos / Ver tabla completa) idénticos a equipos */
 .link-action-btn {
   background: transparent;
   border: none;
-  color: #38bdf8;
+  color: #f97316;
+  font-family: inherit;
   font-size: 0.85rem;
   font-weight: 600;
   cursor: pointer;
-  padding: 0;
-  transition: opacity 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease;
 }
 
 .link-action-btn:hover {
-  opacity: 0.8;
-  text-decoration: underline;
+  color: #fb923c;
+  background-color: rgba(56, 189, 248, 0.1);
+  text-decoration: none;
 }
 
 /* =========================================

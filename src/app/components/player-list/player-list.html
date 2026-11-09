@@ -68,60 +68,6 @@
             </div>
           </div>
 
-          <!-- Sección 2: Equipo / Agentes Libres -->
-          <div class="filter-panel-section">
-            <span class="filter-panel-title">Equipo</span>
-            <div class="sub-dropdown" [class.open]="isTeamDropdownOpen">
-              <button
-                type="button"
-                class="sub-dropdown-trigger"
-                (click)="toggleTeamDropdown($event)"
-              >
-                <span>{{ selectedTeamLabel }}</span>
-                <span class="triangle-icon"></span>
-              </button>
-
-              @if (isTeamDropdownOpen) {
-                <ul class="sub-dropdown-menu">
-                  <li
-                    class="sub-dropdown-item"
-                    [class.active]="selectedTeam() === 'ALL'"
-                    (click)="selectTeam('ALL')"
-                  >
-                    <span>Todos los equipos</span>
-                    @if (selectedTeam() === 'ALL') {
-                      <i class="fas fa-check check-icon"></i>
-                    }
-                  </li>
-
-                  <li
-                    class="sub-dropdown-item"
-                    [class.active]="selectedTeam() === 'FREE_AGENT'"
-                    (click)="selectTeam('FREE_AGENT')"
-                  >
-                    <span>Agentes libres</span>
-                    @if (selectedTeam() === 'FREE_AGENT') {
-                      <i class="fas fa-check check-icon"></i>
-                    }
-                  </li>
-
-                  @for (team of teams(); track team.id) {
-                    <li
-                      class="sub-dropdown-item"
-                      [class.active]="selectedTeam() === team.id"
-                      (click)="selectTeam(team.id!)"
-                    >
-                      <span>{{ team.name }}</span>
-                      @if (selectedTeam() === team.id) {
-                        <i class="fas fa-check check-icon"></i>
-                      }
-                    </li>
-                  }
-                </ul>
-              }
-            </div>
-          </div>
-
           <!-- Sección 3: Nacionalidad -->
           <div class="filter-panel-section">
             <span class="filter-panel-title">Nacionalidad</span>

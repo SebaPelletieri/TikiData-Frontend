@@ -61,9 +61,8 @@ export class TeamList implements OnInit {
     Italia: 'https://flagcdn.com/w40/it.png',
   };
 
-  openCountries = signal<Record<string, boolean>>({
-    Argentina: true,
-  });
+  // Control de apertura dinámico (inicia vacío; todo país nuevo arranca cerrado por defecto)
+  openCountries = signal<Record<string, boolean>>({});
 
   ngOnInit(): void {
     this.teamService.getAll();
@@ -153,7 +152,7 @@ export class TeamList implements OnInit {
           countryName: country,
           countryFlag: this.countryFlags[country] || defaultFlag,
           leagues: leaguesMap,
-          isOpen: true,
+          isOpen: false, // Inicia cerrado por defecto de forma dinámica
         });
       }
     }

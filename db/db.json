@@ -252,22 +252,20 @@
       "capacity": "49540"
     }
   ],
-
   "partidos": [
-  {
-    "id": 1,
-    "localTeamID": 4,
-    "awayTeamID": 2,
-    "date": "2026-11-08T17:00:00.000Z",
-    "championshipID": 101,
-    "localGoals": 2,
-    "awayGoals": 1,
-    "status": "Finalizado",
-    "stadium": "Estadio Libertadores de América",
-    "championshipName": "Liga Profesional - Fecha 12"
-  }
-],
-
+    {
+      "id": "1",
+      "localTeamID": 4,
+      "awayTeamID": 2,
+      "date": "2026-11-08T17:00:00.000Z",
+      "championshipID": 101,
+      "localGoals": 2,
+      "awayGoals": 1,
+      "status": "Finalizado",
+      "stadium": "Estadio Libertadores de América",
+      "championshipName": "Liga Profesional - Fecha 12"
+    }
+  ],
   "jugadores": [
     {
       "id": "1",

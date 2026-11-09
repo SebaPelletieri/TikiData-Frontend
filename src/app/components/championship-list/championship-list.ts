@@ -31,7 +31,7 @@ export class ChampionshipList implements OnInit {
   searchText = signal('');
 
   // Estados de los filtros seleccionados
-  selectedType = signal<'ALL' | ChampionshipType>('ALL');
+  selectedType = signal<string>('ALL');
   selectedCountry = signal<string>('ALL');
 
   // Estados visuales de los desplegables
@@ -83,11 +83,8 @@ export class ChampionshipList implements OnInit {
     Italia: 'https://flagcdn.com/w40/it.png',
   };
 
-  // Control de apertura de bloques individuales
-  openGroups = signal<Record<string, boolean>>({
-    'Competencias Internacionales': true,
-    Argentina: true,
-  });
+  // Control de apertura dinámico (inicia vacío; todo grupo arranca cerrado por defecto)
+  openGroups = signal<Record<string, boolean>>({});
 
   ngOnInit(): void {
     this.championshipService.getAll();
@@ -132,7 +129,7 @@ export class ChampionshipList implements OnInit {
   }
 
   selectType(type: string): void {
-    this.selectedType.set(type as any);
+    this.selectedType.set(type);
     this.isTypeDropdownOpen = false;
   }
 
@@ -218,7 +215,7 @@ export class ChampionshipList implements OnInit {
         groupFlag: '',
         isInternational: true,
         championships: internationalChamps,
-        isOpen: true,
+        isOpen: false,
       });
     }
 
@@ -243,7 +240,7 @@ export class ChampionshipList implements OnInit {
           groupFlag: this.countryFlags[country] || defaultFlag,
           isInternational: false,
           championships: champsInCountry,
-          isOpen: true,
+          isOpen: false,
         });
       }
     }

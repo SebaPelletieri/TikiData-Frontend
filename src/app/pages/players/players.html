@@ -1,16 +1,1 @@
-<div class="page-container">
-  
-  <div class="page-header-actions" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-    <h2>Gestión de Plantel</h2>
-    <button class="btn-toggle-form" (click)="toggleForm()" style="background-color: #2563eb; color: white; border: none; padding: 10px 18px; border-radius: 10px; font-weight: 600; cursor: pointer;">
-      {{ showForm() ? '← Volver al listado' : '+ Nuevo Jugador' }}
-    </button>
-  </div>
-
-  @if (showForm()) {
-    <app-player-form></app-player-form>
-  } @else {
-    <app-player-list></app-player-list>
-  }
-
-</div>
+<app-player-list></app-player-list>

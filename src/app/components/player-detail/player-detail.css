@@ -105,45 +105,50 @@
   background: #059669;
 }
 
-/* Pestañas */
+/* ================= Pestañas (Estilo Naranja TikiData con Animación Suave) ================= */
 .player-tabs {
   display: flex;
-  gap: 2rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  margin-bottom: 1.5rem;
-  padding-left: 0.5rem;
+  gap: 8px;
+  border-bottom: 1px solid #0d2a52;
+  margin-bottom: 2rem;
+  padding-bottom: 0.5rem;
 }
 
 .tab-btn {
   background: transparent;
   border: none;
-  color: #94a3b8;
-  font-size: 1rem;
-  font-weight: 500;
-  padding: 0.75rem 0.25rem;
+  color: #8da6c4;
+  font-size: 0.95rem;
+  font-weight: 600;
+  padding: 0.75rem 1.25rem;
+  border-radius: 8px;
   cursor: pointer;
   position: relative;
-  transition: color 0.2s;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+  /* Transición fluida idéntica a los demás componentes */
+  transition:
+    color 0.25s ease,
+    background-color 0.25s ease,
+    transform 0.15s ease;
 }
 
 .tab-btn:hover {
-  color: #fff;
+  color: #ffffff;
+  background: rgba(249, 115, 22, 0.08); /* Tinte naranja sutil en hover */
+}
+
+.tab-btn:active,
+.tab-btn:focus {
+  outline: none;
+  box-shadow: none;
+  transform: scale(0.97); /* Efecto sutil de presión al hacer clic sin rastro blanco */
 }
 
 .tab-btn.active {
-  color: #3b82f6;
-  font-weight: 600;
-}
-
-.tab-btn.active::after {
-  content: '';
-  position: absolute;
-  bottom: -1px;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: #3b82f6;
-  border-radius: 2px 2px 0 0;
+  color: #ffffff;
+  background: #0d2a52;
+  border-bottom: 2px solid #f97316; /* Borde activo inferior en naranja TikiData */
 }
 
 /* Cuadrícula de Contenido */

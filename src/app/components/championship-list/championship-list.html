@@ -25,7 +25,7 @@
     </div>
 
     <!-- Botón de Filtrar con Panel Desplegable -->
-    <div class="filter-dropdown-container">
+    <div class="filter-dropdown-container" [class.open]="isFilterPanelOpen()">
       <button type="button" class="filter-main-btn" (click)="toggleFilterPanel($event)">
         <div class="trigger-content">
           <i class="fas fa-filter"></i>
@@ -34,8 +34,8 @@
         <span class="triangle-icon" [class.rotate]="isFilterPanelOpen()"></span>
       </button>
 
-      @if (isFilterPanelOpen()) {
-        <div class="filter-panel" (click)="$event.stopPropagation()">
+      <div class="filter-panel" (click)="$event.stopPropagation()">
+        <div class="filter-panel-inner">
           <!-- Sección 1: Tipo de competencia -->
           <div class="filter-panel-section">
             <span class="filter-panel-title">Tipo de competencia</span>
@@ -46,11 +46,11 @@
                 (click)="toggleTypeDropdown($event)"
               >
                 <span>{{ selectedTypeLabel }}</span>
-                <span class="triangle-icon"></span>
+                <span class="triangle-icon" [class.rotate]="isTypeDropdownOpen"></span>
               </button>
 
-              @if (isTypeDropdownOpen) {
-                <ul class="sub-dropdown-menu">
+              <ul class="sub-dropdown-menu">
+                <div class="sub-dropdown-menu-inner">
                   @for (opt of typeOptions; track opt.value) {
                     <li
                       class="sub-dropdown-item"
@@ -63,8 +63,8 @@
                       }
                     </li>
                   }
-                </ul>
-              }
+                </div>
+              </ul>
             </div>
           </div>
 
@@ -78,11 +78,11 @@
                 (click)="toggleCountryDropdown($event)"
               >
                 <span>{{ selectedCountryLabel }}</span>
-                <span class="triangle-icon"></span>
+                <span class="triangle-icon" [class.rotate]="isCountryDropdownOpen"></span>
               </button>
 
-              @if (isCountryDropdownOpen) {
-                <ul class="sub-dropdown-menu">
+              <ul class="sub-dropdown-menu">
+                <div class="sub-dropdown-menu-inner">
                   @for (opt of countryOptions(); track opt.value) {
                     <li
                       class="sub-dropdown-item"
@@ -95,12 +95,12 @@
                       }
                     </li>
                   }
-                </ul>
-              }
+                </div>
+              </ul>
             </div>
           </div>
         </div>
-      }
+      </div>
     </div>
   </div>
 

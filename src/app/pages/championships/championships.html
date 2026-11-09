@@ -1,16 +1,2 @@
-<div class="page-container">
+<app-championship-list></app-championship-list>
   
-  <div class="page-header-actions" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-    <h2 style="color: white; margin: 0;">Gestión de Torneos</h2>
-    <button class="btn-toggle-form" (click)="toggleForm()" style="background-color: #2563eb; color: white; border: none; padding: 10px 18px; border-radius: 10px; font-weight: 600; cursor: pointer;">
-      {{ showForm() ? '← Volver al listado' : '+ Nuevo Campeonato' }}
-    </button>
-  </div>
-
-  @if (showForm()) {
-    <app-championship-form></app-championship-form>
-  } @else {
-    <app-championship-list></app-championship-list>
-  }
-
-</div>

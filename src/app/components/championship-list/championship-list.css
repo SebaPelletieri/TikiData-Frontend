@@ -15,7 +15,7 @@
   color: #ffffff;
 }
 
-/* ================= HEADER SECTION ================= */
+/* ================= ENCABEZADO ================= */
 .header-title-section {
   display: flex;
   align-items: center;
@@ -78,23 +78,31 @@
 }
 
 .search-box input:hover {
-  border-color: #38bdf8;
+  border-color: #f97316;
   background: linear-gradient(180deg, #092244 0%, #071932 100%);
-  box-shadow: 0 0 12px rgba(56, 189, 248, 0.15);
+  box-shadow: 0 0 12px rgba(249, 115, 22, 0.15);
+}
+
+.search-box:hover .search-icon {
+  color: #f97316;
 }
 
 .search-box input:focus {
-  border-color: #38bdf8;
+  border-color: #f97316;
   background: linear-gradient(180deg, #092244 0%, #071932 100%);
-  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.2);
+}
+
+.search-box input:focus + .search-icon {
+  color: #f97316;
 }
 
 /* ================= BOTÓN PRINCIPAL DE FILTRAR Y PANEL ================= */
 .filter-dropdown-container {
   position: relative;
-  flex: 1;
+  flex: 1.2;
   min-width: 220px;
-  max-width: 220px;
+  max-width: 260px;
 }
 
 .filter-main-btn {
@@ -127,12 +135,16 @@
 }
 
 .filter-main-btn:hover {
-  border-color: #38bdf8;
+  border-color: #f97316;
   background: linear-gradient(180deg, #092244 0%, #071932 100%);
-  box-shadow: 0 0 12px rgba(56, 189, 248, 0.15);
+  box-shadow: 0 0 12px rgba(249, 115, 22, 0.15);
 }
 
-/* Triángulo indicador unificado */
+.filter-main-btn:hover .trigger-content i {
+  color: #f97316;
+}
+
+/* Triángulo indicador unificado con hover */
 .triangle-icon {
   width: 10px;
   height: 6px;
@@ -146,21 +158,23 @@
 }
 
 .filter-main-btn:hover .triangle-icon,
+.sub-dropdown-trigger:hover .triangle-icon,
 .sub-dropdown.open .triangle-icon,
 .country-header:hover .triangle-icon {
-  background-color: #38bdf8;
+  background-color: #f97316 !important;
 }
 
 .triangle-icon.rotate {
   transform: rotate(180deg);
-  background-color: #38bdf8 !important;
+  background-color: #f97316 !important;
 }
 
-/* Panel flotante que contiene las secciones de filtros */
+/* Panel flotante principal de filtros (Sin recortes) */
 .filter-panel {
   position: absolute;
   top: calc(100% + 8px);
-  left: 0;
+  right: 0;
+  left: auto;
   width: 100%;
   background-color: #06182e;
   border: 1px solid #143d73;
@@ -170,10 +184,33 @@
     0 12px 30px rgba(0, 0, 0, 0.65),
     0 0 1px rgba(255, 255, 255, 0.1);
   z-index: 100;
+  backdrop-filter: blur(8px);
+
   display: flex;
   flex-direction: column;
   gap: 12px;
-  backdrop-filter: blur(8px);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-8px) scale(0.98);
+  pointer-events: none;
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease,
+    visibility 0.25s ease;
+}
+
+.filter-dropdown-container.open .filter-panel {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.filter-panel-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
 }
 
 .filter-panel-section {
@@ -199,16 +236,16 @@
 
 .sub-dropdown-trigger {
   width: 100%;
-  height: 38px;
+  height: 40px;
   background: linear-gradient(180deg, #041326 0%, #030d1a 100%);
   color: #ffffff;
   border: 1px solid #143560;
   border-radius: 10px;
-  padding: 0 10px;
+  padding: 0 12px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 0.85rem;
+  font-size: 0.88rem;
   font-weight: 500;
   font-family: inherit;
   cursor: pointer;
@@ -217,12 +254,7 @@
 }
 
 .sub-dropdown-trigger:hover {
-  border-color: #38bdf8;
-}
-
-.sub-dropdown.open .triangle-icon {
-  transform: rotate(180deg);
-  background-color: #38bdf8;
+  border-color: #f97316;
 }
 
 .sub-dropdown-menu {
@@ -230,25 +262,45 @@
   top: calc(100% + 4px);
   left: 0;
   width: 100%;
-  max-height: 200px;
-  overflow-y: auto;
-  background-color: #041326;
+  background-color: #06182e;
   border: 1px solid #143d73;
   border-radius: 10px;
-  padding: 4px;
   margin: 0;
   list-style: none;
-  z-index: 105;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+  z-index: 110;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+
+  max-height: 0;
+  overflow: hidden;
+  padding: 0 4px;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    max-height 0.3s ease,
+    opacity 0.2s ease,
+    padding 0.3s ease,
+    visibility 0.3s ease;
+}
+
+.sub-dropdown.open .sub-dropdown-menu {
+  max-height: 220px;
+  opacity: 1;
+  visibility: visible;
+  padding: 4px;
+}
+
+.sub-dropdown-menu-inner {
+  overflow-y: auto;
+  max-height: 180px;
   display: flex;
   flex-direction: column;
   gap: 2px;
 }
 
-.sub-dropdown-menu::-webkit-scrollbar {
+.sub-dropdown-menu-inner::-webkit-scrollbar {
   width: 4px;
 }
-.sub-dropdown-menu::-webkit-scrollbar-thumb {
+.sub-dropdown-menu-inner::-webkit-scrollbar-thumb {
   background: #143560;
   border-radius: 4px;
 }
@@ -275,16 +327,18 @@
 
 .sub-dropdown-item.active {
   background-color: #163a6b;
-  color: #38bdf8;
+  color: #ffffff;
   font-weight: 600;
 }
 
 .check-icon {
-  font-size: 0.75rem;
-  color: #38bdf8;
+  width: 16px !important;
+  height: 16px !important;
+  stroke: #f97316;
+  flex-shrink: 0;
 }
 
-/* ================= BLOQUES JERÁRQUICOS (INTERNACIONALES Y PAÍSES) ================= */
+/* ================= BLOQUES JERÁRQUICOS (PAÍS -> CAMPEONATO) ================= */
 .hierarchy-container {
   display: flex;
   flex-direction: column;
@@ -297,6 +351,7 @@
   border-radius: 16px;
   overflow: hidden;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  transition: border-color 0.2s ease;
 }
 
 .country-header {
@@ -357,6 +412,18 @@
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  animation: fadeInContent 0.3s ease forwards;
+}
+
+@keyframes fadeInContent {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* ================= GRID DE TARJETAS ================= */
@@ -385,8 +452,8 @@
 
 .champ-card:hover {
   transform: translateY(-5px);
-  border-color: #38bdf8;
-  box-shadow: 0 14px 30px rgba(56, 189, 248, 0.18);
+  border-color: #f97316;
+  box-shadow: 0 14px 30px rgba(249, 115, 22, 0.18);
 }
 
 .champ-logo-wrapper {
@@ -432,13 +499,6 @@
   width: 100%;
 }
 
-.champ-season {
-  font-family: inherit;
-  font-size: 0.8rem;
-  font-weight: 500;
-  color: #7d96b3;
-}
-
 /* ================= BADGES DE TIPO ================= */
 .champ-type-badge {
   font-family: inherit;
@@ -476,6 +536,7 @@
   border-radius: 14px;
 }
 
+/* ================= RESPONSIVE ================= */
 @media (max-width: 768px) {
   .championship-list-container {
     width: 96%;

@@ -1,4 +1,12 @@
-import { Component, inject } from '@angular/core';
+import {
+  Component,
+  inject,
+  signal,
+  computed,
+  ChangeDetectionStrategy,
+  Output,
+  EventEmitter,
+} from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { TeamService } from '../../services/team-service';
@@ -16,10 +24,14 @@ interface CalendarDay {
   standalone: true,
   styleUrl: './team-form.css',
   templateUrl: './team-form.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TeamForm {
   teamService = inject(TeamService);
   fb = inject(FormBuilder);
+
+  // 🌟 Evento para notificar al componente padre (ProfileDetail) que cierre el panel y recargue
+  @Output() closePanel = new EventEmitter<void>();
 
   formulario = this.fb.nonNullable.group({
     name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
@@ -40,21 +52,29 @@ export class TeamForm {
       stadiumID: Number(this.formulario.controls['stadiumID'].value),
       playerIDs: [],
     };
+
     this.teamService.saveTeam(teamActual);
     this.formulario.reset();
     this.shieldPreview = null;
+    this.championshipSearchText.set('');
+
+    // 🌟 Cierra el panel y actualiza la tabla de administración sin cambiar de ruta
+    this.closePanel.emit();
   }
 
   cancel() {
     this.formulario.reset();
     this.shieldPreview = null;
+    this.championshipSearchText.set('');
+
+    // 🌟 Cierra el panel lateral al cancelar
+    this.closePanel.emit();
   }
 
-  // --- PAÍSES ---
+  // --- El resto de tus métodos (países, escudo, estadio, campeonatos, calendario) se mantienen exactamente igual ---
   countries = ['Argentina', 'Brasil', 'Uruguay', 'Chile'];
   isCountryOpen = false;
 
-  // En tu clase TeamForm:
   isCountryInvalid(): boolean {
     const control = this.formulario.controls['country'];
     return !!(control.touched && control.invalid);
@@ -63,10 +83,8 @@ export class TeamForm {
   toggleCountryDropdown(): void {
     this.isCountryOpen = !this.isCountryOpen;
     this.isStadiumOpen = false;
-    this.isChampionshipsOpen = false;
     this.isCalendarOpen = false;
 
-    // Si se cierra sin elegir opción, marca el error
     if (!this.isCountryOpen) {
       this.formulario.controls['country'].markAsTouched();
     }
@@ -78,7 +96,6 @@ export class TeamForm {
     this.isCountryOpen = false;
   }
 
-  // --- ESCUDO ---
   shieldPreview: string | null = null;
 
   onFileSelected(event: Event) {
@@ -99,7 +116,6 @@ export class TeamForm {
     this.formulario.patchValue({ shield: '' });
   }
 
-  // --- ESTADIO ---
   stadiums = [
     { id: 1, name: 'Estadio Monumental' },
     { id: 2, name: 'La Bombonera' },
@@ -110,7 +126,6 @@ export class TeamForm {
   toggleStadiumDropdown() {
     this.isStadiumOpen = !this.isStadiumOpen;
     this.isCountryOpen = false;
-    this.isChampionshipsOpen = false;
     this.isCalendarOpen = false;
     if (!this.isStadiumOpen) {
       this.formulario.controls['stadiumID'].markAsTouched();
@@ -128,44 +143,46 @@ export class TeamForm {
     return this.stadiums.find((s) => s.id.toString() === selectedId.toString())?.name;
   }
 
-  // --- CAMPEONATOS ACTIVOS ---
   championships = [
     { id: 1, name: 'Liga Profesional' },
     { id: 2, name: 'Copa Libertadores' },
     { id: 3, name: 'Copa Argentina' },
   ];
-  isChampionshipsOpen = false;
 
-  toggleChampionshipsDropdown() {
-    this.isChampionshipsOpen = !this.isChampionshipsOpen;
-    this.isCountryOpen = false;
-    this.isStadiumOpen = false;
-    this.isCalendarOpen = false;
-    if (!this.isChampionshipsOpen) {
-      this.formulario.controls['championshipsActive'].markAsTouched();
-    }
+  championshipSearchText = signal<string>('');
+  isChampionshipsFocused = signal<boolean>(false);
+
+  filteredChampionships = computed(() => {
+    const search = this.championshipSearchText().toLowerCase().trim();
+    const selectedIds = this.formulario.controls['championshipsActive'].value || [];
+    if (!search) return [];
+    return this.championships.filter(
+      (c) => c.name.toLowerCase().includes(search) && !selectedIds.includes(c.id),
+    );
+  });
+
+  get selectedChampionshipsList() {
+    const selectedIds = this.formulario.controls['championshipsActive'].value || [];
+    return this.championships.filter((c) => selectedIds.includes(c.id));
   }
 
-  toggleChampionship(championshipId: number) {
+  addChampionship(championshipId: number) {
     const current: number[] = [...(this.formulario.controls['championshipsActive'].value || [])];
-    const index = current.indexOf(championshipId);
-
-    if (index > -1) {
-      current.splice(index, 1);
-    } else {
+    if (!current.includes(championshipId)) {
       current.push(championshipId);
+      this.formulario.controls['championshipsActive'].setValue(current);
+      this.formulario.controls['championshipsActive'].markAsTouched();
     }
+    this.championshipSearchText.set('');
+  }
 
-    this.formulario.controls['championshipsActive'].setValue(current);
+  removeChampionship(championshipId: number) {
+    const current: number[] = [...(this.formulario.controls['championshipsActive'].value || [])];
+    const updated = current.filter((id) => id !== championshipId);
+    this.formulario.controls['championshipsActive'].setValue(updated);
     this.formulario.controls['championshipsActive'].markAsTouched();
   }
 
-  isChampionshipSelected(championshipId: number): boolean {
-    const current: number[] = this.formulario.controls['championshipsActive'].value || [];
-    return current.includes(championshipId);
-  }
-
-  // --- CALENDARIO INTERACTIVO ---
   isCalendarOpen = false;
   currentMonth = new Date().getMonth();
   currentYear = new Date().getFullYear();
@@ -184,7 +201,6 @@ export class TeamForm {
     'Noviembre',
     'Diciembre',
   ];
-
   weekDays = ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'];
 
   get yearsList(): number[] {
@@ -200,7 +216,6 @@ export class TeamForm {
     this.isCalendarOpen = !this.isCalendarOpen;
     this.isCountryOpen = false;
     this.isStadiumOpen = false;
-    this.isChampionshipsOpen = false;
     if (!this.isCalendarOpen) {
       this.formulario.controls['yearOfFoundation'].markAsTouched();
     }
@@ -228,7 +243,6 @@ export class TeamForm {
         isCurrentMonth: false,
       });
     }
-
     for (let i = 1; i <= lastDateCurrentMonth; i++) {
       days.push({
         day: i,
@@ -236,7 +250,6 @@ export class TeamForm {
         isCurrentMonth: true,
       });
     }
-
     const remainingDays = 42 - days.length;
     for (let i = 1; i <= remainingDays; i++) {
       days.push({
@@ -245,7 +258,6 @@ export class TeamForm {
         isCurrentMonth: false,
       });
     }
-
     return days;
   }
 
@@ -271,9 +283,7 @@ export class TeamForm {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
-    const formattedDate = `${year}-${month}-${day}`;
-
-    this.formulario.controls['yearOfFoundation'].setValue(formattedDate);
+    this.formulario.controls['yearOfFoundation'].setValue(`${year}-${month}-${day}`);
     this.formulario.controls['yearOfFoundation'].markAsTouched();
     this.isCalendarOpen = false;
   }
@@ -281,25 +291,18 @@ export class TeamForm {
   isDaySelected(date: Date): boolean {
     const currentValue = this.formulario.controls['yearOfFoundation'].value;
     if (!currentValue) return false;
-
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
-    const formatted = `${year}-${month}-${day}`;
-
-    return currentValue === formatted;
+    return currentValue === `${year}-${month}-${day}`;
   }
 
   get formattedSelectedDate(): string {
     const val = this.formulario.controls['yearOfFoundation'].value;
     if (!val) return '';
     const parts = val.split('-');
-    if (parts.length === 3) {
-      return `${parts[2]}/${parts[1]}/${parts[0]}`;
-    }
+    if (parts.length === 3) return `${parts[2]}/${parts[1]}/${parts[0]}`;
     const d = new Date(val);
-    const day = String(d.getDate()).padStart(2, '0');
-    const month = String(d.getMonth() + 1).padStart(2, '0');
-    return `${day}/${month}/${d.getFullYear()}`;
+    return `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${d.getFullYear()}`;
   }
 }

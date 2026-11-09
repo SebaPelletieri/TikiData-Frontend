@@ -1,16 +1,3 @@
-<div class="page-container">
+<app-team-list></app-team-list>
   
-  <div class="page-header-actions">
-    <h2>Gestión de Equipos</h2>
-    <button class="btn-toggle-form" (click)="toggleForm()">
-      {{ showForm() ? '← Volver al listado' : '+ Nuevo Equipo' }}
-    </button>
-  </div>
 
-  @if (showForm()) {
-    <app-team-form></app-team-form>
-  } @else {
-    <app-team-list></app-team-list>
-  }
-
-</div>

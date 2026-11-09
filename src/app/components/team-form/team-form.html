@@ -40,7 +40,6 @@
             <line x1="12" y1="8" x2="12" y2="12"></line>
             <line x1="12" y1="16" x2="12.01" y2="16"></line>
           </svg>
-
           <span class="error-text">
             @if (formulario.controls['name'].hasError('required')) {
               El nombre es obligatorio.
@@ -85,7 +84,6 @@
                   <div class="item-content">
                     <span>{{ item }}</span>
                   </div>
-
                   @if (formulario.controls['country'].value === item) {
                     <svg
                       class="check-icon"
@@ -157,7 +155,6 @@
           <div class="calendar-popover">
             <div class="calendar-header">
               <button type="button" class="calendar-nav-btn" (click)="prevMonth()">&#8249;</button>
-
               <div class="calendar-selects">
                 <select
                   class="header-select"
@@ -168,7 +165,6 @@
                     <option [value]="$index">{{ m }}</option>
                   }
                 </select>
-
                 <select
                   class="header-select"
                   [value]="currentYear"
@@ -179,7 +175,6 @@
                   }
                 </select>
               </div>
-
               <button type="button" class="calendar-nav-btn" (click)="nextMonth()">&#8250;</button>
             </div>
 
@@ -227,7 +222,7 @@
       </div>
     </div>
 
-    <!-- Escudo (Dropzone + Vista Previa) -->
+    <!-- Escudo -->
     <div class="form-group">
       <label>Escudo <span class="required">*</span></label>
       <div class="shield-container">
@@ -287,7 +282,6 @@
           id="stadium"
           class="dropdown-trigger"
           (click)="toggleStadiumDropdown()"
-          (blur)="formulario.controls['stadiumID'].markAsTouched()"
         >
           <span [class.placeholder]="!formulario.controls['stadiumID'].value">
             {{ selectedStadiumName || 'Selecciona un estadio' }}
@@ -308,7 +302,6 @@
                 <div class="item-content">
                   <span>{{ item.name }}</span>
                 </div>
-
                 @if (formulario.controls['stadiumID'].value.toString() === item.id.toString()) {
                   <svg
                     class="check-icon"
@@ -348,60 +341,66 @@
 
     <!-- Campeonatos activos -->
     <div class="form-group">
-      <label for="championships">Campeonatos activos <span class="required">*</span></label>
+      <label for="championship-search">Campeonatos activos <span class="required">*</span></label>
+
       <div
-        class="custom-dropdown"
-        [class.open]="isChampionshipsOpen"
+        class="search-tag-container"
         [class.is-invalid]="
           formulario.controls['championshipsActive'].touched &&
           formulario.controls['championshipsActive'].invalid
         "
       >
-        <button
-          type="button"
-          id="championships"
-          class="dropdown-trigger"
-          (click)="toggleChampionshipsDropdown()"
-          (blur)="formulario.controls['championshipsActive'].markAsTouched()"
-        >
-          <span [class.placeholder]="formulario.controls['championshipsActive'].value.length === 0">
-            @if (formulario.controls['championshipsActive'].value.length === 0) {
-              Selecciona los campeonatos
-            } @else {
-              {{ formulario.controls['championshipsActive'].value.length }} seleccionados
-            }
-          </span>
-          <span class="triangle-icon"></span>
-        </button>
+        <div class="direct-search-input-box">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            width="16"
+            height="16"
+          >
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input
+            id="championship-search"
+            type="text"
+            [ngModel]="championshipSearchText()"
+            (ngModelChange)="championshipSearchText.set($event); isChampionshipsFocused.set(true)"
+            (focus)="isChampionshipsFocused.set(true)"
+            (blur)="formulario.controls['championshipsActive'].markAsTouched()"
+            [ngModelOptions]="{ standalone: true }"
+            placeholder="Escribe para buscar y añadir campeonatos..."
+          />
+        </div>
 
-        @if (isChampionshipsOpen) {
-          <ul class="dropdown-menu">
-            @for (item of championships; track item.id) {
+        @if (isChampionshipsFocused() && championshipSearchText().trim() !== '') {
+          <ul class="direct-suggestions-list" (mousedown)="$event.preventDefault()">
+            @for (item of filteredChampionships(); track item.id) {
               <li
-                class="dropdown-item"
-                [class.active]="isChampionshipSelected(item.id)"
-                (click)="toggleChampionship(item.id)"
+                class="suggestion-item"
+                (click)="addChampionship(item.id); isChampionshipsFocused.set(false)"
               >
-                <div class="item-content">
-                  <span>{{ item.name }}</span>
-                </div>
-
-                @if (isChampionshipSelected(item.id)) {
-                  <svg
-                    class="check-icon"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  >
-                    <polyline points="20 6 9 17 4 12"></polyline>
-                  </svg>
-                }
+                <span>{{ item.name }}</span>
+                <span class="add-badge">+ Agregar</span>
               </li>
+            } @empty {
+              <li class="suggestion-empty">No se encontraron campeonatos disponibles</li>
             }
           </ul>
+        }
+
+        @if (selectedChampionshipsList.length > 0) {
+          <div class="selected-tags-box">
+            @for (item of selectedChampionshipsList; track item.id) {
+              <div class="championship-tag">
+                <span>{{ item.name }}</span>
+                <button type="button" class="tag-remove-btn" (click)="removeChampionship(item.id)">
+                  ✕
+                </button>
+              </div>
+            }
+          </div>
         }
       </div>
 
@@ -421,7 +420,7 @@
             <line x1="12" y1="8" x2="12" y2="12"></line>
             <line x1="12" y1="16" x2="12.01" y2="16"></line>
           </svg>
-          <span class="error-text">Los campeonatos son obligatorios.</span>
+          <span class="error-text">Debes seleccionar al menos un campeonato.</span>
         </div>
       }
     </div>

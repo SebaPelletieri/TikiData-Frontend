@@ -6,16 +6,9 @@ import { TeamList } from '../../components/team-list/team-list';
 @Component({
   selector: 'app-teams',
   standalone: true,
-  imports: [TeamForm, TeamList],
+  imports: [TeamList],
   templateUrl: './teams.html',
   styleUrl: './teams.css',
 })
 export class Teams {
-  private teamService = inject(TeamService);
-  equipos = this.teamService.teams;
-  showForm = signal(false);
-
-  toggleForm(): void {
-    this.showForm.update((val) => !val);
-  }
 }

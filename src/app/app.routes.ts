@@ -8,13 +8,13 @@ import { Players } from './pages/players/players';
 import { ChampionshipDetail } from './pages/championship-detail/championship-detail';
 import { Championships } from './pages/championships/championships';
 import { MatchDetail } from './pages/match-detail/match-detail';
-import { TeamList } from './components/team-list/team-list';
+import { ProfileEdit } from './components/profile-edit/profile-edit';
 
-// Importación de Guards
+// Importación de Páginas y Guards
+import { TeamDetailPage } from './pages/team-detail/team-detail';
+import { Teams } from './pages/teams/teams';
 import { authGuard } from './guards/auth-guard';
 import { adminGuard } from './guards/admin-guard';
-import { ProfileEdit } from './components/profile-edit/profile-edit';
-import { TeamDetailPage } from './pages/team-detail/team-detail';
 
 export const routes: Routes = [
   { path: '', component: Home },
@@ -27,7 +27,7 @@ export const routes: Routes = [
     canActivate: [authGuard],
   },
   { path: 'profile/edit', component: ProfileEdit },
-  { path: 'teams', component: TeamList },
+  { path: 'teams', component: Teams },
   { path: 'team/:id', component: TeamDetailPage },
   { path: 'players', component: Players },
   { path: 'player/:id', component: PlayerDetail },
@@ -39,5 +39,5 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/admin/user-list/user-list').then((m) => m.UserList),
     canActivate: [adminGuard],
   },
-  { path: '**', redirectTo: '' }, // ÚNICO comodín, siempre al final de todo
+  { path: '**', redirectTo: '' },
 ];

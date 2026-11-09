@@ -155,26 +155,65 @@
           <div class="calendar-popover">
             <div class="calendar-header">
               <button type="button" class="calendar-nav-btn" (click)="prevMonth()">&#8249;</button>
+
               <div class="calendar-selects">
-                <select
-                  class="header-select"
-                  [value]="currentMonth"
-                  (change)="onMonthChange($any($event.target).value)"
+                <!-- Selector de Mes (Más largo / ancho) -->
+                <div
+                  class="custom-dropdown calendar-dropdown month-dropdown"
+                  [class.open]="isMonthOpen"
                 >
-                  @for (m of months; track $index) {
-                    <option [value]="$index">{{ m }}</option>
+                  <button
+                    type="button"
+                    class="dropdown-trigger header-trigger"
+                    (click)="toggleMonthDropdown()"
+                  >
+                    <span>{{ months[currentMonth] }}</span>
+                    <span class="triangle-icon"></span>
+                  </button>
+                  @if (isMonthOpen) {
+                    <ul class="dropdown-menu">
+                      @for (m of months; track $index) {
+                        <li
+                          class="dropdown-item"
+                          [class.active]="currentMonth === $index"
+                          (click)="selectMonth($index)"
+                        >
+                          <span>{{ m }}</span>
+                        </li>
+                      }
+                    </ul>
                   }
-                </select>
-                <select
-                  class="header-select"
-                  [value]="currentYear"
-                  (change)="onYearChange($any($event.target).value)"
+                </div>
+
+                <!-- Selector de Año (Más chico / compacto) -->
+                <div
+                  class="custom-dropdown calendar-dropdown year-dropdown"
+                  [class.open]="isYearOpen"
                 >
-                  @for (y of yearsList; track y) {
-                    <option [value]="y">{{ y }}</option>
+                  <button
+                    type="button"
+                    class="dropdown-trigger header-trigger"
+                    (click)="toggleYearDropdown()"
+                  >
+                    <span>{{ currentYear }}</span>
+                    <span class="triangle-icon"></span>
+                  </button>
+                  @if (isYearOpen) {
+                    <ul class="dropdown-menu">
+                      @for (y of yearsList; track y) {
+                        <li
+                          class="dropdown-item"
+                          [class.active]="currentYear === y"
+                          (click)="selectYear(y)"
+                        >
+                          <span>{{ y }}</span>
+                        </li>
+                      }
+                    </ul>
                   }
-                </select>
+                </div>
               </div>
+
               <button type="button" class="calendar-nav-btn" (click)="nextMonth()">&#8250;</button>
             </div>
 
@@ -428,7 +467,7 @@
     <!-- Botones de acción -->
     <div class="form-actions">
       <button type="button" class="btn-cancel" (click)="cancel()">Cancelar</button>
-      <button type="submit" class="btn-save" [disabled]="formulario.invalid">Guardar</button>
+      <button type="submit" class="btn-save" [disabled]="formulario.invalid">Guardar Equipo</button>
     </div>
   </form>
 </div>

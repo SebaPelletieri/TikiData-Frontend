@@ -9,6 +9,7 @@ import { ChampionshipService } from '../../services/championship-service';
 import { Championship } from '../../models/Championship';
 import { FormsModule } from '@angular/forms';
 import { TeamForm } from '../../components/team-form/team-form';
+import { ChampionshipForm } from '../../components/championship-form/championship-form';
 
 interface FilterOption {
   value: string;
@@ -18,7 +19,7 @@ interface FilterOption {
 @Component({
   selector: 'app-profile-detail',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, TeamForm],
+  imports: [CommonModule, RouterModule, FormsModule, TeamForm, ChampionshipForm],
   templateUrl: './profile-detail.html',
   styleUrls: ['./profile-detail.css'],
 })
@@ -38,8 +39,12 @@ export class ProfileDetail implements OnInit {
   showAllChampionships = signal<boolean>(false);
   showReadPassword = signal<boolean>(false);
 
-  // 🚀 Reemplazamos el modal por el estado del panel lateral plano
+  // Estado del panel lateral del formulario de equipos
   isTeamFormPanelOpen = signal<boolean>(false);
+
+  // Estados para los modales flotantes personalizados de eliminación
+  teamToDeleteId = signal<number | null>(null);
+  championshipToDeleteId = signal<number | null>(null);
 
   // 🛡️ Propiedad para verificar si el usuario es Administrador
   get isAdmin(): boolean {
@@ -52,6 +57,7 @@ export class ProfileDetail implements OnInit {
   allChampionshipsForAdmin = signal<Championship[]>([]);
   totalChampionshipsCount = signal<number>(0);
 
+  // Filtros de Equipos
   adminSearchText = signal<string>('');
   selectedAdminCountry = signal<string>('ALL');
   selectedAdminChampionship = signal<string>('ALL');
@@ -61,6 +67,17 @@ export class ProfileDetail implements OnInit {
 
   currentPage = signal<number>(1);
   itemsPerPage = 7;
+
+  // 🌟 Filtros y Paginación de Campeonatos
+  championshipSearchText = signal<string>('');
+  selectedChampionshipCountry = signal<string>('ALL');
+  selectedChampionshipType = signal<string>('ALL');
+
+  isChampCountryDropdownOpen = false;
+  isChampTypeDropdownOpen = false;
+
+  currentChampPage = signal<number>(1);
+  itemsPerPageChamps = 7;
 
   ngOnInit() {
     this.loadFavoriteTeams();
@@ -110,16 +127,57 @@ export class ProfileDetail implements OnInit {
       });
   }
 
-  // 🚀 Métodos actualizados para abrir/cerrar el panel lateral plano
   openTeamModal() {
     this.isTeamFormPanelOpen.set(true);
   }
 
   closeTeamModal() {
     this.isTeamFormPanelOpen.set(false);
-    this.loadAdminData(); // Recargamos la tabla al cerrar por si se creó un equipo
+    this.loadAdminData();
   }
 
+  // Métodos para el modal de eliminación de Equipos
+  confirmDelete(id: number) {
+    this.teamToDeleteId.set(id);
+  }
+
+  cancelDelete() {
+    this.teamToDeleteId.set(null);
+  }
+
+  executeDelete() {
+    const id = this.teamToDeleteId();
+    if (id !== null) {
+      this.teamService.deleteTeam(id);
+      this.allTeamsForAdmin.update((teams) => teams.filter((t) => t.id !== id));
+      this.cancelDelete();
+    }
+  }
+
+  // Métodos para el modal de eliminación de Campeonatos
+  confirmDeleteChampionship(id: number) {
+    this.championshipToDeleteId.set(id);
+  }
+
+  cancelDeleteChampionship() {
+    this.championshipToDeleteId.set(null);
+  }
+
+  executeDeleteChampionship() {
+    const id = this.championshipToDeleteId();
+    if (id !== null) {
+      this.championshipService['http'].delete(`http://localhost:3000/campeonatos/${id}`).subscribe({
+        next: () => {
+          this.allChampionshipsForAdmin.update((champs) => champs.filter((c) => c.id !== id));
+          this.totalChampionshipsCount.update((count) => count - 1);
+          this.cancelDeleteChampionship();
+        },
+        error: (err) => console.error('Error al eliminar campeonato:', err),
+      });
+    }
+  }
+
+  // Opciones de Países para Equipos
   adminCountryOptions = computed<FilterOption[]>(() => {
     const teams = this.allTeamsForAdmin();
     const countriesSet = new Set<string>();
@@ -207,6 +265,96 @@ export class ProfileDetail implements OnInit {
     return `Mostrando ${start} a ${end} de ${totalGlobal} equipos`;
   }
 
+  // 🌟 Opciones y Filtros para Campeonatos (País y Tipo)
+  champCountryOptions = computed<FilterOption[]>(() => {
+    const champs = this.allChampionshipsForAdmin();
+    const countriesSet = new Set<string>();
+
+    champs.forEach((champ: any) => {
+      if (champ.country && champ.country.trim() !== '') {
+        countriesSet.add(champ.country.trim());
+      }
+    });
+
+    const options: FilterOption[] = [{ value: 'ALL', label: 'Todos los países' }];
+    Array.from(countriesSet)
+      .sort()
+      .forEach((country) => {
+        options.push({ value: country, label: country });
+      });
+
+    return options;
+  });
+
+  champTypeOptions = computed<FilterOption[]>(() => {
+    const champs = this.allChampionshipsForAdmin();
+    const typesSet = new Set<string>();
+
+    champs.forEach((champ: any) => {
+      if (champ.type && champ.type.trim() !== '') {
+        typesSet.add(champ.type.trim());
+      }
+    });
+
+    const options: FilterOption[] = [{ value: 'ALL', label: 'Todos los tipos' }];
+    Array.from(typesSet)
+      .sort()
+      .forEach((type) => {
+        options.push({ value: type, label: type });
+      });
+
+    return options;
+  });
+
+  filteredChampionshipsForAdmin = computed(() => {
+    const champs = this.allChampionshipsForAdmin();
+    const search = this.championshipSearchText().toLowerCase().trim();
+    const countryFilter = this.selectedChampionshipCountry();
+    const typeFilter = this.selectedChampionshipType();
+
+    return champs.filter((champ: any) => {
+      const matchesSearch = !search || champ.name.toLowerCase().includes(search);
+      const matchesCountry = countryFilter === 'ALL' || champ.country === countryFilter;
+      const matchesType = typeFilter === 'ALL' || champ.type === typeFilter;
+
+      return matchesSearch && matchesCountry && matchesType;
+    });
+  });
+
+  paginatedChampionshipsForAdmin = computed(() => {
+    const filtered = this.filteredChampionshipsForAdmin();
+    const page = this.currentChampPage();
+    const start = (page - 1) * this.itemsPerPageChamps;
+    return filtered.slice(start, start + this.itemsPerPageChamps);
+  });
+
+  totalChampPages = computed(() => {
+    return Math.ceil(this.filteredChampionshipsForAdmin().length / this.itemsPerPageChamps) || 1;
+  });
+
+  champPagesArray = computed(() => {
+    const total = this.totalChampPages();
+    return Array.from({ length: total }, (_, i) => i + 1);
+  });
+
+  changeChampPage(page: number) {
+    if (page >= 1 && page <= this.totalChampPages()) {
+      this.currentChampPage.set(page);
+    }
+  }
+
+  get champPaginationInfoText(): string {
+    const filtered = this.filteredChampionshipsForAdmin();
+    const total = filtered.length;
+    if (total === 0) return 'Mostrando 0 de 0 campeonatos';
+
+    const start = (this.currentChampPage() - 1) * this.itemsPerPageChamps + 1;
+    const end = Math.min(start + this.itemsPerPageChamps - 1, total);
+    const totalGlobal = this.allChampionshipsForAdmin().length;
+
+    return `Mostrando ${start} a ${end} de ${totalGlobal} campeonatos`;
+  }
+
   get selectedCountryLabel(): string {
     const current = this.selectedAdminCountry();
     return this.adminCountryOptions().find((c) => c.value === current)?.label || 'Todos los países';
@@ -220,16 +368,46 @@ export class ProfileDetail implements OnInit {
     );
   }
 
+  get selectedChampCountryLabel(): string {
+    const current = this.selectedChampionshipCountry();
+    return this.champCountryOptions().find((c) => c.value === current)?.label || 'Todos los países';
+  }
+
+  get selectedChampTypeLabel(): string {
+    const current = this.selectedChampionshipType();
+    return this.champTypeOptions().find((t) => t.value === current)?.label || 'Todos los tipos';
+  }
+
   toggleCountryDropdown(event: MouseEvent): void {
     event.stopPropagation();
     this.isCountryDropdownOpen = !this.isCountryDropdownOpen;
     this.isChampionshipDropdownOpen = false;
+    this.isChampCountryDropdownOpen = false;
+    this.isChampTypeDropdownOpen = false;
   }
 
   toggleChampionshipDropdown(event: MouseEvent): void {
     event.stopPropagation();
     this.isChampionshipDropdownOpen = !this.isChampionshipDropdownOpen;
     this.isCountryDropdownOpen = false;
+    this.isChampCountryDropdownOpen = false;
+    this.isChampTypeDropdownOpen = false;
+  }
+
+  toggleChampCountryDropdown(event: MouseEvent): void {
+    event.stopPropagation();
+    this.isChampCountryDropdownOpen = !this.isChampCountryDropdownOpen;
+    this.isChampTypeDropdownOpen = false;
+    this.isCountryDropdownOpen = false;
+    this.isChampionshipDropdownOpen = false;
+  }
+
+  toggleChampTypeDropdown(event: MouseEvent): void {
+    event.stopPropagation();
+    this.isChampTypeDropdownOpen = !this.isChampTypeDropdownOpen;
+    this.isChampCountryDropdownOpen = false;
+    this.isCountryDropdownOpen = false;
+    this.isChampionshipDropdownOpen = false;
   }
 
   selectAdminCountry(countryValue: string): void {
@@ -242,6 +420,18 @@ export class ProfileDetail implements OnInit {
     this.selectedAdminChampionship.set(champValue);
     this.currentPage.set(1);
     this.isChampionshipDropdownOpen = false;
+  }
+
+  selectChampCountry(countryValue: string): void {
+    this.selectedChampionshipCountry.set(countryValue);
+    this.currentChampPage.set(1);
+    this.isChampCountryDropdownOpen = false;
+  }
+
+  selectChampType(typeValue: string): void {
+    this.selectedChampionshipType.set(typeValue);
+    this.currentChampPage.set(1);
+    this.isChampTypeDropdownOpen = false;
   }
 
   get currentUser(): User | null {
@@ -288,13 +478,6 @@ export class ProfileDetail implements OnInit {
     }
 
     this.authService.updateUser(user.id, updatedFields).subscribe();
-  }
-
-  deleteTeamAsAdmin(id: number) {
-    if (confirm('¿Estás seguro de eliminar este equipo del sistema?')) {
-      this.teamService.deleteTeam(id);
-      this.allTeamsForAdmin.update((teams) => teams.filter((t) => t.id !== id));
-    }
   }
 
   toggleReadPassword() {

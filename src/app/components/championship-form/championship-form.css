@@ -361,7 +361,6 @@
   border-radius: 4px;
 }
 
-/* El ítem contenedor es totalmente estático (sin animación ni hover) */
 .search-result-item {
   display: flex;
   align-items: center;
@@ -413,7 +412,6 @@
   display: inline-block;
 }
 
-/* Único elemento interactivo con animación y hover */
 .add-badge {
   background-color: rgba(56, 189, 248, 0.12);
   color: #38bdf8;
@@ -513,12 +511,13 @@
 }
 
 /* =========================================
-   Zona de Foto / Logo (Drag & Drop)
+   Zona de Foto / Logo (Drag & Drop) - Alineada y nivelada
    ========================================= */
 .shield-container {
   display: grid;
   grid-template-columns: 1.8fr 1fr;
   gap: 1rem;
+  align-items: stretch; /* 🌟 Iguala la altura de ambas cajas automáticamente */
 }
 
 .visually-hidden {
@@ -539,6 +538,7 @@
   border: 1.5px dashed #1e497e;
   background: linear-gradient(180deg, #071a33 0%, #051428 100%);
   transition: all 0.25s ease;
+  height: 100%; /* 🌟 Ocupa exactamente la misma altura que la vista previa */
 }
 
 .dropzone:hover {
@@ -585,6 +585,7 @@
   box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.4);
   padding: 1rem;
   position: relative;
+  height: 100%; /* 🌟 Mantiene la misma altura nivelada */
 }
 
 .shield-icon {

@@ -71,7 +71,7 @@ export class TeamForm {
     this.closePanel.emit();
   }
 
-  // --- El resto de tus métodos (países, escudo, estadio, campeonatos, calendario) se mantienen exactamente igual ---
+  // --- Países ---
   countries = ['Argentina', 'Brasil', 'Uruguay', 'Chile'];
   isCountryOpen = false;
 
@@ -84,6 +84,8 @@ export class TeamForm {
     this.isCountryOpen = !this.isCountryOpen;
     this.isStadiumOpen = false;
     this.isCalendarOpen = false;
+    this.isMonthOpen = false;
+    this.isYearOpen = false;
 
     if (!this.isCountryOpen) {
       this.formulario.controls['country'].markAsTouched();
@@ -96,6 +98,7 @@ export class TeamForm {
     this.isCountryOpen = false;
   }
 
+  // --- Escudo ---
   shieldPreview: string | null = null;
 
   onFileSelected(event: Event) {
@@ -116,6 +119,7 @@ export class TeamForm {
     this.formulario.patchValue({ shield: '' });
   }
 
+  // --- Estadio ---
   stadiums = [
     { id: 1, name: 'Estadio Monumental' },
     { id: 2, name: 'La Bombonera' },
@@ -127,6 +131,9 @@ export class TeamForm {
     this.isStadiumOpen = !this.isStadiumOpen;
     this.isCountryOpen = false;
     this.isCalendarOpen = false;
+    this.isMonthOpen = false;
+    this.isYearOpen = false;
+
     if (!this.isStadiumOpen) {
       this.formulario.controls['stadiumID'].markAsTouched();
     }
@@ -143,6 +150,7 @@ export class TeamForm {
     return this.stadiums.find((s) => s.id.toString() === selectedId.toString())?.name;
   }
 
+  // --- Campeonatos ---
   championships = [
     { id: 1, name: 'Liga Profesional' },
     { id: 2, name: 'Copa Libertadores' },
@@ -183,7 +191,11 @@ export class TeamForm {
     this.formulario.controls['championshipsActive'].markAsTouched();
   }
 
+  // --- Calendario ---
   isCalendarOpen = false;
+  isMonthOpen = false;
+  isYearOpen = false;
+
   currentMonth = new Date().getMonth();
   currentYear = new Date().getFullYear();
 
@@ -217,16 +229,30 @@ export class TeamForm {
     this.isCountryOpen = false;
     this.isStadiumOpen = false;
     if (!this.isCalendarOpen) {
+      this.isMonthOpen = false;
+      this.isYearOpen = false;
       this.formulario.controls['yearOfFoundation'].markAsTouched();
     }
   }
 
-  onMonthChange(monthIndex: any): void {
-    this.currentMonth = Number(monthIndex);
+  toggleMonthDropdown(): void {
+    this.isMonthOpen = !this.isMonthOpen;
+    this.isYearOpen = false;
   }
 
-  onYearChange(year: any): void {
-    this.currentYear = Number(year);
+  selectMonth(index: number): void {
+    this.currentMonth = index;
+    this.isMonthOpen = false;
+  }
+
+  toggleYearDropdown(): void {
+    this.isYearOpen = !this.isYearOpen;
+    this.isMonthOpen = false;
+  }
+
+  selectYear(year: number): void {
+    this.currentYear = year;
+    this.isYearOpen = false;
   }
 
   get calendarDays(): CalendarDay[] {
@@ -286,6 +312,8 @@ export class TeamForm {
     this.formulario.controls['yearOfFoundation'].setValue(`${year}-${month}-${day}`);
     this.formulario.controls['yearOfFoundation'].markAsTouched();
     this.isCalendarOpen = false;
+    this.isMonthOpen = false;
+    this.isYearOpen = false;
   }
 
   isDaySelected(date: Date): boolean {

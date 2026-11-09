@@ -31,38 +31,12 @@
   ],
   "equipos": [
     {
-      "id": "1",
-      "name": "River Plate",
-      "shield": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/river-plate.png",
-      "country": "Argentina",
-      "yearOfFoundation": "1901-05-25T00:00:00Z",
-      "stadiumID": 1,
-      "championshipsActive": [
-        1,
-        2
-      ],
-      "playerIDs": []
-    },
-    {
       "id": "2",
       "name": "Boca Juniors",
       "shield": "/Escudos Liga Argentina/Boca.png",
       "country": "Argentina",
       "yearOfFoundation": "1905-04-03T00:00:00Z",
       "stadiumID": 2,
-      "championshipsActive": [
-        1,
-        2
-      ],
-      "playerIDs": []
-    },
-    {
-      "id": "3",
-      "name": "Racing Club",
-      "shield": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Racing_Club_logo.svg/200px-Racing_Club_logo.svg.png",
-      "country": "Argentina",
-      "yearOfFoundation": "1903-03-25T00:00:00Z",
-      "stadiumID": 3,
       "championshipsActive": [
         1,
         2

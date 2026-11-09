@@ -4,7 +4,8 @@ export interface Team {
   shield: string;
   country: string;
   yearOfFoundation: Date;
-  championshipsActive: number[]
-  playerIDs: number[]
-  stadiumID: number
+  championshipsActive: number[];
+  playerIDs: number[];
+  stadiumID: number;
+  points?: number;
 }

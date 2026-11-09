@@ -4,7 +4,11 @@
       "id": "1",
       "name": "Tobías",
       "email": "toto@test.com",
-      "password": "password123"
+      "password": "password123",
+      "role": "Administrador",
+      "favoriteTeams": [
+        "4"
+      ]
     },
     {
       "id": "2",
@@ -20,13 +24,28 @@
       "id": "3",
       "name": "Lautaro Fernandez",
       "email": "lautaro@gmail.com",
-      "password": "lauti123"
+      "password": "lauti123",
+      "favoriteTeams": [
+        "2"
+      ]
     },
     {
       "id": "4",
       "name": "Juan De Siena",
       "email": "juan@gmail.com",
       "password": "pollo123"
+    },
+    {
+      "userName": "ttt",
+      "email": "toto@test.com",
+      "password": "Toto190603",
+      "id": "L4d9pHr"
+    },
+    {
+      "userName": "Lautaro Fernandez ",
+      "email": "dasdsadasdasdadsdas@g",
+      "password": "asdasdadsda",
+      "id": "cO4Ea6x"
     }
   ],
   "equipos": [
@@ -46,7 +65,7 @@
     {
       "id": "4",
       "name": "Independiente",
-      "shield": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/db/Escudo_del_Club_Atl%C3%A9tico_Independiente.svg/200px-Escudo_del_Club_Atl%C3%A9tico_Independiente.svg.png",
+      "shield": "/Escudos Liga Argentina/independiente.png",
       "country": "Argentina",
       "yearOfFoundation": "1905-01-01T00:00:00Z",
       "stadiumID": 4,

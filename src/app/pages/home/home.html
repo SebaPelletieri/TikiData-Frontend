@@ -1,22 +1,122 @@
-<div class="home-container">
-  <header class="hero-section">
-    <h1>Bienvenido a TikiData</h1>
-    <p>Resultados, estadísticas, equipos y jugadores en un solo lugar.</p>
-  </header>
+<main class="home-container">
+  
+  <!-- 1. HERO SECTION -->
+  <section class="hero-section">
+    <div class="hero-content">
+      <h1>EL FÚTBOL<br><span class="text-brand">EN DATOS</span></h1>
+      <p>Resultados en vivo, estadísticas, equipos, jugadores y mucho más. Todo el fútbol en un solo lugar.</p>
+      <div class="hero-buttons">
+        <button class="btn btn-primary">Ver partidos en vivo</button>
+        <button class="btn btn-outline" routerLink="/campeonatos">Explorar ligas</button>
+      </div>
+    </div>
+  </section>
 
-  <section class="highlighted-section">
-    <h2>Competiciones Disponibles</h2>
-    <div class="championship-grid">
+  <!-- 2. LIGAS DESTACADAS -->
+ <section class="leagues-section">
+    <div class="section-header">
+      <h2>Ligas destacadas</h2>
+      <a routerLink="/championships" class="link-all">Ver todas &rarr;</a>
+    </div>
+    
+    <div class="leagues-grid">
       @for (torneo of campeonatos(); track torneo.id) {
-        <div class="championship-card">
+        <div class="league-card" [routerLink]="['/championship', torneo.id]">
           <img [src]="torneo.logo" [alt]="torneo.name">
-          <h3>{{ torneo.name }}</h3>
-          <p>Tipo: {{ torneo.type }}</p>
-          <a [routerLink]="['/championship', torneo.id]" class="btn-primary">Ver torneo</a>
+          <span>{{ torneo.name }}</span>
         </div>
       } @empty {
-        <p>Cargando competiciones...</p>
+        <p class="text-secondary">Cargando ligas...</p>
       }
     </div>
   </section>
-</div>
+
+  <!-- 3. DASHBOARD GRID (3 COLUMNAS: PARTIDOS, POSICIONES, GOLEADORES) -->
+  <section class="dashboard-grid">
+    
+    <div class="dash-card panel-partidos">
+      <div class="dash-header">
+        <h3>Partidos destacados de hoy</h3>
+        <span class="link-all">Ver todos &rarr;</span>
+      </div>
+      <div class="dash-list">
+        <div class="match-row">
+          <span class="match-time">17:00</span>
+          <div class="match-teams">
+            <span class="team-name text-right">River Plate</span>
+            <img src="https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/river-plate.png" class="team-shield" alt="">
+            <span class="vs">vs</span>
+            <img src="https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/boca-juniors.png" class="team-shield" alt="">
+            <span class="team-name">Boca Juniors</span>
+          </div>
+          <span class="match-league">Liga Profesional</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="dash-card panel-posiciones">
+      <div class="dash-header">
+        <h3>Tabla de posiciones</h3>
+      </div>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Equipo</th>
+              <th>Pts</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (team of teamsRanked(); track team.id; let idx = $index) {
+              @if (idx < 5) { 
+                <tr>
+                  <td>{{ idx + 1 }}</td>
+                  <td class="team-cell">
+                    <img [src]="team.shield" alt="" class="table-shield">
+                    {{ team.name }}
+                  </td>
+                  <td><strong>{{ $any(team).points || 0 }}</strong></td>
+                </tr>
+              }
+            }
+          </tbody>
+        </table>
+      </div>
+      <a class="link-all bottom-link">Ver tabla completa &rarr;</a>
+    </div>
+
+    <div class="dash-card panel-goleadores">
+      <div class="dash-header">
+        <h3>Goleadores</h3>
+      </div>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Jugador</th>
+              <th>Goles</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (player of topScorers(); track player.id; let idx = $index) {
+              @if (idx < 5) {
+                <tr>
+                  <td>{{ idx + 1 }}</td>
+                  <td class="player-cell">
+                    <img [src]="player.photo" alt="" class="player-avatar">
+                    {{ player.name }}
+                  </td>
+                  <td><strong>{{ $any(player).goals || 0 }}</strong></td>
+                </tr>
+              }
+            }
+          </tbody>
+        </table>
+      </div>
+      <a class="link-all bottom-link">Ver todos &rarr;</a>
+    </div>
+
+  </section>
+</main>

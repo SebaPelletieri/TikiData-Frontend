@@ -1,7 +1,7 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { Player } from '../models/Player';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class PlayerService {
@@ -10,6 +10,7 @@ export class PlayerService {
   players = signal<Player[]>([]);
   playerActual = signal<Player | null>(null);
   error = signal<string | null>(null);
+  topScorers = signal<Player[]>([]);
 
   // Métodos del HTTP
   getAll() {
@@ -67,6 +68,20 @@ export class PlayerService {
       error: () => {
         this.error.set('No se pudo eliminar el jugador de la base de datos');
       },
+    });
+  }
+
+  getTopScorers(): void {
+    this.http.get<Player[]>(this.apiUrl).pipe(
+      map(players => players.sort((a: any, b: any) => (b.goals || 0) - (a.goals || 0)))
+    ).subscribe({
+      next: (data) => {
+        this.topScorers.set(data);
+        this.error.set(null);
+      },
+      error: () => {
+        this.error.set('No se pudieron obtener los goleadores');
+      }
     });
   }
 }

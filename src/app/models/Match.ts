@@ -7,5 +7,5 @@ export interface Match {
   championshipID: number;
   localGoals: number;
   awayGoals: number;
-
+  status?: Status;
 }

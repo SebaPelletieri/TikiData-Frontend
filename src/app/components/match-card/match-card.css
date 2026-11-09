@@ -1,0 +1,87 @@
+.match-card {
+  background-color: #06182e;
+  border: 1px solid #143560;
+  border-radius: 12px;
+  padding: 1.2rem;
+  cursor: pointer;
+  transition: transform 0.2s, border-color 0.2s;
+}
+
+.match-card:hover {
+  transform: translateY(-3px);
+  border-color: #38bdf8;
+}
+
+.match-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.8rem;
+  margin-bottom: 1rem;
+}
+
+.championship-badge {
+  color: #38bdf8;
+  font-weight: 600;
+}
+
+.status-badge {
+  background: #143560;
+  color: #94a3b8;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-weight: 700;
+}
+
+.status-badge.live {
+  background: #ef4444;
+  color: #fff;
+}
+
+.scoreboard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.team-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+}
+
+.team-info.local { justify-content: flex-end; }
+.team-info.away { justify-content: flex-start; }
+
+.team-name {
+  font-weight: 600;
+  color: #ffffff;
+  font-size: 0.95rem;
+}
+
+.score {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #ffffff;
+  background: #041326;
+  padding: 4px 12px;
+  border-radius: 8px;
+  border: 1px solid #143560;
+}
+
+.vs-divider {
+  color: #4b6485;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.match-card-footer {
+  font-size: 0.8rem;
+  color: #7d96b3;
+  text-align: center;
+  border-top: 1px solid #0f2b4c;
+  padding-top: 0.6rem;
+}

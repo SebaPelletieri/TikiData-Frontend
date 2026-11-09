@@ -16,6 +16,7 @@ import { Teams } from './pages/teams/teams';
 import { authGuard } from './guards/auth-guard';
 import { adminGuard } from './guards/admin-guard';
 import { AdminDashboard } from './components/admin-dashboard/admin-dashboard';
+import { MatchList } from './components/match-list/match-list';
 
 export const routes: Routes = [
   { path: '', component: Home },
@@ -45,7 +46,7 @@ export const routes: Routes = [
   /* Ruta de detalles de campeonato apuntando a la page */
   { path: 'championship/:id', component: ChampionshipDetailPage },
   { path: 'championships/:id', redirectTo: 'championship/:id', pathMatch: 'full' },
-
+  { path: 'matches', component: MatchList },
   { path: 'match/:id', component: MatchDetail },
   {
     path: 'admin',

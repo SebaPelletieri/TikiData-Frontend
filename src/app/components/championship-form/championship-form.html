@@ -30,7 +30,9 @@
     <!-- Fila 1: Nombre y Temporada -->
     <div class="form-row">
       <div class="form-group">
-        <label for="name">Nombre del campeonato <span class="required">*</span></label>
+        <label (click)="$event.preventDefault()" for="name"
+          >Nombre del campeonato <span class="required">*</span></label
+        >
         <input
           id="name"
           type="text"

@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { Championship } from '../models/Championship';
+import { Observable } from 'rxjs'; // 👈 Asegúrate de importar Observable
+
 @Injectable({ providedIn: 'root' })
 export class ChampionshipService {
   private http = inject(HttpClient);
@@ -9,7 +11,6 @@ export class ChampionshipService {
   championshipActual = signal<Championship | null>(null);
   error = signal<string | null>(null);
 
-  //Métodos del HTTP
   getAll() {
     this.http.get<Championship[]>(this.apiUrl).subscribe({
       next: (data) => {
@@ -22,16 +23,9 @@ export class ChampionshipService {
     });
   }
 
-  getByID(id: number) {
-    this.http.get<Championship>(`${this.apiUrl}/${id}`).subscribe({
-      next: (data) => {
-        this.championshipActual.set(data);
-        this.error.set(null);
-      },
-      error: (error) => {
-        this.error.set('No se pudo obtener el campeonato');
-      },
-    });
+  // 🌟 CORREGIDO: Ahora retorna el Observable para que el componente pueda suscribirse
+  getByID(id: number): Observable<Championship> {
+    return this.http.get<Championship>(`${this.apiUrl}/${id}`);
   }
 
   saveChampionship(championship: Championship) {

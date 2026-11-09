@@ -11,6 +11,7 @@ import { Player } from '../../models/Player';
   templateUrl: './team-roster.html',
   styleUrl: './team-roster.css',
 })
+
 export class TeamRoster implements OnInit {
   private http = inject(HttpClient);
 
@@ -19,7 +20,7 @@ export class TeamRoster implements OnInit {
   playerAdded = output<Player>();
 
   dorsalInput = signal<string>('');
-  dorsalTouched = signal<boolean>(false); // 👈 Controla si el usuario interactuó
+  dorsalTouched = signal<boolean>(false); 
   isModalOpen = signal(false);
 
   allRegisteredPlayers = signal<Player[]>([]);

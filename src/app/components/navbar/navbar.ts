@@ -1,4 +1,4 @@
-import { Component, inject, signal, HostListener } from '@angular/core';
+import { Component, inject, signal, HostListener, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { AuthService } from '../../services/auth-service';
@@ -13,21 +13,27 @@ import { AuthService } from '../../services/auth-service';
 export class Navbar {
   public authService = inject(AuthService);
   private router = inject(Router);
+
   isLightMode = signal(false);
   isProfileMenuOpen = signal(false);
+
+  // 🌟 Propiedad computada adaptada al tipo Role ('Administrador')
+  isAdmin = computed(() => {
+    const user = this.authService.currentUser();
+    return user?.role === 'Administrador' || (user as any)?.isAdmin === true;
+  });
 
   // Escucha todos los clics de la página
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent): void {
     const target = event.target as HTMLElement;
-    // Si el clic no fue dentro del contenedor del perfil, cerramos el menú
     if (!target.closest('.navbar__user-dropdown')) {
       this.closeProfileMenu();
     }
   }
 
   toggleProfileMenu(event: MouseEvent): void {
-    event.stopPropagation(); // Evita que el clic del botón dispare el listener global inmediatamente
+    event.stopPropagation();
     this.isProfileMenuOpen.update((open) => !open);
   }
 

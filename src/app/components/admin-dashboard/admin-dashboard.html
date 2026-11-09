@@ -1,0 +1,603 @@
+<div class="profile-container">
+  @if (successMessage) {
+    <div class="alert-success">{{ successMessage }}</div>
+  }
+  @if (errorMessage) {
+    <div class="alert-error">{{ errorMessage }}</div>
+  }
+
+  <div class="profile-top-bar">
+    <div>
+      <span class="breadcrumb">Administración > Panel General</span>
+      <h2>Panel de Administración</h2>
+      <p class="subtitle">
+        Gestiona la información de equipos, jugadores y campeonatos del sistema.
+      </p>
+    </div>
+  </div>
+
+  <!-- Banner Superior Administrativo -->
+  <div class="profile-hero-banner admin-banner">
+    <div class="hero-content">
+      <div class="user-avatar-container">
+        <div class="avatar-circle admin-badge-circle" style="overflow: hidden">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M12 2l10 4v6c0 5.5-4.5 10-10 10S2 17.5 2 12V6l10-2z"></path>
+          </svg>
+        </div>
+      </div>
+      <div class="user-main-info">
+        <h3>Panel de Administrador</h3>
+        <ul class="user-meta-list">
+          <li><strong>Usuario:</strong> {{ currentUser?.username }}</li>
+          <li><strong>Rol:</strong> Administrador del Sistema</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tarjetas de Estadísticas Globales del Sistema -->
+  <div class="stats-cards-grid admin-four-grid">
+    <div class="stat-card">
+      <div class="stat-icon-wrapper blue-shield">🛡️</div>
+      <div class="stat-data">
+        <span class="stat-label">Equipos</span>
+        <div class="stat-main-row">
+          <span class="stat-number">{{ totalTeamsCount() }}</span>
+        </div>
+        <span class="stat-footer">Total de equipos registrados</span>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon-wrapper blue-group">👤</div>
+      <div class="stat-data">
+        <span class="stat-label">Usuarios</span>
+        <div class="stat-main-row">
+          <span class="stat-number">{{ totalUsersCount() }}</span>
+        </div>
+        <span class="stat-footer">Total de usuarios en el sistema</span>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon-wrapper blue-group">👥</div>
+      <div class="stat-data">
+        <span class="stat-label">Jugadores</span>
+        <div class="stat-main-row">
+          <span class="stat-number">{{ totalPlayersCount() }}</span>
+        </div>
+        <span class="stat-footer">Total de jugadores registrados</span>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon-wrapper blue-trophy">🏆</div>
+      <div class="stat-data">
+        <span class="stat-label">Campeonatos</span>
+        <div class="stat-main-row">
+          <span class="stat-number">{{ totalChampionshipsCount() }}</span>
+        </div>
+        <span class="stat-footer">Total de campeonatos registrados</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- SECCIÓN EQUIPOS: Tabla a la izq. y Form a la der.       -->
+  <!-- ======================================================== -->
+  <div class="admin-split-layout-container always-with-form">
+    <div class="admin-left-pane">
+      <div class="teams-admin-header-row">
+        <div class="teams-title-block">
+          <div class="team-shield-icon-box">🛡️</div>
+          <div>
+            <h3>Equipos</h3>
+            <p>Lista de equipos registrados en el sistema.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Barra de filtros y búsqueda -->
+      <div class="teams-filters-bar">
+        <div class="search-input-wrapper">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input
+            type="text"
+            [ngModel]="adminSearchText()"
+            (ngModelChange)="adminSearchText.set($event); currentPage.set(1)"
+            placeholder="Buscar equipo..."
+          />
+        </div>
+
+        <!-- Filtro de País -->
+        <div
+          class="filter-dropdown-container-admin custom-dropdown"
+          [class.open]="isCountryDropdownOpen"
+        >
+          <div class="filter-dropdown-box dropdown-trigger" (click)="toggleCountryDropdown($event)">
+            <span>{{ selectedCountryLabel }}</span>
+            <span class="triangle-icon"></span>
+          </div>
+          @if (isCountryDropdownOpen) {
+            <ul class="admin-dropdown-menu">
+              @for (opt of adminCountryOptions(); track opt.value) {
+                <li
+                  class="admin-dropdown-item"
+                  [class.active]="selectedAdminCountry() === opt.value"
+                  (click)="selectAdminCountry(opt.value)"
+                >
+                  <span>{{ opt.label }}</span>
+                  @if (selectedAdminCountry() === opt.value) {
+                    <svg
+                      class="check-icon"
+                      viewBox="0 0 24 24"
+                      width="14"
+                      height="14"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="3"
+                    >
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                  }
+                </li>
+              }
+            </ul>
+          }
+        </div>
+
+        <!-- Filtro de Campeonato -->
+        <div
+          class="filter-dropdown-container-admin custom-dropdown"
+          [class.open]="isChampionshipDropdownOpen"
+        >
+          <div
+            class="filter-dropdown-box dropdown-trigger"
+            (click)="toggleChampionshipDropdown($event)"
+          >
+            <span>{{ selectedChampionshipLabel }}</span>
+            <span class="triangle-icon"></span>
+          </div>
+          @if (isChampionshipDropdownOpen) {
+            <ul class="admin-dropdown-menu">
+              @for (opt of adminChampionshipOptions(); track opt.value) {
+                <li
+                  class="admin-dropdown-item"
+                  [class.active]="selectedAdminChampionship() === opt.value"
+                  (click)="selectAdminChampionship(opt.value)"
+                >
+                  <span>{{ opt.label }}</span>
+                  @if (selectedAdminChampionship() === opt.value) {
+                    <svg
+                      class="check-icon"
+                      viewBox="0 0 24 24"
+                      width="14"
+                      height="14"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="3"
+                    >
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                  }
+                </li>
+              }
+            </ul>
+          }
+        </div>
+      </div>
+
+      <!-- Tabla fija -->
+      <div class="admin-table-fixed-container">
+        @if (paginatedTeamsForAdmin().length === 0) {
+          <p class="empty-msg">No se encontraron equipos con los filtros seleccionados.</p>
+        } @else {
+          <div class="admin-table-wrapper">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Escudo</th>
+                  <th>Nombre</th>
+                  <th>País</th>
+                  <th>Fundación</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (team of paginatedTeamsForAdmin(); track team.id; let idx = $index) {
+                  <tr>
+                    <td>{{ (currentPage() - 1) * itemsPerPage + idx + 1 }}</td>
+                    <td>
+                      <div class="table-logo"><img [src]="team.shield" [alt]="team.name" /></div>
+                    </td>
+                    <td>
+                      <strong>{{ team.name }}</strong>
+                    </td>
+                    <td>{{ team.country }}</td>
+                    <td>{{ team.yearOfFoundation | date: 'yyyy' }}</td>
+                    <td>
+                      <div class="table-actions">
+                        <button class="btn-action-view-custom" [routerLink]="['/teams', team.id]">
+                          <svg
+                            viewBox="0 0 24 24"
+                            width="15"
+                            height="15"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                          >
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                          </svg>
+                          Ver
+                        </button>
+                        <button
+                          class="btn-action-edit-custom"
+                          [routerLink]="['/teams/edit', team.id]"
+                        >
+                          <svg
+                            viewBox="0 0 24 24"
+                            width="15"
+                            height="15"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                          >
+                            <path
+                              d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"
+                            ></path>
+                            <path
+                              d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"
+                            ></path>
+                          </svg>
+                          Editar
+                        </button>
+                        <button class="btn-action-delete-custom" (click)="confirmDelete(team.id!)">
+                          <svg
+                            viewBox="0 0 24 24"
+                            width="15"
+                            height="15"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                          >
+                            <polyline points="3 6 5 6 21 6"></polyline>
+                            <path
+                              d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
+                            ></path>
+                          </svg>
+                          Eliminar
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        }
+      </div>
+
+      <!-- Paginación -->
+      <div class="teams-pagination-bar">
+        <span class="pagination-info-text">{{ paginationInfoText() }}</span>
+        <div class="pagination-buttons-group">
+          <button
+            type="button"
+            class="pagination-arrow-btn"
+            [disabled]="currentPage() === 1"
+            (click)="changePage(currentPage() - 1)"
+          >
+            ‹
+          </button>
+          @for (page of pagesArray(); track page) {
+            <button
+              type="button"
+              class="pagination-page-btn"
+              [class.active]="currentPage() === page"
+              (click)="changePage(page)"
+            >
+              {{ page }}
+            </button>
+          }
+          <button
+            type="button"
+            class="pagination-arrow-btn"
+            [disabled]="currentPage() === totalPages()"
+            (click)="changePage(currentPage() + 1)"
+          >
+            ›
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- COLUMNA DERECHA: Formulario integrado -->
+    <div class="admin-right-pane">
+      <app-team-form (closePanel)="loadAdminData()"></app-team-form>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- SECCIÓN CAMPEONATOS: Tabla a la izq. y Form a la der.    -->
+  <!-- ======================================================== -->
+  <div class="admin-split-layout-container always-with-form" style="margin-top: 2.5rem">
+    <div class="admin-left-pane">
+      <div class="teams-admin-header-row">
+        <div class="teams-title-block">
+          <div class="team-shield-icon-box">🏆</div>
+          <div>
+            <h3>Campeonatos</h3>
+            <p>Lista de torneos y ligas registradas en el sistema.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Barra de filtros y búsqueda de campeonatos -->
+      <div class="teams-filters-bar">
+        <div class="search-input-wrapper">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input
+            type="text"
+            [ngModel]="championshipSearchText()"
+            (ngModelChange)="championshipSearchText.set($event); currentChampPage.set(1)"
+            placeholder="Buscar campeonato..."
+          />
+        </div>
+
+        <!-- Filtro de País con triángulo -->
+        <div
+          class="filter-dropdown-container-admin custom-dropdown"
+          [class.open]="isChampCountryDropdownOpen"
+        >
+          <div
+            class="filter-dropdown-box dropdown-trigger"
+            (click)="toggleChampCountryDropdown($event)"
+          >
+            <span>{{ selectedChampCountryLabel }}</span>
+            <span class="triangle-icon"></span>
+          </div>
+          @if (isChampCountryDropdownOpen) {
+            <ul class="admin-dropdown-menu">
+              @for (opt of champCountryOptions(); track opt.value) {
+                <li
+                  class="admin-dropdown-item"
+                  [class.active]="selectedChampionshipCountry() === opt.value"
+                  (click)="selectChampCountry(opt.value)"
+                >
+                  <span>{{ opt.label }}</span>
+                  @if (selectedChampionshipCountry() === opt.value) {
+                    <svg
+                      class="check-icon"
+                      viewBox="0 0 24 24"
+                      width="14"
+                      height="14"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="3"
+                    >
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                  }
+                </li>
+              }
+            </ul>
+          }
+        </div>
+
+        <!-- Filtro de Tipo con triángulo -->
+        <div
+          class="filter-dropdown-container-admin custom-dropdown"
+          [class.open]="isChampTypeDropdownOpen"
+        >
+          <div
+            class="filter-dropdown-box dropdown-trigger"
+            (click)="toggleChampTypeDropdown($event)"
+          >
+            <span>{{ selectedChampTypeLabel }}</span>
+            <span class="triangle-icon"></span>
+          </div>
+          @if (isChampTypeDropdownOpen) {
+            <ul class="admin-dropdown-menu">
+              @for (opt of champTypeOptions(); track opt.value) {
+                <li
+                  class="admin-dropdown-item"
+                  [class.active]="selectedChampionshipType() === opt.value"
+                  (click)="selectChampType(opt.value)"
+                >
+                  <span>{{ opt.label }}</span>
+                  @if (selectedChampionshipType() === opt.value) {
+                    <svg
+                      class="check-icon"
+                      viewBox="0 0 24 24"
+                      width="14"
+                      height="14"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="3"
+                    >
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                  }
+                </li>
+              }
+            </ul>
+          }
+        </div>
+      </div>
+
+      <!-- Tabla fija de campeonatos paginada -->
+      <div class="admin-table-fixed-container">
+        @if (paginatedChampionshipsForAdmin().length === 0) {
+          <p class="empty-msg">No se encontraron campeonatos con los filtros seleccionados.</p>
+        } @else {
+          <div class="admin-table-wrapper">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Nombre</th>
+                  <th>Tipo</th>
+                  <th>Temporada</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (champ of paginatedChampionshipsForAdmin(); track champ.id; let idx = $index) {
+                  <tr>
+                    <td>{{ (currentChampPage() - 1) * itemsPerPageChamps + idx + 1 }}</td>
+                    <td>
+                      <strong>{{ champ.name }}</strong>
+                    </td>
+                    <td>{{ champ.type }}</td>
+                    <td>{{ champ.season }}</td>
+                    <td>
+                      <div class="table-actions">
+                        <button
+                          class="btn-action-view-custom"
+                          [routerLink]="['/championship', champ.id]"
+                        >
+                          <svg
+                            viewBox="0 0 24 24"
+                            width="15"
+                            height="15"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                          >
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                          </svg>
+                          Ver
+                        </button>
+                        <button
+                          class="btn-action-edit-custom"
+                          [routerLink]="['/championship/edit', champ.id]"
+                        >
+                          <svg
+                            viewBox="0 0 24 24"
+                            width="15"
+                            height="15"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                          >
+                            <path
+                              d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"
+                            ></path>
+                            <path
+                              d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"
+                            ></path>
+                          </svg>
+                          Editar
+                        </button>
+                        <button
+                          class="btn-action-delete-custom"
+                          (click)="confirmDeleteChampionship(champ.id!)"
+                        >
+                          <svg
+                            viewBox="0 0 24 24"
+                            width="15"
+                            height="15"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                          >
+                            <polyline points="3 6 5 6 21 6"></polyline>
+                            <path
+                              d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
+                            ></path>
+                          </svg>
+                          Eliminar
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        }
+      </div>
+
+      <!-- Paginación de campeonatos -->
+      <div class="teams-pagination-bar">
+        <span class="pagination-info-text">{{ champPaginationInfoText() }}</span>
+        <div class="pagination-buttons-group">
+          <button
+            type="button"
+            class="pagination-arrow-btn"
+            [disabled]="currentChampPage() === 1"
+            (click)="changeChampPage(currentChampPage() - 1)"
+          >
+            ‹
+          </button>
+          @for (page of champPagesArray(); track page) {
+            <button
+              type="button"
+              class="pagination-page-btn"
+              [class.active]="currentChampPage() === page"
+              (click)="changeChampPage(page)"
+            >
+              {{ page }}
+            </button>
+          }
+          <button
+            type="button"
+            class="pagination-arrow-btn"
+            [disabled]="currentChampPage() === totalChampPages()"
+            (click)="changeChampPage(currentChampPage() + 1)"
+          >
+            ›
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- COLUMNA DERECHA: Formulario integrado de Campeonatos -->
+    <div class="admin-right-pane">
+      <app-championship-form (closePanel)="loadAdminData()"></app-championship-form>
+    </div>
+  </div>
+
+  <!-- ================= MODAL DE CONFIRMACIÓN (EQUIPOS) ================= -->
+  @if (teamToDeleteId() !== null) {
+    <div class="custom-modal-backdrop">
+      <div class="custom-modal-box">
+        <div class="modal-icon-warning">⚠️</div>
+        <h3>¿Estás seguro?</h3>
+        <p>Esta acción eliminará el equipo del sistema de forma permanente.</p>
+        <div class="modal-actions">
+          <button type="button" class="btn-modal-cancel" (click)="cancelDelete()">Cancelar</button>
+          <button type="button" class="btn-modal-confirm" (click)="executeDelete()">
+            Sí, eliminar
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- ================= MODAL DE CONFIRMACIÓN (CAMPEONATOS) ================= -->
+  @if (championshipToDeleteId() !== null) {
+    <div class="custom-modal-backdrop">
+      <div class="custom-modal-box">
+        <div class="modal-icon-warning">⚠️</div>
+        <h3>¿Estás seguro?</h3>
+        <p>Esta acción eliminará el campeonato del sistema de forma permanente.</p>
+        <div class="modal-actions">
+          <button type="button" class="btn-modal-cancel" (click)="cancelDeleteChampionship()">
+            Cancelar
+          </button>
+          <button type="button" class="btn-modal-confirm" (click)="executeDeleteChampionship()">
+            Sí, eliminar
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+</div>

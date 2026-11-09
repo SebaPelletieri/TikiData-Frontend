@@ -10,11 +10,12 @@ import { Championships } from './pages/championships/championships';
 import { MatchDetail } from './pages/match-detail/match-detail';
 import { ProfileEdit } from './components/profile-edit/profile-edit';
 
-// Importación de Páginas y Guards
+// Importación de Páginas, Guards y Panel de Administración
 import { TeamDetailPage } from './pages/team-detail/team-detail';
 import { Teams } from './pages/teams/teams';
 import { authGuard } from './guards/auth-guard';
 import { adminGuard } from './guards/admin-guard';
+import { AdminDashboard } from './components/admin-dashboard/admin-dashboard';
 
 export const routes: Routes = [
   { path: '', component: Home },
@@ -34,6 +35,11 @@ export const routes: Routes = [
   { path: 'championships', component: Championships },
   { path: 'championship/:id', component: ChampionshipDetail },
   { path: 'match/:id', component: MatchDetail },
+  {
+    path: 'admin',
+    component: AdminDashboard,
+    canActivate: [adminGuard],
+  },
   {
     path: 'admin/users',
     loadComponent: () => import('./pages/admin/user-list/user-list').then((m) => m.UserList),

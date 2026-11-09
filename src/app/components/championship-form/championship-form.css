@@ -13,13 +13,26 @@
   border-radius: 20px;
   color: #fff;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Distribuye el contenido principal de arriba a abajo */
+  height: 100%; /* Forzamos que ocupe todo el alto disponible de la columna derecha */
+}
+
+.team-form-container .form-group,
+.team-form-container .form-row,
+.team-form-container .shield-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Centra el contenido dentro de su espacio distribuido */
 }
 
 .form-header {
   display: flex;
   align-items: center;
   gap: 14px;
-  margin-bottom: 1.8rem;
+  margin-bottom: 0.2rem;
 }
 
 .header-icon {
@@ -50,7 +63,7 @@
 .form-group {
   display: flex;
   flex-direction: column;
-  margin-bottom: 1.25rem;
+  margin-bottom: 0; /* 🌟 Controlado ahora por el gap del contenedor principal */
 }
 
 .form-row {
@@ -256,7 +269,6 @@
   width: 100%;
 }
 
-/* Cabecera con contador de selección */
 .label-with-counter {
   display: flex;
   justify-content: space-between;
@@ -331,7 +343,6 @@
   box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
 }
 
-/* Lista desplegable flotante de equipos encontrados */
 .search-results-list {
   position: absolute;
   top: calc(100% + 6px);
@@ -511,13 +522,13 @@
 }
 
 /* =========================================
-   Zona de Foto / Logo (Drag & Drop) - Alineada y nivelada
+   Zona de Foto / Logo (Drag & Drop)
    ========================================= */
 .shield-container {
   display: grid;
   grid-template-columns: 1.8fr 1fr;
   gap: 1rem;
-  align-items: stretch; /* 🌟 Iguala la altura de ambas cajas automáticamente */
+  align-items: stretch;
 }
 
 .visually-hidden {
@@ -538,7 +549,7 @@
   border: 1.5px dashed #1e497e;
   background: linear-gradient(180deg, #071a33 0%, #051428 100%);
   transition: all 0.25s ease;
-  height: 100%; /* 🌟 Ocupa exactamente la misma altura que la vista previa */
+  height: 100%;
 }
 
 .dropzone:hover {
@@ -585,7 +596,7 @@
   box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.4);
   padding: 1rem;
   position: relative;
-  height: 100%; /* 🌟 Mantiene la misma altura nivelada */
+  height: 100%;
 }
 
 .shield-icon {
@@ -638,7 +649,7 @@
 .form-actions {
   display: flex;
   gap: 1rem;
-  margin-top: 2rem;
+  margin-top: 0.5rem; /* 🌟 Separación equilibrada respecto a los elementos superiores */
 }
 
 .btn-cancel {

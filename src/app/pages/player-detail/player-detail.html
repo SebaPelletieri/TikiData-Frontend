@@ -1,1 +1,14 @@
-<app-profile-detail></app-profile-detail>
+<div class="player-page-wrapper">
+  @if (isLoading()) {
+    <div style="text-align: center; padding: 4rem; color: #7d96b3">
+      <p>Cargando información del jugador...</p>
+    </div>
+  } @else if (playerActual(); as player) {
+    <!-- Renderizamos el componente hijo con todo el diseño y campos -->
+    <app-player-detail [player]="player" />
+  } @else {
+    <div style="text-align: center; padding: 4rem; color: #7d96b3">
+      <p>No se encontró el jugador solicitado.</p>
+    </div>
+  }
+</div>

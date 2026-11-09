@@ -93,30 +93,53 @@
   color: #7d96b3;
 }
 
+/* Botón de seguir unificado y en una sola línea */
 .btn-follow {
   font-family: inherit;
   margin-top: 6px;
   background-color: #2563eb;
   color: #ffffff;
   border: none;
-  padding: 8px 28px;
+  padding: 6px 16px;
   border-radius: 8px;
-  font-weight: 700;
+  font-weight: 600;
   font-size: 0.9rem;
   cursor: pointer;
   width: fit-content;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  white-space: nowrap;
   box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
   transition:
     transform 0.2s,
     background-color 0.2s;
 }
 
-.btn-follow:hover {
-  background-color: #3b82f6;
+.follow-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
   transform: translateY(-1px);
 }
 
-/* ================= TABS ================= */
+.btn-follow:hover {
+  background-color: #1d4ed8;
+  transform: translateY(-1px);
+}
+
+.btn-follow.following {
+  background-color: #065f46;
+  border: 1px solid #10b981;
+}
+
+.btn-follow.following:hover {
+  background-color: #047857;
+}
+
+/* ================= TABS (Estilo Naranja TikiData con Animación Suave) ================= */
 .tabs-nav-container {
   padding: 0 2.5rem;
   margin-bottom: 2rem;
@@ -143,12 +166,21 @@
   cursor: pointer;
   position: relative;
   border-radius: 8px 8px 0 0;
-  transition: all 0.2s ease;
   bottom: -1px;
+  /* Animación suave optimizada y efecto de respuesta al toque */
+  transition:
+    color 0.25s ease,
+    background-color 0.25s ease,
+    transform 0.15s ease;
 }
 
 .tab-btn:hover {
   color: #ffffff;
+  background: rgba(249, 115, 22, 0.08); /* Tinte naranja sutil al pasar el mouse */
+}
+
+.tab-btn:active {
+  transform: scale(0.97); /* Efecto sutil de presión al hacer clic */
 }
 
 .tab-btn.active {
@@ -164,8 +196,8 @@
   left: 0;
   width: 100%;
   height: 3px;
-  background: #0284c7;
-  box-shadow: 0 -1px 8px #38bdf8;
+  background: #f97316; /* Color naranja característico de TikiData */
+  box-shadow: 0 -1px 8px rgba(249, 115, 22, 0.6);
   border-radius: 2px 2px 0 0;
 }
 
@@ -449,28 +481,4 @@
   color: #7dd3fc;
   background-color: rgba(56, 189, 248, 0.1);
   text-decoration: none;
-}
-
-.btn-follow {
-  background-color: #2563eb;
-  color: #ffffff;
-  border: none;
-  border-radius: 8px;
-  padding: 6px 16px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-.btn-follow:hover {
-  background-color: #1d4ed8;
-}
-
-.btn-follow.following {
-  background-color: #065f46; /* Verde oscuro o el color que prefieras para indicar que ya se sigue */
-  border: 1px solid #10b981;
-}
-
-.btn-follow.following:hover {
-  background-color: #047857;
 }

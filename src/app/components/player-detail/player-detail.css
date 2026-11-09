@@ -1,0 +1,341 @@
+.player-detail-container {
+  padding: 2rem;
+  max-width: 1100px;
+  margin: 0 auto;
+  color: #fff;
+  font-family: inherit;
+}
+
+/* Cabecera */
+.player-header-card {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  background: #111c2e;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  margin-bottom: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  position: relative;
+}
+
+.player-avatar-wrapper {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid #3b82f6;
+  background: #1e293b;
+  flex-shrink: 0;
+}
+
+.player-avatar {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.player-main-info h1 {
+  font-size: 2.2rem;
+  margin: 0 0 0.4rem 0;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.player-sub-badges {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #94a3b8;
+  font-size: 0.95rem;
+  margin-bottom: 0.75rem;
+}
+
+.player-sub-badges .dot {
+  color: #475569;
+}
+
+.player-meta-details {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: #64748b;
+  font-size: 0.85rem;
+  flex-wrap: wrap;
+}
+
+.header-actions {
+  margin-left: auto;
+}
+
+/* Botón de Seguir perfectamente centrado */
+.btn-follow {
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  padding: 0.6rem 1.75rem;
+  border-radius: 20px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  line-height: 1;
+}
+
+.follow-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  transform: translateY(-1px);
+}
+
+.btn-follow:hover {
+  background: #1d4ed8;
+}
+
+.btn-follow.following {
+  background: #10b981;
+}
+
+.btn-follow.following:hover {
+  background: #059669;
+}
+
+/* Pestañas */
+.player-tabs {
+  display: flex;
+  gap: 2rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  margin-bottom: 1.5rem;
+  padding-left: 0.5rem;
+}
+
+.tab-btn {
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 0.75rem 0.25rem;
+  cursor: pointer;
+  position: relative;
+  transition: color 0.2s;
+}
+
+.tab-btn:hover {
+  color: #fff;
+}
+
+.tab-btn.active {
+  color: #3b82f6;
+  font-weight: 600;
+}
+
+.tab-btn.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: #3b82f6;
+  border-radius: 2px 2px 0 0;
+}
+
+/* Cuadrícula de Contenido */
+.player-content-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.info-card {
+  background: #111c2e;
+  padding: 1.75rem;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.info-card h3 {
+  margin-top: 0;
+  margin-bottom: 1.25rem;
+  font-size: 1.1rem;
+  color: #f1f5f9;
+  font-weight: 600;
+}
+
+.info-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.info-list li {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.65rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  font-size: 0.95rem;
+}
+
+.info-list li span {
+  color: #94a3b8;
+}
+
+.info-list li strong {
+  color: #f8fafc;
+}
+
+/* Club actual */
+.club-content-box {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 1rem 0;
+}
+
+.club-shield-placeholder {
+  width: 50px;
+  height: 50px;
+  background: #1e293b;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.club-details h4 {
+  margin: 0 0 0.2rem 0;
+  font-size: 1.1rem;
+}
+
+.club-country {
+  margin: 0;
+  color: #94a3b8;
+  font-size: 0.85rem;
+}
+
+/* Estadísticas Generales inferiores */
+.stats-overview-card {
+  background: #111c2e;
+  padding: 1.75rem;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.stats-overview-card h3 {
+  margin-top: 0;
+  margin-bottom: 1.25rem;
+  font-size: 1.1rem;
+  color: #f1f5f9;
+  font-weight: 600;
+}
+
+.stats-row-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1rem;
+}
+
+/* Elemento de estadística alineado */
+.stat-item {
+  background: #19263b;
+  padding: 1.25rem 1rem;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.stat-icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+  width: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stat-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-item .num {
+  display: block;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.2;
+}
+
+.stat-item .lbl {
+  display: block;
+  font-size: 0.75rem;
+  color: #94a3b8;
+  text-transform: uppercase;
+  margin-top: 0.2rem;
+  white-space: nowrap;
+}
+
+.card-box-yellow {
+  width: 14px;
+  height: 18px;
+  background: #eab308;
+  border-radius: 2px;
+  flex-shrink: 0;
+  display: inline-block;
+}
+
+.card-box-red {
+  width: 14px;
+  height: 18px;
+  background: #ef4444;
+  border-radius: 2px;
+  flex-shrink: 0;
+  display: inline-block;
+}
+
+.btn-back {
+  background: #1e293b;
+  color: #fff;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.2s;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.btn-back:hover {
+  background: #334155;
+}
+
+@media (max-width: 900px) {
+  .player-content-grid {
+    grid-template-columns: 1fr;
+  }
+  .stats-row-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .player-header-card {
+    flex-direction: column;
+    text-align: center;
+  }
+  .header-actions {
+    margin-left: 0;
+  }
+  .player-meta-details,
+  .player-sub-badges {
+    justify-content: center;
+  }
+}

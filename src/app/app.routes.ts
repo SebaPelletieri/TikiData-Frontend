@@ -3,7 +3,7 @@ import { Home } from './pages/home/home';
 import { Login } from './pages/login/login';
 import { Profile } from './pages/profile/profile';
 import { Register } from './pages/register/register';
-import { PlayerDetail } from './pages/player-detail/player-detail';
+import { PlayerDetailPage } from './pages/player-detail/player-detail';
 import { Players } from './pages/players/players';
 import { ChampionshipDetailPage } from './pages/championship-detail/championship-detail';
 import { Championships } from './pages/championships/championships';
@@ -35,9 +35,11 @@ export const routes: Routes = [
   { path: 'team/name/:name', component: TeamDetailPage },
   { path: 'teams/:id', redirectTo: 'team/:id', pathMatch: 'full' },
 
+  /* Rutas de jugadores corregidas a PlayerDetailPage */
   { path: 'players', component: Players },
-  { path: 'player/:id', component: PlayerDetail },
+  { path: 'player/:id', component: PlayerDetailPage },
   { path: 'players/:id', redirectTo: 'player/:id', pathMatch: 'full' },
+
   { path: 'championships', component: Championships },
 
   /* Ruta de detalles de campeonato apuntando a la page */

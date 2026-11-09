@@ -94,7 +94,7 @@
 }
 
 /* =========================================
-   Pestañas de Navegación (Tabs)
+   Pestañas de Navegación (Tabs) con Animación Suave y Estilo Naranja TikiData
    ========================================= */
 .champ-tabs-nav {
   display: flex;
@@ -113,18 +113,32 @@
   padding: 0.75rem 1.25rem;
   border-radius: 8px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  position: relative;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+  /* Transición fluida idéntica al componente de equipos */
+  transition:
+    color 0.25s ease,
+    background-color 0.25s ease,
+    transform 0.15s ease;
 }
 
 .tab-btn:hover {
   color: #ffffff;
-  background: rgba(56, 189, 248, 0.05);
+  background: rgba(249, 115, 22, 0.08); /* Tinte naranja sutil en hover */
+}
+
+.tab-btn:active,
+.tab-btn:focus {
+  outline: none;
+  box-shadow: none;
+  transform: scale(0.97); /* Efecto sutil de presión al hacer clic sin rastro blanco */
 }
 
 .tab-btn.active {
   color: #ffffff;
   background: #0d2a52;
-  border-bottom: 2px solid #38bdf8;
+  border-bottom: 2px solid #f97316; /* Borde activo inferior en naranja TikiData */
 }
 
 /* =========================================

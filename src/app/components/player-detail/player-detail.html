@@ -1,0 +1,166 @@
+@if (player(); as p) {
+  <div class="player-detail-container">
+    <!-- 1. Cabecera del Perfil -->
+    <div class="player-header-card">
+      <div class="player-avatar-wrapper">
+        <img
+          [src]="p.photo || 'https://via.placeholder.com/150?text=Player'"
+          [alt]="p.name"
+          (error)="$any($event.target).src = 'https://via.placeholder.com/150?text=Player'"
+          class="player-avatar"
+          referrerpolicy="no-referrer"
+        />
+      </div>
+
+      <div class="player-main-info">
+        <h1>{{ p.name }}</h1>
+        <div class="player-sub-badges">
+          <span class="sub-badge">
+            <span class="icon">⚽</span>
+            {{ p.currentTeamID ? 'Equipo #' + p.currentTeamID : 'Agente libre' }}
+          </span>
+          <span class="dot">•</span>
+          <span class="sub-badge position-text">{{ p.position }}</span>
+        </div>
+
+        <div class="player-meta-details">
+          <span><i class="fa-regular fa-calendar"></i> {{ p.age ? p.age + ' años' : '-' }}</span>
+          <span class="dot">•</span>
+          <span><i class="fa-solid fa-cake-candles"></i> {{ formatSpanishDate(p.birthDate) }}</span>
+          <span class="dot">•</span>
+          <span><i class="fa-solid fa-location-dot"></i> {{ p.nationality || '-' }}</span>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <!-- Botón Seguir con el estado de favoritos -->
+        <button class="btn-follow" [class.following]="isFollowing()" (click)="toggleFollowPlayer()">
+          <span class="follow-icon">
+            {{ isFollowing() ? '✓' : '+' }}
+          </span>
+
+          <span>
+            {{ isFollowing() ? 'Siguiendo' : 'Seguir' }}
+          </span>
+        </button>
+      </div>
+    </div>
+
+    <!-- 2. Pestañas de Navegación -->
+    <div class="player-tabs">
+      <button
+        class="tab-btn"
+        [class.active]="activeTab() === 'general'"
+        (click)="setTab('general')"
+      >
+        Vista general
+      </button>
+      <button class="tab-btn" [class.active]="activeTab() === 'stats'" (click)="setTab('stats')">
+        Estadísticas
+      </button>
+      <button class="tab-btn" [class.active]="activeTab() === 'clubs'" (click)="setTab('clubs')">
+        Historial de clubes
+      </button>
+      <button
+        class="tab-btn"
+        [class.active]="activeTab() === 'matches'"
+        (click)="setTab('matches')"
+      >
+        Partidos
+      </button>
+    </div>
+
+    <!-- 3. Contenido de la Pestaña General -->
+    @if (activeTab() === 'general') {
+      <div class="player-content-grid">
+        <!-- Información Personal -->
+        <div class="info-card">
+          <h3>Información personal</h3>
+          <ul class="info-list">
+            <li>
+              <span>Nombre completo</span> <strong>{{ p.name }}</strong>
+            </li>
+            <li>
+              <span>Fecha de nacimiento</span> <strong>{{ formatSpanishDate(p.birthDate) }}</strong>
+            </li>
+            <li>
+              <span>Edad</span> <strong>{{ p.age ? p.age + ' años' : '-' }}</strong>
+            </li>
+            <li>
+              <span>Nacionalidad</span> <strong>{{ p.nationality || '-' }}</strong>
+            </li>
+            <li>
+              <span>Posición</span> <strong>{{ p.position || '-' }}</strong>
+            </li>
+            <li>
+              <span>Pie hábil</span> <strong>{{ p.preferredFoot || '-' }}</strong>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Club Actual -->
+        <div class="info-card club-card">
+          <h3>Club actual</h3>
+          <div class="club-content-box">
+            <div class="club-shield-placeholder">⚽</div>
+            <div class="club-details">
+              <h4>{{ p.currentTeamID ? 'Equipo ID: ' + p.currentTeamID : 'Sin equipo' }}</h4>
+              <p class="club-country">{{ p.nationality || '-' }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Estadísticas Generales (Con contenedores separados para alinear perfectamente) -->
+      <div class="stats-overview-card">
+        <h3>Estadísticas generales (temporada actual)</h3>
+        <div class="stats-row-grid">
+          <div class="stat-item">
+            <span class="stat-icon">🏟️</span>
+            <div class="stat-info">
+              <span class="num">{{ p.matchesPlayed || 0 }}</span>
+              <span class="lbl">Partidos</span>
+            </div>
+          </div>
+          <div class="stat-item">
+            <span class="stat-icon">⚽</span>
+            <div class="stat-info">
+              <span class="num">{{ p.goals || 0 }}</span>
+              <span class="lbl">Goles</span>
+            </div>
+          </div>
+          <div class="stat-item">
+            <span class="stat-icon">🎯</span>
+            <div class="stat-info">
+              <span class="num">{{ p.assists || 0 }}</span>
+              <span class="lbl">Asistencias</span>
+            </div>
+          </div>
+          <div class="stat-item">
+            <span class="card-box-yellow"></span>
+            <div class="stat-info">
+              <span class="num">{{ p.yellowCards || 0 }}</span>
+              <span class="lbl">Amarillas</span>
+            </div>
+          </div>
+          <div class="stat-item">
+            <span class="card-box-red"></span>
+            <div class="stat-info">
+              <span class="num">{{ p.redCards || 0 }}</span>
+              <span class="lbl">Rojas</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    } @else {
+      <div class="info-card" style="text-align: center; padding: 3rem">
+        <p style="color: #94a3b8">Contenido de la pestaña {{ activeTab() }} en desarrollo.</p>
+      </div>
+    }
+
+    <!-- Botón de Retorno -->
+    <div class="actions-footer" style="margin-top: 2rem">
+      <button class="btn-back" routerLink="/players">Volver al listado</button>
+    </div>
+  </div>
+}

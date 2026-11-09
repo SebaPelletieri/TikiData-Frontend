@@ -29,7 +29,12 @@
           [class.following]="isFollowing()"
           (click)="toggleFollowTeam()"
         >
-          {{ isFollowing() ? 'Siguiendo' : 'Seguir' }}
+          <span class="follow-icon">
+            {{ isFollowing() ? '✓' : '+' }}
+          </span>
+          <span>
+            {{ isFollowing() ? 'Siguiendo' : 'Seguir' }}
+          </span>
         </button>
       </div>
     </div>

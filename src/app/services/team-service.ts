@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { Team } from '../models/Team';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class TeamService {
@@ -61,8 +61,13 @@ export class TeamService {
     });
   }
 
-  // 👈 Ahora retorna el Observable para poder suscribirse desde el componente
   getById(id: number): Observable<Team> {
     return this.http.get<Team>(`${this.apiUrl}/${id}`);
   }
+
+  getTeamsSortedByPoints(): Observable<Team[]> {
+  return this.http.get<Team[]>(this.apiUrl).pipe(
+    map(teams => teams.sort((a: any, b: any) => (b.points || 0) - (a.points || 0)))
+  );
+}
 }

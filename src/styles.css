@@ -77,30 +77,212 @@ html {
   background-color: #030d1a;
 }
 
-/* ================= MODO CLARO (LIGHT THEME) ================= */
+/* ==========================================================================
+   MODO CLARO (LIGHT THEME GLOBAL PARA TIKIDATA)
+   ========================================================================== */
 body.light-theme {
   background-color: #f1f5f9 !important;
   color: #0f172a !important;
 }
 
-/* Ejemplo para las tarjetas y contenedores en modo claro */
+/* Tarjetas, contenedores principales y bloques */
 body.light-theme .profile-section-card,
 body.light-theme .stat-card,
-body.light-theme .content-panel {
+body.light-theme .content-panel,
+body.light-theme .table-card,
+body.light-theme .country-block,
+body.light-theme .card-box,
+body.light-theme .champ-header-banner {
+  background: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  color: #0f172a !important;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06) !important;
+}
+
+/* Inputs de búsqueda y selects */
+body.light-theme input,
+body.light-theme select,
+body.light-theme textarea,
+body.light-theme .search-box input,
+body.light-theme .filter-main-btn,
+body.light-theme .dropdown-trigger,
+body.light-theme .sub-dropdown-trigger {
   background: #ffffff !important;
   border-color: #cbd5e1 !important;
   color: #0f172a !important;
 }
 
-body.light-theme .item-name,
-body.light-theme .stat-number,
-body.light-theme .user-main-info h3,
-body.light-theme .section-header h3 {
+body.light-theme input::placeholder,
+body.light-theme textarea::placeholder {
+  color: #94a3b8 !important;
+}
+
+/* Menús desplegables (dropdowns y paneles) */
+body.light-theme .dropdown-menu,
+body.light-theme .filter-panel,
+body.light-theme .sub-dropdown-menu {
+  background-color: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.12) !important;
+}
+
+body.light-theme .dropdown-item,
+body.light-theme .sub-dropdown-item {
+  color: #334155 !important;
+}
+
+body.light-theme .dropdown-item:hover,
+body.light-theme .sub-dropdown-item:hover {
+  background-color: rgba(255, 107, 0, 0.1) !important;
   color: #0f172a !important;
 }
 
+/* Textos principales y títulos */
+body.light-theme h1,
+body.light-theme h2,
+body.light-theme h3,
+body.light-theme h4,
+body.light-theme h5,
+body.light-theme h6,
+body.light-theme .item-name,
+body.light-theme .stat-number,
+body.light-theme .user-main-info h3,
+body.light-theme .section-header h3,
+body.light-theme .champ-text-data h1,
+body.light-theme .card-header-row h3,
+body.light-theme .country-header h3,
+body.light-theme .champ-name,
+body.light-theme .player-name-cell .name {
+  color: #0f172a !important;
+}
+
+/* Textos secundarios, etiquetas y celdas de la tabla de jugadores */
 body.light-theme .item-country,
 body.light-theme .stat-label,
-body.light-theme .subtitle {
+body.light-theme .subtitle,
+body.light-theme .champ-meta-badges,
+body.light-theme .team-country,
+body.light-theme .pagination-info,
+body.light-theme .match-date-badge,
+body.light-theme .filter-panel-title,
+body.light-theme .position-text,
+body.light-theme .team-cell,
+body.light-theme .age-text {
+  color: #475569 !important;
+  font-weight: 500;
+}
+
+/* Tablas y filas de datos */
+body.light-theme .styled-table th,
+body.light-theme .custom-data-table th {
+  background-color: #f8fafc !important;
+  color: #475569 !important;
+  border-bottom-color: #cbd5e1 !important;
+}
+
+body.light-theme .styled-table td,
+body.light-theme .custom-data-table td {
+  color: #0f172a !important;
+  border-bottom-color: #f1f5f9 !important;
+}
+
+body.light-theme .player-row:hover,
+body.light-theme .custom-data-table tr:hover {
+  background-color: rgba(255, 107, 0, 0.18) !important; /* Naranja TikiData con más cuerpo */
+}
+
+/* Cabeceras de bloques colapsables (como países o ligas) */
+body.light-theme .country-header {
+  background-color: #f8fafc !important;
+  border-bottom-color: #cbd5e1 !important;
+}
+
+body.light-theme .country-header:hover {
+  background-color: rgba(255, 107, 0, 0.08) !important;
+}
+
+/* Avatares y logos contenedores */
+body.light-theme .avatar-wrapper,
+body.light-theme .champ-logo-wrapper,
+body.light-theme .team-logo-wrapper,
+body.light-theme .league-logo-wrapper,
+body.light-theme .country-flag-wrapper {
+  background-color: #f8fafc !important;
+  border-color: #cbd5e1 !important;
+}
+
+/* ==========================================================================
+   PAGINACIÓN GLOBAL EN MODO CLARO
+   ========================================================================== */
+body.light-theme .pagination-container {
+  background: #ffffff !important;
+  background-image: none !important;
+  border-top-color: #cbd5e1 !important;
+}
+
+body.light-theme .pagination-info {
   color: #64748b !important;
+}
+
+body.light-theme .page-btn {
+  background-color: #f8fafc !important;
+  color: #334155 !important;
+  border-color: #cbd5e1 !important;
+}
+
+body.light-theme .page-btn:hover:not(:disabled) {
+  border-color: #ff6b00 !important;
+  background-color: rgba(255, 107, 0, 0.1) !important;
+  color: #0f172a !important;
+}
+
+body.light-theme .page-btn.active {
+  background-color: #ff6b00 !important;
+  border-color: #ff6b00 !important;
+  color: #ffffff !important;
+}
+
+/* ==========================================================================
+   CORRECCIÓN DE SUB-DROPDOWNS EN MODO CLARO
+   ========================================================================== */
+
+/* Fondo del panel desplegable de filtros y sub-menús */
+body.light-theme .filter-panel,
+body.light-theme .sub-dropdown-menu {
+  background-color: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.12) !important;
+}
+
+/* Texto de los elementos del sub-menú */
+body.light-theme .sub-dropdown-item {
+  color: #334155 !important;
+}
+
+/* Hover en los elementos del sub-menú */
+body.light-theme .sub-dropdown-item:hover {
+  background-color: rgba(255, 107, 0, 0.08) !important;
+  color: #0f172a !important;
+}
+
+/* Elemento ACTIVO / SELECCIONADO (Texto oscuro y legible sobre fondo naranja suave) */
+body.light-theme .sub-dropdown-item.active {
+  background-color: rgba(255, 107, 0, 0.2) !important; /* Naranja un poco más marcado */
+  color: #0f172a !important;
+  font-weight: 600 !important;
+}
+
+body.light-theme .sub-dropdown-item.active .check-icon {
+  color: #ff6b00 !important;
+}
+
+/* Botón disparador del sub-dropdown (ej. "Todas las posiciones") */
+body.light-theme .sub-dropdown-trigger {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+  border-color: #cbd5e1 !important;
+}
+
+body.light-theme .sub-dropdown-trigger:hover {
+  border-color: #ff6b00 !important;
 }

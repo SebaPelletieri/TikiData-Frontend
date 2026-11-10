@@ -136,6 +136,7 @@
   transition: color 0.2s ease;
 }
 
+/* Hover en Modo Oscuro */
 .filter-main-btn:hover {
   border-color: #ff6b00;
   background-color: rgba(255, 107, 0, 0.08);
@@ -168,6 +169,19 @@
 .triangle-icon.rotate {
   transform: rotate(180deg);
   background-color: #ff6b00 !important;
+}
+
+/* ==========================================================================
+   CORRECCIÓN ESPECÍFICA DE HOVER PARA EL BOTÓN FILTRAR EN MODO CLARO
+   ========================================================================== */
+body.light-theme .filter-main-btn:hover {
+  border-color: #ff6b00 !important;
+  background-color: #ffffff !important; /* Evita el fondo gris/oscuro extraño */
+  box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.15) !important; /* Sombra limpia idéntica al input */
+}
+
+body.light-theme .filter-main-btn:hover .trigger-content i {
+  color: #ff6b00 !important;
 }
 
 /* Panel flotante de filtros */

@@ -132,7 +132,7 @@
             formulario.controls['yearOfFoundation'].touched &&
             formulario.controls['yearOfFoundation'].invalid
           "
-          (click)="toggleCalendar()"
+          (click)="toggleCalendar($event)"
         >
           <span [class.placeholder]="!formattedSelectedDate">
             {{ formattedSelectedDate || 'Selecciona una fecha' }}
@@ -152,12 +152,18 @@
         </button>
 
         @if (isCalendarOpen) {
-          <div class="calendar-popover">
+          <div class="calendar-popover" (click)="$event.stopPropagation()">
             <div class="calendar-header">
-              <button type="button" class="calendar-nav-btn" (click)="prevMonth()">&#8249;</button>
+              <button
+                type="button"
+                class="calendar-nav-btn"
+                (click)="prevMonth(); $event.stopPropagation()"
+              >
+                &#8249;
+              </button>
 
               <div class="calendar-selects">
-                <!-- Selector de Mes (Más largo / ancho) -->
+                <!-- Selector de Mes -->
                 <div
                   class="custom-dropdown calendar-dropdown month-dropdown"
                   [class.open]="isMonthOpen"
@@ -165,7 +171,7 @@
                   <button
                     type="button"
                     class="dropdown-trigger header-trigger"
-                    (click)="toggleMonthDropdown()"
+                    (click)="toggleMonthDropdown(); $event.stopPropagation()"
                   >
                     <span>{{ months[currentMonth] }}</span>
                     <span class="triangle-icon"></span>
@@ -176,7 +182,7 @@
                         <li
                           class="dropdown-item"
                           [class.active]="currentMonth === $index"
-                          (click)="selectMonth($index)"
+                          (click)="selectMonth($index); $event.stopPropagation()"
                         >
                           <span>{{ m }}</span>
                         </li>
@@ -185,7 +191,7 @@
                   }
                 </div>
 
-                <!-- Selector de Año (Más chico / compacto) -->
+                <!-- Selector de Año -->
                 <div
                   class="custom-dropdown calendar-dropdown year-dropdown"
                   [class.open]="isYearOpen"
@@ -193,7 +199,7 @@
                   <button
                     type="button"
                     class="dropdown-trigger header-trigger"
-                    (click)="toggleYearDropdown()"
+                    (click)="toggleYearDropdown(); $event.stopPropagation()"
                   >
                     <span>{{ currentYear }}</span>
                     <span class="triangle-icon"></span>
@@ -204,7 +210,7 @@
                         <li
                           class="dropdown-item"
                           [class.active]="currentYear === y"
-                          (click)="selectYear(y)"
+                          (click)="selectYear(y); $event.stopPropagation()"
                         >
                           <span>{{ y }}</span>
                         </li>
@@ -214,7 +220,13 @@
                 </div>
               </div>
 
-              <button type="button" class="calendar-nav-btn" (click)="nextMonth()">&#8250;</button>
+              <button
+                type="button"
+                class="calendar-nav-btn"
+                (click)="nextMonth(); $event.stopPropagation()"
+              >
+                &#8250;
+              </button>
             </div>
 
             <div class="calendar-weekdays">
@@ -230,7 +242,7 @@
                   class="calendar-day"
                   [class.other-month]="!item.isCurrentMonth"
                   [class.selected]="isDaySelected(item.date)"
-                  (click)="selectDate(item.date)"
+                  (click)="selectDate(item.date); $event.stopPropagation()"
                 >
                   {{ item.day }}
                 </button>
@@ -265,30 +277,34 @@
     <div class="form-group">
       <label>Escudo <span class="required">*</span></label>
       <div class="shield-container">
-        <label class="dropzone" for="shield-file">
+        <!-- 🌟 Contenedor de la zona de carga con posición relativa -->
+        <div class="dropzone-wrapper">
+          <label class="dropzone" for="shield-file">
+            <svg
+              class="upload-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <polyline points="17 8 12 3 7 8" />
+              <line x1="12" y1="3" x2="12" y2="15" />
+            </svg>
+            <span class="dropzone-text">Haz clic para subir el escudo</span>
+            <span class="dropzone-hint">PNG, JPG (máx. 2MB)</span>
+          </label>
+
           <input
             type="file"
             id="shield-file"
             accept="image/png, image/jpeg"
-            class="visually-hidden"
+            class="file-input-overlay"
             (change)="onFileSelected($event)"
           />
-          <svg
-            class="upload-icon"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-            <polyline points="17 8 12 3 7 8" />
-            <line x1="12" y1="3" x2="12" y2="15" />
-          </svg>
-          <span class="dropzone-text">Haz clic para subir el escudo</span>
-          <span class="dropzone-hint">PNG, JPG (máx. 2MB)</span>
-        </label>
+        </div>
 
         <div class="preview-box">
           @if (shieldPreview) {

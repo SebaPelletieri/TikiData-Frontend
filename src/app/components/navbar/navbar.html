@@ -9,9 +9,7 @@
       routerLinkActive="navbar__item--active"
       [routerLinkActiveOptions]="{ exact: true }"
     >
-      <a routerLink="/" class="navbar__link">
-        <i class="fas fa-home navbar__icon"></i> Inicio
-      </a>
+      <a routerLink="/" class="navbar__link"> <i class="fas fa-home navbar__icon"></i> Inicio </a>
     </li>
 
     <li class="navbar__item" routerLinkActive="navbar__item--active">
@@ -82,23 +80,49 @@
         <button
           type="button"
           (click)="toggleProfileMenu($event)"
-          class="navbar__profile"
+          class="navbar__profile navbar__profile--avatar"
           [class.navbar__profile--active]="isProfileMenuOpen()"
           aria-label="Perfil de usuario"
           title="Mi Cuenta"
         >
-          <i class="fas fa-user"></i>
+          @if (authService.currentUser()?.avatar) {
+            <img
+              [src]="authService.currentUser()?.avatar"
+              alt="Avatar"
+              class="navbar__avatar-img"
+            />
+          } @else {
+            <span class="navbar__avatar-initial">
+              {{ userInitial() }}
+            </span>
+          }
         </button>
 
         @if (isProfileMenuOpen()) {
           <div class="navbar__dropdown-menu">
+            <!-- Cabecera con el Nombre de Usuario real y el correo -->
             <div class="navbar__dropdown-user">
-              <span class="navbar__dropdown-name">
-                {{ authService.currentUser()?.username || 'Mi Perfil' }}
-              </span>
-              <span class="navbar__dropdown-email">
-                {{ authService.currentUser()?.email }}
-              </span>
+              <div class="navbar__dropdown-avatar">
+                @if (authService.currentUser()?.avatar) {
+                  <img
+                    [src]="authService.currentUser()?.avatar"
+                    alt="Avatar"
+                    class="navbar__dropdown-avatar-img"
+                  />
+                } @else {
+                  <span>
+                    {{ userInitial() }}
+                  </span>
+                }
+              </div>
+              <div class="navbar__dropdown-user-info">
+                <span class="navbar__dropdown-name">
+                  {{ userName() }}
+                </span>
+                <span class="navbar__dropdown-email">
+                  {{ authService.currentUser()?.email }}
+                </span>
+              </div>
             </div>
 
             <hr class="navbar__dropdown-divider" />
@@ -114,6 +138,8 @@
                 <span>Panel de Administración</span>
               </a>
             }
+
+            <hr class="navbar__dropdown-divider navbar__dropdown-divider--sub" />
 
             <button
               type="button"

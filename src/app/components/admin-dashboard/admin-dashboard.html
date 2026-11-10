@@ -16,7 +16,7 @@
     </div>
   </div>
 
-  <!-- Banner Superior Administrativo -->
+  <!-- Banner Superior Administrativo Simplificado -->
   <div class="profile-hero-banner admin-banner">
     <div class="hero-content">
       <div class="user-avatar-container">
@@ -28,18 +28,18 @@
       </div>
       <div class="user-main-info">
         <h3>Panel de Administrador</h3>
-        <ul class="user-meta-list">
-          <li><strong>Usuario:</strong> {{ currentUser?.username }}</li>
-          <li><strong>Rol:</strong> Administrador del Sistema</li>
-        </ul>
+        <p class="admin-banner-subtitle">Gestión centralizada del sistema TikiData</p>
       </div>
     </div>
   </div>
 
   <!-- Tarjetas de Estadísticas Globales del Sistema -->
   <div class="stats-cards-grid admin-four-grid">
+    <!-- Equipos -->
     <div class="stat-card">
-      <div class="stat-icon-wrapper blue-shield">🛡️</div>
+      <div class="stat-icon-wrapper blue-shield">
+        <i class="fas fa-shield-alt"></i>
+      </div>
       <div class="stat-data">
         <span class="stat-label">Equipos</span>
         <div class="stat-main-row">
@@ -48,8 +48,12 @@
         <span class="stat-footer">Total de equipos registrados</span>
       </div>
     </div>
+
+    <!-- Usuarios -->
     <div class="stat-card">
-      <div class="stat-icon-wrapper blue-group">👤</div>
+      <div class="stat-icon-wrapper blue-group">
+        <i class="fas fa-user"></i>
+      </div>
       <div class="stat-data">
         <span class="stat-label">Usuarios</span>
         <div class="stat-main-row">
@@ -58,8 +62,12 @@
         <span class="stat-footer">Total de usuarios en el sistema</span>
       </div>
     </div>
+
+    <!-- Jugadores (Camiseta Naranja) -->
     <div class="stat-card">
-      <div class="stat-icon-wrapper blue-group">👥</div>
+      <div class="stat-icon-wrapper orange-shirt">
+        <i class="fas fa-tshirt"></i>
+      </div>
       <div class="stat-data">
         <span class="stat-label">Jugadores</span>
         <div class="stat-main-row">
@@ -68,8 +76,12 @@
         <span class="stat-footer">Total de jugadores registrados</span>
       </div>
     </div>
+
+    <!-- Campeonatos (Trofeo Clásico) -->
     <div class="stat-card">
-      <div class="stat-icon-wrapper blue-trophy">🏆</div>
+      <div class="stat-icon-wrapper blue-trophy">
+        <i class="fas fa-trophy"></i>
+      </div>
       <div class="stat-data">
         <span class="stat-label">Campeonatos</span>
         <div class="stat-main-row">

@@ -32,7 +32,6 @@ export class AdminDashboard implements OnInit {
   private championshipService = inject(ChampionshipService);
   private playerService = inject(PlayerService);
 
-  currentUser = this.authService.currentUser();
   successMessage = '';
   errorMessage = '';
 
@@ -102,13 +101,18 @@ export class AdminDashboard implements OnInit {
 
     if (this.authService.getAllUsers) {
       this.authService.getAllUsers().subscribe({
-        next: (users: any[]) => this.allUsersForAdmin.set(users),
+        next: (users: any[]) => {
+          const normalizedUsers = users.map((u) => ({
+            ...u,
+            username: u.username || u.name || u.email?.split('@')[0] || 'Usuario',
+          }));
+          this.allUsersForAdmin.set(normalizedUsers);
+        },
         error: (err: any) => console.error('Error al cargar usuarios:', err),
       });
     }
   }
 
-  // Métodos para la confirmación del cambio de rol estilo modal de eliminación
   confirmToggleRole(user: any): void {
     const newRole = user.role === 'Administrador' ? 'Usuario' : 'Administrador';
     this.userToChangeRole.set({ user, newRole });

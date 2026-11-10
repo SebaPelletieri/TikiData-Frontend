@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 
 @Component({
   standalone: true,
-  imports: [CommonModule, ChampionshipList, ChampionshipForm],
+  imports: [CommonModule, ChampionshipList],
   selector: 'app-championships',
   styleUrl: './championships.css',
   templateUrl: './championships.html',

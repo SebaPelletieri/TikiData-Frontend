@@ -40,7 +40,7 @@
 }
 
 .search-box {
-  flex: 3; /* Buscador con espacio óptimo */
+  flex: 3;
   position: relative;
   display: flex;
   align-items: center;
@@ -101,7 +101,7 @@
 /* ================= BOTÓN PRINCIPAL DE FILTRAR Y PANEL ================= */
 .filter-dropdown-container {
   position: relative;
-  flex: 1.2; /* Ancho equilibrado y armonioso */
+  flex: 1.2;
   min-width: 220px;
   max-width: 260px;
 }
@@ -133,12 +133,17 @@
 
 .trigger-content i {
   color: #7d96b3;
+  transition: color 0.2s ease;
 }
 
 .filter-main-btn:hover {
   border-color: #f97316;
   background: linear-gradient(180deg, #092244 0%, #071932 100%);
   box-shadow: 0 0 12px rgba(249, 115, 22, 0.15);
+}
+
+.filter-main-btn:hover .trigger-content i {
+  color: #f97316;
 }
 
 /* Triángulo indicador */

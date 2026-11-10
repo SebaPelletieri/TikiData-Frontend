@@ -15,7 +15,7 @@
     BlinkMacSystemFont,
     sans-serif;
   background-color: #041326;
-  border: 1px solid #0a264a;
+  border: 1px solid #2b180a;
   border-radius: 20px;
   color: #fff;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
@@ -34,7 +34,7 @@
 .header-icon {
   width: 44px;
   height: 44px;
-  background-color: #3b82f6;
+  background-color: #ff6b00;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -117,15 +117,15 @@
 }
 
 .form-group input:hover {
-  border-color: #38bdf8;
-  background: linear-gradient(180deg, #092244 0%, #071932 100%);
-  box-shadow: 0 0 12px rgba(56, 189, 248, 0.15);
+  border-color: #ff6b00;
+  background: linear-gradient(180deg, #1c1511 0%, #0e121a 100%);
+  box-shadow: 0 0 12px rgba(255, 107, 0, 0.2);
 }
 
 .form-group input:focus {
-  border-color: #38bdf8;
-  background: linear-gradient(180deg, #092244 0%, #071932 100%);
-  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
+  border-color: #ff6b00;
+  background: linear-gradient(180deg, #1c1511 0%, #0e121a 100%);
+  box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.25);
 }
 
 /* =========================================
@@ -155,16 +155,16 @@
 }
 
 .dropdown-trigger:hover {
-  border-color: #38bdf8;
-  background: linear-gradient(180deg, #092244 0%, #071932 100%);
-  box-shadow: 0 0 12px rgba(56, 189, 248, 0.15);
+  border-color: #ff6b00;
+  background: linear-gradient(180deg, #1c1511 0%, #0e121a 100%);
+  box-shadow: 0 0 12px rgba(255, 107, 0, 0.2);
 }
 
 .custom-dropdown.open .dropdown-trigger,
 .dropdown-trigger:focus {
-  border-color: #38bdf8;
-  background: linear-gradient(180deg, #092244 0%, #071932 100%);
-  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
+  border-color: #ff6b00;
+  background: linear-gradient(180deg, #1c1511 0%, #0e121a 100%);
+  box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.25);
 }
 
 .dropdown-trigger .placeholder {
@@ -174,7 +174,7 @@
 .triangle-icon {
   width: 10px;
   height: 6px;
-  background-color: #7d96b3;
+  background-color: #ff6b00;
   clip-path: polygon(0 0, 100% 0, 50% 100%);
   display: inline-block;
   transition:
@@ -185,7 +185,7 @@
 
 .custom-dropdown.open .triangle-icon {
   transform: rotate(180deg);
-  background-color: #38bdf8;
+  background-color: #ff6b00;
 }
 
 .dropdown-menu {
@@ -196,7 +196,7 @@
   max-height: 220px;
   overflow-y: auto;
   background-color: #06182e;
-  border: 1px solid #143d73;
+  border: 1px solid #3d220a;
   border-radius: 12px;
   padding: 6px;
   margin: 0;
@@ -204,7 +204,7 @@
   z-index: 100;
   box-shadow:
     0 12px 30px rgba(0, 0, 0, 0.65),
-    0 0 1px rgba(255, 255, 255, 0.1);
+    0 0 1px rgba(255, 107, 0, 0.15);
   backdrop-filter: blur(8px);
   animation: dropdownFadeIn 0.18s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
@@ -227,11 +227,11 @@
   background: transparent;
 }
 .dropdown-menu::-webkit-scrollbar-thumb {
-  background: #143560;
+  background: #3a2009;
   border-radius: 4px;
 }
 .dropdown-menu::-webkit-scrollbar-thumb:hover {
-  background: #1d4f91;
+  background: #ff6b00;
 }
 
 .dropdown-item {
@@ -256,17 +256,17 @@
 }
 
 .dropdown-item:hover {
-  background-color: #0f2c52;
+  background-color: #381a05;
   color: #ffffff;
 }
 
 .dropdown-item.active {
-  background-color: #163a6b;
+  background-color: #572906;
   color: #ffffff;
   font-weight: 600;
 }
 
-/* 👈 Corrección de tamaño para el check activo */
+/* 👈 Corrección de tamaño y color para el check activo */
 .check-icon,
 .dropdown-item svg {
   width: 16px !important;
@@ -275,8 +275,8 @@
   min-height: 16px !important;
   max-width: 16px !important;
   max-height: 16px !important;
-  stroke: #38bdf8;
-  color: #38bdf8;
+  stroke: #ff6b00;
+  color: #ff6b00;
   flex-shrink: 0;
 }
 
@@ -304,26 +304,26 @@
   text-align: center;
   position: relative;
   overflow: hidden;
-  border: 1.5px dashed #1e497e;
+  border: 1.5px dashed #382413;
   background: linear-gradient(180deg, #071a33 0%, #051428 100%);
   transition: all 0.25s ease;
 }
 
 .dropzone:hover {
-  border-color: #38bdf8;
-  background: linear-gradient(180deg, #092244 0%, #071932 100%);
+  border-color: #ff6b00;
+  background: linear-gradient(180deg, #1c1511 0%, #0e121a 100%);
   transform: translateY(-1px);
 }
 
 .dropzone:hover .upload-icon {
-  color: #38bdf8;
+  color: #ff6b00;
   transform: translateY(-2px);
 }
 
 .upload-icon {
   width: 26px;
   height: 26px;
-  color: #7d96b3;
+  color: #ff6b00;
   margin-bottom: 8px;
   transition:
     transform 0.2s ease,
@@ -349,9 +349,9 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border: 1px solid #143560;
+  border: 1px solid #3d220a;
   border-radius: 12px;
-  background: radial-gradient(circle at center, #0a213f 0%, #061528 100%);
+  background: radial-gradient(circle at center, #1c1008 0%, #061528 100%);
   padding: 1rem;
   position: relative;
 }
@@ -359,7 +359,7 @@
 .shield-icon {
   width: 42px;
   height: 42px;
-  color: #1c3c66;
+  color: #66320e;
   margin-bottom: 6px;
 }
 
@@ -411,7 +411,7 @@
   flex: 1;
   height: 48px;
   background-color: transparent;
-  border: 1px solid #1a3d6b;
+  border: 1px solid #4a280c;
   color: #ffffff;
   border-radius: 12px;
   font-size: 0.95rem;
@@ -422,9 +422,9 @@
 }
 
 .btn-cancel:hover {
-  border-color: #38bdf8;
-  background-color: #092244;
-  box-shadow: 0 0 12px rgba(56, 189, 248, 0.2);
+  border-color: #ff6b00;
+  background-color: #1f1207;
+  box-shadow: 0 0 14px rgba(255, 107, 0, 0.25);
   transform: translateY(-1px);
 }
 
@@ -435,7 +435,7 @@
 .btn-save {
   flex: 1;
   height: 48px;
-  background: linear-gradient(180deg, #2563eb 0%, #1d4ed8 100%);
+  background: linear-gradient(180deg, #ff6b00 0%, #e05e00 100%);
   border: none;
   color: #ffffff;
   border-radius: 12px;
@@ -443,24 +443,24 @@
   font-weight: 600;
   font-family: inherit;
   cursor: pointer;
-  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+  box-shadow: 0 4px 14px rgba(255, 107, 0, 0.4);
   transition: all 0.2s ease;
 }
 
 .btn-save:hover:not(:disabled) {
-  background: linear-gradient(180deg, #3b82f6 0%, #2563eb 100%);
-  box-shadow: 0 6px 18px rgba(37, 99, 235, 0.45);
+  background: linear-gradient(180deg, #ff8124 0%, #ff6b00 100%);
+  box-shadow: 0 6px 18px rgba(255, 107, 0, 0.55);
   transform: translateY(-1px);
 }
 
 .btn-save:active:not(:disabled) {
   transform: translateY(0);
-  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
+  box-shadow: 0 2px 8px rgba(255, 107, 0, 0.3);
 }
 
 .btn-save:disabled {
-  background: #143560;
-  color: #637d9d;
+  background: #2b1d14;
+  color: #735745;
   box-shadow: none;
   cursor: not-allowed;
   transform: none;
@@ -494,9 +494,9 @@
 
 .calendar-trigger:hover,
 .calendar-trigger.open {
-  border-color: #38bdf8;
-  background: linear-gradient(180deg, #092244 0%, #071932 100%);
-  box-shadow: 0 0 12px rgba(56, 189, 248, 0.15);
+  border-color: #ff6b00;
+  background: linear-gradient(180deg, #1c1511 0%, #0e121a 100%);
+  box-shadow: 0 0 12px rgba(255, 107, 0, 0.2);
 }
 
 .calendar-trigger .placeholder {
@@ -512,7 +512,7 @@
 .calendar-icon {
   width: 18px;
   height: 18px;
-  color: #7d96b3;
+  color: #ff6b00;
   flex-shrink: 0;
 }
 
@@ -523,11 +523,11 @@
   width: 100%;
   min-width: 290px;
   background-color: #06182e;
-  border: 1px solid #143560;
+  border: 1px solid #3d220a;
   border-radius: 12px;
   box-shadow:
     0 14px 32px rgba(0, 0, 0, 0.65),
-    0 0 1px rgba(255, 255, 255, 0.1);
+    0 0 1px rgba(255, 107, 0, 0.15);
   padding: 1rem;
   z-index: 1000;
   animation: dropdownFadeIn 0.18s cubic-bezier(0.16, 1, 0.3, 1) forwards;
@@ -551,9 +551,9 @@
 }
 
 .header-select {
-  background-color: #081d38;
+  background-color: #1a120b;
   color: #ffffff;
-  border: 1px solid #143560;
+  border: 1px solid #4a290c;
   border-radius: 6px;
   padding: 4px 6px;
   font-size: 0.85rem;
@@ -566,9 +566,9 @@
 
 .header-select:hover,
 .header-select:focus {
-  border-color: #38bdf8;
-  background-color: #092244;
-  box-shadow: 0 0 8px rgba(56, 189, 248, 0.15);
+  border-color: #ff6b00;
+  background-color: #2b1707;
+  box-shadow: 0 0 8px rgba(255, 107, 0, 0.2);
 }
 
 .header-select option {
@@ -578,7 +578,7 @@
 
 .calendar-nav-btn {
   background: transparent;
-  border: 1px solid #143560;
+  border: 1px solid #4a290c;
   color: #ffffff;
   border-radius: 6px;
   width: 28px;
@@ -593,8 +593,8 @@
 }
 
 .calendar-nav-btn:hover {
-  border-color: #38bdf8;
-  background-color: rgba(56, 189, 248, 0.1);
+  border-color: #ff6b00;
+  background-color: rgba(255, 107, 0, 0.15);
 }
 
 .calendar-weekdays {
@@ -700,6 +700,6 @@
   opacity: 0.75;
   cursor: not-allowed;
   background-color: #061528 !important;
-  color: #38bdf8 !important;
+  color: #ff6b00 !important;
   font-weight: 600;
 }

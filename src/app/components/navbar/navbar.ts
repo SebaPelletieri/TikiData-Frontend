@@ -1,4 +1,4 @@
-import { Component, inject, signal, HostListener, computed } from '@angular/core';
+import { Component, inject, signal, HostListener, computed, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { AuthService } from '../../services/auth-service';
@@ -10,20 +10,34 @@ import { AuthService } from '../../services/auth-service';
   templateUrl: './navbar.html',
   styleUrl: './navbar.css',
 })
-export class Navbar {
+export class Navbar implements OnInit {
   public authService = inject(AuthService);
   private router = inject(Router);
 
   isLightMode = signal(false);
   isProfileMenuOpen = signal(false);
 
-  // 🌟 Propiedad computada adaptada al tipo Role ('Administrador')
   isAdmin = computed(() => {
     const user = this.authService.currentUser();
-    return user?.role === 'Administrador' || (user as any)?.isAdmin === true;
+    return user?.role === 'Administrador';
   });
 
-  // Escucha todos los clics de la página
+  // 🌟 Lectura robusta y a prueba de fallos
+  userName = computed(() => {
+    const user = this.authService.currentUser() as any;
+    if (!user) return '';
+    return user.username || user.name || user.email?.split('@')[0] || '';
+  });
+
+  userInitial = computed(() => {
+    const name = this.userName();
+    return name ? name.charAt(0).toUpperCase() : '';
+  });
+
+  ngOnInit() {
+    console.log('Usuario actual en Navbar:', this.authService.currentUser());
+  }
+
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent): void {
     const target = event.target as HTMLElement;

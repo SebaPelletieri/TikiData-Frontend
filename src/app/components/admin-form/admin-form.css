@@ -15,7 +15,7 @@
     BlinkMacSystemFont,
     sans-serif;
   background-color: #041326;
-  border: 1px solid #0a264a;
+  border: 1px solid #2b180a;
   border-radius: 20px;
   color: #fff;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
@@ -35,7 +35,7 @@
 .form-icon-box {
   width: 44px;
   height: 44px;
-  background-color: #3b82f6;
+  background-color: #ff6b00;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -110,15 +110,15 @@
 }
 
 .form-group input:hover {
-  border-color: #38bdf8;
-  background: linear-gradient(180deg, #092244 0%, #071932 100%);
-  box-shadow: 0 0 12px rgba(56, 189, 248, 0.15);
+  border-color: #ff6b00;
+  background: linear-gradient(180deg, #1c1511 0%, #0e121a 100%);
+  box-shadow: 0 0 12px rgba(255, 107, 0, 0.2);
 }
 
 .form-group input:focus {
-  border-color: #38bdf8;
-  background: linear-gradient(180deg, #092244 0%, #071932 100%);
-  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
+  border-color: #ff6b00;
+  background: linear-gradient(180deg, #1c1511 0%, #0e121a 100%);
+  box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.25);
 }
 
 .form-group input.invalid,
@@ -140,7 +140,7 @@
 
 .password-input-wrapper input {
   width: 100%;
-  padding-right: 45px !important; /* Espacio para que el icono no se encime al texto */
+  padding-right: 45px !important;
 }
 
 .toggle-password-btn {
@@ -148,7 +148,7 @@
   right: 12px;
   background: transparent;
   border: none;
-  color: #7d96b3; /* Color neutro por defecto */
+  color: #7d96b3;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -161,7 +161,7 @@
 }
 
 .toggle-password-btn:hover {
-  color: #ff6b00; /* Naranja Tiki Data solo al pasar el mouse */
+  color: #ff6b00;
   filter: drop-shadow(0 0 6px rgba(255, 107, 0, 0.6));
   transform: scale(1.1);
 }
@@ -190,26 +190,26 @@
   text-align: center;
   position: relative;
   overflow: hidden;
-  border: 1.5px dashed #1e497e;
+  border: 1.5px dashed #382413;
   background: linear-gradient(180deg, #071a33 0%, #051428 100%);
   transition: all 0.25s ease;
 }
 
 .dropzone:hover {
-  border-color: #38bdf8;
-  background: linear-gradient(180deg, #092244 0%, #071932 100%);
+  border-color: #ff6b00;
+  background: linear-gradient(180deg, #1c1511 0%, #0e121a 100%);
   transform: translateY(-1px);
 }
 
 .dropzone:hover .upload-icon {
-  color: #38bdf8;
+  color: #ff6b00;
   transform: translateY(-2px);
 }
 
 .upload-icon {
   width: 26px;
   height: 26px;
-  color: #7d96b3;
+  color: #ff6b00;
   margin-bottom: 8px;
   transition:
     transform 0.2s ease,
@@ -235,9 +235,9 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border: 1px solid #143560;
+  border: 1px solid #3d220a;
   border-radius: 12px;
-  background: radial-gradient(circle at center, #0a213f 0%, #061528 100%);
+  background: radial-gradient(circle at center, #1c1008 0%, #061528 100%);
   padding: 1rem;
   position: relative;
   min-height: 90px;
@@ -246,7 +246,7 @@
 .shield-icon {
   width: 36px;
   height: 36px;
-  color: #1c3c66;
+  color: #66320e;
   margin-bottom: 6px;
 }
 
@@ -261,7 +261,7 @@
   height: 50px;
   border-radius: 50%;
   object-fit: cover;
-  border: 2px solid #38bdf8;
+  border: 2px solid #ff6b00;
 }
 
 .btn-remove-shield {
@@ -334,9 +334,9 @@
 }
 
 .alert-success {
-  background-color: rgba(56, 189, 248, 0.15);
-  border: 1px solid #38bdf8;
-  color: #38bdf8;
+  background-color: rgba(255, 107, 0, 0.15);
+  border: 1px solid #ff6b00;
+  color: #ff8124;
   padding: 10px 14px;
   border-radius: 10px;
   font-size: 0.86rem;
@@ -356,7 +356,7 @@
   flex: 1;
   height: 48px;
   background-color: transparent;
-  border: 1px solid #1a3d6b;
+  border: 1px solid #4a280c;
   color: #ffffff;
   border-radius: 12px;
   font-size: 0.95rem;
@@ -367,9 +367,9 @@
 }
 
 .btn-cancel:hover {
-  border-color: #38bdf8;
-  background-color: #092244;
-  box-shadow: 0 0 12px rgba(56, 189, 248, 0.2);
+  border-color: #ff6b00;
+  background-color: #1f1207;
+  box-shadow: 0 0 14px rgba(255, 107, 0, 0.25);
   transform: translateY(-1px);
 }
 
@@ -380,7 +380,7 @@
 .btn-submit {
   flex: 1;
   height: 48px;
-  background: linear-gradient(180deg, #2563eb 0%, #1d4ed8 100%);
+  background: linear-gradient(180deg, #ff6b00 0%, #e05e00 100%);
   border: none;
   color: #ffffff;
   border-radius: 12px;
@@ -388,24 +388,24 @@
   font-weight: 600;
   font-family: inherit;
   cursor: pointer;
-  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+  box-shadow: 0 4px 14px rgba(255, 107, 0, 0.4);
   transition: all 0.2s ease;
 }
 
 .btn-submit:hover:not(:disabled) {
-  background: linear-gradient(180deg, #3b82f6 0%, #2563eb 100%);
-  box-shadow: 0 6px 18px rgba(37, 99, 235, 0.45);
+  background: linear-gradient(180deg, #ff8124 0%, #ff6b00 100%);
+  box-shadow: 0 6px 18px rgba(255, 107, 0, 0.55);
   transform: translateY(-1px);
 }
 
 .btn-submit:active:not(:disabled) {
   transform: translateY(0);
-  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
+  box-shadow: 0 2px 8px rgba(255, 107, 0, 0.3);
 }
 
 .btn-submit:disabled {
-  background: #143560;
-  color: #637d9d;
+  background: #2b1d14;
+  color: #735745;
   box-shadow: none;
   cursor: not-allowed;
   transform: none;

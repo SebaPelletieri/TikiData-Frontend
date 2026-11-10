@@ -30,7 +30,7 @@ export class TeamForm {
   teamService = inject(TeamService);
   fb = inject(FormBuilder);
 
-  // 🌟 Evento para notificar al componente padre (ProfileDetail) que cierre el panel y recargue
+  // Evento para notificar al componente padre que cierre el panel y recargue
   @Output() closePanel = new EventEmitter<void>();
 
   formulario = this.fb.nonNullable.group({
@@ -58,7 +58,6 @@ export class TeamForm {
     this.shieldPreview = null;
     this.championshipSearchText.set('');
 
-    // 🌟 Cierra el panel y actualiza la tabla de administración sin cambiar de ruta
     this.closePanel.emit();
   }
 
@@ -67,7 +66,6 @@ export class TeamForm {
     this.shieldPreview = null;
     this.championshipSearchText.set('');
 
-    // 🌟 Cierra el panel lateral al cancelar
     this.closePanel.emit();
   }
 
@@ -224,7 +222,10 @@ export class TeamForm {
     return years;
   }
 
-  toggleCalendar(): void {
+  toggleCalendar(event?: MouseEvent): void {
+    if (event) {
+      event.stopPropagation();
+    }
     this.isCalendarOpen = !this.isCalendarOpen;
     this.isCountryOpen = false;
     this.isStadiumOpen = false;

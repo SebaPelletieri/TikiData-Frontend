@@ -5,7 +5,7 @@ import { ActivatedRoute, RouterModule } from '@angular/router';
 import { MatchService } from '../../services/match-service';
 
 @Component({
-  imports: [CommonModule, RouterModule, DatePipe],
+  imports: [CommonModule, RouterModule],
   selector: 'app-match-detail',
   styleUrl: './match-detail.css',
   templateUrl: './match-detail.html',

@@ -29,13 +29,8 @@ export class AuthService {
       .get<any[]>(`${this.apiUrl}/usuarios`)
       .pipe(
         map((users) =>
-          users.some(
-            (u) =>
-              (u.userName && u.userName.toLowerCase() === userName.toLowerCase()) ||
-              (u.username && u.username.toLowerCase() === userName.toLowerCase()) ||
-              (u.name && u.name.toLowerCase() === userName.toLowerCase())
-          )
-        )
+          users.some((u) => u.username && u.username.toLowerCase() === userName.toLowerCase()),
+        ),
       );
   }
 
@@ -43,15 +38,13 @@ export class AuthService {
     return this.http
       .get<any[]>(`${this.apiUrl}/usuarios`)
       .pipe(
-        map((users) =>
-          users.some((u) => u.email && u.email.toLowerCase() === email.toLowerCase())
-        )
+        map((users) => users.some((u) => u.email && u.email.toLowerCase() === email.toLowerCase())),
       );
   }
 
   login(credentials: LoginRequest): Observable<User> {
     return this.http
-      .get<User[]>(
+      .get<any[]>(
         `${this.apiUrl}/usuarios?email=${credentials.email}&password=${credentials.password}`,
       )
       .pipe(
@@ -59,7 +52,13 @@ export class AuthService {
           if (!users || users.length === 0) {
             throw new Error('Credenciales inválidas');
           }
-          return users[0];
+          const u = users[0];
+          // 🌟 Mapeamos 'name' a 'username' si el registro viejo no lo tiene
+          const normalizedUser: User = {
+            ...u,
+            username: u.username || u.name || 'Usuario',
+          };
+          return normalizedUser;
         }),
         tap((user) => {
           localStorage.setItem('tiki_token', 'fake-jwt-token-123');
@@ -70,7 +69,7 @@ export class AuthService {
   }
 
   register(userData: RegisterRequest | any): Observable<User> {
-    return this.checkUsernameExists(userData.userName).pipe(
+    return this.checkUsernameExists(userData.username).pipe(
       switchMap((usernameExists) => {
         if (usernameExists) {
           return throwError(() => new Error('El nombre de usuario ya está registrado.'));
@@ -92,7 +91,7 @@ export class AuthService {
         };
 
         return this.http.post<User>(`${this.apiUrl}/usuarios`, dataWithRole);
-      })
+      }),
     );
   }
 
@@ -106,7 +105,6 @@ export class AuthService {
     return this.currentUser() !== null;
   }
 
-  // Permite actualizar los datos del usuario en json-server y en la señal
   updateUser(id: number, updatedData: Partial<User>): Observable<User> {
     return this.http.patch<User>(`${this.apiUrl}/usuarios/${id}`, updatedData).pipe(
       tap((user) => {
@@ -122,18 +120,16 @@ export class AuthService {
       map((users) =>
         users.map((u) => ({
           ...u,
-          username: u.username || u.name || 'Sin nombre',
+          username: u.username || u.name || 'Usuario', 
         })),
       ),
     );
   }
 
-  // Cambiar el rol de un usuario específico (Administrador / Usuario)
   updateUserRole(id: number, role: 'Administrador' | 'Usuario'): Observable<User> {
     return this.http.patch<User>(`${this.apiUrl}/usuarios/${id}`, { role });
   }
 
-  // Eliminar un usuario del sistema por su ID
   deleteUser(id: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/usuarios/${id}`);
   }

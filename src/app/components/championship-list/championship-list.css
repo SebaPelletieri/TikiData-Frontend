@@ -2,6 +2,7 @@
   box-sizing: border-box;
 }
 
+
 .championship-list-container {
   max-width: 1400px;
   width: 94%;
@@ -61,7 +62,7 @@
   width: 100%;
   height: 44px;
   background: linear-gradient(180deg, #071a33 0%, #051428 100%);
-  border: 1px solid #1e497e;
+  border: 1px solid rgba(49, 93, 148, 0.45);
   border-radius: 12px;
   padding: 0 14px 0 42px;
   color: #ffffff;
@@ -78,23 +79,23 @@
 }
 
 .search-box input:hover {
-  border-color: #f97316;
-  background: linear-gradient(180deg, #092244 0%, #071932 100%);
-  box-shadow: 0 0 12px rgba(249, 115, 22, 0.15);
+  border-color: #ff6b00;
+  background: linear-gradient(180deg, #1c1511 0%, #0e121a 100%);
+  box-shadow: 0 0 12px rgba(255, 107, 0, 0.2);
 }
 
 .search-box:hover .search-icon {
-  color: #f97316;
+  color: #ff6b00;
 }
 
 .search-box input:focus {
-  border-color: #f97316;
-  background: linear-gradient(180deg, #092244 0%, #071932 100%);
-  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.2);
+  border-color: #ff6b00;
+  background: linear-gradient(180deg, #1c1511 0%, #0e121a 100%);
+  box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.2);
 }
 
 .search-box input:focus + .search-icon {
-  color: #f97316;
+  color: #ff6b00;
 }
 
 /* ================= BOTÓN PRINCIPAL DE FILTRAR Y PANEL ================= */
@@ -108,9 +109,9 @@
 .filter-main-btn {
   width: 100%;
   height: 44px;
-  background: linear-gradient(180deg, #071a33 0%, #051428 100%);
+  background-color: #06182e;
   color: #ffffff;
-  border: 1px solid #1e497e;
+  border: 1px solid rgba(49, 93, 148, 0.45);
   border-radius: 12px;
   padding: 0 16px;
   display: flex;
@@ -132,16 +133,17 @@
 
 .trigger-content i {
   color: #7d96b3;
+  transition: color 0.2s ease;
 }
 
 .filter-main-btn:hover {
-  border-color: #f97316;
-  background: linear-gradient(180deg, #092244 0%, #071932 100%);
-  box-shadow: 0 0 12px rgba(249, 115, 22, 0.15);
+  border-color: #ff6b00;
+  background-color: rgba(255, 107, 0, 0.08);
+  box-shadow: 0 0 14px rgba(255, 107, 0, 0.22);
 }
 
 .filter-main-btn:hover .trigger-content i {
-  color: #f97316;
+  color: #ff6b00;
 }
 
 /* Triángulo indicador unificado con hover */
@@ -161,15 +163,15 @@
 .sub-dropdown-trigger:hover .triangle-icon,
 .sub-dropdown.open .triangle-icon,
 .country-header:hover .triangle-icon {
-  background-color: #f97316 !important;
+  background-color: #ff6b00 !important;
 }
 
 .triangle-icon.rotate {
   transform: rotate(180deg);
-  background-color: #f97316 !important;
+  background-color: #ff6b00 !important;
 }
 
-/* Panel flotante principal de filtros (Sin recortes) */
+/* Panel flotante principal de filtros */
 .filter-panel {
   position: absolute;
   top: calc(100% + 8px);
@@ -177,7 +179,7 @@
   left: auto;
   width: 100%;
   background-color: #06182e;
-  border: 1px solid #143d73;
+  border: 1px solid rgba(49, 93, 148, 0.45);
   border-radius: 14px;
   padding: 12px;
   box-shadow:
@@ -237,9 +239,9 @@
 .sub-dropdown-trigger {
   width: 100%;
   height: 40px;
-  background: linear-gradient(180deg, #041326 0%, #030d1a 100%);
+  background-color: #041326;
   color: #ffffff;
-  border: 1px solid #143560;
+  border: 1px solid rgba(49, 93, 148, 0.4);
   border-radius: 10px;
   padding: 0 12px;
   display: flex;
@@ -254,7 +256,7 @@
 }
 
 .sub-dropdown-trigger:hover {
-  border-color: #f97316;
+  border-color: #ff6b00;
 }
 
 .sub-dropdown-menu {
@@ -263,7 +265,7 @@
   left: 0;
   width: 100%;
   background-color: #06182e;
-  border: 1px solid #143d73;
+  border: 1px solid rgba(49, 93, 148, 0.45);
   border-radius: 10px;
   margin: 0;
   list-style: none;
@@ -321,20 +323,21 @@
 }
 
 .sub-dropdown-item:hover {
-  background-color: #0f2c52;
-  color: #ffffff;
+  background-color: rgba(255, 107, 0, 0.12) !important;
+  color: #ffffff !important;
 }
 
 .sub-dropdown-item.active {
-  background-color: #163a6b;
-  color: #ffffff;
+  background-color: rgba(255, 107, 0, 0.22) !important;
+  color: #ffffff !important;
   font-weight: 600;
 }
 
 .check-icon {
   width: 16px !important;
   height: 16px !important;
-  stroke: #f97316;
+  stroke: #ff6b00 !important;
+  color: #ff6b00 !important;
   flex-shrink: 0;
 }
 
@@ -346,28 +349,35 @@
 }
 
 .country-block {
-  background: linear-gradient(180deg, #051428 0%, #030e1d 100%);
-  border: 1px solid #143560;
+  background: linear-gradient(180deg, #06182e 0%, #041224 100%);
+  border: 1px solid rgba(49, 93, 148, 0.45);
   border-radius: 16px;
   overflow: hidden;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
-  transition: border-color 0.2s ease;
+  transition: all 0.25s ease;
+}
+
+.country-block:hover {
+  border-color: #ff6b00;
+  box-shadow: 0 6px 20px rgba(255, 107, 0, 0.15);
 }
 
 .country-header {
   padding: 1.2rem 1.6rem;
   background-color: rgba(6, 24, 46, 0.7);
-  border-bottom: 1px solid #143560;
+  border-bottom: 1px solid rgba(49, 93, 148, 0.3);
   display: flex;
   align-items: center;
   justify-content: space-between;
   cursor: pointer;
   user-select: none;
-  transition: background-color 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
 }
 
 .country-header:hover {
-  background-color: rgba(15, 44, 82, 0.7);
+  background-color: rgba(255, 107, 0, 0.12);
 }
 
 .country-title-wrapper {
@@ -435,7 +445,7 @@
 
 .champ-card {
   background: linear-gradient(180deg, #06182e 0%, #041224 100%);
-  border: 1px solid #143560;
+  border: 1px solid rgba(49, 93, 148, 0.45);
   border-radius: 16px;
   padding: 1.6rem 1rem 1.4rem;
   display: flex;
@@ -452,8 +462,8 @@
 
 .champ-card:hover {
   transform: translateY(-5px);
-  border-color: #f97316;
-  box-shadow: 0 14px 30px rgba(249, 115, 22, 0.18);
+  border-color: #ff6b00;
+  box-shadow: 0 14px 30px rgba(255, 107, 0, 0.18);
 }
 
 .champ-logo-wrapper {
@@ -464,7 +474,7 @@
   justify-content: center;
   margin-bottom: 1.1rem;
   background-color: #030d1a;
-  border: 1px solid #143560;
+  border: 1px solid rgba(49, 93, 148, 0.45);
   border-radius: 50%;
   padding: 8px;
   overflow: hidden;
@@ -513,15 +523,15 @@
 }
 
 .champ-type-badge.league {
-  background-color: rgba(56, 189, 248, 0.12);
-  color: #38bdf8;
-  border: 1px solid rgba(56, 189, 248, 0.3);
+  background-color: rgba(255, 107, 0, 0.15);
+  color: #ff6b00;
+  border: 1px solid rgba(255, 107, 0, 0.3);
 }
 
 .champ-type-badge.cup {
-  background-color: rgba(245, 158, 11, 0.12);
-  color: #f59e0b;
-  border: 1px solid rgba(245, 158, 11, 0.3);
+  background-color: rgba(59, 130, 246, 0.15);
+  color: #60a5fa;
+  border: 1px solid rgba(59, 130, 246, 0.3);
 }
 
 .empty-state {
@@ -532,7 +542,7 @@
   font-weight: 500;
   color: #7d96b3;
   background-color: #06182e;
-  border: 1px solid #143560;
+  border: 1px solid rgba(49, 93, 148, 0.45);
   border-radius: 14px;
 }
 

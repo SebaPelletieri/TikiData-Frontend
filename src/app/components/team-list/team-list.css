@@ -79,30 +79,31 @@
 }
 
 .search-box input:hover {
-  border-color: #f97316;
-  background: linear-gradient(180deg, #092244 0%, #071932 100%);
-  box-shadow: 0 0 12px rgba(249, 115, 22, 0.15);
+  border-color: #ff6b00;
+  background: linear-gradient(180deg, #1c1511 0%, #0e121a 100%);
+  box-shadow: 0 0 12px rgba(255, 107, 0, 0.2);
 }
 
 .search-box:hover .search-icon {
-  color: #f97316;
+  color: #ff6b00;
 }
 
 .search-box input:focus {
-  border-color: #f97316;
-  background: linear-gradient(180deg, #092244 0%, #071932 100%);
-  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.2);
+  border-color: #ff6b00;
+  background: linear-gradient(180deg, #1c1511 0%, #0e121a 100%);
+  box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.2);
 }
 
 .search-box input:focus + .search-icon {
-  color: #f97316;
+  color: #ff6b00;
 }
 
-/* ================= DROPDOWN DE PAÍS (Con animación suave) ================= */
+/* ================= DROPDOWN DE PAÍS ================= */
 .select-filters {
-  flex: 1;
+  position: relative;
+  flex: 1.2;
   min-width: 220px;
-  max-width: 220px;
+  max-width: 260px;
 }
 
 .custom-dropdown {
@@ -113,11 +114,11 @@
 .dropdown-trigger {
   width: 100%;
   height: 44px;
-  background: linear-gradient(180deg, #071a33 0%, #051428 100%);
+  background-color: #06182e;
   color: #ffffff;
-  border: 1px solid #1e497e;
+  border: 1px solid rgba(49, 93, 148, 0.45);
   border-radius: 12px;
-  padding: 0 14px;
+  padding: 0 16px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -130,9 +131,9 @@
 }
 
 .dropdown-trigger:hover {
-  border-color: #f97316;
-  background: linear-gradient(180deg, #092244 0%, #071932 100%);
-  box-shadow: 0 0 12px rgba(249, 115, 22, 0.15);
+  border-color: #ff6b00;
+  background-color: rgba(255, 107, 0, 0.12);
+  box-shadow: 0 0 14px rgba(255, 107, 0, 0.22);
 }
 
 .triangle-icon {
@@ -150,59 +151,30 @@
 .dropdown-trigger:hover .triangle-icon,
 .custom-dropdown.open .triangle-icon,
 .country-header:hover .triangle-icon {
-  background-color: #f97316 !important;
+  background-color: #ff6b00 !important;
 }
 
 .triangle-icon.rotate {
   transform: rotate(180deg);
-  background-color: #f97316 !important;
+  background-color: #ff6b00 !important;
 }
 
-/* ================= DROPDOWN DE PAÍS (Apertura ultra suave) ================= */
-/* ================= DROPDOWN DE PAÍS (Apertura ultra sedosa) ================= */
-.custom-dropdown {
-  position: relative;
-  width: 100%;
-}
-
+/* ================= MENÚ DESPLEGABLE DE PAÍS ================= */
 .dropdown-menu {
   position: absolute;
-  top: calc(100% + 6px);
+  top: calc(100% + 8px);
   left: 0;
   width: 100%;
   background-color: #06182e;
-  border: 1px solid #143d73;
-  border-radius: 12px;
+  border: 1px solid rgba(49, 93, 148, 0.45);
+  border-radius: 14px;
   margin: 0;
   list-style: none;
   z-index: 100;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.65);
+  box-shadow:
+    0 12px 30px rgba(0, 0, 0, 0.65),
+    0 0 1px rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(8px);
-
-  /* Truco de CSS Grid para animar altura de forma fluida y nativa */
-  display: grid;
-  grid-template-rows: 0fr;
-  padding: 0 6px;
-  opacity: 0;
-  visibility: hidden;
-  transition:
-    grid-template-rows 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-    opacity 0.3s ease-in-out,
-    padding 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-    visibility 0.4s ease;
-}
-
-/* Contenedor interno invisible para permitir la transición fluida de la grilla */
-.dropdown-menu > * {
-  overflow: hidden;
-  min-height: 0;
-}
-
-/* Estado abierto con curva de aceleración suave (ease-out orgánico) */
-.custom-dropdown.open .dropdown-menu {
-  grid-template-rows: 1fr;
-  opacity: 1;
-  visibility: visible;
   padding: 6px;
 }
 
@@ -210,11 +182,11 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 14px;
-  font-size: 0.88rem;
+  padding: 8px 10px;
+  font-size: 0.84rem;
   font-weight: 500;
   color: #c9d8eb;
-  border-radius: 8px;
+  border-radius: 6px;
   cursor: pointer;
   transition:
     background-color 0.15s ease,
@@ -222,20 +194,20 @@
 }
 
 .dropdown-item:hover {
-  background-color: #0f2c52;
-  color: #ffffff;
+  background-color: rgba(255, 107, 0, 0.12) !important;
+  color: #ffffff !important;
 }
 
 .dropdown-item.active {
-  background-color: #163a6b;
-  color: #ffffff;
+  background-color: rgba(255, 107, 0, 0.22) !important;
+  color: #ffffff !important;
   font-weight: 600;
 }
 
 .check-icon {
   width: 16px !important;
   height: 16px !important;
-  stroke: #f97316;
+  stroke: #ff6b00 !important;
   flex-shrink: 0;
 }
 
@@ -247,38 +219,41 @@
 }
 
 .country-block {
-  background: linear-gradient(180deg, #051428 0%, #030e1d 100%);
-  border: 1px solid #143560;
+  background: linear-gradient(180deg, #06182e 0%, #041224 100%);
+  border: 1px solid rgba(49, 93, 148, 0.45);
   border-radius: 16px;
   overflow: hidden;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
-  transition: border-color 0.2s ease;
+  transition: all 0.25s ease;
+}
+
+.country-block:hover {
+  border-color: #ff6b00;
+  box-shadow: 0 6px 20px rgba(255, 107, 0, 0.15);
 }
 
 .country-header {
   padding: 1.2rem 1.6rem;
   background-color: rgba(6, 24, 46, 0.7);
-  border-bottom: 1px solid #143560;
+  border-bottom: 1px solid rgba(49, 93, 148, 0.3);
   display: flex;
   align-items: center;
   justify-content: space-between;
   cursor: pointer;
   user-select: none;
-  transition: background-color 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
 }
 
 .country-header:hover {
-  background-color: rgba(15, 44, 82, 0.7);
+  background-color: rgba(255, 107, 0, 0.12);
 }
 
 .country-title-wrapper {
   display: flex;
   align-items: center;
   gap: 12px;
-}
-
-.country-flag-icon {
-  font-size: 1.4rem;
 }
 
 .country-header h3 {
@@ -331,7 +306,7 @@
   margin: 0;
   font-size: 1.05rem;
   font-weight: 600;
-  color: #f97316;
+  color: #ff6b00;
   letter-spacing: -0.01em;
 }
 
@@ -382,8 +357,8 @@
 
 .team-card:hover {
   transform: translateY(-4px);
-  border-color: #f97316;
-  box-shadow: 0 12px 26px rgba(249, 115, 22, 0.15);
+  border-color: #ff6b00;
+  box-shadow: 0 12px 26px rgba(255, 107, 0, 0.2);
 }
 
 .team-logo-wrapper {

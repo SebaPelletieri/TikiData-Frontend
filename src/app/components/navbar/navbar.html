@@ -1,59 +1,88 @@
 <nav class="navbar">
+  <!-- Logo y Marca -->
   <div class="navbar__brand">
-    <img src="Logo-NavBar.png" alt="TikiData Logo" class="navbar__logo" />
+    <img src="Logo-NavBar.png" alt="TikiData Logo" class="navbar__logo" routerLink="/inicio" />
   </div>
 
+  <!-- Menú de Enlaces -->
   <ul class="navbar__menu">
     <li
       class="navbar__item"
       routerLinkActive="navbar__item--active"
       [routerLinkActiveOptions]="{ exact: true }"
     >
-      <a routerLink="/" class="navbar__link"> <i class="fas fa-home navbar__icon"></i> Inicio </a>
-    </li>
-
-    <li class="navbar__item" routerLinkActive="navbar__item--active">
-      <a routerLink="/en-vivo" class="navbar__link">
-        <i class="fas fa-power-off navbar__icon"></i> En Vivo
+      <a class="navbar__link" routerLink="/">
+        <i class="fas fa-home navbar__icon"></i>
+        Inicio
       </a>
     </li>
-
     <li class="navbar__item" routerLinkActive="navbar__item--active">
-      <a routerLink="/matches" class="navbar__link">
-        <i class="fas fa-futbol navbar__icon"></i> Partidos
+      <a class="navbar__link" routerLink="/live">
+        <i class="fas fa-play-circle navbar__icon"></i>
+        En Vivo
       </a>
     </li>
-
     <li class="navbar__item" routerLinkActive="navbar__item--active">
-      <a routerLink="/championships" class="navbar__link">
-        <i class="fas fa-trophy navbar__icon"></i> Campeonatos
+      <a class="navbar__link" routerLink="/matches">
+        <i class="fas fa-futbol navbar__icon"></i>
+        Partidos
       </a>
     </li>
-
     <li class="navbar__item" routerLinkActive="navbar__item--active">
-      <a routerLink="/teams" class="navbar__link">
-        <i class="fas fa-shield-alt navbar__icon"></i> Equipos
+      <a class="navbar__link" routerLink="/championships">
+        <i class="fas fa-trophy navbar__icon"></i>
+        Campeonatos
       </a>
     </li>
-
     <li class="navbar__item" routerLinkActive="navbar__item--active">
-      <a routerLink="/players" class="navbar__link">
-        <i class="fas fa-users navbar__icon"></i> Jugadores
+      <a class="navbar__link" routerLink="/teams">
+        <i class="fas fa-shield-alt navbar__icon"></i>
+        Equipos
+      </a>
+    </li>
+    <li class="navbar__item" routerLinkActive="navbar__item--active">
+      <a class="navbar__link" routerLink="/players">
+        <i class="fas fa-users navbar__icon"></i>
+        Jugadores
       </a>
     </li>
   </ul>
 
+  <!-- Utilidades (Buscador Global, Switch y Perfil) -->
   <div class="navbar__utils">
+    <!-- Buscador Global -->
     <div class="navbar__search">
       <i class="fas fa-search navbar__search-icon"></i>
       <input
         type="text"
         class="navbar__search-input"
+        [ngModel]="searchText()"
+        (ngModelChange)="searchText.set($event)"
+        (focus)="isSearchFocused.set(true)"
         placeholder="Buscar equipos, ligas o jugadores..."
       />
+
+      <!-- Resultados desplegables del buscador -->
+      @if (isSearchFocused() && searchText().trim() !== '') {
+        <ul class="navbar__search-dropdown" (mousedown)="$event.preventDefault()">
+          @for (item of searchResults(); track item.id + item.type) {
+            <li class="search-dropdown-item" (click)="selectSearchResult(item)">
+              <div class="search-item-info">
+                <span class="search-item-name">{{ item.name }}</span>
+                @if (item.subtitle) {
+                  <span class="search-item-sub">{{ item.subtitle }}</span>
+                }
+              </div>
+              <span class="search-badge" [class]="item.type">{{ item.type }}</span>
+            </li>
+          } @empty {
+            <li class="search-empty">No se encontraron resultados</li>
+          }
+        </ul>
+      }
     </div>
 
-    <!-- Interruptor de Tema (Luna / Sol) -->
+    <!-- Switch de Tema (Luna / Sol) -->
     <div class="navbar__theme">
       <label class="toggle-switch">
         <input
@@ -71,87 +100,58 @@
       </label>
     </div>
 
-    @if (!authService.currentUser()) {
-      <a routerLink="/login" class="navbar__profile" aria-label="Ingresar" title="Ingresar">
-        <i class="fas fa-sign-in-alt"></i>
-      </a>
-    } @else {
-      <div class="navbar__user-dropdown">
-        <button
-          type="button"
-          (click)="toggleProfileMenu($event)"
-          class="navbar__profile navbar__profile--avatar"
-          [class.navbar__profile--active]="isProfileMenuOpen()"
-          aria-label="Perfil de usuario"
-          title="Mi Cuenta"
-        >
-          @if (authService.currentUser()?.avatar) {
-            <img
-              [src]="authService.currentUser()?.avatar"
-              alt="Avatar"
-              class="navbar__avatar-img"
-            />
-          } @else {
-            <span class="navbar__avatar-initial">
-              {{ userInitial() }}
-            </span>
-          }
-        </button>
+    <!-- Menú de Perfil de Usuario -->
+    <div class="navbar__user-dropdown">
+      <button
+        type="button"
+        class="navbar__profile navbar__profile--avatar"
+        [class.navbar__profile--active]="isProfileMenuOpen()"
+        (click)="toggleProfileMenu($event)"
+        aria-label="Menú de usuario"
+      >
+        <span class="navbar__avatar-initial">{{ userInitial() }}</span>
+      </button>
 
-        @if (isProfileMenuOpen()) {
-          <div class="navbar__dropdown-menu">
-            <!-- Cabecera con el Nombre de Usuario real y el correo -->
-            <div class="navbar__dropdown-user">
-              <div class="navbar__dropdown-avatar">
-                @if (authService.currentUser()?.avatar) {
-                  <img
-                    [src]="authService.currentUser()?.avatar"
-                    alt="Avatar"
-                    class="navbar__dropdown-avatar-img"
-                  />
-                } @else {
-                  <span>
-                    {{ userInitial() }}
-                  </span>
-                }
-              </div>
-              <div class="navbar__dropdown-user-info">
-                <span class="navbar__dropdown-name">
-                  {{ userName() }}
-                </span>
-                <span class="navbar__dropdown-email">
-                  {{ authService.currentUser()?.email }}
-                </span>
-              </div>
+      @if (isProfileMenuOpen()) {
+        <div class="navbar__dropdown-menu">
+          <div class="navbar__dropdown-user">
+            <div class="navbar__dropdown-avatar">
+              <span>{{ userInitial() }}</span>
             </div>
-
-            <hr class="navbar__dropdown-divider" />
-
-            <a routerLink="/profile" class="navbar__dropdown-link" (click)="closeProfileMenu()">
-              <i class="fas fa-id-card"></i>
-              <span>Ver Perfil</span>
-            </a>
-
-            @if (isAdmin()) {
-              <a routerLink="/admin" class="navbar__dropdown-link" (click)="closeProfileMenu()">
-                <i class="fas fa-shield-alt"></i>
-                <span>Panel de Administración</span>
-              </a>
-            }
-
-            <hr class="navbar__dropdown-divider navbar__dropdown-divider--sub" />
-
-            <button
-              type="button"
-              class="navbar__dropdown-link navbar__dropdown-link--logout"
-              (click)="onLogout()"
-            >
-              <i class="fas fa-sign-out-alt"></i>
-              <span>Cerrar Sesión</span>
-            </button>
+            <div class="navbar__dropdown-user-info">
+              <span class="navbar__dropdown-name">{{ userName() }}</span>
+              <span class="navbar__dropdown-email">{{
+                authService.currentUser()?.email || 'Usuario'
+              }}</span>
+            </div>
           </div>
-        }
-      </div>
-    }
+
+          <hr class="navbar__dropdown-divider" />
+
+          <a routerLink="/profile" class="navbar__dropdown-link" (click)="closeProfileMenu()">
+            <i class="fas fa-user-circle"></i>
+            Mi Perfil
+          </a>
+
+          @if (isAdmin()) {
+            <a routerLink="/admin" class="navbar__dropdown-link" (click)="closeProfileMenu()">
+              <i class="fas fa-cog"></i>
+              Panel de Administración
+            </a>
+          }
+
+          <hr class="navbar__dropdown-divider navbar__dropdown-divider--sub" />
+
+          <button
+            type="button"
+            class="navbar__dropdown-link navbar__dropdown-link--logout"
+            (click)="onLogout()"
+          >
+            <i class="fas fa-sign-out-alt"></i>
+            Cerrar Sesión
+          </button>
+        </div>
+      }
+    </div>
   </div>
 </nav>

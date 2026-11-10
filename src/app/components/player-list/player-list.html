@@ -19,7 +19,7 @@
       <input
         type="text"
         [ngModel]="searchText()"
-        (ngModelChange)="searchText.set($event)"
+        (ngModelChange)="onSearchChange($event)"
         placeholder="Buscar jugadores..."
       />
     </div>
@@ -68,7 +68,7 @@
             </div>
           </div>
 
-          <!-- Sección 3: Nacionalidad -->
+          <!-- Sección 2: Nacionalidad -->
           <div class="filter-panel-section">
             <span class="filter-panel-title">Nacionalidad</span>
             <div class="sub-dropdown" [class.open]="isNationalityDropdownOpen">
@@ -104,7 +104,7 @@
     </div>
   </div>
 
-  <!-- Contenedor Principal de la Tabla  -->
+  <!-- Contenedor Principal de la Tabla con Paginación -->
   <div class="table-card">
     <table class="styled-table">
       <thead>
@@ -118,7 +118,7 @@
         </tr>
       </thead>
       <tbody>
-        @for (player of filteredPlayers(); track player.id) {
+        @for (player of paginatedPlayers(); track player.id) {
           <tr [routerLink]="['/player', player.id]" class="player-row">
             <td class="col-photo">
               <div class="avatar-wrapper">
@@ -150,5 +150,40 @@
         }
       </tbody>
     </table>
+
+    <!-- Paginación Inferior Dinámica -->
+    <div class="pagination-container">
+      <span class="pagination-info">{{ paginationInfoText() }}</span>
+      <div class="pagination-controls">
+        <button
+          type="button"
+          class="page-btn"
+          (click)="prevPage()"
+          [disabled]="currentPage() === 1"
+        >
+          <i class="fas fa-chevron-left"></i>
+        </button>
+
+        @for (pageNum of pagesArray(); track pageNum) {
+          <button
+            type="button"
+            class="page-btn"
+            [class.active]="currentPage() === pageNum"
+            (click)="goToPage(pageNum)"
+          >
+            {{ pageNum }}
+          </button>
+        }
+
+        <button
+          type="button"
+          class="page-btn"
+          (click)="nextPage()"
+          [disabled]="currentPage() === totalPages()"
+        >
+          <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+    </div>
   </div>
 </div>

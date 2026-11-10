@@ -30,6 +30,10 @@ export class PlayerList implements OnInit {
   isPositionDropdownOpen = false;
   isNationalityDropdownOpen = false;
 
+  // --- Paginación ---
+  currentPage = signal(1);
+  pageSize = 10;
+
   positions: FilterOption[] = [
     { value: 'ALL', label: 'Todas las posiciones' },
     { value: 'Arquero', label: 'Arquero' },
@@ -92,11 +96,19 @@ export class PlayerList implements OnInit {
   selectPosition(pos: string | number): void {
     this.selectedPosition.set(String(pos));
     this.isPositionDropdownOpen = false;
+    this.currentPage.set(1); // Reiniciar a la página 1 al filtrar
   }
 
   selectNationality(nat: string | number): void {
     this.selectedNationality.set(String(nat));
     this.isNationalityDropdownOpen = false;
+    this.currentPage.set(1); // Reiniciar a la página 1 al filtrar
+  }
+
+  // Reiniciar a la página 1 cuando cambia la búsqueda
+  onSearchChange(value: string): void {
+    this.searchText.set(value);
+    this.currentPage.set(1);
   }
 
   get selectedPositionLabel(): string {
@@ -114,11 +126,11 @@ export class PlayerList implements OnInit {
   getTeamName(player: any): string {
     const teamId = player.teamID ?? player.currentTeamID;
     if (!teamId) return 'Agente libre';
-    return player.teamName || 'Boca Juniors'; // O ajusta según la estructura de tu objeto jugador
+    return player.teamName || 'Boca Juniors';
   }
 
   // --- Filtro reactivo ---
-  filteredPlayers = computed(() => {
+  filteredPlayersList = computed(() => {
     const list = this.playerService.players ? this.playerService.players() : [];
     const search = this.searchText().toLowerCase().trim();
     const pos = this.selectedPosition();
@@ -129,12 +141,57 @@ export class PlayerList implements OnInit {
       const matchesSearch = !search || name.includes(search);
       const matchesPosition = pos === 'ALL' || player.position === pos;
 
-      // Filtro de nacionalidad (soporta 'nationality' o 'nacionality')
       const pNat = player.nationality || player.nacionality || '';
       const matchesNationality =
         natFilter === 'ALL' || pNat.toLowerCase() === natFilter.toLowerCase();
 
       return matchesSearch && matchesPosition && matchesNationality;
     });
+  });
+
+  // --- Propiedades computadas de Paginación ---
+  totalPages = computed(() => {
+    const total = this.filteredPlayersList().length;
+    return Math.max(1, Math.ceil(total / this.pageSize));
+  });
+
+  paginatedPlayers = computed(() => {
+    const list = this.filteredPlayersList();
+    const page = this.currentPage();
+    const start = (page - 1) * this.pageSize;
+    return list.slice(start, start + this.pageSize);
+  });
+
+  paginationInfoText = computed(() => {
+    const list = this.filteredPlayersList();
+    const total = list.length;
+    if (total === 0) return 'Mostrando 0 registros';
+
+    const start = (this.currentPage() - 1) * this.pageSize + 1;
+    const end = Math.min(this.currentPage() * this.pageSize, total);
+    return `Mostrando ${start} - ${end} de ${total} jugadores`;
+  });
+
+  // Métodos de cambio de página
+  goToPage(page: number): void {
+    if (page >= 1 && page <= this.totalPages()) {
+      this.currentPage.set(page);
+    }
+  }
+
+  nextPage(): void {
+    if (this.currentPage() < this.totalPages()) {
+      this.currentPage.update((p) => p + 1);
+    }
+  }
+
+  prevPage(): void {
+    if (this.currentPage() > 1) {
+      this.currentPage.update((p) => p - 1);
+    }
+  }
+
+  pagesArray = computed(() => {
+    return Array.from({ length: this.totalPages() }, (_, i) => i + 1);
   });
 }

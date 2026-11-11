@@ -209,19 +209,245 @@
     }
   ],
   "partidos": [
-    {
-      "id": "1",
-      "localTeamID": 4,
-      "awayTeamID": 2,
-      "date": "2026-11-08T17:00:00.000Z",
-      "championshipID": 101,
-      "localGoals": 2,
-      "awayGoals": 1,
-      "status": "Finalizado",
-      "stadium": "Estadio Libertadores de América",
-      "championshipName": "Liga Profesional - Fecha 12"
-    }
+  {
+  "id": "1",
+  "localTeamID": 4,
+  "awayTeamID": 2,
+  "date": "2026-11-08T17:00:00.000Z",
+  "championshipID": 101,
+  "localGoals": 2,
+  "awayGoals": 1,
+  "status": "Finalizado",
+  "stadium": "Estadio Libertadores de América",
+  "championshipName": "Liga Profesional - Fecha 12",
+  "localGoalsDetail": [
+    { "player": "M. Giménez Rojas", "minute": 12 },
+    { "player": "M. Giménez Rojas", "minute": 45 }
   ],
+  "awayGoalsDetail": [
+    { "player": "E. Cavani", "minute": 68 }
+  ],
+  "statistics": [
+    { "label": "Posesión", "local": 48, "away": 52, "unit": "%" },
+    { "label": "Remates", "local": 12, "away": 14 },
+    { "label": "Remates al arco", "local": 5, "away": 4 },
+    { "label": "Faltas", "local": 15, "away": 12 },
+    { "label": "Tarjetas amarillas", "local": 3, "away": 2 },
+    { "label": "Tiros de esquina", "local": 4, "away": 6 }
+  ],
+  "incidences": [
+    { "minute": 12, "type": "GOAL", "text": "Gol 12'" },
+    { "minute": 34, "type": "YELLOW_CARD", "text": "Tarjeta Amarilla 34'" },
+    { "minute": 45, "type": "GOAL", "text": "Gol 45'" },
+    { "minute": 60, "type": "SUBSTITUTION", "text": "Cambio 60'" },
+    { "minute": 68, "type": "GOAL", "text": "Gol 68'" }
+  ],
+  "lineups": {
+    "local": [
+      { "number": 1, "name": "R. Rey", "position": "POR" },
+      { "number": 4, "name": "F. Vera", "position": "DEF" },
+      { "number": 2, "name": "J. Fedorco", "position": "DEF" },
+      { "number": 6, "name": "J. Laso", "position": "DEF" },
+      { "number": 3, "name": "A. Sporle", "position": "DEF" },
+      { "number": 29, "name": "F. Loyola", "position": "MED" },
+      { "number": 5, "name": "I. Marcone", "position": "MED" },
+      { "number": 8, "name": "D. Blanco", "position": "MED" },
+      { "number": 10, "name": "S. Montiel", "position": "DEL" },
+      { "number": 9, "name": "G. Ávalos", "position": "DEL" },
+      { "number": 11, "name": "M. Giménez Rojas", "position": "DEL" }
+    ],
+    "away": [
+      { "number": 1, "name": "S. Romero", "position": "POR" },
+      { "number": 17, "name": "L. Advíncula", "position": "DEF" },
+      { "number": 6, "name": "M. Rojo", "position": "DEF" },
+      { "number": 2, "name": "C. Lema", "position": "DEF" },
+      { "number": 3, "name": "M. Blanco", "position": "DEF" },
+      { "number": 8, "name": "G. Fernández", "position": "MED" },
+      { "number": 21, "name": "E. Equi Fernández", "position": "MED" },
+      { "number": 36, "name": "C. Medina", "position": "MED" },
+      { "number": 22, "name": "K. Zenón", "position": "MED" },
+      { "number": 16, "name": "M. Merentiel", "position": "DEL" },
+      { "number": 10, "name": "E. Cavani", "position": "DEL" }
+    ]
+  },
+  "summary": {
+    "text": "Independiente se quedó con un clásico electrizante tras vencer 2-1 a Boca Juniors en el Libertadores de América. Con un doblete estelar de M. Giménez Rojas en la primera mitad, el Rojo dominó la posesión y golpeó en los momentos clave. Cavani descontó en el complemento para la visita, pero no alcanzó para torcer la historia.",
+    "manOfTheMatch": {
+      "name": "M. Giménez Rojas",
+      "team": "Independiente",
+      "rating": "8.9"
+    }
+  },
+  "h2h": {
+    "totalMatches": 196,
+    "localWins": 65,
+    "awayWins": 73,
+    "draws": 58,
+    "previousMatches": [
+      { "date": "10/03/2024", "competition": "Copa de la Liga", "homeTeam": "Boca Juniors", "awayTeam": "Independiente", "score": "1 - 1" },
+      { "date": "29/07/2023", "competition": "Liga Profesional", "homeTeam": "Independiente", "awayTeam": "Boca Juniors", "score": "0 - 2" },
+      { "date": "23/10/2022", "competition": "Liga Profesional", "homeTeam": "Boca Juniors", "awayTeam": "Independiente", "score": "2 - 2" }
+    ]
+  }
+},
+{
+    "id": "2",
+    "localTeamID": 5,
+    "awayTeamID": 6,
+    "date": "2026-10-25T19:00:00.000Z",
+    "championshipID": 1,
+    "localGoals": 1,
+    "awayGoals": 1,
+    "status": "Finalizado",
+    "stadium": "Pedro Bidegain (Nuevo Gasómetro)",
+    "championshipName": "Liga Profesional - Fecha 10",
+    "localGoalsDetail": [
+      { "player": "A. Bareiro", "minute": 34 }
+    ],
+    "awayGoalsDetail": [
+      { "player": "G. Carrillo", "minute": 78 }
+    ],
+    "statistics": [
+      { "label": "Posesión", "local": 51, "away": 49, "unit": "%" },
+      { "label": "Remates", "local": 10, "away": 9 },
+      { "label": "Remates al arco", "local": 4, "away": 3 },
+      { "label": "Faltas", "local": 14, "away": 16 },
+      { "label": "Tarjetas amarillas", "local": 2, "away": 4 },
+      { "label": "Tiros de esquina", "local": 5, "away": 4 }
+    ],
+    "incidences": [
+      { "minute": 34, "type": "GOAL", "text": "Gol de A. Bareiro (1-0)" },
+      { "minute": 52, "type": "YELLOW_CARD", "text": "Tarjeta Amarilla en Estudiantes" },
+      { "minute": 78, "type": "GOAL", "text": "Gol de G. Carrillo (1-1)" }
+    ],
+    "lineups": {
+      "local": [
+        { "number": 13, "name": "A. Batalla", "position": "POR" },
+        { "number": 4, "name": "G. Luján", "position": "DEF" },
+        { "number": 6, "name": "F. Gattoni", "position": "DEF" },
+        { "number": 22, "name": "G. Campi", "position": "DEF" },
+        { "number": 21, "name": "M. Braida", "position": "MED" },
+        { "number": 5, "name": "I. Méndez", "position": "MED" },
+        { "number": 10, "name": "N. Barrios", "position": "MED" },
+        { "number": 11, "name": "A. Bareiro", "position": "DEL" }
+      ],
+      "away": [
+        { "number": 12, "name": "M. Andújar", "position": "POR" },
+        { "number": 14, "name": "E. Mancuso", "position": "DEF" },
+        { "number": 2, "name": "Z. Romero", "position": "DEF" },
+        { "number": 5, "name": "S. Ascacíbar", "position": "MED" },
+        { "number": 7, "name": "J. Sosa", "position": "MED" },
+        { "number": 17, "name": "M. Boselli", "position": "DEL" },
+        { "number": 9, "name": "G. Carrillo", "position": "DEL" }
+      ]
+    },
+    "summary": {
+      "text": "Empate muy luchado en el Nuevo Gasómetro. San Lorenzo pegó primero de la mano de Bareiro tras un córner, pero Estudiantes reaccionó en el complemento y logró igualarlo con un cabezazo letal de Carrillo.",
+      "manOfTheMatch": {
+        "name": "S. Ascacíbar",
+        "team": "Estudiantes de La Plata",
+        "rating": "8.2"
+      }
+    },
+    "h2h": {
+      "totalMatches": 175,
+      "localWins": 72,
+      "awayWins": 51,
+      "draws": 52,
+      "previousMatches": [
+        { "date": "20/09/2023", "competition": "Copa de la Liga", "homeTeam": "Estudiantes", "awayTeam": "San Lorenzo", "score": "0 - 0" },
+        { "date": "13/02/2023", "competition": "Liga Profesional", "homeTeam": "San Lorenzo", "awayTeam": "Estudiantes", "score": "1 - 1" }
+      ]
+    }
+  },
+  {
+    "id": "3",
+    "localTeamID": 8,
+    "awayTeamID": 7,
+    "date": "2026-11-01T21:30:00.000Z",
+    "championshipID": 1,
+    "localGoals": 3,
+    "awayGoals": 0,
+    "status": "Finalizado",
+    "stadium": "Gigante de Arroyito",
+    "championshipName": "Liga Profesional - Fecha 11",
+    "localGoalsDetail": [
+      { "player": "I. Malcorra", "minute": 18 },
+      { "player": "J. Campaz", "minute": 41 },
+      { "player": "A. Módica", "minute": 85 }
+    ],
+    "awayGoalsDetail": [],
+    "statistics": [
+      { "label": "Posesión", "local": 58, "away": 42, "unit": "%" },
+      { "label": "Remates", "local": 15, "away": 6 },
+      { "label": "Remates al arco", "local": 8, "away": 2 },
+      { "label": "Faltas", "local": 10, "away": 13 },
+      { "label": "Tarjetas amarillas", "local": 1, "away": 3 },
+      { "label": "Tiros de esquina", "local": 7, "away": 2 }
+    ],
+    "incidences": [
+      { "minute": 18, "type": "GOAL", "text": "Gol de I. Malcorra (1-0)" },
+      { "minute": 41, "type": "GOAL", "text": "Gol de J. Campaz (2-0)" },
+      { "minute": 62, "type": "YELLOW_CARD", "text": "Tarjeta Amarilla en Gimnasia" },
+      { "minute": 85, "type": "GOAL", "text": "Gol de A. Módica (3-0)" }
+    ],
+    "lineups": {
+      "local": [
+        { "number": 1, "name": "J. Broun", "position": "POR" },
+        { "number": 4, "name": "D. Martínez", "position": "DEF" },
+        { "number": 15, "name": "F. Mallo", "position": "DEF" },
+        { "number": 2, "name": "C. Quintana", "position": "DEF" },
+        { "number": 10, "name": "I. Malcorra", "position": "MED" },
+        { "number": 8, "name": "K. Ortiz", "position": "MED" },
+        { "number": 13, "name": "J. Campaz", "position": "DEL" }
+      ],
+      "away": [
+        { "number": 13, "name": "N. Insfrán", "position": "POR" },
+        { "number": 4, "name": "L. Morales", "position": "DEF" },
+        { "number": 20, "name": "Y. Cabral", "position": "DEF" },
+        { "number": 10, "name": "P. De Blasis", "position": "MED" },
+        { "number": 11, "name": "B. Domínguez", "position": "DEL" }
+      ]
+    },
+    "summary": {
+      "text": "Rosario Central brindó una exhibición futbolística ante su gente en el Gigante de Arroyito goleando 3-0 a Gimnasia. Malcorra y Campaz brillaron en un primer tiempo arrollador.",
+      "manOfTheMatch": {
+        "name": "J. Campaz",
+        "team": "Rosario Central",
+        "rating": "9.1"
+      }
+    },
+    "h2h": {
+      "totalMatches": 132,
+      "localWins": 54,
+      "awayWins": 38,
+      "draws": 40,
+      "previousMatches": [
+        { "date": "17/02/2024", "competition": "Copa de la Liga", "homeTeam": "Gimnasia", "awayTeam": "Rosario Central", "score": "2 - 1" }
+      ]
+    }
+  },
+  {
+    "id": "4",
+    "localTeamID": 7,
+    "awayTeamID": 5,
+    "date": "2026-11-15T18:00:00.000Z",
+    "championshipID": 1,
+    "localGoals": 0,
+    "awayGoals": 0,
+    "status": "Programado",
+    "stadium": "Juan Carmelo Zerillo (El Bosque)",
+    "championshipName": "Liga Profesional - Fecha 13",
+    "localGoalsDetail": [],
+    "awayGoalsDetail": [],
+    "statistics": [],
+    "incidences": [],
+    "lineups": {
+      "local": [],
+      "away": []
+    }
+  }
+],
   "jugadores": [
     {
       "id": "1",

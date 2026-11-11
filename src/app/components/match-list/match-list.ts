@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { MatchService } from '../../services/match-service';
 import { MatchCard } from '../match-card/match-card';
 import { CommonModule } from '@angular/common';
@@ -11,7 +11,21 @@ import { CommonModule } from '@angular/common';
 })
 export class MatchList implements OnInit {
   public matchService = inject(MatchService);
+  selectedFilter = signal<string>('TODOS');
+
+  filteredMatches = computed(() => {
+    const matches = this.matchService.matches();
+    const filter = this.selectedFilter();
+
+    if (filter === 'TODOS') return matches;
+    return matches.filter((m) => m.status === filter);
+  });
 
   ngOnInit(): void {
     this.matchService.getAll();
-  }}
+  }
+
+  setFilter(status: string): void {
+    this.selectedFilter.set(status);
+  }
+}

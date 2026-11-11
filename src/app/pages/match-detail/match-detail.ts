@@ -1,6 +1,6 @@
 import { CommonModule, DatePipe } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, effect, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { MatchService } from '../../services/match-service';
 
@@ -19,18 +19,24 @@ export class MatchDetail implements OnInit {
   awayTeam = signal<any | null>(null);
   activeTab = signal<string>('resumen');
 
+  constructor() {
+    effect(() => {
+      const match = this.matchService.matchActual();
+      if (match) {
+        if (match.localTeamID && !this.localTeam()) {
+          this.fetchTeam(match.localTeamID, true);
+        }
+        if (match.awayTeamID && !this.awayTeam()) {
+          this.fetchTeam(match.awayTeamID, false);
+        }
+      }
+    });
+  }
+
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.matchService.getByID(Number(id));
-
-      setTimeout(() => {
-        const match = this.matchService.matchActual();
-        if (match) {
-          if (match.localTeamID) this.fetchTeam(match.localTeamID, true);
-          if (match.awayTeamID) this.fetchTeam(match.awayTeamID, false);
-        }
-      }, 300);
     }
   }
 
@@ -49,4 +55,12 @@ export class MatchDetail implements OnInit {
 
   setTab(tab: string): void {
     this.activeTab.set(tab);
-  }}
+  }
+
+  getPercentage(valLocal: number, valAway: number, isLocal: boolean): number {
+    const total = valLocal + valAway;
+    if (total === 0) return 50;
+    return isLocal ? (valLocal / total) * 100 : (valAway / total) * 100;
+  }
+
+}

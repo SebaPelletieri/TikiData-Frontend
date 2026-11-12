@@ -23,7 +23,6 @@ export class ChampionshipService {
     });
   }
 
-  // 🌟 CORREGIDO: Ahora retorna el Observable para que el componente pueda suscribirse
   getByID(id: number): Observable<Championship> {
     return this.http.get<Championship>(`${this.apiUrl}/${id}`);
   }
@@ -67,5 +66,9 @@ export class ChampionshipService {
 
   getByName(name: string): Observable<Championship[]> {
     return this.http.get<Championship[]>(`${this.apiUrl}?name_like=${name}`);
+  }
+
+  getAllChampionships(): Observable<Championship[]> {
+    return this.http.get<Championship[]>(this.apiUrl);
   }
 }

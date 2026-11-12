@@ -166,9 +166,36 @@
     }
     <!-- PESTAÑA: PARTIDOS -->
     @if (activeTab() === 'matches') {
-      <div class="card">
-        <h3>Todos los partidos</h3>
-        <p class="empty-text">Próximamente sección completa de partidos.</p>
+      <div class="card recent-matches-card">
+        <div class="card-header">
+          <h3>Todos los partidos ({{ matches().length }})</h3>
+        </div>
+
+        <table class="matches-table">
+          <tbody>
+            @for (match of matches(); track $index) {
+              <tr class="match-row">
+                <td class="match-date">{{ match.date | date: 'dd MMM yyyy' }}</td>
+                <td class="team-right">
+                  {{ match.homeName }}
+                  <img [src]="match.homeShield" class="match-mini-shield" alt="" />
+                </td>
+                <td class="match-score">{{ match.score }}</td>
+                <td class="team-left">
+                  <img [src]="match.awayShield" class="match-mini-shield" alt="" />
+                  {{ match.awayName }}
+                </td>
+                <td class="match-tournament">{{ match.tournament }}</td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="5" class="empty-table-text">
+                  No hay partidos registrados para este equipo.
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
       </div>
     }
   </div>

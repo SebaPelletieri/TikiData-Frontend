@@ -3,6 +3,9 @@
     <div class="error-msg">{{ teamService.error() }}</div>
   }
 
-  <!-- Renderizamos el componente hijo pasándole únicamente los jugadores de la plantilla -->
-  <app-team-detail [players]="squadPlayers()" />
+  <app-team-detail
+    [players]="squadPlayers()"
+    [matches]="teamMatches()"
+    [championships]="teamChampionships()"
+  />
 </div>

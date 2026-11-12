@@ -121,4 +121,8 @@ export class MatchService {
   getByStatus(status: Status): Observable<Match[]> {
     return this.http.get<Match[]>(`${this.apiUrl}?status=${status}`);
   }
+
+  getAllMatches(): Observable<Match[]> {
+    return this.http.get<Match[]>(this.apiUrl);
+  }
 }

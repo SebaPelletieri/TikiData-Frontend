@@ -255,9 +255,9 @@ export class ChampionshipDetail implements OnInit {
         // 5. Formatear lista completa de partidos del torneo
         this.buildMatchesList(champMatches, teams);
 
-        // 6. Calcular Goleadores y Tarjetas de los equipos participantes
+        // 6. Calcular Goleadores y Tarjetas aislados para ESTE campeonato
         const participatingIdsSet = new Set(participatingTeams.map((t) => String(t.id)));
-        this.buildPlayerStats(players, participatingIdsSet, teams);
+        this.buildPlayerStats(players, participatingIdsSet, teams, champMatches, champ);
       },
       error: (err) => console.error('Error cargando datos del torneo:', err),
     });
@@ -369,42 +369,97 @@ export class ChampionshipDetail implements OnInit {
     }
   }
 
-  private buildPlayerStats(players: any[], participatingIdsSet: Set<string>, allTeams: any[]) {
+  private buildPlayerStats(
+    players: any[],
+    participatingIdsSet: Set<string>,
+    allTeams: any[],
+    champMatches: any[],
+    champ: any,
+  ) {
+    this.allScorers.set([]);
+    this.allCards.set([]);
+
+    const champIdStr = String(champ.id);
     const leaguePlayers = players.filter((p) =>
       participatingIdsSet.has(String(p.currentTeamID)),
     );
 
+    const goalsMap = new Map<string, number>();
+    const yellowMap = new Map<string, number>();
+    const redMap = new Map<string, number>();
+
+    champMatches.forEach((m) => {
+      (m.events || m.goalsList || []).forEach((ev: any) => {
+        const pId = String(ev.playerID ?? ev.playerId ?? '');
+        if (!pId) return;
+        if (ev.type === 'GOAL' || ev.type === 'Gol' || !ev.type) {
+          goalsMap.set(pId, (goalsMap.get(pId) || 0) + 1);
+        } else if (ev.type === 'YELLOW_CARD' || ev.type === 'Amarilla') {
+          yellowMap.set(pId, (yellowMap.get(pId) || 0) + 1);
+        } else if (ev.type === 'RED_CARD' || ev.type === 'Roja') {
+          redMap.set(pId, (redMap.get(pId) || 0) + 1);
+        }
+      });
+    });
+
+    const hasMatchEvents = goalsMap.size > 0 || yellowMap.size > 0 || redMap.size > 0;
+
+    const getStat = (
+      p: any,
+      field: 'goals' | 'yellowCards' | 'redCards',
+      eventMap: Map<string, number>,
+    ) => {
+      const pId = String(p.id);
+      if (hasMatchEvents) {
+        return eventMap.get(pId) || 0;
+      }
+      if (p.statsByChampionship && p.statsByChampionship[champIdStr]) {
+        return p.statsByChampionship[champIdStr][field] || 0;
+      }
+      if (champIdStr === '1') {
+        return p[field] || 0;
+      }
+      return 0;
+    };
+
     const scorers = leaguePlayers
-      .filter((p) => (p.goals || 0) > 0)
-      .sort((a, b) => (b.goals || 0) - (a.goals || 0))
-      .map((p, idx) => {
-        const team = allTeams.find((t) => String(t.id) === String(p.currentTeamID));
+      .map((p) => ({
+        player: p,
+        goals: getStat(p, 'goals', goalsMap),
+      }))
+      .filter((item) => item.goals > 0)
+      .sort((a, b) => b.goals - a.goals)
+      .map((item, idx) => {
+        const team = allTeams.find((t) => String(t.id) === String(item.player.currentTeamID));
         return {
           position: idx + 1,
-          name: p.name,
-          photo: p.photo,
-          teamName: team?.name || p.teamName || '',
-          goals: p.goals || 0,
+          name: item.player.name,
+          photo: item.player.photo,
+          teamName: team?.name || item.player.teamName || '',
+          goals: item.goals,
         };
       });
 
     const cards = leaguePlayers
-      .filter((p) => (p.yellowCards || 0) > 0 || (p.redCards || 0) > 0)
+      .map((p) => ({
+        player: p,
+        yellowCards: getStat(p, 'yellowCards', yellowMap),
+        redCards: getStat(p, 'redCards', redMap),
+      }))
+      .filter((item) => item.yellowCards > 0 || item.redCards > 0)
       .sort(
         (a, b) =>
-          (b.redCards || 0) * 3 +
-          (b.yellowCards || 0) -
-          ((a.redCards || 0) * 3 + (a.yellowCards || 0)),
+          b.redCards * 3 + b.yellowCards - (a.redCards * 3 + a.yellowCards),
       )
-      .map((p, idx) => {
-        const team = allTeams.find((t) => String(t.id) === String(p.currentTeamID));
+      .map((item, idx) => {
+        const team = allTeams.find((t) => String(t.id) === String(item.player.currentTeamID));
         return {
           position: idx + 1,
-          name: p.name,
-          photo: p.photo,
-          teamName: team?.name || p.teamName || '',
-          yellowCards: p.yellowCards || 0,
-          redCards: p.redCards || 0,
+          name: item.player.name,
+          photo: item.player.photo,
+          teamName: team?.name || item.player.teamName || '',
+          yellowCards: item.yellowCards,
+          redCards: item.redCards,
         };
       });
 

@@ -368,13 +368,6 @@
   ],
   "campeonatos": [
     {
-      "id": "1",
-      "name": "Liga Profesional de Fútbol",
-      "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Liga_Profesional_de_F%C3%BAtbol_Argentina.svg/200px-Liga_Profesional_de_F%C3%BAtbol_Argentina.svg.png",
-      "type": "LIGA",
-      "country": "Argentina"
-    },
-    {
       "id": "2",
       "name": "Copa de la Liga",
       "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Liga_Profesional_de_F%C3%BAtbol_Argentina.svg/200px-Liga_Profesional_de_F%C3%BAtbol_Argentina.svg.png",
@@ -382,11 +375,28 @@
       "country": "Argentina"
     },
     {
-      "id": "3",
-      "name": "Copa Libertadores",
-      "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/CONMEBOL_Libertadores_logo.svg/200px-CONMEBOL_Libertadores_logo.svg.png",
+      "name": "UEFA Champions League",
+      "logo": "https://assets.footylogos.com/logos/uefa-champions-league/uefa-champions-league-logo-footylogos.svg",
       "type": "COPA",
-      "country": "Internacional"
+      "season": "2026/2027",
+      "teamsIDs": [
+        2,
+        4
+      ],
+      "country": "Internacional",
+      "id": "j3UFDxGNsr0"
+    },
+    {
+      "name": "Copa Libertadores",
+      "logo": "https://assets.footylogos.com/logos/copa-libertadores/copa-libertadores-logo-footylogos.svg",
+      "type": "COPA",
+      "season": "2026/2027",
+      "teamsIDs": [
+        2,
+        4
+      ],
+      "country": "Internacional",
+      "id": "m1jSzZpiuLs"
     }
   ],
   "estadios": [
@@ -4252,7 +4262,7 @@
       }
     },
     {
-      "id": 160,
+      "id": "160",
       "name": "Ignacio Chicco",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/belgrano.png",
       "age": 30,
@@ -4272,7 +4282,7 @@
       }
     },
     {
-      "id": 161,
+      "id": "161",
       "name": "Juan Barinaga",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/belgrano.png",
       "age": 26,
@@ -4292,7 +4302,7 @@
       }
     },
     {
-      "id": 162,
+      "id": "162",
       "name": "Alejandro Rébola",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/belgrano.png",
       "age": 38,
@@ -4312,7 +4322,7 @@
       }
     },
     {
-      "id": 163,
+      "id": "163",
       "name": "Matías Moreno",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/belgrano.png",
       "age": 23,
@@ -4332,7 +4342,7 @@
       }
     },
     {
-      "id": 164,
+      "id": "164",
       "name": "Rafael Delgado",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/belgrano.png",
       "age": 36,
@@ -4352,7 +4362,7 @@
       }
     },
     {
-      "id": 165,
+      "id": "165",
       "name": "Santiago Longo",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/belgrano.png",
       "age": 28,
@@ -4372,7 +4382,7 @@
       }
     },
     {
-      "id": 166,
+      "id": "166",
       "name": "Esteban Rolón",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/belgrano.png",
       "age": 31,
@@ -4392,7 +4402,7 @@
       }
     },
     {
-      "id": 167,
+      "id": "167",
       "name": "Ulises Sánchez",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/belgrano.png",
       "age": 28,
@@ -4412,7 +4422,7 @@
       }
     },
     {
-      "id": 168,
+      "id": "168",
       "name": "Matías Marín",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/belgrano.png",
       "age": 26,
@@ -4432,7 +4442,7 @@
       }
     },
     {
-      "id": 169,
+      "id": "169",
       "name": "Lucas Passerini",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/belgrano.png",
       "age": 32,
@@ -4452,7 +4462,7 @@
       }
     },
     {
-      "id": 170,
+      "id": "170",
       "name": "Franco Jara",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/belgrano.png",
       "age": 38,
@@ -4472,7 +4482,7 @@
       }
     },
     {
-      "id": 171,
+      "id": "171",
       "name": "Manuel Roffo",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/instituto.png",
       "age": 26,
@@ -4492,7 +4502,7 @@
       }
     },
     {
-      "id": 172,
+      "id": "172",
       "name": "Giuliano Cerato",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/instituto.png",
       "age": 28,
@@ -4512,7 +4522,7 @@
       }
     },
     {
-      "id": 173,
+      "id": "173",
       "name": "Fernando Alarcón",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/instituto.png",
       "age": 32,
@@ -4532,7 +4542,7 @@
       }
     },
     {
-      "id": 174,
+      "id": "174",
       "name": "Miguel Brizuela",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/instituto.png",
       "age": 29,
@@ -4552,7 +4562,7 @@
       }
     },
     {
-      "id": 175,
+      "id": "175",
       "name": "Jonathan Bay",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/instituto.png",
       "age": 33,
@@ -4572,7 +4582,7 @@
       }
     },
     {
-      "id": 176,
+      "id": "176",
       "name": "Roberto Bochi",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/instituto.png",
       "age": 39,
@@ -4592,7 +4602,7 @@
       }
     },
     {
-      "id": 177,
+      "id": "177",
       "name": "Gastón Lodico",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/instituto.png",
       "age": 28,
@@ -4612,7 +4622,7 @@
       }
     },
     {
-      "id": 178,
+      "id": "178",
       "name": "Jonás Acevedo",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/instituto.png",
       "age": 29,
@@ -4632,7 +4642,7 @@
       }
     },
     {
-      "id": 179,
+      "id": "179",
       "name": "Damián Puebla",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/instituto.png",
       "age": 24,
@@ -4652,7 +4662,7 @@
       }
     },
     {
-      "id": 180,
+      "id": "180",
       "name": "Ignacio Russo",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/instituto.png",
       "age": 25,
@@ -4672,7 +4682,7 @@
       }
     },
     {
-      "id": 181,
+      "id": "181",
       "name": "Facundo Suárez",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/instituto.png",
       "age": 32,
@@ -4692,7 +4702,7 @@
       }
     },
     {
-      "id": 182,
+      "id": "182",
       "name": "Tomás Durso",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/atletico-tucuman.png",
       "age": 27,
@@ -4712,7 +4722,7 @@
       }
     },
     {
-      "id": 183,
+      "id": "183",
       "name": "Agustín Lagos",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/atletico-tucuman.png",
       "age": 25,
@@ -4732,7 +4742,7 @@
       }
     },
     {
-      "id": 184,
+      "id": "184",
       "name": "Francisco Flores",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/atletico-tucuman.png",
       "age": 24,
@@ -4752,7 +4762,7 @@
       }
     },
     {
-      "id": 185,
+      "id": "185",
       "name": "Nicolás Romero",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/atletico-tucuman.png",
       "age": 23,
@@ -4772,7 +4782,7 @@
       }
     },
     {
-      "id": 186,
+      "id": "186",
       "name": "Matías Orihuela",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/atletico-tucuman.png",
       "age": 34,
@@ -4792,7 +4802,7 @@
       }
     },
     {
-      "id": 187,
+      "id": "187",
       "name": "Adrián Sánchez",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/atletico-tucuman.png",
       "age": 27,
@@ -4812,7 +4822,7 @@
       }
     },
     {
-      "id": 188,
+      "id": "188",
       "name": "Guillermo Acosta",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/atletico-tucuman.png",
       "age": 38,
@@ -4832,7 +4842,7 @@
       }
     },
     {
-      "id": 189,
+      "id": "189",
       "name": "Renzo Tesuri",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/atletico-tucuman.png",
       "age": 30,
@@ -4852,7 +4862,7 @@
       }
     },
     {
-      "id": 190,
+      "id": "190",
       "name": "Joaquín Pereyra",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/atletico-tucuman.png",
       "age": 27,
@@ -4872,7 +4882,7 @@
       }
     },
     {
-      "id": 191,
+      "id": "191",
       "name": "Mateo Coronel",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/atletico-tucuman.png",
       "age": 28,
@@ -4892,7 +4902,7 @@
       }
     },
     {
-      "id": 192,
+      "id": "192",
       "name": "Marcelo Estigarribia",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/atletico-tucuman.png",
       "age": 31,
@@ -4912,7 +4922,7 @@
       }
     },
     {
-      "id": 193,
+      "id": "193",
       "name": "Facundo Sanguinetti",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/banfield.png",
       "age": 25,
@@ -4932,7 +4942,7 @@
       }
     },
     {
-      "id": 194,
+      "id": "194",
       "name": "Ezequiel Bonifacio",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/banfield.png",
       "age": 32,
@@ -4952,7 +4962,7 @@
       }
     },
     {
-      "id": 195,
+      "id": "195",
       "name": "Alejandro Maciel",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/banfield.png",
       "age": 29,
@@ -4972,7 +4982,7 @@
       }
     },
     {
-      "id": 196,
+      "id": "196",
       "name": "Aarón Quirós",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/banfield.png",
       "age": 25,
@@ -4992,7 +5002,7 @@
       }
     },
     {
-      "id": 197,
+      "id": "197",
       "name": "Emanuel Insúa",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/banfield.png",
       "age": 35,
@@ -5012,7 +5022,7 @@
       }
     },
     {
-      "id": 198,
+      "id": "198",
       "name": "Yvo Calleros",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/banfield.png",
       "age": 28,
@@ -5032,7 +5042,7 @@
       }
     },
     {
-      "id": 199,
+      "id": "199",
       "name": "Cristian Núñez",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/banfield.png",
       "age": 26,
@@ -5052,7 +5062,7 @@
       }
     },
     {
-      "id": 200,
+      "id": "200",
       "name": "Ignacio Rodríguez",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/banfield.png",
       "age": 24,
@@ -5072,7 +5082,7 @@
       }
     },
     {
-      "id": 201,
+      "id": "201",
       "name": "Braian Galván",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/banfield.png",
       "age": 26,
@@ -5092,7 +5102,7 @@
       }
     },
     {
-      "id": 202,
+      "id": "202",
       "name": "Bruno Sepúlveda",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/banfield.png",
       "age": 34,
@@ -5112,7 +5122,7 @@
       }
     },
     {
-      "id": 203,
+      "id": "203",
       "name": "Gerónimo Rivera",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/banfield.png",
       "age": 23,
@@ -5132,7 +5142,7 @@
       }
     },
     {
-      "id": 204,
+      "id": "204",
       "name": "Nahuel Losada",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/lanus.png",
       "age": 33,
@@ -5152,7 +5162,7 @@
       }
     },
     {
-      "id": 205,
+      "id": "205",
       "name": "Nicolás Morgantini",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/lanus.png",
       "age": 32,
@@ -5172,7 +5182,7 @@
       }
     },
     {
-      "id": 206,
+      "id": "206",
       "name": "Carlos Izquierdoz",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/lanus.png",
       "age": 38,
@@ -5192,7 +5202,7 @@
       }
     },
     {
-      "id": 207,
+      "id": "207",
       "name": "Abel Luciatti",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/lanus.png",
       "age": 33,
@@ -5212,7 +5222,7 @@
       }
     },
     {
-      "id": 208,
+      "id": "208",
       "name": "Julio Soler",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/lanus.png",
       "age": 21,
@@ -5232,7 +5242,7 @@
       }
     },
     {
-      "id": 209,
+      "id": "209",
       "name": "Raúl Loaiza",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/lanus.png",
       "age": 32,
@@ -5252,7 +5262,7 @@
       }
     },
     {
-      "id": 210,
+      "id": "210",
       "name": "Gonzalo Pérez",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/lanus.png",
       "age": 25,
@@ -5272,7 +5282,7 @@
       }
     },
     {
-      "id": 211,
+      "id": "211",
       "name": "Marcelino Moreno",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/lanus.png",
       "age": 32,
@@ -5292,7 +5302,7 @@
       }
     },
     {
-      "id": 212,
+      "id": "212",
       "name": "Ramiro Carrera",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/lanus.png",
       "age": 33,
@@ -5312,7 +5322,7 @@
       }
     },
     {
-      "id": 213,
+      "id": "213",
       "name": "Walter Bou",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/lanus.png",
       "age": 33,
@@ -5332,7 +5342,7 @@
       }
     },
     {
-      "id": 214,
+      "id": "214",
       "name": "Leandro Díaz",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/lanus.png",
       "age": 34,
@@ -5352,7 +5362,7 @@
       }
     },
     {
-      "id": 215,
+      "id": "215",
       "name": "Cristopher Fiermarín",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/defensa-y-justicia.png",
       "age": 28,
@@ -5372,7 +5382,7 @@
       }
     },
     {
-      "id": 216,
+      "id": "216",
       "name": "Ezequiel Cannavó",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/defensa-y-justicia.png",
       "age": 24,
@@ -5392,7 +5402,7 @@
       }
     },
     {
-      "id": 217,
+      "id": "217",
       "name": "Santiago Ramos Mingo",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/defensa-y-justicia.png",
       "age": 25,
@@ -5412,7 +5422,7 @@
       }
     },
     {
-      "id": 218,
+      "id": "218",
       "name": "Emanuel Aguilera",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/defensa-y-justicia.png",
       "age": 37,
@@ -5432,7 +5442,7 @@
       }
     },
     {
-      "id": 219,
+      "id": "219",
       "name": "Alexis Soto",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/defensa-y-justicia.png",
       "age": 33,
@@ -5452,7 +5462,7 @@
       }
     },
     {
-      "id": 220,
+      "id": "220",
       "name": "Kevin Gutiérrez",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/defensa-y-justicia.png",
       "age": 29,
@@ -5472,7 +5482,7 @@
       }
     },
     {
-      "id": 221,
+      "id": "221",
       "name": "Julián López",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/defensa-y-justicia.png",
       "age": 26,
@@ -5492,7 +5502,7 @@
       }
     },
     {
-      "id": 222,
+      "id": "222",
       "name": "Aaron Molinas",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/defensa-y-justicia.png",
       "age": 26,
@@ -5512,7 +5522,7 @@
       }
     },
     {
-      "id": 223,
+      "id": "223",
       "name": "Rodrigo Bogarín",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/defensa-y-justicia.png",
       "age": 29,
@@ -5532,7 +5542,7 @@
       }
     },
     {
-      "id": 224,
+      "id": "224",
       "name": "Luciano Herrera",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/defensa-y-justicia.png",
       "age": 30,
@@ -5552,7 +5562,7 @@
       }
     },
     {
-      "id": 225,
+      "id": "225",
       "name": "Juan Miritello",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/defensa-y-justicia.png",
       "age": 27,
@@ -5572,7 +5582,7 @@
       }
     },
     {
-      "id": 226,
+      "id": "226",
       "name": "Franco Petroli",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/godoy-cruz.png",
       "age": 28,
@@ -5592,7 +5602,7 @@
       }
     },
     {
-      "id": 227,
+      "id": "227",
       "name": "Lucas Arce",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/godoy-cruz.png",
       "age": 29,
@@ -5612,7 +5622,7 @@
       }
     },
     {
-      "id": 228,
+      "id": "228",
       "name": "Pier Barrios",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/godoy-cruz.png",
       "age": 36,
@@ -5632,7 +5642,7 @@
       }
     },
     {
-      "id": 229,
+      "id": "229",
       "name": "Federico Rasmussen",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/godoy-cruz.png",
       "age": 34,
@@ -5652,7 +5662,7 @@
       }
     },
     {
-      "id": 230,
+      "id": "230",
       "name": "Elías Pereyra",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/godoy-cruz.png",
       "age": 27,
@@ -5672,7 +5682,7 @@
       }
     },
     {
-      "id": 231,
+      "id": "231",
       "name": "Bruno Leyes",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/godoy-cruz.png",
       "age": 25,
@@ -5692,7 +5702,7 @@
       }
     },
     {
-      "id": 232,
+      "id": "232",
       "name": "Nicolás Fernández",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/godoy-cruz.png",
       "age": 28,
@@ -5712,7 +5722,7 @@
       }
     },
     {
-      "id": 233,
+      "id": "233",
       "name": "Vicente Poggi",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/godoy-cruz.png",
       "age": 24,
@@ -5732,7 +5742,7 @@
       }
     },
     {
-      "id": 234,
+      "id": "234",
       "name": "Facundo Altamira",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/godoy-cruz.png",
       "age": 25,
@@ -5752,7 +5762,7 @@
       }
     },
     {
-      "id": 235,
+      "id": "235",
       "name": "Tomás Badaloni",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/godoy-cruz.png",
       "age": 26,
@@ -5772,7 +5782,7 @@
       }
     },
     {
-      "id": 236,
+      "id": "236",
       "name": "Salomón Rodríguez",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/godoy-cruz.png",
       "age": 26,
@@ -5792,7 +5802,7 @@
       }
     },
     {
-      "id": 237,
+      "id": "237",
       "name": "Felipe Zenobio",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/tigre.png",
       "age": 26,
@@ -5812,7 +5822,7 @@
       }
     },
     {
-      "id": 238,
+      "id": "238",
       "name": "Martín Ortega",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/tigre.png",
       "age": 27,
@@ -5832,7 +5842,7 @@
       }
     },
     {
-      "id": 239,
+      "id": "239",
       "name": "Brian Leizza",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/tigre.png",
       "age": 26,
@@ -5852,7 +5862,7 @@
       }
     },
     {
-      "id": 240,
+      "id": "240",
       "name": "Nehuén Paz",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/tigre.png",
       "age": 33,
@@ -5872,7 +5882,7 @@
       }
     },
     {
-      "id": 241,
+      "id": "241",
       "name": "Nahuel Banegas",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/tigre.png",
       "age": 30,
@@ -5892,7 +5902,7 @@
       }
     },
     {
-      "id": 242,
+      "id": "242",
       "name": "Agustín Cardozo",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/tigre.png",
       "age": 29,
@@ -5912,7 +5922,7 @@
       }
     },
     {
-      "id": 243,
+      "id": "243",
       "name": "Martín Garay",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/tigre.png",
       "age": 27,
@@ -5932,7 +5942,7 @@
       }
     },
     {
-      "id": 244,
+      "id": "244",
       "name": "Tomás Galván",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/tigre.png",
       "age": 26,
@@ -5952,7 +5962,7 @@
       }
     },
     {
-      "id": 245,
+      "id": "245",
       "name": "Gonzalo Maroni",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/tigre.png",
       "age": 27,
@@ -5972,7 +5982,7 @@
       }
     },
     {
-      "id": 246,
+      "id": "246",
       "name": "Blas Armoa",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/tigre.png",
       "age": 26,
@@ -5992,7 +6002,7 @@
       }
     },
     {
-      "id": 247,
+      "id": "247",
       "name": "Florián Monzón",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/tigre.png",
       "age": 25,
@@ -6012,7 +6022,7 @@
       }
     },
     {
-      "id": 248,
+      "id": "248",
       "name": "Juan Pablo Cozzani",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/platense.png",
       "age": 28,
@@ -6032,7 +6042,7 @@
       }
     },
     {
-      "id": 249,
+      "id": "249",
       "name": "Juan Ignacio Saborido",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/platense.png",
       "age": 28,
@@ -6052,7 +6062,7 @@
       }
     },
     {
-      "id": 250,
+      "id": "250",
       "name": "Ignacio Vázquez",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/platense.png",
       "age": 29,
@@ -6072,7 +6082,7 @@
       }
     },
     {
-      "id": 251,
+      "id": "251",
       "name": "Gastón Suso",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/platense.png",
       "age": 35,
@@ -6092,7 +6102,7 @@
       }
     },
     {
-      "id": 252,
+      "id": "252",
       "name": "Sasha Marcich",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/platense.png",
       "age": 28,
@@ -6112,7 +6122,7 @@
       }
     },
     {
-      "id": 253,
+      "id": "253",
       "name": "Leonel Picco",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/platense.png",
       "age": 28,
@@ -6132,7 +6142,7 @@
       }
     },
     {
-      "id": 254,
+      "id": "254",
       "name": "Carlos Villalba",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/platense.png",
       "age": 28,
@@ -6152,7 +6162,7 @@
       }
     },
     {
-      "id": 255,
+      "id": "255",
       "name": "Fernando Juárez",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/platense.png",
       "age": 28,
@@ -6172,7 +6182,7 @@
       }
     },
     {
-      "id": 256,
+      "id": "256",
       "name": "Agustín Ocampo",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/platense.png",
       "age": 29,
@@ -6192,7 +6202,7 @@
       }
     },
     {
-      "id": 257,
+      "id": "257",
       "name": "Mateo Pellegrino",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/platense.png",
       "age": 25,
@@ -6212,7 +6222,7 @@
       }
     },
     {
-      "id": 258,
+      "id": "258",
       "name": "Ronaldo Martínez",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/platense.png",
       "age": 30,
@@ -6232,7 +6242,7 @@
       }
     },
     {
-      "id": 259,
+      "id": "259",
       "name": "Lucas Acosta",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/sarmiento.png",
       "age": 31,
@@ -6252,7 +6262,7 @@
       }
     },
     {
-      "id": 260,
+      "id": "260",
       "name": "Elías López",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/sarmiento.png",
       "age": 26,
@@ -6272,7 +6282,7 @@
       }
     },
     {
-      "id": 261,
+      "id": "261",
       "name": "Franco Paredes",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/sarmiento.png",
       "age": 27,
@@ -6292,7 +6302,7 @@
       }
     },
     {
-      "id": 262,
+      "id": "262",
       "name": "Juan Manuel Insaurralde",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/sarmiento.png",
       "age": 42,
@@ -6312,7 +6322,7 @@
       }
     },
     {
-      "id": 263,
+      "id": "263",
       "name": "Yair Arismendi",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/sarmiento.png",
       "age": 28,
@@ -6332,7 +6342,7 @@
       }
     },
     {
-      "id": 264,
+      "id": "264",
       "name": "Emiliano Méndez",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/sarmiento.png",
       "age": 37,
@@ -6352,7 +6362,7 @@
       }
     },
     {
-      "id": 265,
+      "id": "265",
       "name": "Fernando Godoy",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/sarmiento.png",
       "age": 36,
@@ -6372,7 +6382,7 @@
       }
     },
     {
-      "id": 266,
+      "id": "266",
       "name": "Valentín Burgoa",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/sarmiento.png",
       "age": 26,
@@ -6392,7 +6402,7 @@
       }
     },
     {
-      "id": 267,
+      "id": "267",
       "name": "Nicolás Gaitán",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/sarmiento.png",
       "age": 38,
@@ -6412,7 +6422,7 @@
       }
     },
     {
-      "id": 268,
+      "id": "268",
       "name": "Joaquín Gho",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/sarmiento.png",
       "age": 23,
@@ -6432,7 +6442,7 @@
       }
     },
     {
-      "id": 269,
+      "id": "269",
       "name": "Lisandro López",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/sarmiento.png",
       "age": 43,
@@ -6452,7 +6462,7 @@
       }
     },
     {
-      "id": 270,
+      "id": "270",
       "name": "Luis Ingolotti",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/central-cordoba.png",
       "age": 26,
@@ -6472,7 +6482,7 @@
       }
     },
     {
-      "id": 271,
+      "id": "271",
       "name": "José Gómez",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/central-cordoba.png",
       "age": 27,
@@ -6492,7 +6502,7 @@
       }
     },
     {
-      "id": 272,
+      "id": "272",
       "name": "Lucas Abascia",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/central-cordoba.png",
       "age": 30,
@@ -6512,7 +6522,7 @@
       }
     },
     {
-      "id": 273,
+      "id": "273",
       "name": "Sebastián Valdez",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/central-cordoba.png",
       "age": 31,
@@ -6532,7 +6542,7 @@
       }
     },
     {
-      "id": 274,
+      "id": "274",
       "name": "Juan Meli",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/central-cordoba.png",
       "age": 24,
@@ -6552,7 +6562,7 @@
       }
     },
     {
-      "id": 275,
+      "id": "275",
       "name": "Kevin Vázquez",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/central-cordoba.png",
       "age": 25,
@@ -6572,7 +6582,7 @@
       }
     },
     {
-      "id": 276,
+      "id": "276",
       "name": "Rodrigo Atencio",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/central-cordoba.png",
       "age": 24,
@@ -6592,7 +6602,7 @@
       }
     },
     {
-      "id": 277,
+      "id": "277",
       "name": "Elías Cabrera",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/central-cordoba.png",
       "age": 23,
@@ -6612,7 +6622,7 @@
       }
     },
     {
-      "id": 278,
+      "id": "278",
       "name": "Matías Godoy",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/central-cordoba.png",
       "age": 24,
@@ -6632,7 +6642,7 @@
       }
     },
     {
-      "id": 279,
+      "id": "279",
       "name": "Lucas Varaldo",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/central-cordoba.png",
       "age": 24,
@@ -6652,7 +6662,7 @@
       }
     },
     {
-      "id": 280,
+      "id": "280",
       "name": "Favio Cabral",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/central-cordoba.png",
       "age": 25,
@@ -6672,7 +6682,7 @@
       }
     },
     {
-      "id": 281,
+      "id": "281",
       "name": "Thiago Cardozo",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/union.png",
       "age": 30,
@@ -6692,7 +6702,7 @@
       }
     },
     {
-      "id": 282,
+      "id": "282",
       "name": "Lautaro Vargas",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/union.png",
       "age": 21,
@@ -6712,7 +6722,7 @@
       }
     },
     {
-      "id": 283,
+      "id": "283",
       "name": "Nicolás Paz",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/union.png",
       "age": 23,
@@ -6732,7 +6742,7 @@
       }
     },
     {
-      "id": 284,
+      "id": "284",
       "name": "Franco Pardo",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/union.png",
       "age": 29,
@@ -6752,7 +6762,7 @@
       }
     },
     {
-      "id": 285,
+      "id": "285",
       "name": "Claudio Corvalán",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/union.png",
       "age": 37,
@@ -6772,7 +6782,7 @@
       }
     },
     {
-      "id": 286,
+      "id": "286",
       "name": "Mauro Pittón",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/union.png",
       "age": 32,
@@ -6792,7 +6802,7 @@
       }
     },
     {
-      "id": 287,
+      "id": "287",
       "name": "Enzo Roldán",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/union.png",
       "age": 25,
@@ -6812,7 +6822,7 @@
       }
     },
     {
-      "id": 288,
+      "id": "288",
       "name": "Simón Rivero",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/union.png",
       "age": 23,
@@ -6832,7 +6842,7 @@
       }
     },
     {
-      "id": 289,
+      "id": "289",
       "name": "Nicolás Orsini",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/union.png",
       "age": 32,
@@ -6852,7 +6862,7 @@
       }
     },
     {
-      "id": 290,
+      "id": "290",
       "name": "Adrián Balboa",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/union.png",
       "age": 32,
@@ -6872,7 +6882,7 @@
       }
     },
     {
-      "id": 291,
+      "id": "291",
       "name": "Lucas Gamba",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/union.png",
       "age": 39,
@@ -6892,7 +6902,7 @@
       }
     },
     {
-      "id": 292,
+      "id": "292",
       "name": "Sebastián Moyano",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/barracas-central.png",
       "age": 36,
@@ -6912,7 +6922,7 @@
       }
     },
     {
-      "id": 293,
+      "id": "293",
       "name": "Facundo Mater",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/barracas-central.png",
       "age": 28,
@@ -6932,7 +6942,7 @@
       }
     },
     {
-      "id": 294,
+      "id": "294",
       "name": "Nicolás Capraro",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/barracas-central.png",
       "age": 28,
@@ -6952,7 +6962,7 @@
       }
     },
     {
-      "id": 295,
+      "id": "295",
       "name": "Gonzalo Goñi",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/barracas-central.png",
       "age": 28,
@@ -6972,7 +6982,7 @@
       }
     },
     {
-      "id": 296,
+      "id": "296",
       "name": "Rodrigo Insúa",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/barracas-central.png",
       "age": 29,
@@ -6992,7 +7002,7 @@
       }
     },
     {
-      "id": 297,
+      "id": "297",
       "name": "Siro Rosané",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/barracas-central.png",
       "age": 26,
@@ -7012,7 +7022,7 @@
       }
     },
     {
-      "id": 298,
+      "id": "298",
       "name": "Dardo Miloc",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/barracas-central.png",
       "age": 36,
@@ -7032,7 +7042,7 @@
       }
     },
     {
-      "id": 299,
+      "id": "299",
       "name": "Maximiliamo Zalazar",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/barracas-central.png",
       "age": 25,
@@ -7052,7 +7062,7 @@
       }
     },
     {
-      "id": 300,
+      "id": "300",
       "name": "Lucas Brochero",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/barracas-central.png",
       "age": 27,
@@ -7072,7 +7082,7 @@
       }
     },
     {
-      "id": 301,
+      "id": "301",
       "name": "Jhonatan Candia",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/barracas-central.png",
       "age": 31,
@@ -7092,7 +7102,7 @@
       }
     },
     {
-      "id": 302,
+      "id": "302",
       "name": "Alexis Domínguez",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/barracas-central.png",
       "age": 30,
@@ -7112,7 +7122,7 @@
       }
     },
     {
-      "id": 303,
+      "id": "303",
       "name": "Ignacio Arce",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/deportivo-riestra.png",
       "age": 34,
@@ -7132,7 +7142,7 @@
       }
     },
     {
-      "id": 304,
+      "id": "304",
       "name": "Jonatan Goitia",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/deportivo-riestra.png",
       "age": 30,
@@ -7152,7 +7162,7 @@
       }
     },
     {
-      "id": 305,
+      "id": "305",
       "name": "Alan Barrionuevo",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/deportivo-riestra.png",
       "age": 29,
@@ -7172,7 +7182,7 @@
       }
     },
     {
-      "id": 306,
+      "id": "306",
       "name": "Nicolás Sansotre",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/deportivo-riestra.png",
       "age": 32,
@@ -7192,7 +7202,7 @@
       }
     },
     {
-      "id": 307,
+      "id": "307",
       "name": "Milton Céliz",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/deportivo-riestra.png",
       "age": 34,
@@ -7212,7 +7222,7 @@
       }
     },
     {
-      "id": 308,
+      "id": "308",
       "name": "Pablo Monje",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/deportivo-riestra.png",
       "age": 27,
@@ -7232,7 +7242,7 @@
       }
     },
     {
-      "id": 309,
+      "id": "309",
       "name": "William Machado",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/deportivo-riestra.png",
       "age": 28,
@@ -7252,7 +7262,7 @@
       }
     },
     {
-      "id": 310,
+      "id": "310",
       "name": "Gonzalo Bravo",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/deportivo-riestra.png",
       "age": 37,
@@ -7272,7 +7282,7 @@
       }
     },
     {
-      "id": 311,
+      "id": "311",
       "name": "Maximiliano Benítez",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/deportivo-riestra.png",
       "age": 25,
@@ -7292,7 +7302,7 @@
       }
     },
     {
-      "id": 312,
+      "id": "312",
       "name": "Jonathan Herrera",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/deportivo-riestra.png",
       "age": 35,
@@ -7312,7 +7322,7 @@
       }
     },
     {
-      "id": 313,
+      "id": "313",
       "name": "Alonso Garipe",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/deportivo-riestra.png",
       "age": 23,
@@ -7332,7 +7342,7 @@
       }
     },
     {
-      "id": 314,
+      "id": "314",
       "name": "Gonzalo Marinelli",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/independiente-rivadavia.png",
       "age": 37,
@@ -7352,7 +7362,7 @@
       }
     },
     {
-      "id": 315,
+      "id": "315",
       "name": "Luciano Abecasis",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/independiente-rivadavia.png",
       "age": 36,
@@ -7372,7 +7382,7 @@
       }
     },
     {
-      "id": 316,
+      "id": "316",
       "name": "Bruno Bianchi",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/independiente-rivadavia.png",
       "age": 37,
@@ -7392,7 +7402,7 @@
       }
     },
     {
-      "id": 317,
+      "id": "317",
       "name": "Mateo Ortíz",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/independiente-rivadavia.png",
       "age": 26,
@@ -7412,7 +7422,7 @@
       }
     },
     {
-      "id": 318,
+      "id": "318",
       "name": "Tobías Ostchega",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/independiente-rivadavia.png",
       "age": 28,
@@ -7432,7 +7442,7 @@
       }
     },
     {
-      "id": 319,
+      "id": "319",
       "name": "Franco Romero",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/independiente-rivadavia.png",
       "age": 26,
@@ -7452,7 +7462,7 @@
       }
     },
     {
-      "id": 320,
+      "id": "320",
       "name": "Gastón Gil Romero",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/independiente-rivadavia.png",
       "age": 33,
@@ -7472,7 +7482,7 @@
       }
     },
     {
-      "id": 321,
+      "id": "321",
       "name": "Ezequiel Ham",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/independiente-rivadavia.png",
       "age": 32,
@@ -7492,7 +7502,7 @@
       }
     },
     {
-      "id": 322,
+      "id": "322",
       "name": "Victorio Ramis",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/independiente-rivadavia.png",
       "age": 32,
@@ -7512,7 +7522,7 @@
       }
     },
     {
-      "id": 323,
+      "id": "323",
       "name": "Alex Arce",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/independiente-rivadavia.png",
       "age": 31,
@@ -7532,7 +7542,7 @@
       }
     },
     {
-      "id": 324,
+      "id": "324",
       "name": "Matías Reali",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/independiente-rivadavia.png",
       "age": 28,

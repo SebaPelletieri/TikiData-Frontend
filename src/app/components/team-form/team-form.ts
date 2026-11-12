@@ -30,7 +30,6 @@ export class TeamForm {
   teamService = inject(TeamService);
   fb = inject(FormBuilder);
 
-  // Evento para notificar al componente padre que cierre el panel y recargue
   @Output() closePanel = new EventEmitter<void>();
 
   formulario = this.fb.nonNullable.group({
@@ -57,6 +56,7 @@ export class TeamForm {
     this.formulario.reset();
     this.shieldPreview = null;
     this.championshipSearchText.set('');
+    this.stadiumSearchText.set('');
 
     this.closePanel.emit();
   }
@@ -65,6 +65,7 @@ export class TeamForm {
     this.formulario.reset();
     this.shieldPreview = null;
     this.championshipSearchText.set('');
+    this.stadiumSearchText.set('');
 
     this.closePanel.emit();
   }
@@ -73,14 +74,8 @@ export class TeamForm {
   countries = ['Argentina', 'Brasil', 'Uruguay', 'Chile'];
   isCountryOpen = false;
 
-  isCountryInvalid(): boolean {
-    const control = this.formulario.controls['country'];
-    return !!(control.touched && control.invalid);
-  }
-
   toggleCountryDropdown(): void {
     this.isCountryOpen = !this.isCountryOpen;
-    this.isStadiumOpen = false;
     this.isCalendarOpen = false;
     this.isMonthOpen = false;
     this.isYearOpen = false;
@@ -123,29 +118,33 @@ export class TeamForm {
     { id: 2, name: 'La Bombonera' },
     { id: 3, name: 'Estadio Mario Alberto Kempes' },
   ];
-  isStadiumOpen = false;
 
-  toggleStadiumDropdown() {
-    this.isStadiumOpen = !this.isStadiumOpen;
-    this.isCountryOpen = false;
-    this.isCalendarOpen = false;
-    this.isMonthOpen = false;
-    this.isYearOpen = false;
+  stadiumSearchText = signal<string>('');
+  isStadiumFocused = signal<boolean>(false);
 
-    if (!this.isStadiumOpen) {
-      this.formulario.controls['stadiumID'].markAsTouched();
-    }
+  filteredStadiums = computed(() => {
+    const search = this.stadiumSearchText().toLowerCase().trim();
+    if (!search) return [];
+    return this.stadiums.filter((s) => s.name.toLowerCase().includes(search));
+  });
+
+  get selectedStadiumObject() {
+    const selectedId = this.formulario.controls['stadiumID'].value;
+    if (!selectedId) return null;
+    return this.stadiums.find((s) => s.id.toString() === selectedId.toString()) || null;
   }
 
-  selectStadium(stadiumId: number) {
+  selectStadiumFromSearch(stadiumId: number) {
     this.formulario.controls['stadiumID'].setValue(stadiumId.toString());
     this.formulario.controls['stadiumID'].markAsTouched();
-    this.isStadiumOpen = false;
+    this.stadiumSearchText.set('');
+    this.isStadiumFocused.set(false);
   }
 
-  get selectedStadiumName(): string | undefined {
-    const selectedId = this.formulario.controls['stadiumID'].value;
-    return this.stadiums.find((s) => s.id.toString() === selectedId.toString())?.name;
+  removeStadium() {
+    this.formulario.controls['stadiumID'].setValue('');
+    this.formulario.controls['stadiumID'].markAsTouched();
+    this.stadiumSearchText.set('');
   }
 
   // --- Campeonatos ---
@@ -228,7 +227,6 @@ export class TeamForm {
     }
     this.isCalendarOpen = !this.isCalendarOpen;
     this.isCountryOpen = false;
-    this.isStadiumOpen = false;
     if (!this.isCalendarOpen) {
       this.isMonthOpen = false;
       this.isYearOpen = false;

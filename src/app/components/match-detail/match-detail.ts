@@ -123,10 +123,13 @@ export class MatchDetail implements OnInit {
       next: (c) => this.championship.set(c),
       error: () =>
         this.championship.set({
+          id: champId,
           name: 'Liga Profesional - Fecha 15',
           logo: 'https://via.placeholder.com/24',
           type: 'LIGA',
           country: 'Argentina',
+          teamsIDs: [1, 2],
+          season: '2026',
         }),
     });
   }

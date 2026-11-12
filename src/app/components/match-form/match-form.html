@@ -11,11 +11,8 @@
         stroke-linecap="round"
         stroke-linejoin="round"
       >
-        <circle cx="12" cy="12" r="10"></circle>
-        <path
-          d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"
-        ></path>
-        <path d="M2 12h20"></path>
+        <line x1="12" y1="5" x2="12" y2="19"></line>
+        <line x1="5" y1="12" x2="19" y2="12"></line>
       </svg>
     </div>
     <div>
@@ -28,52 +25,84 @@
     <div class="alert-error">{{ errorMessage }}</div>
   }
 
-  <form (ngSubmit)="saveMatch()">
-    <!-- ================= CAMPEONATO (CON ESCUDO/LOGO) ================= -->
-    <div class="form-group search-dropdown-container">
+  <form [formGroup]="matchForm" class="team-form" (ngSubmit)="saveMatch()">
+    <!-- ================= CAMPEONATO ================= -->
+    <div class="form-group">
       <label>Campeonato <span class="required">*</span></label>
-      <div class="search-input-wrapper">
-        <svg
-          class="search-lens-icon"
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <circle cx="11" cy="11" r="8"></circle>
-          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-        </svg>
-        <input
-          type="text"
-          class="form-control with-icon"
-          [(ngModel)]="championshipSearchQuery"
-          name="championshipSearchQuery"
-          (input)="onSearchChampionships()"
-          (focus)="onSearchChampionships()"
-          placeholder="Escribe para buscar un campeonato..."
-          autocomplete="off"
-          required
-        />
+
+      <div
+        class="search-tag-container"
+        [class.is-invalid]="
+          matchForm.controls['championshipID'].touched &&
+          matchForm.controls['championshipID'].invalid
+        "
+      >
+        @if (!selectedChampionshipObject) {
+          <div class="direct-search-input-box">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              width="16"
+              height="16"
+            >
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input
+              type="text"
+              [ngModel]="championshipSearchText()"
+              (ngModelChange)="championshipSearchText.set($event); isChampionshipFocused.set(true)"
+              (focus)="isChampionshipFocused.set(true)"
+              (blur)="matchForm.controls['championshipID'].markAsTouched()"
+              [ngModelOptions]="{ standalone: true }"
+              placeholder="Escribe para buscar un campeonato..."
+              autocomplete="off"
+            />
+          </div>
+
+          @if (isChampionshipFocused() && championshipSearchText().trim() !== '') {
+            <ul class="direct-suggestions-list" (mousedown)="$event.preventDefault()">
+              @for (champ of filteredChampionships(); track champ.id) {
+                <li
+                  class="suggestion-item"
+                  (click)="selectChampionship(champ); isChampionshipFocused.set(false)"
+                >
+                  <span>{{ champ.name }}</span>
+                </li>
+              } @empty {
+                <li class="suggestion-empty">No se encontraron campeonatos</li>
+              }
+            </ul>
+          }
+        } @else {
+          <div class="selected-tags-box">
+            <div class="championship-tag">
+              <span>{{ selectedChampionshipObject.name }}</span>
+              <button type="button" class="tag-remove-btn" (click)="removeChampionship()">✕</button>
+            </div>
+          </div>
+        }
       </div>
 
-      @if (showChampionshipDropdown && filteredChampionships().length > 0) {
-        <ul class="search-results-list">
-          @for (champ of filteredChampionships(); track champ.id) {
-            <li class="search-result-item" (click)="selectChampionship(champ)">
-              @if (champ.shield) {
-                <img [src]="champ.shield" class="result-thumb" alt="" />
-              }
-              <div class="result-info">
-                <span class="result-name">{{ champ.name }}</span>
-                <span class="result-meta">{{ champ.country || 'General' }}</span>
-              </div>
-            </li>
-          }
-        </ul>
+      @if (
+        matchForm.controls['championshipID'].touched && matchForm.controls['championshipID'].invalid
+      ) {
+        <div class="error-feedback">
+          <svg
+            class="error-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+          <span class="error-text">El campeonato es obligatorio.</span>
+        </div>
       }
     </div>
 
@@ -85,6 +114,9 @@
         type="button"
         class="calendar-trigger"
         [class.open]="isCalendarOpen"
+        [class.input-error]="
+          matchForm.controls['date'].touched && matchForm.controls['date'].invalid
+        "
         (click)="toggleCalendar($event)"
       >
         <span [class.placeholder]="!selectedDate">
@@ -204,7 +236,7 @@
             }
           </div>
 
-          <!-- Selector de Hora Estilo TikiData -->
+          <!-- Selector de Hora -->
           <div class="calendar-time-section">
             <div class="time-dropdown-wrapper" (click)="$event.stopPropagation()">
               <button
@@ -256,146 +288,265 @@
           </div>
         </div>
       }
-    </div>
 
-    <!-- ================= EQUIPOS: LOCAL Y VISITANTE ================= -->
-    <div class="form-row">
-      <!-- Local -->
-      <div class="form-group search-dropdown-container">
-        <label>Equipo Local <span class="required">*</span></label>
-        <div class="search-input-wrapper">
+      @if (matchForm.controls['date'].touched && matchForm.controls['date'].invalid) {
+        <div class="error-feedback">
           <svg
-            class="search-lens-icon"
-            width="16"
-            height="16"
+            class="error-icon"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
             stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
           >
-            <circle cx="11" cy="11" r="8"></circle>
-            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
           </svg>
-          <input
-            type="text"
-            class="form-control with-icon"
-            [(ngModel)]="localTeamSearchQuery"
-            name="localTeamSearchQuery"
-            (input)="onSearchLocalTeam()"
-            (focus)="onSearchLocalTeam()"
-            placeholder="Buscar equipo local..."
-            autocomplete="off"
-            required
-          />
+          <span class="error-text">La fecha y hora son obligatorias.</span>
         </div>
-
-        @if (showLocalDropdown && filteredLocalTeams().length > 0) {
-          <ul class="search-results-list">
-            @for (team of filteredLocalTeams(); track team.id) {
-              <li class="search-result-item" (click)="selectLocalTeam(team)">
-                @if (team.shield) {
-                  <img [src]="team.shield" class="result-thumb" alt="" />
-                }
-                <span class="result-name">{{ team.name }}</span>
-              </li>
-            }
-          </ul>
-        }
-      </div>
-
-      <!-- Visitante -->
-      <div class="form-group search-dropdown-container">
-        <label>Equipo Visitante <span class="required">*</span></label>
-        <div class="search-input-wrapper">
-          <svg
-            class="search-lens-icon"
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <circle cx="11" cy="11" r="8"></circle>
-            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-          </svg>
-          <input
-            type="text"
-            class="form-control with-icon"
-            [(ngModel)]="awayTeamSearchQuery"
-            name="awayTeamSearchQuery"
-            (input)="onSearchAwayTeam()"
-            (focus)="onSearchAwayTeam()"
-            placeholder="Buscar equipo visitante..."
-            autocomplete="off"
-            required
-          />
-        </div>
-
-        @if (showAwayDropdown && filteredAwayTeams().length > 0) {
-          <ul class="search-results-list">
-            @for (team of filteredAwayTeams(); track team.id) {
-              <li class="search-result-item" (click)="selectAwayTeam(team)">
-                @if (team.shield) {
-                  <img [src]="team.shield" class="result-thumb" alt="" />
-                }
-                <span class="result-name">{{ team.name }}</span>
-              </li>
-            }
-          </ul>
-        }
-      </div>
+      }
     </div>
 
-    <!-- ================= ESTADIO ================= -->
-    <div class="form-group search-dropdown-container">
-      <label>Estadio</label>
-      <div class="search-input-wrapper">
-        <svg
-          class="search-lens-icon"
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <circle cx="11" cy="11" r="8"></circle>
-          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-        </svg>
-        <input
-          type="text"
-          class="form-control with-icon"
-          [(ngModel)]="stadiumSearchQuery"
-          name="stadiumSearchQuery"
-          (input)="onSearchStadiums()"
-          (focus)="onSearchStadiums()"
-          placeholder="Escribe o busca estadio..."
-          autocomplete="off"
-        />
-      </div>
+    <!-- ================= EQUIPO LOCAL ================= -->
+    <div class="form-group">
+      <label>Equipo Local <span class="required">*</span></label>
 
-      @if (showStadiumDropdown && filteredStadiums().length > 0) {
-        <ul class="search-results-list">
-          @for (stadium of filteredStadiums(); track $index) {
-            <li class="search-result-item" (click)="selectStadium(stadium)">
-              <span class="result-name">{{ stadium }}</span>
-            </li>
+      <div
+        class="search-tag-container"
+        [class.is-invalid]="
+          matchForm.controls['localTeamID'].touched && matchForm.controls['localTeamID'].invalid
+        "
+      >
+        @if (!selectedLocalObject) {
+          <div class="direct-search-input-box">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              width="16"
+              height="16"
+            >
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input
+              type="text"
+              [ngModel]="localTeamSearchText()"
+              (ngModelChange)="localTeamSearchText.set($event); isLocalFocused.set(true)"
+              (focus)="isLocalFocused.set(true)"
+              (blur)="matchForm.controls['localTeamID'].markAsTouched()"
+              [ngModelOptions]="{ standalone: true }"
+              placeholder="Buscar equipo local..."
+              autocomplete="off"
+            />
+          </div>
+
+          @if (isLocalFocused() && localTeamSearchText().trim() !== '') {
+            <ul class="direct-suggestions-list" (mousedown)="$event.preventDefault()">
+              @for (team of filteredLocalTeams(); track team.id) {
+                <li
+                  class="suggestion-item"
+                  (click)="selectLocalTeam(team); isLocalFocused.set(false)"
+                >
+                  <span>{{ team.name }}</span>
+                </li>
+              } @empty {
+                <li class="suggestion-empty">No se encontraron equipos</li>
+              }
+            </ul>
           }
-        </ul>
+        } @else {
+          <div class="selected-tags-box">
+            <div class="championship-tag">
+              <span>{{ selectedLocalObject.name }}</span>
+              <button type="button" class="tag-remove-btn" (click)="removeLocalTeam()">✕</button>
+            </div>
+          </div>
+        }
+      </div>
+
+      @if (matchForm.controls['localTeamID'].touched && matchForm.controls['localTeamID'].invalid) {
+        <div class="error-feedback">
+          <svg
+            class="error-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+          <span class="error-text">El equipo local es obligatorio.</span>
+        </div>
+      }
+    </div>
+
+    <!-- ================= EQUIPO VISITANTE ================= -->
+    <div class="form-group">
+      <label>Equipo Visitante <span class="required">*</span></label>
+
+      <div
+        class="search-tag-container"
+        [class.is-invalid]="
+          matchForm.controls['awayTeamID'].touched && matchForm.controls['awayTeamID'].invalid
+        "
+      >
+        @if (!selectedAwayObject) {
+          <div class="direct-search-input-box">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              width="16"
+              height="16"
+            >
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input
+              type="text"
+              [ngModel]="awayTeamSearchText()"
+              (ngModelChange)="awayTeamSearchText.set($event); isAwayFocused.set(true)"
+              (focus)="isAwayFocused.set(true)"
+              (blur)="matchForm.controls['awayTeamID'].markAsTouched()"
+              [ngModelOptions]="{ standalone: true }"
+              placeholder="Buscar equipo visitante..."
+              autocomplete="off"
+            />
+          </div>
+
+          @if (isAwayFocused() && awayTeamSearchText().trim() !== '') {
+            <ul class="direct-suggestions-list" (mousedown)="$event.preventDefault()">
+              @for (team of filteredAwayTeams(); track team.id) {
+                <li
+                  class="suggestion-item"
+                  (click)="selectAwayTeam(team); isAwayFocused.set(false)"
+                >
+                  <span>{{ team.name }}</span>
+                </li>
+              } @empty {
+                <li class="suggestion-empty">No se encontraron equipos</li>
+              }
+            </ul>
+          }
+        } @else {
+          <div class="selected-tags-box">
+            <div class="championship-tag">
+              <span>{{ selectedAwayObject.name }}</span>
+              <button type="button" class="tag-remove-btn" (click)="removeAwayTeam()">✕</button>
+            </div>
+          </div>
+        }
+      </div>
+
+      @if (matchForm.controls['awayTeamID'].touched && matchForm.controls['awayTeamID'].invalid) {
+        <div class="error-feedback">
+          <svg
+            class="error-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+          <span class="error-text">El equipo visitante es obligatorio.</span>
+        </div>
+      }
+    </div>
+
+    <!-- ================= ESTADIO (Con búsqueda interactiva y validación) ================= -->
+    <div class="form-group">
+      <label>Estadio <span class="required">*</span></label>
+
+      <div
+        class="search-tag-container"
+        [class.is-invalid]="
+          matchForm.controls['stadium'].touched && matchForm.controls['stadium'].invalid
+        "
+      >
+        @if (!matchForm.controls['stadium'].value) {
+          <div class="direct-search-input-box">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              width="16"
+              height="16"
+            >
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input
+              type="text"
+              [ngModel]="stadiumSearchText()"
+              (ngModelChange)="onStadiumInputChange($event)"
+              (focus)="isStadiumFocused.set(true)"
+              (blur)="matchForm.controls['stadium'].markAsTouched()"
+              [ngModelOptions]="{ standalone: true }"
+              placeholder="Escribe o busca estadio..."
+              autocomplete="off"
+            />
+          </div>
+
+          @if (isStadiumFocused() && stadiumSearchText().trim() !== '') {
+            <ul class="direct-suggestions-list" (mousedown)="$event.preventDefault()">
+              @for (stadium of filteredStadiums(); track $index) {
+                <li
+                  class="suggestion-item"
+                  (click)="selectStadium(stadium); isStadiumFocused.set(false)"
+                >
+                  <span>{{ stadium }}</span>
+                </li>
+              } @empty {
+                <li
+                  class="suggestion-item"
+                  (click)="selectStadium(stadiumSearchText()); isStadiumFocused.set(false)"
+                >
+                  <span>Usar: "{{ stadiumSearchText() }}"</span>
+                </li>
+              }
+            </ul>
+          }
+        } @else {
+          <div class="selected-tags-box">
+            <div class="championship-tag">
+              <span>{{ matchForm.controls['stadium'].value }}</span>
+              <button type="button" class="tag-remove-btn" (click)="removeStadium()">✕</button>
+            </div>
+          </div>
+        }
+      </div>
+
+      @if (matchForm.controls['stadium'].touched && matchForm.controls['stadium'].invalid) {
+        <div class="error-feedback">
+          <svg
+            class="error-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+          <span class="error-text">El estadio es obligatorio.</span>
+        </div>
       }
     </div>
 
     <!-- ================= ACCIONES ================= -->
     <div class="form-actions">
       <button type="button" class="btn-cancel" (click)="onCancel()">Cancelar</button>
-      <button type="submit" class="btn-save">
+      <button type="submit" class="btn-save" [disabled]="matchForm.invalid">
         {{ isEditing ? 'Actualizar Partido' : 'Guardar Partido' }}
       </button>
     </div>

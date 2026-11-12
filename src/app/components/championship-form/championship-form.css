@@ -2,37 +2,27 @@
   box-sizing: border-box;
 }
 
-.team-form-container {
-  max-width: 640px;
-  width: 95%;
-  margin: 2rem auto;
-  padding: 2.4rem;
+/* =========================================
+   Contenedor Principal (Sin box / tarjeta externa)
+   ========================================= */
+.team-form-container.championship-form {
+  max-width: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background-color: #041326;
-  border: 1px solid #1c2e4a;
-  border-radius: 20px;
+  background-color: transparent;
+  border: none;
+  border-radius: 0;
   color: #fff;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: 100%;
-}
-
-.team-form-container .form-group,
-.team-form-container .form-row,
-.team-form-container .shield-container {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  box-shadow: none;
 }
 
 .form-header {
   display: flex;
   align-items: center;
   gap: 14px;
-  margin-bottom: 0.2rem;
+  margin-bottom: 2rem;
 }
 
 .header-icon {
@@ -63,20 +53,16 @@
 .form-group {
   display: flex;
   flex-direction: column;
-  margin-bottom: 0;
-}
-
-.form-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
+  margin-bottom: 1.5rem;
+  position: relative;
 }
 
 .form-group label {
   font-size: 0.85rem;
   font-weight: 600;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.4rem;
   color: #ffffff;
+  pointer-events: none;
 }
 
 .required {
@@ -85,19 +71,22 @@
 }
 
 /* =========================================
-   Inputs (Nombre y Temporada)
+   Inputs (Ancho completo y optimizados)
    ========================================= */
-.form-group input {
+.form-group input[type='text'],
+.form-group input[type='url'] {
   width: 100%;
-  height: 44px;
-  padding: 0 14px;
+  height: 46px;
+  padding: 0 16px;
+  margin: 0;
   background: linear-gradient(180deg, #071a33 0%, #051428 100%);
   color: #ffffff;
   border: 1px solid #1e497e;
   border-radius: 10px;
-  font-size: 0.9rem;
+  font-size: 0.92rem;
   outline: none;
   transition: all 0.25s ease;
+  box-sizing: border-box;
 }
 
 .form-group input::placeholder {
@@ -108,16 +97,18 @@
   border-color: #ff6b00;
   background: linear-gradient(180deg, #1c1511 0%, #0e121a 100%);
   box-shadow: 0 0 12px rgba(255, 107, 0, 0.2);
+  transform: translateY(-1px);
 }
 
 .form-group input:focus {
   border-color: #ff6b00;
   background: linear-gradient(180deg, #1c1511 0%, #0e121a 100%);
   box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.25);
+  transform: translateY(-1px);
 }
 
 /* =========================================
-   Desplegables (Formato)
+   Desplegables Generales (País / Formato)
    ========================================= */
 .custom-dropdown {
   position: relative;
@@ -126,16 +117,17 @@
 
 .dropdown-trigger {
   width: 100%;
-  height: 44px;
+  height: 46px;
   background: linear-gradient(180deg, #071a33 0%, #051428 100%);
   color: #ffffff;
   border: 1px solid #1e497e;
   border-radius: 10px;
-  padding: 0 14px;
+  padding: 0 16px;
+  margin: 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 0.9rem;
+  font-size: 0.92rem;
   font-family: inherit;
   cursor: pointer;
   outline: none;
@@ -147,12 +139,14 @@
   border-color: #ff6b00;
   background: linear-gradient(180deg, #1c1511 0%, #0e121a 100%);
   box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.25);
+  transform: translateY(-1px);
 }
 
 .dropdown-trigger:hover {
   border-color: #ff6b00;
   background: linear-gradient(180deg, #1c1511 0%, #0e121a 100%);
   box-shadow: 0 0 12px rgba(255, 107, 0, 0.2);
+  transform: translateY(-1px);
 }
 
 .dropdown-trigger .placeholder {
@@ -162,7 +156,7 @@
 .triangle-icon {
   width: 10px;
   height: 6px;
-  background-color: #ff6b00; /* Flecha naranja por defecto */
+  background-color: #ff6b00;
   clip-path: polygon(0 0, 100% 0, 50% 100%);
   display: inline-block;
   transition:
@@ -178,7 +172,7 @@
 
 .dropdown-menu {
   position: absolute;
-  top: calc(100% + 6px);
+  top: calc(100% + 4px);
   left: 0;
   width: 100%;
   max-height: 220px;
@@ -186,7 +180,7 @@
   background-color: #06182e;
   border: 1px solid #3d220a;
   border-radius: 12px;
-  padding: 6px;
+  padding: 4px;
   margin: 0;
   list-style: none;
   z-index: 100;
@@ -226,7 +220,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 14px;
+  padding: 8px 12px;
   font-size: 0.88rem;
   color: #c9d8eb;
   border-radius: 8px;
@@ -262,40 +256,27 @@
 }
 
 /* =========================================
-   Búsqueda Predictiva de Equipos Participantes
+   Búsqueda de Equipos Participantes & Chips
    ========================================= */
-.team-multisearch-group {
-  position: relative;
-  width: 100%;
-}
-
 .label-with-counter {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 0.5rem;
-}
-
-.label-with-counter label {
-  margin-bottom: 0 !important;
+  margin-bottom: 0.4rem;
 }
 
 .selection-counter {
   font-size: 0.75rem;
-  font-weight: 600;
-  color: #64748b;
-  background-color: rgba(100, 116, 139, 0.12);
-  border: 1px solid rgba(100, 116, 139, 0.25);
+  color: #7d96b3;
+  background: rgba(255, 255, 255, 0.05);
   padding: 2px 8px;
   border-radius: 12px;
-  transition: all 0.2s ease;
 }
 
 .selection-counter.has-selection {
   color: #ff6b00;
-  background-color: rgba(255, 107, 0, 0.12);
-  border-color: rgba(255, 107, 0, 0.35);
-  box-shadow: 0 0 8px rgba(255, 107, 0, 0.2);
+  background: rgba(255, 107, 0, 0.15);
+  font-weight: 600;
 }
 
 .search-input-wrapper {
@@ -308,162 +289,119 @@
 .search-lens-icon {
   position: absolute;
   left: 14px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 16px !important;
-  height: 16px !important;
-  color: #ff6b00; /* Lupa naranja */
+  color: #ff6b00;
   pointer-events: none;
   z-index: 2;
-  flex-shrink: 0;
 }
 
 .search-input-wrapper input {
   width: 100%;
-  height: 44px;
-  padding: 0 14px 0 40px !important;
+  height: 46px;
   background: linear-gradient(180deg, #071a33 0%, #051428 100%);
   color: #ffffff;
   border: 1px solid #1e497e;
   border-radius: 10px;
-  font-size: 0.9rem;
+  padding: 0 16px 0 42px !important;
+  margin: 0;
+  font-size: 0.92rem;
   outline: none;
   transition: all 0.25s ease;
+  box-sizing: border-box;
 }
 
 .search-input-wrapper input:hover {
   border-color: #ff6b00;
   background: linear-gradient(180deg, #1c1511 0%, #0e121a 100%);
   box-shadow: 0 0 12px rgba(255, 107, 0, 0.2);
+  transform: translateY(-1px);
 }
 
 .search-input-wrapper input:focus {
   border-color: #ff6b00;
   background: linear-gradient(180deg, #1c1511 0%, #0e121a 100%);
   box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.25);
+  transform: translateY(-1px);
 }
 
 .search-results-list {
   position: absolute;
-  top: calc(100% + 6px);
+  top: calc(100% + 4px);
   left: 0;
   width: 100%;
-  max-height: 220px;
+  max-height: 180px;
   overflow-y: auto;
   background-color: #06182e;
   border: 1px solid #3d220a;
   border-radius: 12px;
-  padding: 6px;
+  padding: 4px;
   margin: 0;
   list-style: none;
   z-index: 1000;
   box-shadow: 0 14px 32px rgba(0, 0, 0, 0.7);
   backdrop-filter: blur(8px);
-}
-
-.search-results-list::-webkit-scrollbar {
-  width: 5px;
-}
-.search-results-list::-webkit-scrollbar-track {
-  background: transparent;
-}
-.search-results-list::-webkit-scrollbar-thumb {
-  background: #3a2009;
-  border-radius: 4px;
+  animation: dropdownFadeIn 0.18s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .search-result-item {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 10px 14px;
+  padding: 8px 12px;
+  cursor: pointer;
   border-radius: 8px;
-  cursor: default;
-  background: transparent;
-  transition: none;
+  border-bottom: none;
+  transition: background-color 0.15s ease;
+}
+
+.search-result-item:hover {
+  background-color: #381a05;
 }
 
 .result-thumb {
-  width: 28px;
-  height: 28px;
+  width: 24px;
+  height: 24px;
   object-fit: contain;
-  border-radius: 50%;
-  background-color: #030d1a;
-  border: 1px solid #143560;
-  padding: 2px;
-  flex-shrink: 0;
 }
 
 .result-info {
   display: flex;
   flex-direction: column;
-  flex: 1;
 }
 
 .result-name {
-  font-size: 0.88rem;
-  font-weight: 600;
-  color: #ffffff;
+  font-size: 0.86rem;
+  font-weight: 500;
+  color: #fff;
 }
 
 .result-meta {
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 0.76rem;
+  font-size: 0.75rem;
   color: #7d96b3;
-  margin-top: 2px;
 }
 
-.result-meta .flag-icon {
-  width: 16px;
-  height: 11px;
+.flag-icon {
+  width: 14px;
+  height: 10px;
   object-fit: cover;
   border-radius: 2px;
-  display: inline-block;
-}
-
-.add-badge {
-  background-color: rgba(255, 107, 0, 0.12);
-  color: #ff6b00;
-  font-size: 0.74rem;
-  font-weight: 700;
-  padding: 5px 12px;
-  border-radius: 8px;
-  border: 1px solid rgba(255, 107, 0, 0.35);
-  cursor: pointer;
-  outline: none;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.add-badge:hover {
-  background-color: #ff6b00;
-  color: #041326;
-  border-color: #ff6b00;
-  box-shadow: 0 0 14px rgba(255, 107, 0, 0.5);
-  transform: translateY(-1px) scale(1.04);
-}
-
-.add-badge:active {
-  transform: translateY(0) scale(0.96);
-  box-shadow: none;
 }
 
 .no-results-msg {
-  padding: 12px;
+  padding: 10px;
   text-align: center;
-  font-size: 0.85rem;
+  font-size: 0.84rem;
   color: #7d96b3;
+  font-style: italic;
 }
 
-/* =========================================
-   Chips de Equipos Seleccionados
-   ========================================= */
 .selected-teams-chips {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 10px;
+  gap: 6px;
+  margin-top: 6px;
 }
 
 .team-chip {
@@ -473,7 +411,11 @@
   background-color: #1a120b;
   border: 1px solid #4a290c;
   border-radius: 20px;
-  padding: 4px 10px 4px 6px;
+  padding: 4px 12px;
+  margin: 0;
+  color: #ffd8bd;
+  font-size: 0.85rem;
+  font-weight: 600;
   animation: chipIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
@@ -495,9 +437,7 @@
 }
 
 .chip-name {
-  font-size: 0.82rem;
-  font-weight: 600;
-  color: #ffd8bd;
+  font-size: 0.85rem;
 }
 
 .btn-remove-chip {
@@ -522,67 +462,31 @@
 }
 
 /* =========================================
-   Zona de Foto / Logo (Drag & Drop)
+   Zona de Logo del Torneo (URL & Vista Previa sin sombra)
    ========================================= */
 .shield-container {
   display: grid;
-  grid-template-columns: 1.8fr 1fr;
+  grid-template-columns: 3.2fr 1fr;
   gap: 1rem;
   align-items: stretch;
+  margin: 0;
+  padding: 0;
+  width: 100%;
 }
 
-.visually-hidden {
-  display: none;
-}
-
-.dropzone {
+.url-input-wrapper {
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
-  border-radius: 12px;
-  padding: 1.25rem 0.5rem;
-  cursor: pointer;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-  border: 1.5px dashed #382413;
-  background: linear-gradient(180deg, #071a33 0%, #051428 100%);
-  transition: all 0.25s ease;
   height: 100%;
-}
-
-.dropzone:hover {
-  border-color: #ff6b00;
-  background: linear-gradient(180deg, #1c1511 0%, #0e121a 100%);
-  transform: translateY(-1px);
-}
-
-.dropzone:hover .upload-icon {
-  color: #ff6b00;
-  transform: translateY(-2px);
-}
-
-.upload-icon {
-  width: 26px;
-  height: 26px;
-  color: #ff6b00; /* Icono de carga en naranja */
-  margin-bottom: 8px;
-  transition:
-    transform 0.2s ease,
-    color 0.2s ease;
-}
-
-.dropzone-text {
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: #d1dced;
+  margin: 0;
 }
 
 .dropzone-hint {
   font-size: 0.68rem;
   color: #617b9b;
-  margin-top: 3px;
+  margin-top: 4px;
+  display: block;
 }
 
 .preview-box {
@@ -590,22 +494,22 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border: 1px solid #3d220a;
+  border: 1px solid #1e497e;
   border-radius: 12px;
-  background: radial-gradient(circle at center, #1c1008 0%, #061528 100%);
-  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.4);
-  padding: 1rem;
+  background: linear-gradient(180deg, #071a33 0%, #051428 100%);
+  box-shadow: none;
+  padding: 8px;
+  margin: 0;
   position: relative;
   height: 100%;
+  min-height: 90px;
 }
 
 .shield-icon {
-  width: 42px;
-  height: 42px;
-  color: #66320e;
-  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.3));
-  margin-bottom: 6px;
-  transition: color 0.2s ease;
+  width: 36px;
+  height: 36px;
+  color: #637d9d;
+  margin-bottom: 4px;
 }
 
 .preview-text {
@@ -614,28 +518,28 @@
 }
 
 .uploaded-shield-img {
-  max-width: 60px;
-  max-height: 60px;
+  max-width: 50px;
+  max-height: 50px;
   object-fit: contain;
-  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.4));
 }
 
 .btn-remove-shield {
   position: absolute;
-  top: 8px;
-  right: 8px;
+  top: 6px;
+  right: 6px;
   background: rgba(239, 68, 68, 0.2);
   border: 1px solid #ef4444;
   color: #ef4444;
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
   border-radius: 50%;
-  font-size: 11px;
+  font-size: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: all 0.2s ease;
+  z-index: 25;
 }
 
 .btn-remove-shield:hover {
@@ -644,87 +548,13 @@
 }
 
 /* =========================================
-   Botones de Acción
-   ========================================= */
-.form-actions {
-  display: flex;
-  gap: 1rem;
-  margin-top: 0.5rem;
-}
-
-.btn-cancel {
-  flex: 1;
-  height: 48px;
-  background-color: transparent;
-  border: 1px solid #4a280c;
-  color: #ffffff;
-  border-radius: 12px;
-  font-size: 0.95rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition:
-    border-color 0.2s ease,
-    background-color 0.2s ease,
-    box-shadow 0.2s ease,
-    transform 0.2s ease;
-}
-
-.btn-cancel:hover {
-  border-color: #ff6b00;
-  background-color: #1f1207;
-  box-shadow: 0 0 14px rgba(255, 107, 0, 0.25);
-  transform: translateY(-1px);
-}
-
-.btn-cancel:active {
-  transform: translateY(0);
-}
-
-.btn-save {
-  flex: 1;
-  height: 48px;
-  background: linear-gradient(
-    180deg,
-    #ff6b00 0%,
-    #e05e00 100%
-  ); /* Botón principal naranja TikiData */
-  border: none;
-  color: #ffffff;
-  border-radius: 12px;
-  font-size: 0.95rem;
-  font-weight: 600;
-  cursor: pointer;
-  box-shadow: 0 4px 14px rgba(255, 107, 0, 0.4);
-  transition: all 0.2s ease;
-}
-
-.btn-save:hover:not(:disabled) {
-  background: linear-gradient(180deg, #ff8124 0%, #ff6b00 100%);
-  box-shadow: 0 6px 18px rgba(255, 107, 0, 0.55);
-  transform: translateY(-1px);
-}
-
-.btn-save:active:not(:disabled) {
-  transform: translateY(0);
-  box-shadow: 0 2px 8px rgba(255, 107, 0, 0.3);
-}
-
-.btn-save:disabled {
-  background: #2b1d14;
-  color: #735745;
-  box-shadow: none;
-  cursor: not-allowed;
-  transform: none;
-}
-
-/* =========================================
-   Mensajes de Error y Validaciones
+   Validación y Errores
    ========================================= */
 .error-feedback {
   display: flex;
   align-items: center;
   gap: 6px;
-  margin-top: 6px;
+  margin-top: 4px;
   animation: errorSlideIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
@@ -750,13 +580,76 @@
   color: #fca5a5;
   font-size: 0.78rem;
   font-weight: 500;
-  letter-spacing: 0.01em;
 }
 
 .form-group input.ng-invalid.ng-touched,
-.custom-dropdown.is-invalid .dropdown-trigger,
-.search-input-wrapper input.input-error {
+.custom-dropdown.is-invalid .dropdown-trigger {
   border-color: #ef4444 !important;
   background-color: #0b1a2f;
   box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15) !important;
+}
+
+/* =========================================
+   Botones de Acción
+   ========================================= */
+.form-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+  padding: 0;
+}
+
+.btn-cancel {
+  flex: 1;
+  height: 46px;
+  background-color: transparent;
+  border: 1px solid #4a280c;
+  color: #ffffff;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+.btn-cancel:hover {
+  border-color: #ff6b00;
+  background-color: #1f1207;
+  box-shadow: 0 0 14px rgba(255, 107, 0, 0.25);
+  transform: translateY(-1px);
+}
+
+.btn-save {
+  flex: 1;
+  height: 46px;
+  background: linear-gradient(180deg, #ff6b00 0%, #e05e00 100%);
+  border: none;
+  color: #ffffff;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(255, 107, 0, 0.4);
+  transition: all 0.2s ease;
+}
+
+.btn-save:hover:not(:disabled) {
+  background: linear-gradient(180deg, #ff8124 0%, #ff6b00 100%);
+  box-shadow: 0 6px 18px rgba(255, 107, 0, 0.55);
+  transform: translateY(-1px);
+}
+
+.btn-save:disabled {
+  background: #2b1d14;
+  color: #735745;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+.visually-hidden {
+  display: none !important;
 }

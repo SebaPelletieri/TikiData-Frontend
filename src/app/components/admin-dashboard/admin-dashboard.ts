@@ -11,7 +11,17 @@ import { TeamForm } from '../team-form/team-form';
 import { ChampionshipForm } from '../../components/championship-form/championship-form';
 import { PlayerForm } from '../player-form/player-form';
 import { AdminForm } from '../admin-form/admin-form';
-import { MatchForm } from '../match-form/match-form'; // <--- 1. Importa el componente aquí (ajusta la ruta si es diferente)
+import { MatchForm } from '../match-form/match-form';
+import { ChampionshipEdit } from '../championship-edit/championship-edit';
+
+/** Cantidad máxima de botones de página visibles a la vez. */
+const MAX_VISIBLE_PAGES = 10;
+
+function getVisiblePages(total: number, current: number, size = MAX_VISIBLE_PAGES): number[] {
+  const end = Math.min(total, Math.max(current, size));
+  const start = Math.max(1, end - size + 1);
+  return Array.from({ length: end - start + 1 }, (_, i) => start + i);
+}
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -24,7 +34,8 @@ import { MatchForm } from '../match-form/match-form'; // <--- 1. Importa el comp
     ChampionshipForm,
     PlayerForm,
     AdminForm,
-    MatchForm, // <--- 2. Agrégalo en los imports del componente
+    MatchForm,
+    ChampionshipEdit,
   ],
   templateUrl: './admin-dashboard.html',
   styleUrl: './admin-dashboard.css',
@@ -36,6 +47,7 @@ export class AdminDashboard implements OnInit {
   private playerService = inject(PlayerService);
   private matchService = inject(MatchService);
 
+  editingChampionshipId = signal<number | string | null>(null);
   successMessage = '';
   errorMessage = '';
 
@@ -47,40 +59,40 @@ export class AdminDashboard implements OnInit {
   totalChampionshipsCount = computed(() => this.championshipService.championships().length);
   totalMatchesCount = computed(() => this.matchService.matches().length);
 
-  // Equipos
+  // Equipos (Actualizado a 10)
   adminSearchText = signal('');
   selectedAdminCountry = signal('ALL');
   selectedAdminChampionship = signal('ALL');
   currentPage = signal(1);
-  itemsPerPage = 6;
+  itemsPerPage = 10;
   isCountryDropdownOpen = false;
   isChampionshipDropdownOpen = false;
   selectedCountryLabel = 'Todos los países';
   selectedChampionshipLabel = 'Todos los campeonatos';
   teamToDeleteId = signal<number | null>(null);
 
-  // Campeonatos
+  // Campeonatos (Actualizado a 10)
   championshipSearchText = signal('');
   selectedChampionshipCountry = signal('ALL');
   selectedChampionshipType = signal('ALL');
   currentChampPage = signal(1);
-  itemsPerPageChamps = 6;
+  itemsPerPageChamps = 10;
   isChampCountryDropdownOpen = false;
   isChampTypeDropdownOpen = false;
   selectedChampCountryLabel = 'Todos los países';
   selectedChampTypeLabel = 'Todos los tipos';
-  championshipToDeleteId = signal<number | null>(null);
+  championshipToDeleteId = signal<number | string | null>(null);
 
-  // Partidos
+  // Partidos (Actualizado a 10)
   matchSearchText = signal('');
   selectedMatchStatus = signal('ALL');
   currentMatchPage = signal(1);
-  itemsPerPageMatches = 6;
+  itemsPerPageMatches = 10;
   isMatchStatusDropdownOpen = false;
   selectedMatchStatusLabel = 'Todos los estados';
   matchToDeleteId = signal<number | null>(null);
 
-  // Jugadores
+  // Jugadores (Ya estaba en 10)
   playerSearchText = signal('');
   selectedPlayerPosition = signal('ALL');
   selectedPlayerNationality = signal('ALL');
@@ -92,7 +104,7 @@ export class AdminDashboard implements OnInit {
   selectedPlayerNationalityLabel = 'Todas las nacionalidades';
   playerToDeleteId = signal<number | null>(null);
 
-  // Usuarios
+  // Usuarios (Ya estaba en 10)
   userSearchText = signal('');
   selectedUserRole = signal('ALL');
   currentUserPage = signal(1);
@@ -187,8 +199,8 @@ export class AdminDashboard implements OnInit {
 
   champTypeOptions = computed(() => [
     { value: 'ALL', label: 'Todos los tipos' },
-    { value: 'Liga', label: 'Liga' },
-    { value: 'Copa', label: 'Copa' },
+    { value: 'LIGA', label: 'LIGA' },
+    { value: 'COPA', label: 'COPA' },
   ]);
 
   matchStatusOptions = computed(() => [
@@ -323,7 +335,31 @@ export class AdminDashboard implements OnInit {
     this.isUserRoleDropdownOpen = false;
   }
 
-  filteredTeams = computed(() => this.teamService.teams());
+  // ================= EQUIPOS =================
+  filteredTeams = computed(() => {
+    const teams = this.teamService.teams();
+    const search = this.adminSearchText().toLowerCase().trim();
+    const country = this.selectedAdminCountry();
+    const championshipId = this.selectedAdminChampionship();
+
+    return teams.filter((t) => {
+      const teamName = (t.name || '').toLowerCase();
+      const teamCountry = t.country || '';
+
+      const matchesSearch = !search || teamName.includes(search);
+      const matchesCountry = country === 'ALL' || teamCountry === country;
+
+      let matchesChampionship = true;
+      if (championshipId !== 'ALL') {
+        const champIdNum = Number(championshipId);
+        matchesChampionship =
+          Array.isArray(t.championshipsActive) && t.championshipsActive.includes(champIdNum);
+      }
+
+      return matchesSearch && matchesCountry && matchesChampionship;
+    });
+  });
+
   paginatedTeamsForAdmin = computed(() => {
     const teams = this.filteredTeams();
     const start = (this.currentPage() - 1) * this.itemsPerPage;
@@ -332,7 +368,7 @@ export class AdminDashboard implements OnInit {
   totalPages = computed(() =>
     Math.max(1, Math.ceil(this.filteredTeams().length / this.itemsPerPage)),
   );
-  pagesArray = computed(() => Array.from({ length: this.totalPages() }, (_, i) => i + 1));
+  pagesArray = computed(() => getVisiblePages(this.totalPages(), this.currentPage()));
   paginationInfoText = computed(() => {
     const total = this.filteredTeams().length;
     if (total === 0) return 'No hay registros';
@@ -344,7 +380,26 @@ export class AdminDashboard implements OnInit {
     if (page >= 1 && page <= this.totalPages()) this.currentPage.set(page);
   }
 
-  filteredChampionships = computed(() => this.championshipService.championships());
+  // ================= CAMPEONATOS =================
+  filteredChampionships = computed(() => {
+    const champs = this.championshipService.championships();
+    const search = this.championshipSearchText().toLowerCase().trim();
+    const country = this.selectedChampionshipCountry();
+    const type = this.selectedChampionshipType();
+
+    return champs.filter((c) => {
+      const champName = (c.name || '').toLowerCase();
+      const champCountry = c.country || '';
+      const champType = c.type || '';
+
+      const matchesSearch = !search || champName.includes(search);
+      const matchesCountry = country === 'ALL' || champCountry === country;
+      const matchesType = type === 'ALL' || champType === type;
+
+      return matchesSearch && matchesCountry && matchesType;
+    });
+  });
+
   paginatedChampionshipsForAdmin = computed(() => {
     const champs = this.filteredChampionships();
     const start = (this.currentChampPage() - 1) * this.itemsPerPageChamps;
@@ -353,7 +408,9 @@ export class AdminDashboard implements OnInit {
   totalChampPages = computed(() =>
     Math.max(1, Math.ceil(this.filteredChampionships().length / this.itemsPerPageChamps)),
   );
-  champPagesArray = computed(() => Array.from({ length: this.totalChampPages() }, (_, i) => i + 1));
+  champPagesArray = computed(() =>
+    getVisiblePages(this.totalChampPages(), this.currentChampPage()),
+  );
   champPaginationInfoText = computed(() => {
     const total = this.filteredChampionships().length;
     if (total === 0) return 'No hay registros';
@@ -365,7 +422,7 @@ export class AdminDashboard implements OnInit {
     if (page >= 1 && page <= this.totalChampPages()) this.currentChampPage.set(page);
   }
 
-  // Filtrado y paginación de partidos
+  // ================= PARTIDOS =================
   filteredMatches = computed(() => {
     const matches = this.matchService.matches();
     const search = this.matchSearchText().toLowerCase().trim();
@@ -390,7 +447,9 @@ export class AdminDashboard implements OnInit {
     Math.max(1, Math.ceil(this.filteredMatches().length / this.itemsPerPageMatches)),
   );
 
-  matchPagesArray = computed(() => Array.from({ length: this.totalMatchPages() }, (_, i) => i + 1));
+  matchPagesArray = computed(() =>
+    getVisiblePages(this.totalMatchPages(), this.currentMatchPage()),
+  );
 
   matchPaginationInfoText = computed(() => {
     const total = this.filteredMatches().length;
@@ -404,6 +463,7 @@ export class AdminDashboard implements OnInit {
     if (page >= 1 && page <= this.totalMatchPages()) this.currentMatchPage.set(page);
   }
 
+  // ================= JUGADORES =================
   filteredPlayers = computed(() => {
     const players = this.playerService.players();
     const search = this.playerSearchText().toLowerCase().trim();
@@ -427,7 +487,7 @@ export class AdminDashboard implements OnInit {
     Math.max(1, Math.ceil(this.filteredPlayers().length / this.itemsPerPagePlayers)),
   );
   playerPagesArray = computed(() =>
-    Array.from({ length: this.totalPlayerPages() }, (_, i) => i + 1),
+    getVisiblePages(this.totalPlayerPages(), this.currentPlayerPage()),
   );
   playerPaginationInfoText = computed(() => {
     const total = this.filteredPlayers().length;
@@ -440,6 +500,7 @@ export class AdminDashboard implements OnInit {
     if (page >= 1 && page <= this.totalPlayerPages()) this.currentPlayerPage.set(page);
   }
 
+  // ================= USUARIOS =================
   filteredUsers = computed(() => {
     const users = this.allUsersForAdmin();
     const search = this.userSearchText().toLowerCase().trim();
@@ -461,7 +522,7 @@ export class AdminDashboard implements OnInit {
   totalUserPages = computed(() =>
     Math.max(1, Math.ceil(this.filteredUsers().length / this.itemsPerPageUsers)),
   );
-  userPagesArray = computed(() => Array.from({ length: this.totalUserPages() }, (_, i) => i + 1));
+  userPagesArray = computed(() => getVisiblePages(this.totalUserPages(), this.currentUserPage()));
   userPaginationInfoText = computed(() => {
     const total = this.filteredUsers().length;
     if (total === 0) return 'No hay registros';
@@ -473,6 +534,7 @@ export class AdminDashboard implements OnInit {
     if (page >= 1 && page <= this.totalUserPages()) this.currentUserPage.set(page);
   }
 
+  // ================= ELIMINACIONES =================
   confirmDelete(id: number): void {
     this.teamToDeleteId.set(id);
   }
@@ -485,7 +547,7 @@ export class AdminDashboard implements OnInit {
     this.teamToDeleteId.set(null);
   }
 
-  confirmDeleteChampionship(id: number): void {
+  confirmDeleteChampionship(id: number | string): void {
     this.championshipToDeleteId.set(id);
   }
   cancelDeleteChampionship(): void {
@@ -493,7 +555,7 @@ export class AdminDashboard implements OnInit {
   }
   executeDeleteChampionship(): void {
     const id = this.championshipToDeleteId();
-    if (id !== null) this.championshipService.deleteChampionship(id);
+    if (id !== null) this.championshipService.deleteChampionship(Number(id));
     this.championshipToDeleteId.set(null);
   }
 
@@ -557,5 +619,13 @@ export class AdminDashboard implements OnInit {
 
   convertToNumber(value: any): number {
     return Number(value);
+  }
+
+  selectChampionshipToEdit(id: number | string): void {
+    this.editingChampionshipId.set(Number(id));
+  }
+
+  cancelChampionshipEdit(): void {
+    this.editingChampionshipId.set(null);
   }
 }

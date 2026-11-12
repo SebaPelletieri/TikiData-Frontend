@@ -1,0 +1,231 @@
+<div class="team-form-container">
+  <!-- Cabecera e Icono de Eliminar -->
+  <div class="form-header-row">
+    <div class="form-header">
+      <div class="header-icon">
+        <svg
+          width="22"
+          height="22"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path>
+          <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path>
+          <path d="M4 22h16"></path>
+          <path d="M10 14.66V17"></path>
+          <path d="M14 14.66V17"></path>
+          <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path>
+        </svg>
+      </div>
+      <div>
+        <h2>{{ isEditing ? 'Editar Campeonato' : 'Nuevo Campeonato' }}</h2>
+        <p>Configura las reglas y participantes del torneo.</p>
+      </div>
+    </div>
+
+    @if (isEditing) {
+      <button type="button" class="btn-top-delete" (click)="showDeleteModal = true">
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <polyline points="3 6 5 6 21 6"></polyline>
+          <path
+            d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
+          ></path>
+        </svg>
+        Eliminar
+      </button>
+    }
+  </div>
+
+  @if (errorMessage) {
+    <div class="alert-error">{{ errorMessage }}</div>
+  }
+
+  <form (ngSubmit)="saveChampionship()">
+    <!-- Fila 1: Nombre del campeonato y Formato -->
+    <div class="form-row">
+      <div class="form-group">
+        <label>Nombre del campeonato <span class="required">*</span></label>
+        <input
+          type="text"
+          class="form-control"
+          [(ngModel)]="championshipData.name"
+          name="name"
+          placeholder="Ej. Liga Profesional"
+          required
+        />
+      </div>
+
+      <div class="form-group custom-dropdown" [class.open]="isTypeDropdownOpen">
+        <label>Formato <span class="required">*</span></label>
+        <div class="filter-dropdown-box" (click)="toggleTypeDropdown()">
+          <span>{{ championshipData.type || 'Seleccionar' }}</span>
+          <span class="triangle-icon"></span>
+        </div>
+        @if (isTypeDropdownOpen) {
+          <ul class="admin-dropdown-menu">
+            @for (t of typesList; track t) {
+              <li
+                class="admin-dropdown-item"
+                [class.active]="championshipData.type === t"
+                (click)="selectType(t)"
+              >
+                <span>{{ t }}</span>
+              </li>
+            }
+          </ul>
+        }
+      </div>
+    </div>
+
+    <!-- Fila 2: Temporada (Solo 4 números) -->
+    <div class="form-group">
+      <label>Temporada <span class="required">*</span></label>
+      <input
+        type="text"
+        class="form-control"
+        [value]="championshipData.season"
+        (input)="onSeasonInput($event)"
+        name="season"
+        placeholder="Ej. 2026 o 2026/2027"
+        maxlength="4"
+        required
+      />
+    </div>
+
+    <!-- Equipos Participantes (Búsqueda interactiva y contador) -->
+    <div class="form-group search-dropdown-container">
+      <div class="label-with-counter">
+        <label>Equipos Participantes <span class="required">*</span></label>
+        <span class="counter-badge">{{ selectedTeamsList().length }} seleccionados</span>
+      </div>
+
+      <div class="search-input-wrapper">
+        <svg
+          class="search-lens-icon"
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input
+          type="text"
+          class="form-control with-icon"
+          [(ngModel)]="teamSearchQuery"
+          name="teamSearchQuery"
+          (input)="onSearchTeams()"
+          (focus)="onSearchTeams()"
+          placeholder="Buscar y agregar equipo..."
+          autocomplete="off"
+        />
+      </div>
+
+      @if (showTeamDropdown && filteredTeams().length > 0) {
+        <ul class="search-results-list">
+          @for (team of filteredTeams(); track team.id) {
+            <li class="search-result-item" (click)="addTeam(team)">
+              @if (team.shield) {
+                <img [src]="team.shield" class="result-thumb" alt="" />
+              }
+              <span class="result-name">{{ team.name }}</span>
+            </li>
+          }
+        </ul>
+      }
+
+      <!-- Tags de Equipos Seleccionados -->
+      <div class="selected-teams-chips">
+        @for (team of selectedTeamsList(); track team.id) {
+          <div class="team-chip">
+            @if (team.shield) {
+              <img [src]="team.shield" class="chip-thumb" alt="" />
+            }
+            <span>{{ team.name }}</span>
+            <button type="button" class="chip-remove" (click)="removeTeam(team.id!)">×</button>
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Logo del Torneo -->
+    <div class="form-group">
+      <label>Logo del Torneo <span class="required">*</span></label>
+      <label class="file-upload-dropzone">
+        <input
+          type="file"
+          accept="image/png, image/jpeg, image/svg+xml"
+          (change)="onFileSelected($event)"
+          hidden
+        />
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+          <polyline points="17 8 12 3 7 8"></polyline>
+          <line x1="12" y1="3" x2="12" y2="15"></line>
+        </svg>
+        <span class="upload-title">Haz clic para subir el logo</span>
+        <span class="upload-subtitle">PNG, JPG (máx. 2MB)</span>
+      </label>
+    </div>
+
+    <!-- Vista Previa del Logo Actual -->
+    <div class="form-group">
+      <div class="logo-preview-box">
+        @if (championshipData.logo) {
+          <img [src]="championshipData.logo" alt="Vista previa del logo" class="current-logo-img" />
+        } @else {
+          <span class="no-logo-text">Sin logo</span>
+        }
+      </div>
+      <div class="preview-label">Vista previa</div>
+    </div>
+
+    <!-- Botones de Acción -->
+    <div class="form-actions">
+      <button type="button" class="btn-cancel" (click)="onCancel()">Cancelar</button>
+      <button type="submit" class="btn-save">
+        {{ isEditing ? 'Guardar cambios' : 'Guardar Campeonato' }}
+      </button>
+    </div>
+  </form>
+</div>
+
+<!-- Modal de Confirmación de Eliminación -->
+@if (showDeleteModal) {
+  <div class="custom-modal-backdrop">
+    <div class="custom-modal-box">
+      <div class="modal-icon-warning">⚠️</div>
+      <h3>¿Eliminar campeonato?</h3>
+      <p>Esta acción no se puede deshacer y borrará toda la información asociada al campeonato.</p>
+      <div class="modal-actions">
+        <button type="button" class="btn-modal-cancel" (click)="showDeleteModal = false">
+          Cancelar
+        </button>
+        <button type="button" class="btn-modal-confirm" (click)="confirmDelete()">
+          Sí, eliminar
+        </button>
+      </div>
+    </div>
+  </div>
+}

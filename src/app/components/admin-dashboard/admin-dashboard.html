@@ -107,7 +107,7 @@
   </div>
 
   <!-- ======================================================== -->
-  <!-- SECCIÓN EQUIPOS: Tabla a la izq. y Form a la der.       -->
+  <!-- SECCIÓN EQUIPOS: Tabla a la izq. y Form a la der.        -->
   <!-- ======================================================== -->
   <div class="admin-split-layout-container always-with-form">
     <div class="admin-left-pane">
@@ -460,7 +460,7 @@
         </div>
       </div>
 
-      <!-- Tabla fija de campeonatos paginada -->
+      <!-- Tabla fija de campeonatos paginada (Con Logo y País, sin Temporada) -->
       <div class="admin-table-fixed-container">
         @if (paginatedChampionshipsForAdmin().length === 0) {
           <p class="empty-msg">No se encontraron campeonatos con los filtros seleccionados.</p>
@@ -470,9 +470,10 @@
               <thead>
                 <tr>
                   <th>#</th>
+                  <th>Logo</th>
                   <th>Nombre</th>
                   <th>Tipo</th>
-                  <th>Temporada</th>
+                  <th>País</th>
                   <th>Acciones</th>
                 </tr>
               </thead>
@@ -481,10 +482,13 @@
                   <tr>
                     <td>{{ (currentChampPage() - 1) * itemsPerPageChamps + idx + 1 }}</td>
                     <td>
+                      <div class="table-logo"><img [src]="champ.logo" [alt]="champ.name" /></div>
+                    </td>
+                    <td>
                       <strong>{{ champ.name }}</strong>
                     </td>
                     <td>{{ champ.type }}</td>
-                    <td>{{ champ.season }}</td>
+                    <td>{{ champ.country }}</td>
                     <td>
                       <div class="table-actions">
                         <button
@@ -513,7 +517,7 @@
                         </button>
                         <button
                           class="btn-action-edit-custom"
-                          [routerLink]="['/championship/edit', champ.id]"
+                          (click)="selectChampionshipToEdit(champ.id!)"
                         >
                           <svg
                             viewBox="0 0 24 24"
@@ -595,9 +599,16 @@
       </div>
     </div>
 
-    <!-- COLUMNA DERECHA: Formulario integrado de Campeonatos -->
+    <!-- COLUMNA DERECHA: Formulario dinámico (crear / editar) -->
     <div class="admin-right-pane">
-      <app-championship-form (closePanel)="loadAdminData()"></app-championship-form>
+      @if (editingChampionshipId() === null) {
+        <app-championship-form (closePanel)="loadAdminData()"></app-championship-form>
+      } @else {
+        <app-championship-edit
+          [championshipIdInput]="editingChampionshipId()!"
+          (closePanel)="cancelChampionshipEdit(); loadAdminData()"
+        ></app-championship-edit>
+      }
     </div>
   </div>
 
@@ -819,7 +830,10 @@
   <!-- ======================================================== -->
   <!-- SECCIÓN JUGADORES: Tabla a la izq. y Form a la der.      -->
   <!-- ======================================================== -->
-  <div class="admin-split-layout-container always-with-form" style="margin-top: 2.5rem">
+  <div
+    class="admin-split-layout-container always-with-form players-section"
+    style="margin-top: 2.5rem"
+  >
     <div class="admin-left-pane">
       <div class="teams-admin-header-row">
         <div class="teams-title-block">
@@ -940,6 +954,8 @@
                   <th>Foto</th>
                   <th>Nombre</th>
                   <th>Posición</th>
+                  <th>Nacionalidad</th>
+                  <!-- NUEVA COLUMNA -->
                   <th>Edad</th>
                   <th>Acciones</th>
                 </tr>
@@ -955,6 +971,8 @@
                       <strong>{{ player.name }}</strong>
                     </td>
                     <td>{{ player.position }}</td>
+                    <td>{{ player.nationality }}</td>
+                    <!-- NUEVA CELDA -->
                     <td>{{ player.age }}</td>
                     <td>
                       <div class="table-actions">
@@ -1066,7 +1084,7 @@
   </div>
 
   <!-- ======================================================== -->
-  <!-- SECCIÓN USUARIOS: Tabla a la izq. y Form a la der.      -->
+  <!-- SECCIÓN USUARIOS: Tabla a la izq. y Form a la der.       -->
   <!-- ======================================================== -->
   <div class="admin-split-layout-container always-with-form" style="margin-top: 2.5rem">
     <div class="admin-left-pane">

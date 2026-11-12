@@ -1,23 +1,18 @@
 <div class="team-form-container championship-form">
   <div class="form-header">
     <div class="header-icon">
-      <!-- Icono de Trofeo -->
       <svg
         width="22"
         height="22"
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
-        stroke-width="2"
+        stroke-width="2.5"
         stroke-linecap="round"
         stroke-linejoin="round"
       >
-        <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path>
-        <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path>
-        <path d="M4 22h16"></path>
-        <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path>
-        <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path>
-        <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path>
+        <line x1="12" y1="5" x2="12" y2="19"></line>
+        <line x1="5" y1="12" x2="19" y2="12"></line>
       </svg>
     </div>
     <div>
@@ -27,317 +22,362 @@
   </div>
 
   <form [formGroup]="formulario" (ngSubmit)="saveChampionship()">
-    <!-- Fila 1: Nombre y Temporada -->
-    <div class="form-row">
-      <div class="form-group">
-        <label (click)="$event.preventDefault()" for="name"
-          >Nombre del campeonato <span class="required">*</span></label
-        >
-        <input
-          id="name"
-          type="text"
-          formControlName="name"
-          placeholder="Ej. Liga Profesional"
-          (keydown)="onlyLetters($event)"
-        />
+    <!-- 1. Nombre del campeonato -->
+    <div class="form-group">
+      <label (click)="$event.preventDefault()" for="name"
+        >Nombre del campeonato <span class="required">*</span></label
+      >
+      <input
+        id="name"
+        type="text"
+        formControlName="name"
+        placeholder="Ej. Liga Profesional"
+        (keydown)="onlyLetters($event)"
+      />
 
-        @if (formulario.controls.name.touched && formulario.controls.name.invalid) {
-          <div class="error-feedback">
-            <svg
-              class="error-icon"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-            >
-              <circle cx="12" cy="12" r="10"></circle>
-              <line x1="12" y1="8" x2="12" y2="12"></line>
-              <line x1="12" y1="16" x2="12.01" y2="16"></line>
-            </svg>
-            <span class="error-text">
-              @if (formulario.controls.name.hasError('required')) {
-                Nombre obligatorio.
-              } @else if (formulario.controls.name.hasError('minlength')) {
-                Mínimo 3 caracteres.
-              } @else if (formulario.controls.name.hasError('pattern')) {
-                No se admiten números.
-              }
-            </span>
-          </div>
-        }
-      </div>
-
-      <div class="form-group">
-        <label for="season">Temporada <span class="required">*</span></label>
-        <input
-          id="season"
-          type="text"
-          formControlName="season"
-          placeholder="Ej. 2026 o 2026/2027"
-          maxlength="9"
-          (keydown)="onlySeasonChars($event)"
-        />
-
-        @if (formulario.controls.season.touched && formulario.controls.season.invalid) {
-          <div class="error-feedback">
-            <svg
-              class="error-icon"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-            >
-              <circle cx="12" cy="12" r="10"></circle>
-              <line x1="12" y1="8" x2="12" y2="12"></line>
-              <line x1="12" y1="16" x2="12.01" y2="16"></line>
-            </svg>
-            <span class="error-text">
-              @if (formulario.controls.season.hasError('required')) {
-                Temporada obligatoria.
-              } @else if (formulario.controls.season.hasError('pattern')) {
-                Formato inválido (usa YYYY o YYYY/YYYY).
-              }
-            </span>
-          </div>
-        }
-      </div>
-    </div>
-
-    <!-- Fila 2: Formato y Equipos Participantes -->
-    <div class="form-row">
-      <!-- Formato de Torneo -->
-      <div class="form-group">
-        <label>Formato <span class="required">*</span></label>
-        <div
-          class="custom-dropdown"
-          [class.open]="isTypeOpen"
-          [class.is-invalid]="formulario.controls.type.invalid && formulario.controls.type.touched"
-        >
-          <button type="button" class="dropdown-trigger" (click)="toggleTypeDropdown()">
-            <span [class.placeholder]="!formulario.controls.type.value">
-              {{
-                formulario.controls.type.value === 'League'
-                  ? 'Liga'
-                  : formulario.controls.type.value === 'Cup'
-                    ? 'Copa'
-                    : 'Seleccionar'
-              }}
-            </span>
-            <span class="triangle-icon"></span>
-          </button>
-
-          @if (isTypeOpen) {
-            <ul class="dropdown-menu">
-              <li
-                class="dropdown-item"
-                [class.active]="formulario.controls.type.value === 'League'"
-                (click)="selectType('League')"
-              >
-                <div class="item-content"><span>Liga (Todos vs Todos)</span></div>
-                @if (formulario.controls.type.value === 'League') {
-                  <svg
-                    class="check-icon"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  >
-                    <polyline points="20 6 9 17 4 12"></polyline>
-                  </svg>
-                }
-              </li>
-              <li
-                class="dropdown-item"
-                [class.active]="formulario.controls.type.value === 'Cup'"
-                (click)="selectType('Cup')"
-              >
-                <div class="item-content"><span>Copa (Eliminatoria)</span></div>
-                @if (formulario.controls.type.value === 'Cup') {
-                  <svg
-                    class="check-icon"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  >
-                    <polyline points="20 6 9 17 4 12"></polyline>
-                  </svg>
-                }
-              </li>
-            </ul>
-          }
-        </div>
-
-        @if (formulario.controls.type.touched && formulario.controls.type.invalid) {
-          <div class="error-feedback">
-            <svg
-              class="error-icon"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-            >
-              <circle cx="12" cy="12" r="10"></circle>
-              <line x1="12" y1="8" x2="12" y2="12"></line>
-              <line x1="12" y1="16" x2="12.01" y2="16"></line>
-            </svg>
-            <span class="error-text">El formato del torneo es obligatorio.</span>
-          </div>
-        }
-      </div>
-
-      <!-- Equipos Participantes (Búsqueda Predictiva + Múltiple + Contador) -->
-      <div class="form-group team-multisearch-group">
-        <div class="label-with-counter">
-          <label>Equipos Participantes <span class="required">*</span></label>
-          <span class="selection-counter" [class.has-selection]="selectedTeamIds().length > 0">
-            {{ selectedTeamIds().length }}
-            {{ selectedTeamIds().length === 1 ? 'seleccionado' : 'seleccionados' }}
+      @if (formulario.controls.name.touched && formulario.controls.name.invalid) {
+        <div class="error-feedback">
+          <svg
+            class="error-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+          <span class="error-text">
+            @if (formulario.controls.name.hasError('required')) {
+              Nombre obligatorio.
+            } @else if (formulario.controls.name.hasError('minlength')) {
+              Mínimo 3 caracteres.
+            } @else if (formulario.controls.name.hasError('pattern')) {
+              No se admiten números.
+            }
           </span>
         </div>
-
-        <div class="search-input-wrapper">
-          <svg
-            class="search-lens-icon"
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <circle cx="11" cy="11" r="8"></circle>
-            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-          </svg>
-
-          <!-- Input sin blur para evitar cancelar la pulsación del botón -->
-          <input
-            type="text"
-            [value]="teamSearchQuery()"
-            (input)="onTeamSearchInput($event)"
-            placeholder="Buscar y agregar equipo..."
-            [class.input-error]="
-              formulario.controls.teamsIDs.touched && formulario.controls.teamsIDs.invalid
-            "
-          />
-        </div>
-
-        <!-- Menú flotante: se muestra SOLO al tipear -->
-        @if (isTeamSearchOpen() && teamSearchQuery().trim().length > 0) {
-          <div class="search-results-list">
-            @for (team of filteredAvailableTeams(); track team.id) {
-              <!-- Fila estática sin hover ni eventos -->
-              <div class="search-result-item">
-                <img
-                  [src]="team.shield || 'https://via.placeholder.com/40'"
-                  (error)="$any($event.target).src = 'https://via.placeholder.com/40'"
-                  class="result-thumb"
-                  alt=""
-                />
-                <div class="result-info">
-                  <span class="result-name">{{ team.name }}</span>
-                  <span class="result-meta">
-                    <img
-                      [src]="'https://flagcdn.com/w40/' + getCountryCode(team.country) + '.png'"
-                      alt="Bandera"
-                      class="flag-icon"
-                    />
-                    <span>{{ team.country || 'Argentina' }}</span>
-                  </span>
-                </div>
-                <!-- Único botón interactivo -->
-                <button
-                  type="button"
-                  class="add-badge"
-                  (mousedown)="selectTeamFromSearch(team.id, $event)"
-                >
-                  + Agregar
-                </button>
-              </div>
-            } @empty {
-              <div class="no-results-msg">
-                No se encontraron equipos con "{{ teamSearchQuery() }}"
-              </div>
-            }
-          </div>
-        }
-
-        <!-- Chips de equipos seleccionados -->
-        @if (selectedTeamsList().length > 0) {
-          <div class="selected-teams-chips">
-            @for (team of selectedTeamsList(); track team.id) {
-              <div class="team-chip">
-                <img
-                  [src]="team.shield || 'https://via.placeholder.com/30'"
-                  (error)="$any($event.target).src = 'https://via.placeholder.com/30'"
-                  alt=""
-                  class="chip-shield"
-                />
-                <span class="chip-name">{{ team.name }}</span>
-                <button type="button" class="btn-remove-chip" (click)="removeSelectedTeam(team.id)">
-                  ✕
-                </button>
-              </div>
-            }
-          </div>
-        }
-
-        @if (formulario.controls.teamsIDs.touched && formulario.controls.teamsIDs.invalid) {
-          <div class="error-feedback">
-            <svg
-              class="error-icon"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-            >
-              <circle cx="12" cy="12" r="10"></circle>
-              <line x1="12" y1="8" x2="12" y2="12"></line>
-              <line x1="12" y1="16" x2="12.01" y2="16"></line>
-            </svg>
-            <span class="error-text">Debes seleccionar al menos 1 equipo.</span>
-          </div>
-        }
-      </div>
+      }
     </div>
 
-    <!-- Fila 3: Logo del Campeonato -->
+    <!-- 2. Temporada -->
     <div class="form-group">
-      <label>Logo del Torneo <span class="required">*</span></label>
-      <div class="shield-container">
-        <label class="dropzone" for="logo-file">
-          <input
-            type="file"
-            id="logo-file"
-            accept="image/png, image/jpeg"
-            class="visually-hidden"
-            (change)="onFileSelected($event)"
-          />
+      <label for="season">Temporada <span class="required">*</span></label>
+      <input
+        id="season"
+        type="text"
+        formControlName="season"
+        placeholder="Ej. 2026 o 2026/2027"
+        maxlength="9"
+        (keydown)="onlySeasonChars($event)"
+      />
+
+      @if (formulario.controls.season.touched && formulario.controls.season.invalid) {
+        <div class="error-feedback">
           <svg
-            class="upload-icon"
+            class="error-icon"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
             stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
           >
-            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-            <polyline points="17 8 12 3 7 8" />
-            <line x1="12" y1="3" x2="12" y2="15" />
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
           </svg>
-          <span class="dropzone-text">Haz clic para subir el logo</span>
-          <span class="dropzone-hint">PNG, JPG (máx. 2MB)</span>
-        </label>
+          <span class="error-text">
+            @if (formulario.controls.season.hasError('required')) {
+              Temporada obligatoria.
+            } @else if (formulario.controls.season.hasError('pattern')) {
+              Formato inválido (usa YYYY o YYYY/YYYY).
+            }
+          </span>
+        </div>
+      }
+    </div>
+
+    <!-- 3. País -->
+    <div class="form-group">
+      <label>País <span class="required">*</span></label>
+      <div
+        class="custom-dropdown"
+        [class.open]="isCountryOpen"
+        [class.is-invalid]="
+          formulario.controls.country.invalid && formulario.controls.country.touched
+        "
+      >
+        <button type="button" class="dropdown-trigger" (click)="toggleCountryDropdown()">
+          <span [class.placeholder]="!formulario.controls.country.value">
+            {{ formulario.controls.country.value || 'Seleccionar país' }}
+          </span>
+          <span class="triangle-icon"></span>
+        </button>
+
+        @if (isCountryOpen) {
+          <ul class="dropdown-menu">
+            @for (c of countryOptions; track c.value) {
+              <li
+                class="dropdown-item"
+                [class.active]="formulario.controls.country.value === c.value"
+                (click)="selectCountry(c.value)"
+              >
+                <div class="item-content">
+                  <span>{{ c.label }}</span>
+                </div>
+                @if (formulario.controls.country.value === c.value) {
+                  <svg
+                    class="check-icon"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                }
+              </li>
+            }
+          </ul>
+        }
+      </div>
+
+      @if (formulario.controls.country.touched && formulario.controls.country.invalid) {
+        <div class="error-feedback">
+          <svg
+            class="error-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+          <span class="error-text">El país es obligatorio.</span>
+        </div>
+      }
+    </div>
+
+    <!-- 4. Formato -->
+    <div class="form-group">
+      <label>Formato <span class="required">*</span></label>
+      <div
+        class="custom-dropdown"
+        [class.open]="isTypeOpen"
+        [class.is-invalid]="formulario.controls.type.invalid && formulario.controls.type.touched"
+      >
+        <button type="button" class="dropdown-trigger" (click)="toggleTypeDropdown()">
+          <span [class.placeholder]="!formulario.controls.type.value">
+            {{
+              formulario.controls.type.value === 'LIGA'
+                ? 'Liga'
+                : formulario.controls.type.value === 'COPA'
+                  ? 'Copa'
+                  : 'Seleccionar'
+            }}
+          </span>
+          <span class="triangle-icon"></span>
+        </button>
+
+        @if (isTypeOpen) {
+          <ul class="dropdown-menu">
+            <li
+              class="dropdown-item"
+              [class.active]="formulario.controls.type.value === 'LIGA'"
+              (click)="selectType('LIGA')"
+            >
+              <div class="item-content"><span>Liga (Todos vs Todos)</span></div>
+              @if (formulario.controls.type.value === 'LIGA') {
+                <svg
+                  class="check-icon"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+              }
+            </li>
+            <li
+              class="dropdown-item"
+              [class.active]="formulario.controls.type.value === 'COPA'"
+              (click)="selectType('COPA')"
+            >
+              <div class="item-content"><span>Copa (Eliminatoria)</span></div>
+              @if (formulario.controls.type.value === 'COPA') {
+                <svg
+                  class="check-icon"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+              }
+            </li>
+          </ul>
+        }
+      </div>
+
+      @if (formulario.controls.type.touched && formulario.controls.type.invalid) {
+        <div class="error-feedback">
+          <svg
+            class="error-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+          <span class="error-text">El formato del torneo es obligatorio.</span>
+        </div>
+      }
+    </div>
+
+    <!-- 5. Equipos Participantes -->
+    <div class="form-group team-multisearch-group">
+      <div class="label-with-counter">
+        <label>Equipos Participantes <span class="required">*</span></label>
+        <span class="selection-counter" [class.has-selection]="selectedTeamIds().length > 0">
+          {{ selectedTeamIds().length }}
+          {{ selectedTeamIds().length === 1 ? 'seleccionado' : 'seleccionados' }}
+        </span>
+      </div>
+
+      <div class="search-input-wrapper">
+        <svg
+          class="search-lens-icon"
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+
+        <input
+          type="text"
+          [value]="teamSearchQuery()"
+          (input)="onTeamSearchInput($event)"
+          (blur)="onSearchBlur()"
+          placeholder="Buscar y agregar equipo..."
+          [class.input-error]="
+            formulario.controls.teamsIDs.touched && formulario.controls.teamsIDs.invalid
+          "
+        />
+      </div>
+
+      @if (formulario.controls.teamsIDs.touched && formulario.controls.teamsIDs.invalid) {
+        <div class="error-feedback">
+          <svg
+            class="error-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+          <span class="error-text">Debes seleccionar al menos 1 equipo.</span>
+        </div>
+      }
+
+      @if (isTeamSearchOpen() && teamSearchQuery().trim().length > 0) {
+        <div class="search-results-list" (mousedown)="$event.preventDefault()">
+          @for (team of filteredAvailableTeams(); track team.id) {
+            <div
+              class="search-result-item clickable"
+              (mousedown)="selectTeamFromSearch(team.id, $event)"
+            >
+              <img
+                [src]="team.shield || 'https://via.placeholder.com/40'"
+                (error)="$any($event.target).src = 'https://via.placeholder.com/40'"
+                class="result-thumb"
+                alt=""
+              />
+              <div class="result-info">
+                <span class="result-name">{{ team.name }}</span>
+                <span class="result-meta">
+                  <img
+                    [src]="'https://flagcdn.com/w40/' + getCountryCode(team.country) + '.png'"
+                    alt="Bandera"
+                    class="flag-icon"
+                  />
+                  <span>{{ team.country || 'Argentina' }}</span>
+                </span>
+              </div>
+            </div>
+          } @empty {
+            <div class="no-results-msg">
+              No se encontraron equipos con "{{ teamSearchQuery() }}"
+            </div>
+          }
+        </div>
+      }
+
+      @if (selectedTeamsList().length > 0) {
+        <div class="selected-teams-chips">
+          @for (team of selectedTeamsList(); track team.id) {
+            <div class="team-chip">
+              <img
+                [src]="team.shield || 'https://via.placeholder.com/30'"
+                (error)="$any($event.target).src = 'https://via.placeholder.com/30'"
+                alt=""
+                class="chip-shield"
+              />
+              <span class="chip-name">{{ team.name }}</span>
+              <button type="button" class="btn-remove-chip" (click)="removeSelectedTeam(team.id)">
+                ✕
+              </button>
+            </div>
+          }
+        </div>
+      }
+    </div>
+
+    <!-- 6. Logo del Torneo (URL limpia y diseño original) -->
+    <div class="form-group">
+      <label>Logo del Torneo (URL) <span class="required">*</span></label>
+      <div class="shield-container">
+        <div class="url-input-wrapper">
+          <input
+            type="url"
+            id="logo-url"
+            formControlName="logo"
+            placeholder="Pega la URL del logo (ej. https://...)"
+            class="logo-url-input"
+            (input)="onLogoUrlInput($event)"
+          />
+          <span class="dropzone-hint">Ingresa un enlace web válido para el logo</span>
+        </div>
         <div class="preview-box">
           @if (logoPreview) {
-            <img [src]="logoPreview" alt="Logo" class="uploaded-shield-img" />
+            <img
+              [src]="logoPreview"
+              alt="Logo"
+              class="uploaded-shield-img"
+              (error)="logoPreview = null"
+            />
             <button type="button" class="btn-remove-shield" (click)="removeLogo($event)">✕</button>
           } @else {
             <svg class="shield-icon" viewBox="0 0 24 24" fill="currentColor">
@@ -347,6 +387,11 @@
           }
         </div>
       </div>
+      @if (formulario.controls.logo.touched && formulario.controls.logo.invalid) {
+        <div class="error-feedback">
+          <span class="error-text">El logo es obligatorio.</span>
+        </div>
+      }
     </div>
 
     <!-- Acciones -->

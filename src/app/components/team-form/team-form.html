@@ -277,9 +277,16 @@
     <div class="form-group">
       <label>Escudo <span class="required">*</span></label>
       <div class="shield-container">
-        <!-- 🌟 Contenedor de la zona de carga con posición relativa -->
         <div class="dropzone-wrapper">
-          <label class="dropzone" for="shield-file">
+          <input
+            type="file"
+            id="shield-file"
+            accept="image/png, image/jpeg"
+            class="file-input-overlay"
+            (change)="onFileSelected($event)"
+          />
+
+          <div class="dropzone">
             <svg
               class="upload-icon"
               viewBox="0 0 24 24"
@@ -295,15 +302,7 @@
             </svg>
             <span class="dropzone-text">Haz clic para subir el escudo</span>
             <span class="dropzone-hint">PNG, JPG (máx. 2MB)</span>
-          </label>
-
-          <input
-            type="file"
-            id="shield-file"
-            accept="image/png, image/jpeg"
-            class="file-input-overlay"
-            (change)="onFileSelected($event)"
-          />
+          </div>
         </div>
 
         <div class="preview-box">
@@ -322,57 +321,62 @@
       </div>
     </div>
 
-    <!-- Estadio -->
+    <!-- Estadio (Sin ícono) -->
     <div class="form-group">
-      <label for="stadium">Estadio <span class="required">*</span></label>
+      <label for="stadium-search">Estadio <span class="required">*</span></label>
+
       <div
-        class="custom-dropdown"
-        [class.open]="isStadiumOpen"
+        class="search-tag-container"
         [class.is-invalid]="
           formulario.controls['stadiumID'].touched && formulario.controls['stadiumID'].invalid
         "
       >
-        <button
-          type="button"
-          id="stadium"
-          class="dropdown-trigger"
-          (click)="toggleStadiumDropdown()"
-        >
-          <span [class.placeholder]="!formulario.controls['stadiumID'].value">
-            {{ selectedStadiumName || 'Selecciona un estadio' }}
-          </span>
-          <span class="triangle-icon"></span>
-        </button>
+        @if (!selectedStadiumObject) {
+          <div class="direct-search-input-box">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              width="16"
+              height="16"
+            >
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input
+              id="stadium-search"
+              type="text"
+              [ngModel]="stadiumSearchText()"
+              (ngModelChange)="stadiumSearchText.set($event); isStadiumFocused.set(true)"
+              (focus)="isStadiumFocused.set(true)"
+              (blur)="formulario.controls['stadiumID'].markAsTouched()"
+              [ngModelOptions]="{ standalone: true }"
+              placeholder="Escribe para buscar estadio..."
+            />
+          </div>
 
-        @if (isStadiumOpen) {
-          <ul class="dropdown-menu">
-            @for (item of stadiums; track item.id) {
-              <li
-                class="dropdown-item"
-                [class.active]="
-                  formulario.controls['stadiumID'].value.toString() === item.id.toString()
-                "
-                (click)="selectStadium(item.id)"
-              >
-                <div class="item-content">
+          @if (isStadiumFocused() && stadiumSearchText().trim() !== '') {
+            <ul class="direct-suggestions-list" (mousedown)="$event.preventDefault()">
+              @for (item of filteredStadiums(); track item.id) {
+                <li
+                  class="suggestion-item"
+                  (click)="selectStadiumFromSearch(item.id); isStadiumFocused.set(false)"
+                >
                   <span>{{ item.name }}</span>
-                </div>
-                @if (formulario.controls['stadiumID'].value.toString() === item.id.toString()) {
-                  <svg
-                    class="check-icon"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  >
-                    <polyline points="20 6 9 17 4 12"></polyline>
-                  </svg>
-                }
-              </li>
-            }
-          </ul>
+                </li>
+              } @empty {
+                <li class="suggestion-empty">No se encontraron estadios disponibles</li>
+              }
+            </ul>
+          }
+        } @else {
+          <div class="selected-tags-box">
+            <div class="championship-tag">
+              <span>{{ selectedStadiumObject.name }}</span>
+              <button type="button" class="tag-remove-btn" (click)="removeStadium()">✕</button>
+            </div>
+          </div>
         }
       </div>
 
@@ -437,7 +441,6 @@
                 (click)="addChampionship(item.id); isChampionshipsFocused.set(false)"
               >
                 <span>{{ item.name }}</span>
-                <span class="add-badge">+ Agregar</span>
               </li>
             } @empty {
               <li class="suggestion-empty">No se encontraron campeonatos disponibles</li>

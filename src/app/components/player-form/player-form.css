@@ -6,19 +6,20 @@
    Contenedor Principal de la Tarjeta
    ========================================= */
 .team-form-container {
-  max-width: 500px;
-  margin: 2rem auto;
-  padding: 2.2rem;
+  max-width: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
   font-family:
     'Plus Jakarta Sans',
     -apple-system,
     BlinkMacSystemFont,
     sans-serif;
-  background-color: #041326;
-  border: 1px solid #2b180a;
-  border-radius: 20px;
+  background-color: transparent;
+  border: none;
+  border-radius: 0;
   color: #fff;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  box-shadow: none;
 }
 
 /* =========================================
@@ -266,7 +267,6 @@
   font-weight: 600;
 }
 
-/* 👈 Corrección de tamaño y color para el check activo */
 .check-icon,
 .dropdown-item svg {
   width: 16px !important;
@@ -428,10 +428,6 @@
   transform: translateY(-1px);
 }
 
-.btn-cancel:active {
-  transform: translateY(0);
-}
-
 .btn-save {
   flex: 1;
   height: 48px;
@@ -451,11 +447,6 @@
   background: linear-gradient(180deg, #ff8124 0%, #ff6b00 100%);
   box-shadow: 0 6px 18px rgba(255, 107, 0, 0.55);
   transform: translateY(-1px);
-}
-
-.btn-save:active:not(:disabled) {
-  transform: translateY(0);
-  box-shadow: 0 2px 8px rgba(255, 107, 0, 0.3);
 }
 
 .btn-save:disabled {
@@ -541,9 +532,6 @@
   gap: 6px;
 }
 
-/* =========================================
-   Selectores Rápidos de Mes y Año
-   ========================================= */
 .calendar-selects {
   display: flex;
   gap: 6px;

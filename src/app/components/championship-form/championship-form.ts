@@ -22,7 +22,7 @@ export class ChampionshipForm implements OnInit {
 
   logoPreview: string | null = null;
   isTypeOpen = false;
-  isCountryOpen = false; // 👈 Estado para el desplegable de país en el formulario
+  isCountryOpen = false;
 
   // Búsqueda
   teamSearchQuery = signal<string>('');
@@ -51,12 +51,12 @@ export class ChampionshipForm implements OnInit {
         Validators.required,
         Validators.minLength(3),
         Validators.maxLength(50),
-        Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s\-\.]+$/),
+        Validators.pattern(/^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑüÜ\s\-\.]+$/),
       ],
     ],
     logo: ['', [Validators.required]],
     type: ['', [Validators.required]],
-    country: ['', [Validators.required]], // 👈 Añadido al formulario
+    country: ['', [Validators.required]],
     season: ['', [Validators.required, Validators.pattern(/^\d{4}(\/\d{4})?$/)]],
     teamsIDs: [<number[]>[], [Validators.required, Validators.minLength(1)]],
   });
@@ -136,15 +136,20 @@ export class ChampionshipForm implements OnInit {
   }
 
   saveChampionship(): void {
+    if (this.formulario.invalid) {
+      this.formulario.markAllAsTouched();
+      return;
+    }
+
     const formValue = this.formulario.getRawValue();
 
     const championshipActual: Championship = {
       name: formValue.name.trim(),
-      logo: formValue.logo,
+      logo: formValue.logo.trim(),
       type: formValue.type as ChampionshipType,
       season: formValue.season.trim(),
       teamsIDs: this.selectedTeamIds(),
-      country: formValue.country, // 👈 Ahora toma correctamente el valor del formulario
+      country: formValue.country,
     };
 
     this.championshipService.saveChampionship(championshipActual);
@@ -198,6 +203,13 @@ export class ChampionshipForm implements OnInit {
     this.isTeamSearchOpen.set(value.trim().length > 0);
   }
 
+  onSearchBlur(): void {
+    this.formulario.controls.teamsIDs.markAsTouched();
+    setTimeout(() => {
+      this.isTeamSearchOpen.set(false);
+    }, 200);
+  }
+
   selectTeamFromSearch(teamId: number | undefined, event: MouseEvent): void {
     event.preventDefault();
     event.stopPropagation();
@@ -228,28 +240,20 @@ export class ChampionshipForm implements OnInit {
     this.formulario.controls.teamsIDs.markAsTouched();
   }
 
-  closeTeamSearch(): void {
-    setTimeout(() => {
-      this.isTeamSearchOpen.set(false);
-    }, 200);
-  }
-
-  onFileSelected(event: Event): void {
-    const file = (event.target as HTMLInputElement).files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        this.logoPreview = reader.result as string;
-        this.formulario.patchValue({ logo: this.logoPreview });
-      };
-      reader.readAsDataURL(file);
-    }
+  // 👇 Nuevo método para manejar la URL del logo de forma limpia y directa
+  onLogoUrlInput(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const url = input.value.trim();
+    this.logoPreview = url.length > 0 ? url : null;
+    this.formulario.patchValue({ logo: url });
+    this.formulario.controls.logo.markAsTouched();
   }
 
   removeLogo(event: Event): void {
     event.stopPropagation();
     this.logoPreview = null;
     this.formulario.patchValue({ logo: '' });
+    this.formulario.controls.logo.markAsTouched();
   }
 
   onlyLetters(event: KeyboardEvent): void {

@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { Championship } from '../models/Championship';
-import { Observable } from 'rxjs'; // 👈 Asegúrate de importar Observable
+import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class ChampionshipService {
@@ -14,7 +14,11 @@ export class ChampionshipService {
   getAll() {
     this.http.get<Championship[]>(this.apiUrl).subscribe({
       next: (data) => {
-        this.championships.set(data);
+        // Orden alfabético automático por nombre
+        const sortedData = data.sort((a, b) =>
+          a.name.localeCompare(b.name, 'es', { sensitivity: 'accent' }),
+        );
+        this.championships.set(sortedData);
         this.error.set(null);
       },
       error: (error) => {

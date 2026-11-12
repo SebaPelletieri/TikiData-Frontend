@@ -1,20 +1,44 @@
-import { Component, OnInit, Output, EventEmitter, inject, input, signal } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Output,
+  EventEmitter,
+  inject,
+  input,
+  signal,
+  computed,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatchService } from '../../services/match-service';
 import { TeamService } from '../../services/team-service';
 import { ChampionshipService } from '../../services/championship-service';
 import { Match, Status } from '../../models/Match';
 
+interface CalendarDay {
+  day: number;
+  date: Date;
+  isCurrentMonth: boolean;
+}
+
 @Component({
   selector: 'app-match-form',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './match-form.html',
   styleUrls: ['./match-form.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MatchForm implements OnInit {
+  private fb = inject(FormBuilder);
   private matchService = inject(MatchService);
   public teamService = inject(TeamService);
   public championshipService = inject(ChampionshipService);
@@ -22,22 +46,21 @@ export class MatchForm implements OnInit {
   private router = inject(Router);
 
   @Output() closePanel = new EventEmitter<void>();
-
   matchIdInput = input<string | number>();
 
   isEditing = false;
   errorMessage = '';
 
-  matchData: Match = {
-    localTeamID: 0,
-    awayTeamID: 0,
-    championshipID: 0,
-    date: '',
-    localGoals: 0,
-    awayGoals: 0,
-    status: 'Programado' as Status,
-    stadium: '',
-  };
+  matchForm: FormGroup = this.fb.group({
+    championshipID: [null, [Validators.required]],
+    localTeamID: [null, [Validators.required]],
+    awayTeamID: [null, [Validators.required]],
+    date: ['', [Validators.required]],
+    stadium: ['', [Validators.required]],
+    localGoals: [0],
+    awayGoals: [0],
+    status: ['Programado'],
+  });
 
   // --- LÓGICA DEL CALENDARIO Y HORA ---
   isCalendarOpen = false;
@@ -50,7 +73,6 @@ export class MatchForm implements OnInit {
   currentYear: number = new Date().getFullYear();
   selectedHour: string = '12';
   selectedMinute: string = '00';
-
   today: Date = new Date();
 
   months = [
@@ -67,9 +89,17 @@ export class MatchForm implements OnInit {
     'Noviembre',
     'Diciembre',
   ];
-  weekDays = ['DO', 'LU', 'MA', 'MI', 'JU', 'VI', 'SÁ'];
-  yearsList: number[] = [];
-  calendarDays: any[] = [];
+  weekDays = ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'];
+
+  get yearsList(): number[] {
+    const current = new Date().getFullYear();
+    const years: number[] = [];
+    for (let y = current; y <= current + 5; y++) {
+      years.push(y);
+    }
+    return years;
+  }
+
   hoursList: string[] = [
     '00',
     '01',
@@ -97,22 +127,18 @@ export class MatchForm implements OnInit {
     '23',
   ];
 
-  // --- BÚSQUEDAS DINÁMICAS ---
-  championshipSearchQuery = '';
-  showChampionshipDropdown = false;
-  filteredChampionships = signal<any[]>([]);
+  // --- BÚSQUEDAS DINÁMICAS (Señales) ---
+  championshipSearchText = signal<string>('');
+  isChampionshipFocused = signal<boolean>(false);
 
-  localTeamSearchQuery = '';
-  showLocalDropdown = false;
-  filteredLocalTeams = signal<any[]>([]);
+  localTeamSearchText = signal<string>('');
+  isLocalFocused = signal<boolean>(false);
 
-  awayTeamSearchQuery = '';
-  showAwayDropdown = false;
-  filteredAwayTeams = signal<any[]>([]);
+  awayTeamSearchText = signal<string>('');
+  isAwayFocused = signal<boolean>(false);
 
-  stadiumSearchQuery = '';
-  showStadiumDropdown = false;
-  filteredStadiums = signal<string[]>([]);
+  stadiumSearchText = signal<string>('');
+  isStadiumFocused = signal<boolean>(false);
 
   availableStadiums: string[] = [
     'Más Monumental',
@@ -123,62 +149,85 @@ export class MatchForm implements OnInit {
     'Gigante de Arroyito',
   ];
 
-  ngOnInit(): void {
-    const currentY = new Date().getFullYear();
-    for (let y = currentY; y <= currentY + 5; y++) {
-      this.yearsList.push(y);
-    }
+  get selectedChampionshipObject() {
+    const id = this.matchForm.controls['championshipID'].value;
+    if (!id) return null;
+    return this.championshipService.championships().find((c) => c.id === id);
+  }
 
+  get selectedLocalObject() {
+    const id = this.matchForm.controls['localTeamID'].value;
+    if (!id) return null;
+    return this.teamService.teams().find((t) => t.id === id);
+  }
+
+  get selectedAwayObject() {
+    const id = this.matchForm.controls['awayTeamID'].value;
+    if (!id) return null;
+    return this.teamService.teams().find((t) => t.id === id);
+  }
+
+  filteredChampionships = signal<any[]>([]);
+  filteredLocalTeams = signal<any[]>([]);
+  filteredAwayTeams = signal<any[]>([]);
+
+  filteredStadiums = computed(() => {
+    const search = this.stadiumSearchText().toLowerCase().trim();
+    if (!search) return [];
+    return this.availableStadiums.filter((s) => s.toLowerCase().includes(search));
+  });
+
+  ngOnInit(): void {
     this.today.setHours(0, 0, 0, 0);
-    this.generateCalendarDays();
     this.teamService.getAll();
     this.championshipService.getAll();
 
-    const idFromRoute = this.route.snapshot.paramMap.get('id') || this.matchIdInput();
+    // Actualizar filtros al escribir en campeonatos
+    this.matchForm.controls['championshipID'].valueChanges.subscribe(() => {
+      const search = this.championshipSearchText().toLowerCase().trim();
+      const matches = this.championshipService
+        .championships()
+        .filter((c) => c.name.toLowerCase().includes(search));
+      this.filteredChampionships.set(matches);
+    });
 
+    const idFromRoute = this.route.snapshot.paramMap.get('id') || this.matchIdInput();
     if (idFromRoute) {
       this.isEditing = true;
       const numericId = Number(idFromRoute);
 
       this.matchService.getById(numericId).subscribe({
         next: (match) => {
-          if (match && match.date) {
-            this.matchData = { ...match };
-            const d = new Date(match.date);
-            if (!isNaN(d.getTime())) {
-              this.selectedDate = d;
-              this.currentMonth = d.getMonth();
-              this.currentYear = d.getFullYear();
-              this.selectedHour = String(d.getHours()).padStart(2, '0');
-              this.selectedMinute = String(d.getMinutes()).padStart(2, '0');
-              this.generateCalendarDays();
-            }
+          if (match) {
+            this.matchForm.patchValue({
+              championshipID: match.championshipID,
+              localTeamID: match.localTeamID,
+              awayTeamID: match.awayTeamID,
+              date: match.date,
+              stadium: match.stadium || '',
+              localGoals: match.localGoals || 0,
+              awayGoals: match.awayGoals || 0,
+              status: match.status || 'Programado',
+            });
 
-            if (match.championshipID) {
-              const champ = this.championshipService
-                .championships()
-                .find((c) => c.id === match.championshipID);
-              if (champ) this.championshipSearchQuery = champ.name;
-            }
-            if (match.localTeamID) {
-              const team = this.teamService.teams().find((t) => t.id === match.localTeamID);
-              if (team) this.localTeamSearchQuery = team.name;
-            }
-            if (match.awayTeamID) {
-              const team = this.teamService.teams().find((t) => t.id === match.awayTeamID);
-              if (team) this.awayTeamSearchQuery = team.name;
-            }
-            if (match.stadium) {
-              this.stadiumSearchQuery = match.stadium;
+            if (match.date) {
+              const d = new Date(match.date);
+              if (!isNaN(d.getTime())) {
+                this.selectedDate = d;
+                this.currentMonth = d.getMonth();
+                this.currentYear = d.getFullYear();
+                this.selectedHour = String(d.getHours()).padStart(2, '0');
+                this.selectedMinute = String(d.getMinutes()).padStart(2, '0');
+              }
             }
           }
         },
-        error: (err) => console.error('Error al cargar partido para editar:', err),
+        error: (err) => console.error('Error al cargar partido:', err),
       });
     }
   }
 
-  // --- MÉTODOS DEL CALENDARIO Y HORA ---
+  // --- CALENDARIO Y HORA ---
   get formattedSelectedDateTime(): string {
     if (!this.selectedDate) return '';
     const day = String(this.selectedDate.getDate()).padStart(2, '0');
@@ -193,36 +242,33 @@ export class MatchForm implements OnInit {
     this.isMonthOpen = false;
     this.isYearOpen = false;
     this.isTimeOpen = false;
+    if (!this.isCalendarOpen) {
+      this.matchForm.controls['date'].markAsTouched();
+    }
   }
 
   toggleMonthDropdown() {
     this.isMonthOpen = !this.isMonthOpen;
     this.isYearOpen = false;
-    this.isTimeOpen = false;
   }
 
   toggleYearDropdown() {
     this.isYearOpen = !this.isYearOpen;
     this.isMonthOpen = false;
-    this.isTimeOpen = false;
   }
 
   toggleTimeDropdown() {
     this.isTimeOpen = !this.isTimeOpen;
-    this.isMonthOpen = false;
-    this.isYearOpen = false;
   }
 
-  selectMonth(monthIndex: number) {
-    this.currentMonth = monthIndex;
+  selectMonth(index: number) {
+    this.currentMonth = index;
     this.isMonthOpen = false;
-    this.generateCalendarDays();
   }
 
   selectYear(year: number) {
     this.currentYear = year;
     this.isYearOpen = false;
-    this.generateCalendarDays();
   }
 
   selectHour(h: string) {
@@ -243,7 +289,6 @@ export class MatchForm implements OnInit {
     } else {
       this.currentMonth--;
     }
-    this.generateCalendarDays();
   }
 
   nextMonth() {
@@ -253,43 +298,38 @@ export class MatchForm implements OnInit {
     } else {
       this.currentMonth++;
     }
-    this.generateCalendarDays();
   }
 
-  generateCalendarDays() {
+  get calendarDays(): CalendarDay[] {
+    const days: CalendarDay[] = [];
     const firstDayIndex = new Date(this.currentYear, this.currentMonth, 1).getDay();
-    const totalDays = new Date(this.currentYear, this.currentMonth + 1, 0).getDate();
-    const prevTotalDays = new Date(this.currentYear, this.currentMonth, 0).getDate();
+    const lastDateCurrentMonth = new Date(this.currentYear, this.currentMonth + 1, 0).getDate();
+    const lastDatePrevMonth = new Date(this.currentYear, this.currentMonth, 0).getDate();
 
-    let days = [];
-
-    for (let i = firstDayIndex - 1; i >= 0; i--) {
-      const dayNum = prevTotalDays - i;
-      const prevMonth_ = this.currentMonth === 0 ? 11 : this.currentMonth - 1;
-      const prevYear_ = this.currentMonth === 0 ? this.currentYear - 1 : this.currentYear;
+    for (let i = firstDayIndex; i > 0; i--) {
+      const day = lastDatePrevMonth - i + 1;
       days.push({
-        day: dayNum,
-        date: new Date(prevYear_, prevMonth_, dayNum),
+        day,
+        date: new Date(this.currentYear, this.currentMonth - 1, day),
         isCurrentMonth: false,
       });
     }
-
-    for (let i = 1; i <= totalDays; i++) {
+    for (let i = 1; i <= lastDateCurrentMonth; i++) {
       days.push({
         day: i,
         date: new Date(this.currentYear, this.currentMonth, i),
         isCurrentMonth: true,
       });
     }
-
     const remainingDays = 42 - days.length;
     for (let i = 1; i <= remainingDays; i++) {
-      const nextMonth_ = this.currentMonth === 11 ? 0 : this.currentMonth + 1;
-      const nextYear_ = this.currentMonth === 11 ? this.currentYear + 1 : this.currentYear;
-      days.push({ day: i, date: new Date(nextYear_, nextMonth_, i), isCurrentMonth: false });
+      days.push({
+        day: i,
+        date: new Date(this.currentYear, this.currentMonth + 1, i),
+        isCurrentMonth: false,
+      });
     }
-
-    this.calendarDays = days;
+    return days;
   }
 
   isDayDisabled(date: Date): boolean {
@@ -308,9 +348,9 @@ export class MatchForm implements OnInit {
   }
 
   selectDate(date: Date) {
-    if (this.isDayDisabled(date)) return;
     this.selectedDate = new Date(date);
     this.updateMatchDateTimeString();
+    this.isCalendarOpen = false;
   }
 
   updateMatchDateTimeString() {
@@ -318,106 +358,88 @@ export class MatchForm implements OnInit {
     const year = this.selectedDate.getFullYear();
     const month = String(this.selectedDate.getMonth() + 1).padStart(2, '0');
     const day = String(this.selectedDate.getDate()).padStart(2, '0');
-    this.matchData.date = `${year}-${month}-${day}T${this.selectedHour}:${this.selectedMinute}`;
+    const dateTimeStr = `${year}-${month}-${day}T${this.selectedHour}:${this.selectedMinute}`;
+
+    this.matchForm.controls['date'].setValue(dateTimeStr);
+    this.matchForm.controls['date'].markAsTouched();
   }
 
-  // --- BÚSQUEDAS DINÁMICAS ---
-  onSearchChampionships() {
-    const query = this.championshipSearchQuery.toLowerCase().trim();
-    if (!query) {
-      this.filteredChampionships.set([]);
-      this.showChampionshipDropdown = false;
-      return;
-    }
-    const matches = this.championshipService
-      .championships()
-      .filter((c) => c.name.toLowerCase().includes(query));
-    this.filteredChampionships.set(matches);
-    this.showChampionshipDropdown = matches.length > 0;
-  }
-
+  // --- SELECCIONES Y BÚSQUEDAS ---
   selectChampionship(champ: any) {
-    this.matchData.championshipID = champ.id;
-    this.championshipSearchQuery = champ.name;
-    this.showChampionshipDropdown = false;
+    this.matchForm.controls['championshipID'].setValue(champ.id);
+    this.matchForm.controls['championshipID'].markAsTouched();
+    this.championshipSearchText.set('');
+    this.isChampionshipFocused.set(false);
   }
 
-  onSearchLocalTeam() {
-    const query = this.localTeamSearchQuery.toLowerCase().trim();
-    if (!query) {
-      this.filteredLocalTeams.set([]);
-      this.showLocalDropdown = false;
-      return;
-    }
-    const matches = this.teamService.teams().filter((t) => t.name.toLowerCase().includes(query));
-    this.filteredLocalTeams.set(matches);
-    this.showLocalDropdown = matches.length > 0;
+  removeChampionship() {
+    this.matchForm.controls['championshipID'].setValue(null);
+    this.matchForm.controls['championshipID'].markAsTouched();
+    this.championshipSearchText.set('');
   }
 
   selectLocalTeam(team: any) {
-    this.matchData.localTeamID = team.id;
-    this.localTeamSearchQuery = team.name;
-    this.showLocalDropdown = false;
+    this.matchForm.controls['localTeamID'].setValue(team.id);
+    this.matchForm.controls['localTeamID'].markAsTouched();
+    this.localTeamSearchText.set('');
+    this.isLocalFocused.set(false);
   }
 
-  onSearchAwayTeam() {
-    const query = this.awayTeamSearchQuery.toLowerCase().trim();
-    if (!query) {
-      this.filteredAwayTeams.set([]);
-      this.showAwayDropdown = false;
-      return;
-    }
-    const matches = this.teamService.teams().filter((t) => t.name.toLowerCase().includes(query));
-    this.filteredAwayTeams.set(matches);
-    this.showAwayDropdown = matches.length > 0;
+  removeLocalTeam() {
+    this.matchForm.controls['localTeamID'].setValue(null);
+    this.matchForm.controls['localTeamID'].markAsTouched();
+    this.localTeamSearchText.set('');
   }
 
   selectAwayTeam(team: any) {
-    this.matchData.awayTeamID = team.id;
-    this.awayTeamSearchQuery = team.name;
-    this.showAwayDropdown = false;
+    this.matchForm.controls['awayTeamID'].setValue(team.id);
+    this.matchForm.controls['awayTeamID'].markAsTouched();
+    this.awayTeamSearchText.set('');
+    this.isAwayFocused.set(false);
   }
 
-  onSearchStadiums() {
-    const query = this.stadiumSearchQuery.toLowerCase().trim();
-    this.matchData.stadium = this.stadiumSearchQuery;
-    if (!query) {
-      this.filteredStadiums.set([]);
-      this.showStadiumDropdown = false;
-      return;
-    }
-    const matches = this.availableStadiums.filter((s) => s.toLowerCase().includes(query));
-    this.filteredStadiums.set(matches);
-    this.showStadiumDropdown = matches.length > 0;
+  removeAwayTeam() {
+    this.matchForm.controls['awayTeamID'].setValue(null);
+    this.matchForm.controls['awayTeamID'].markAsTouched();
+    this.awayTeamSearchText.set('');
+  }
+
+  onStadiumInputChange(value: string) {
+    this.stadiumSearchText.set(value);
+    this.isStadiumFocused.set(true);
+    this.matchForm.controls['stadium'].setValue(value);
+    this.matchForm.controls['stadium'].markAsTouched();
   }
 
   selectStadium(stadiumName: string) {
-    this.matchData.stadium = stadiumName;
-    this.stadiumSearchQuery = stadiumName;
-    this.showStadiumDropdown = false;
+    this.matchForm.controls['stadium'].setValue(stadiumName);
+    this.matchForm.controls['stadium'].markAsTouched();
+    this.stadiumSearchText.set('');
+    this.isStadiumFocused.set(false);
+  }
+
+  removeStadium() {
+    this.matchForm.controls['stadium'].setValue('');
+    this.matchForm.controls['stadium'].markAsTouched();
+    this.stadiumSearchText.set('');
   }
 
   saveMatch(): void {
-    if (
-      !this.matchData.localTeamID ||
-      !this.matchData.awayTeamID ||
-      !this.matchData.championshipID ||
-      !this.matchData.date
-    ) {
-      this.errorMessage =
-        'Por favor completa los campos obligatorios (Campeonato, Fecha y Equipos).';
+    if (this.matchForm.invalid) {
+      this.matchForm.markAllAsTouched();
+      this.errorMessage = 'Por favor completa los campos obligatorios.';
       return;
     }
 
-    if (this.matchData.localTeamID === this.matchData.awayTeamID) {
+    const formValues = this.matchForm.value;
+
+    if (formValues.localTeamID === formValues.awayTeamID) {
       this.errorMessage = 'El equipo local y visitante no pueden ser el mismo.';
       return;
     }
 
-    this.matchData.status = 'Programado' as Status;
-
-    if (this.isEditing && this.matchData.id) {
-      this.matchService.updateMatch(Number(this.matchData.id), this.matchData).subscribe({
+    if (this.isEditing && formValues.id) {
+      this.matchService.updateMatch(Number(formValues.id), formValues).subscribe({
         next: () => this.handleSuccess(),
         error: (err) => {
           console.error('Error al actualizar:', err);
@@ -425,7 +447,7 @@ export class MatchForm implements OnInit {
         },
       });
     } else {
-      this.matchService.createMatch(this.matchData).subscribe({
+      this.matchService.createMatch(formValues).subscribe({
         next: () => this.handleSuccess(),
         error: (err) => {
           console.error('Error al crear:', err);
@@ -443,7 +465,37 @@ export class MatchForm implements OnInit {
   }
 
   onCancel(): void {
+    this.matchForm.reset({
+      championshipID: null,
+      localTeamID: null,
+      awayTeamID: null,
+      date: '',
+      stadium: '',
+      localGoals: 0,
+      awayGoals: 0,
+      status: 'Programado',
+    });
+
+    this.championshipSearchText.set('');
+    this.isChampionshipFocused.set(false);
+
+    this.localTeamSearchText.set('');
+    this.isLocalFocused.set(false);
+
+    this.awayTeamSearchText.set('');
+    this.isAwayFocused.set(false);
+
+    this.stadiumSearchText.set('');
+    this.isStadiumFocused.set(false);
+
+    this.selectedDate = null;
+    this.selectedHour = '12';
+    this.selectedMinute = '00';
+    this.isCalendarOpen = false;
+    this.errorMessage = '';
+
     this.closePanel.emit();
+
     if (this.isEditing && this.route.snapshot.paramMap.get('id')) {
       this.router.navigate(['/admin']);
     }

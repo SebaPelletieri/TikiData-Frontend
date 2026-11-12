@@ -8,16 +8,16 @@
 }
 
 .team-form-container {
-  max-width: 680px;
-  width: 95%;
-  margin: 2rem auto;
-  padding: 2.4rem;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background-color: #041326;
-  border: 1px solid #2b180a;
-  border-radius: 20px;
+  background-color: transparent;
+  border: none;
+  border-radius: 0;
   color: #fff;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  box-shadow: none;
 }
 
 .form-header {
@@ -52,16 +52,16 @@
   color: #7d96b3;
 }
 
+.team-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+}
+
 .form-group {
   display: flex;
   flex-direction: column;
-  margin-bottom: 1.25rem;
-}
-
-.form-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
+  margin-bottom: 0 !important;
 }
 
 .form-group label {
@@ -112,43 +112,68 @@
 }
 
 /* =========================================
-   Búsqueda predictiva (Listas desplegables)
+   Búsqueda Inteligente (Estadio & Campeonatos)
    ========================================= */
-.search-dropdown-container {
+.search-tag-container {
   position: relative;
   width: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
-.search-input-wrapper {
+.direct-search-input-box {
   position: relative;
   display: flex;
   align-items: center;
   width: 100%;
 }
 
-.search-lens-icon {
+.direct-search-input-box svg {
   position: absolute;
   left: 14px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 16px !important;
-  height: 16px !important;
   color: #ff6b00;
   pointer-events: none;
   z-index: 2;
-  flex-shrink: 0;
 }
 
-.form-control.with-icon {
-  padding-left: 40px !important;
+.direct-search-input-box input {
+  width: 100%;
+  height: 44px;
+  background: linear-gradient(180deg, #071a33 0%, #051428 100%);
+  color: #ffffff;
+  border: 1.5px solid #45220c;
+  border-radius: 14px;
+  padding: 0 14px 0 40px;
+  font-size: 0.9rem;
+  outline: none;
+  transition: all 0.25s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
-.search-results-list {
+.direct-search-input-box input::placeholder {
+  color: #637d9d;
+}
+
+.direct-search-input-box input:hover {
+  border-color: #ff6b00;
+  background: linear-gradient(180deg, #1c1511 0%, #0e121a 100%);
+  box-shadow: 0 0 12px rgba(255, 107, 0, 0.2);
+  transform: translateY(-1px);
+}
+
+.direct-search-input-box input:focus {
+  border-color: #ff6b00;
+  background: linear-gradient(180deg, #1c1511 0%, #0e121a 100%);
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.35);
+  transform: translateY(-1px);
+}
+
+.direct-suggestions-list {
   position: absolute;
   top: calc(100% + 6px);
   left: 0;
   width: 100%;
-  max-height: 200px;
+  max-height: 180px;
   overflow-y: auto;
   background-color: #06182e;
   border: 1.5px solid #ff6b00;
@@ -161,65 +186,87 @@
   backdrop-filter: blur(8px);
 }
 
-.search-results-list::-webkit-scrollbar {
-  width: 5px;
-}
-.search-results-list::-webkit-scrollbar-thumb {
-  background: #ff6b00;
-  border-radius: 4px;
-}
-
-.search-result-item {
+.suggestion-item {
   display: flex;
   align-items: center;
-  gap: 12px;
+  justify-content: space-between;
   padding: 10px 14px;
+  font-size: 0.86rem;
+  color: #c9d8eb;
   border-radius: 8px;
   cursor: pointer;
-  background: transparent;
   transition: all 0.15s ease;
 }
 
-.search-result-item:hover {
+.suggestion-item:hover {
   background-color: #2b1406;
   color: #ff6b00;
 }
 
-.result-thumb {
-  width: 24px;
-  height: 24px;
-  object-fit: contain;
-  border-radius: 50%;
-  background-color: #030d1a;
-  border: 1px solid #143560;
-  padding: 2px;
-  flex-shrink: 0;
-}
-
-.result-info {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-}
-
-.result-name {
-  font-size: 0.88rem;
-  font-weight: 600;
-  color: #ffffff;
-}
-
-.search-result-item:hover .result-name {
-  color: #ff6b00;
-}
-
-.result-meta {
-  font-size: 0.76rem;
+.suggestion-empty {
+  padding: 12px;
+  text-align: center;
+  font-size: 0.84rem;
   color: #7d96b3;
-  margin-top: 2px;
+  font-style: italic;
 }
 
 /* =========================================
-   Calendario y Selector de Hora Exactos
+   Estilo de Tags Seleccionados (Chips)
+   ========================================= */
+.selected-tags-box {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.championship-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background-color: #1a120b;
+  border: 1px solid #4a290c;
+  border-radius: 20px;
+  padding: 6px 14px;
+  color: #ffd8bd;
+  font-size: 0.88rem;
+  font-weight: 600;
+  animation: chipIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes chipIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.tag-remove-btn {
+  background: transparent;
+  border: none;
+  color: #7d96b3;
+  font-size: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px;
+  border-radius: 50%;
+  transition: all 0.15s ease;
+}
+
+.tag-remove-btn:hover {
+  color: #ef4444;
+  transform: scale(1.2);
+}
+
+/* =========================================
+   Calendario y Selector de Hora
    ========================================= */
 .calendar-field-container {
   position: relative;
@@ -263,6 +310,12 @@
 
 .calendar-trigger .placeholder {
   color: #637d9d;
+}
+
+.calendar-trigger.input-error {
+  border-color: #ef4444 !important;
+  background-color: #0b1a2f;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15) !important;
 }
 
 .calendar-icon {
@@ -572,6 +625,48 @@
 }
 
 /* =========================================
+   Validación y Errores
+   ========================================= */
+.error-feedback {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+  animation: errorSlideIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes errorSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.error-icon {
+  width: 14px;
+  height: 14px;
+  stroke: #f87171;
+  flex-shrink: 0;
+}
+
+.error-text {
+  color: #fca5a5;
+  font-size: 0.78rem;
+  font-weight: 500;
+}
+
+.search-tag-container.is-invalid .direct-search-input-box input,
+.calendar-trigger.input-error {
+  border-color: #ef4444 !important;
+  background-color: #0b1a2f;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15) !important;
+}
+
+/* =========================================
    Botones de Acción y Alertas
    ========================================= */
 .form-actions {
@@ -618,6 +713,14 @@
   background: linear-gradient(180deg, #ff8124 0%, #ff6b00 100%);
   box-shadow: 0 6px 18px rgba(255, 107, 0, 0.55);
   transform: translateY(-1px);
+}
+
+.btn-save:disabled {
+  background: #2b1d14;
+  color: #735745;
+  box-shadow: none;
+  cursor: not-allowed;
+  opacity: 0.6;
 }
 
 .alert-error {

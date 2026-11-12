@@ -6,20 +6,19 @@
    Contenedor Principal de la Tarjeta
    ========================================= */
 .team-form-container {
-  max-width: 500px;
-  margin: 2rem auto;
-  padding: 2.2rem;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  background-color: transparent;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  color: #fff;
   font-family:
     'Plus Jakarta Sans',
     -apple-system,
     BlinkMacSystemFont,
     sans-serif;
-  background-color: #041326;
-  border: 1px solid #2b180a;
-  border-radius: 20px;
-  color: #fff;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-  width: 100%;
 }
 
 /* =========================================
@@ -29,7 +28,7 @@
   display: flex;
   align-items: center;
   gap: 14px;
-  margin-bottom: 1.8rem;
+  margin-bottom: 2.2rem; /* Aumentado para dar más respiro arriba */
 }
 
 .form-icon-box {
@@ -54,7 +53,7 @@
 
 .form-header p {
   font-family: inherit;
-  margin: 3px 0 0;
+  margin: 4px 0 0;
   font-size: 0.88rem;
   color: #7d96b3;
 }
@@ -65,20 +64,20 @@
 .team-form {
   display: flex;
   flex-direction: column;
-  gap: 1.1rem;
+  gap: 1.4rem; /* Mayor espacio entre elementos internos */
 }
 
 .form-group {
   display: flex;
   flex-direction: column;
-  margin-bottom: 1.25rem;
+  margin-bottom: 1.6rem; /* Aumentado para extenderse hacia abajo */
 }
 
 .form-group label {
   font-family: inherit;
   font-size: 0.85rem;
   font-weight: 600;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.6rem; /* Separación más cómoda entre etiqueta e input */
   color: #ffffff;
 }
 
@@ -92,7 +91,7 @@
    ========================================= */
 .form-group input {
   width: 100%;
-  height: 44px;
+  height: 46px; /* Ligeramente más alto */
   padding: 0 14px;
   background: linear-gradient(180deg, #071a33 0%, #051428 100%);
   color: #ffffff;
@@ -173,6 +172,7 @@
   display: grid;
   grid-template-columns: 1.8fr 1fr;
   gap: 1rem;
+  align-items: stretch;
 }
 
 .visually-hidden {
@@ -185,7 +185,7 @@
   align-items: center;
   justify-content: center;
   border-radius: 12px;
-  padding: 1.25rem 0.5rem;
+  padding: 1.8rem 0.5rem; /* Más padding vertical para ganar altura */
   cursor: pointer;
   text-align: center;
   position: relative;
@@ -193,6 +193,7 @@
   border: 1.5px dashed #382413;
   background: linear-gradient(180deg, #071a33 0%, #051428 100%);
   transition: all 0.25s ease;
+  height: 100%;
 }
 
 .dropzone:hover {
@@ -207,10 +208,10 @@
 }
 
 .upload-icon {
-  width: 26px;
-  height: 26px;
+  width: 28px;
+  height: 28px;
   color: #ff6b00;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
   transition:
     transform 0.2s ease,
     color 0.2s ease;
@@ -218,16 +219,16 @@
 
 .dropzone-text {
   font-family: inherit;
-  font-size: 0.8rem;
+  font-size: 0.82rem;
   font-weight: 600;
   color: #d1dced;
 }
 
 .dropzone-hint {
   font-family: inherit;
-  font-size: 0.68rem;
+  font-size: 0.7rem;
   color: #617b9b;
-  margin-top: 3px;
+  margin-top: 4px;
 }
 
 .preview-box {
@@ -240,12 +241,13 @@
   background: radial-gradient(circle at center, #1c1008 0%, #061528 100%);
   padding: 1rem;
   position: relative;
-  min-height: 90px;
+  height: 100%;
+  min-height: 105px; /* Altura mínima mayor para equilibrar con el dropzone */
 }
 
 .shield-icon {
-  width: 36px;
-  height: 36px;
+  width: 38px;
+  height: 38px;
   color: #66320e;
   margin-bottom: 6px;
 }
@@ -257,8 +259,8 @@
 }
 
 .uploaded-shield-img {
-  width: 50px;
-  height: 50px;
+  width: 52px;
+  height: 52px;
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid #ff6b00;
@@ -349,12 +351,12 @@
 .form-actions {
   display: flex;
   gap: 1rem;
-  margin-top: 2rem;
+  margin-top: 2.8rem; /* Mayor margen superior para separar los botones de los campos */
 }
 
 .btn-cancel {
   flex: 1;
-  height: 48px;
+  height: 50px; /* Ligeramente más altos y cómodos */
   background-color: transparent;
   border: 1px solid #4a280c;
   color: #ffffff;
@@ -379,7 +381,7 @@
 
 .btn-submit {
   flex: 1;
-  height: 48px;
+  height: 50px;
   background: linear-gradient(180deg, #ff6b00 0%, #e05e00 100%);
   border: none;
   color: #ffffff;

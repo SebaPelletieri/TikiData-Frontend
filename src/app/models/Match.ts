@@ -50,6 +50,9 @@ export interface MatchSummary {
   manOfTheMatch?: {
     name: string;
     team: string;
+    position?: string;
+    nationality?: string;
+    flag?: string;
     rating?: string;
   };
 }

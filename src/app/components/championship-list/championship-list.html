@@ -128,7 +128,17 @@
           <div class="country-content">
             <div class="championship-grid">
               @for (champ of group.championships; track champ.id) {
-                <div class="champ-card" [routerLink]="['/championship', champ.id]">
+                <div
+                  class="champ-card"
+                  [routerLink]="[
+                    '/championship',
+                    champ.name
+                      .split(/[-–—]|Fecha/)[0]
+                      .toLowerCase()
+                      .trim()
+                      .replace(/\s+/g, '-'),
+                  ]"
+                >
                   <div class="champ-logo-wrapper">
                     <img
                       [src]="champ.logo || 'https://via.placeholder.com/80?text=Torneo'"

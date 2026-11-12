@@ -1,6 +1,6 @@
 .match-card {
   background: linear-gradient(145deg, #06182e 0%, #092343 100%);
-  border: 1px solid #143560;
+  border: 1px solid #143560; /* Borde azul sutil por defecto */
   border-radius: 14px;
   padding: 1.2rem;
   cursor: pointer;
@@ -10,10 +10,11 @@
   box-sizing: border-box;
 }
 
+/* Al pasar el mouse, cambiamos SÓLO el color del borde y agregamos la sombra naranja sin duplicar nada */
 .match-card:hover {
   transform: translateY(-4px);
-  border-color: #38bdf8;
-  box-shadow: 0 8px 25px rgba(56, 189, 248, 0.15);
+  border-color: #ff6b00;
+  box-shadow: 0 8px 25px rgba(255, 107, 0, 0.25);
 }
 
 .match-card-header {
@@ -61,7 +62,6 @@
   min-width: 0;
 }
 
-/* Contenedor con altura fija para alinear los escudos a la base */
 .shield-container {
   height: 48px;
   display: flex;
@@ -75,7 +75,6 @@
   object-fit: contain;
 }
 
-/* Forzar una sola línea para el texto del equipo */
 .team-title {
   font-weight: 700;
   color: #ffffff;
@@ -86,7 +85,6 @@
   max-width: 100%;
 }
 
-/* MARCADOR CENTRAL */
 .score-center {
   display: flex;
   align-items: center;

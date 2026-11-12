@@ -11,7 +11,7 @@
       <span class="breadcrumb">Administración > Panel General</span>
       <h2>Panel de Administración</h2>
       <p class="subtitle">
-        Gestiona la información de equipos, jugadores, campeonatos y usuarios del sistema.
+        Gestiona la información de equipos, jugadores, campeonatos, partidos y usuarios del sistema.
       </p>
     </div>
   </div>
@@ -33,8 +33,8 @@
     </div>
   </div>
 
-  <!-- Tarjetas de Estadísticas Globales del Sistema -->
-  <div class="stats-cards-grid admin-four-grid">
+  <!-- Tarjetas de Estadísticas Globales del Sistema (5 Columnas) -->
+  <div class="stats-cards-grid admin-five-grid">
     <!-- Equipos -->
     <div class="stat-card">
       <div class="stat-icon-wrapper blue-shield">
@@ -49,21 +49,35 @@
       </div>
     </div>
 
-    <!-- Usuarios -->
+    <!-- Campeonatos -->
     <div class="stat-card">
-      <div class="stat-icon-wrapper blue-group">
-        <i class="fas fa-user"></i>
+      <div class="stat-icon-wrapper blue-trophy">
+        <i class="fas fa-trophy"></i>
       </div>
       <div class="stat-data">
-        <span class="stat-label">Usuarios</span>
+        <span class="stat-label">Campeonatos</span>
         <div class="stat-main-row">
-          <span class="stat-number">{{ totalUsersCount() }}</span>
+          <span class="stat-number">{{ totalChampionshipsCount() }}</span>
         </div>
-        <span class="stat-footer">Total de usuarios en el sistema</span>
+        <span class="stat-footer">Total de campeonatos registrados</span>
       </div>
     </div>
 
-    <!-- Jugadores (Camiseta Naranja) -->
+    <!-- Partidos -->
+    <div class="stat-card">
+      <div class="stat-icon-wrapper orange-match">
+        <i class="fas fa-futbol"></i>
+      </div>
+      <div class="stat-data">
+        <span class="stat-label">Partidos</span>
+        <div class="stat-main-row">
+          <span class="stat-number">{{ totalMatchesCount() }}</span>
+        </div>
+        <span class="stat-footer">Total de partidos registrados</span>
+      </div>
+    </div>
+
+    <!-- Jugadores -->
     <div class="stat-card">
       <div class="stat-icon-wrapper orange-shirt">
         <i class="fas fa-tshirt"></i>
@@ -77,17 +91,17 @@
       </div>
     </div>
 
-    <!-- Campeonatos (Trofeo Clásico) -->
+    <!-- Usuarios -->
     <div class="stat-card">
-      <div class="stat-icon-wrapper blue-trophy">
-        <i class="fas fa-trophy"></i>
+      <div class="stat-icon-wrapper blue-group">
+        <i class="fas fa-user"></i>
       </div>
       <div class="stat-data">
-        <span class="stat-label">Campeonatos</span>
+        <span class="stat-label">Usuarios</span>
         <div class="stat-main-row">
-          <span class="stat-number">{{ totalChampionshipsCount() }}</span>
+          <span class="stat-number">{{ totalUsersCount() }}</span>
         </div>
-        <span class="stat-footer">Total de campeonatos registrados</span>
+        <span class="stat-footer">Total de usuarios en el sistema</span>
       </div>
     </div>
   </div>
@@ -475,7 +489,14 @@
                       <div class="table-actions">
                         <button
                           class="btn-action-view-custom"
-                          [routerLink]="['/championship', champ.id]"
+                          [routerLink]="[
+                            '/championship',
+                            champ.name
+                              .split(/[-–—]|Fecha/)[0]
+                              .toLowerCase()
+                              .trim()
+                              .replace(/\s+/g, '-'),
+                          ]"
                         >
                           <svg
                             viewBox="0 0 24 24"
@@ -577,6 +598,221 @@
     <!-- COLUMNA DERECHA: Formulario integrado de Campeonatos -->
     <div class="admin-right-pane">
       <app-championship-form (closePanel)="loadAdminData()"></app-championship-form>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- SECCIÓN PARTIDOS: Tabla a la izq. y Form a la der.       -->
+  <!-- ======================================================== -->
+  <div class="admin-split-layout-container always-with-form" style="margin-top: 2.5rem">
+    <div class="admin-left-pane">
+      <div class="teams-admin-header-row">
+        <div class="teams-title-block">
+          <div class="team-shield-icon-box">⚽</div>
+          <div>
+            <h3>Partidos</h3>
+            <p>Lista de partidos programados y resultados registrados.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Barra de filtros y búsqueda de partidos -->
+      <div class="teams-filters-bar">
+        <div class="search-input-wrapper">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input
+            type="text"
+            [ngModel]="matchSearchText()"
+            (ngModelChange)="matchSearchText.set($event); currentMatchPage.set(1)"
+            placeholder="Buscar partido (equipos)..."
+          />
+        </div>
+
+        <!-- Filtro de Estado del Partido con triángulo -->
+        <div
+          class="filter-dropdown-container-admin custom-dropdown"
+          [class.open]="isMatchStatusDropdownOpen"
+        >
+          <div
+            class="filter-dropdown-box dropdown-trigger"
+            (click)="toggleMatchStatusDropdown($event)"
+          >
+            <span>{{ selectedMatchStatusLabel }}</span>
+            <span class="triangle-icon"></span>
+          </div>
+          @if (isMatchStatusDropdownOpen) {
+            <ul class="admin-dropdown-menu">
+              @for (opt of matchStatusOptions(); track opt.value) {
+                <li
+                  class="admin-dropdown-item"
+                  [class.active]="selectedMatchStatus() === opt.value"
+                  (click)="selectMatchStatus(opt.value)"
+                >
+                  <span>{{ opt.label }}</span>
+                  @if (selectedMatchStatus() === opt.value) {
+                    <svg
+                      class="check-icon"
+                      viewBox="0 0 24 24"
+                      width="14"
+                      height="14"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="3"
+                    >
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                  }
+                </li>
+              }
+            </ul>
+          }
+        </div>
+      </div>
+
+      <!-- Tabla fija de partidos paginada -->
+      <div class="admin-table-fixed-container">
+        @if (paginatedMatchesForAdmin().length === 0) {
+          <p class="empty-msg">No se encontraron partidos con los filtros seleccionados.</p>
+        } @else {
+          <div class="admin-table-wrapper">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Fecha</th>
+                  <th>Encuentro</th>
+                  <th>Resultado</th>
+                  <th>Estado</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (match of paginatedMatchesForAdmin(); track match.id; let idx = $index) {
+                  <tr>
+                    <td>{{ (currentMatchPage() - 1) * itemsPerPageMatches + idx + 1 }}</td>
+                    <td>{{ match.date | date: 'dd/MM/yyyy HH:mm' }}</td>
+                    <td>
+                      <strong
+                        >{{ getTeamName(match.localTeamID) }} vs
+                        {{ getTeamName(match.awayTeamID) }}</strong
+                      >
+                    </td>
+                    <td>{{ match.localGoals }} - {{ match.awayGoals }}</td>
+                    <td>
+                      <span
+                        class="status-badge-admin"
+                        [class.live]="match.status === 'En Vivo'"
+                        [class.finished]="match.status === 'Finalizado'"
+                      >
+                        {{ match.status || 'Programado' }}
+                      </span>
+                    </td>
+                    <td>
+                      <div class="table-actions">
+                        <button class="btn-action-view-custom" [routerLink]="['/match', match.id]">
+                          <svg
+                            viewBox="0 0 24 24"
+                            width="15"
+                            height="15"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                          >
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                          </svg>
+                          Ver
+                        </button>
+                        <button
+                          class="btn-action-edit-custom"
+                          [routerLink]="['/matches/edit', match.id]"
+                        >
+                          <svg
+                            viewBox="0 0 24 24"
+                            width="15"
+                            height="15"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                          >
+                            <path
+                              d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"
+                            ></path>
+                            <path
+                              d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"
+                            ></path>
+                          </svg>
+                          Editar
+                        </button>
+                        <button
+                          class="btn-action-delete-custom"
+                          (click)="confirmDeleteMatch(convertToNumber(match.id))"
+                        >
+                          <svg
+                            viewBox="0 0 24 24"
+                            width="15"
+                            height="15"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                          >
+                            <polyline points="3 6 5 6 21 6"></polyline>
+                            <path
+                              d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
+                            ></path>
+                          </svg>
+                          Eliminar
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        }
+      </div>
+
+      <!-- Paginación de partidos -->
+      <div class="teams-pagination-bar">
+        <span class="pagination-info-text">{{ matchPaginationInfoText() }}</span>
+        <div class="pagination-buttons-group">
+          <button
+            type="button"
+            class="pagination-arrow-btn"
+            [disabled]="currentMatchPage() === 1"
+            (click)="changeMatchPage(currentMatchPage() - 1)"
+          >
+            ‹
+          </button>
+          @for (page of matchPagesArray(); track page) {
+            <button
+              type="button"
+              class="pagination-page-btn"
+              [class.active]="currentMatchPage() === page"
+              (click)="changeMatchPage(page)"
+            >
+              {{ page }}
+            </button>
+          }
+          <button
+            type="button"
+            class="pagination-arrow-btn"
+            [disabled]="currentMatchPage() === totalMatchPages()"
+            (click)="changeMatchPage(currentMatchPage() + 1)"
+          >
+            ›
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- COLUMNA DERECHA: Formulario integrado de Partidos -->
+    <div class="admin-right-pane">
+      <app-match-form (closePanel)="loadAdminData()"></app-match-form>
     </div>
   </div>
 
@@ -962,7 +1198,7 @@
 
                         <button
                           class="btn-action-delete-custom"
-                          (click)="confirmDeleteUser(user.id!)"
+                          (click)="confirmDeleteUser(user.id)"
                         >
                           <svg
                             viewBox="0 0 24 24"
@@ -1090,6 +1326,25 @@
             Cancelar
           </button>
           <button type="button" class="btn-modal-confirm" (click)="executeDeleteChampionship()">
+            Sí, eliminar
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- ================= MODAL DE CONFIRMACIÓN (PARTIDOS) ================= -->
+  @if (matchToDeleteId() !== null) {
+    <div class="custom-modal-backdrop">
+      <div class="custom-modal-box">
+        <div class="modal-icon-warning">⚠️</div>
+        <h3>¿Estás seguro?</h3>
+        <p>Esta acción eliminará el partido del sistema de forma permanente.</p>
+        <div class="modal-actions">
+          <button type="button" class="btn-modal-cancel" (click)="cancelDeleteMatch()">
+            Cancelar
+          </button>
+          <button type="button" class="btn-modal-confirm" (click)="executeDeleteMatch()">
             Sí, eliminar
           </button>
         </div>

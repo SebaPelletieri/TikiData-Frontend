@@ -1,0 +1,127 @@
+<div class="admin-form-card">
+  <div class="form-header">
+    <div class="form-icon-box">⚽</div>
+    <div>
+      <h3>{{ isEditing ? 'Editar Partido' : 'Nuevo Partido' }}</h3>
+      <p>Configura los detalles y equipos del encuentro.</p>
+    </div>
+  </div>
+
+  @if (errorMessage) {
+    <div class="alert-error">{{ errorMessage }}</div>
+  }
+
+  <form (ngSubmit)="saveMatch()" class="admin-form">
+    <!-- Campeonato -->
+    <div class="form-group">
+      <label>Campeonato *</label>
+      <select
+        class="form-control"
+        [(ngModel)]="matchData.championshipID"
+        name="championshipID"
+        required
+      >
+        <option value="" disabled>Selecciona un campeonato</option>
+        @for (champ of championshipService.championships(); track champ.id) {
+          <option [value]="champ.id">{{ champ.name }}</option>
+        }
+      </select>
+    </div>
+
+    <!-- Fecha y Hora -->
+    <div class="form-group">
+      <label>Fecha y Hora *</label>
+      <input
+        type="datetime-local"
+        class="form-control"
+        [(ngModel)]="matchData.date"
+        name="date"
+        required
+      />
+    </div>
+
+    <!-- Equipos (Local vs Visitante) -->
+    <div class="form-row-grid">
+      <div class="form-group">
+        <label>Equipo Local *</label>
+        <select
+          class="form-control"
+          [(ngModel)]="matchData.localTeamID"
+          name="localTeamID"
+          required
+        >
+          <option value="" disabled>Selecciona local</option>
+          @for (team of teamService.teams(); track team.id) {
+            <option [value]="team.id">{{ team.name }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Equipo Visitante *</label>
+        <select class="form-control" [(ngModel)]="matchData.awayTeamID" name="awayTeamID" required>
+          <option value="" disabled>Selecciona visitante</option>
+          @for (team of teamService.teams(); track team.id) {
+            <option [value]="team.id">{{ team.name }}</option>
+          }
+        </select>
+      </div>
+    </div>
+
+    <!-- Goles (Local y Visitante) -->
+    <div class="form-row-grid">
+      <div class="form-group">
+        <label>Goles Local</label>
+        <input
+          type="number"
+          class="form-control"
+          [(ngModel)]="matchData.localGoals"
+          name="localGoals"
+          min="0"
+        />
+      </div>
+
+      <div class="form-group">
+        <label>Goles Visitante</label>
+        <input
+          type="number"
+          class="form-control"
+          [(ngModel)]="matchData.awayGoals"
+          name="awayGoals"
+          min="0"
+        />
+      </div>
+    </div>
+
+    <!-- Estadio y Estado -->
+    <div class="form-row-grid">
+      <div class="form-group">
+        <label>Estadio</label>
+        <input
+          type="text"
+          class="form-control"
+          [(ngModel)]="matchData.stadium"
+          name="stadium"
+          placeholder="Ej. Más Monumental"
+        />
+      </div>
+
+      <div class="form-group">
+        <label>Estado del Partido *</label>
+        <select class="form-control" [(ngModel)]="matchData.status" name="status" required>
+          <option value="Programado">Programado</option>
+          <option value="En Vivo">En Vivo</option>
+          <option value="Finalizado">Finalizado</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Acciones -->
+    <div class="form-actions">
+      <button type="button" class="btn-cancel" (click)="onCancel()">Cancelar</button>
+      <button type="submit" class="btn-save">
+        {{ isEditing ? 'Actualizar Partido' : 'Guardar Partido' }}
+      </button>
+    </div>
+  </form>
+</div>

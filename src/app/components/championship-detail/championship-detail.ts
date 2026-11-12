@@ -1,6 +1,7 @@
-import { Component, input, signal, OnInit } from '@angular/core';
+import { Component, signal, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-championship-detail',
@@ -10,16 +11,11 @@ import { RouterLink } from '@angular/router';
   styleUrls: ['./championship-detail.css'],
 })
 export class ChampionshipDetail implements OnInit {
-  // ¡Asegúrate de tener esta línea declarada para que acepte el binding desde la page!
-  champId = input<number>();
+  private route = inject(ActivatedRoute);
+  private http = inject(HttpClient);
 
-  championship = signal<any>({
-    name: 'Premier League',
-    logo: 'https://resources.premierleague.com/premierleague/photo/2021/05/13/a64fa4c9-c3b6-45ef-b1a7-0e9e7f82e0a2/pl-logo.png',
-    country: 'Inglaterra',
-    type: 'Liga',
-    season: '2024/2025',
-  });
+  // Inicializamos en null para saber cuándo está cargando o listo
+  championship = signal<any | null>(null);
 
   activeTab = signal<'general' | 'table' | 'matches' | 'scorers' | 'cards'>('general');
 
@@ -141,7 +137,47 @@ export class ChampionshipDetail implements OnInit {
   isFollowing = signal<boolean>(false);
 
   ngOnInit() {
-    console.log('ID del campeonato recibido:', this.champId());
+    // Nos suscribimos por si cambia el parámetro en la misma ruta
+    this.route.paramMap.subscribe((params) => {
+      const nameParam = params.get('name'); // e.g., "liga-profesional"
+      if (nameParam) {
+        const formattedName = nameParam.replace(/-/g, ' '); // "liga profesional"
+        this.loadChampionshipByName(formattedName);
+      }
+    });
+  }
+
+  private loadChampionshipByName(searchName: string) {
+    // Petición a tu backend / json-server para buscar el campeonato por nombre
+    this.http.get<any[]>(`http://localhost:3000/campeonatos`).subscribe({
+      next: (champs) => {
+        // Buscamos el que coincida (ignorando mayúsculas y acentos básicos o incluyendo texto)
+        const found = champs.find((c) => c.name.toLowerCase().includes(searchName.toLowerCase()));
+
+        if (found) {
+          this.championship.set(found);
+        } else {
+          // Fallback temporal en caso de que no haga match exacto en la API pero deba mostrarse
+          this.championship.set({
+            name: searchName.toUpperCase(),
+            logo: 'https://via.placeholder.com/24',
+            country: 'Argentina',
+            type: 'Liga',
+            season: '2026',
+          });
+        }
+      },
+      error: () => {
+        // Fallback si la API falla
+        this.championship.set({
+          name: searchName.toUpperCase(),
+          logo: 'https://via.placeholder.com/24',
+          country: 'Argentina',
+          type: 'Liga',
+          season: '2026',
+        });
+      },
+    });
   }
 
   setTab(tab: 'general' | 'table' | 'matches' | 'scorers' | 'cards') {

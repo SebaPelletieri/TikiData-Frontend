@@ -1,9 +1,3 @@
 <div class="page-container">
-  @if (championshipId(); as id) {
-    <app-championship-detail [champId]="id" />
-  } @else {
-    <div style="text-align: center; padding: 4rem; color: #7d96b3">
-      <p>Cargando información del campeonato...</p>
-    </div>
-  }
+  <app-championship-detail />
 </div>

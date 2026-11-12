@@ -64,4 +64,8 @@ export class ChampionshipService {
       },
     });
   }
+
+  getByName(name: string): Observable<Championship[]> {
+    return this.http.get<Championship[]>(`${this.apiUrl}?name_like=${name}`);
+  }
 }

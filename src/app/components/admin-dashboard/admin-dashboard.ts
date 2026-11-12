@@ -6,10 +6,12 @@ import { AuthService } from '../../services/auth-service';
 import { TeamService } from '../../services/team-service';
 import { ChampionshipService } from '../../services/championship-service';
 import { PlayerService } from '../../services/player-service';
+import { MatchService } from '../../services/match-service';
 import { TeamForm } from '../team-form/team-form';
 import { ChampionshipForm } from '../../components/championship-form/championship-form';
 import { PlayerForm } from '../player-form/player-form';
 import { AdminForm } from '../admin-form/admin-form';
+import { MatchForm } from '../match-form/match-form'; // <--- 1. Importa el componente aquí (ajusta la ruta si es diferente)
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -22,6 +24,7 @@ import { AdminForm } from '../admin-form/admin-form';
     ChampionshipForm,
     PlayerForm,
     AdminForm,
+    MatchForm, // <--- 2. Agrégalo en los imports del componente
   ],
   templateUrl: './admin-dashboard.html',
   styleUrl: './admin-dashboard.css',
@@ -31,6 +34,7 @@ export class AdminDashboard implements OnInit {
   private teamService = inject(TeamService);
   private championshipService = inject(ChampionshipService);
   private playerService = inject(PlayerService);
+  private matchService = inject(MatchService);
 
   successMessage = '';
   errorMessage = '';
@@ -41,6 +45,7 @@ export class AdminDashboard implements OnInit {
   totalUsersCount = computed(() => this.allUsersForAdmin().length);
   totalPlayersCount = computed(() => this.playerService.players().length);
   totalChampionshipsCount = computed(() => this.championshipService.championships().length);
+  totalMatchesCount = computed(() => this.matchService.matches().length);
 
   // Equipos
   adminSearchText = signal('');
@@ -65,6 +70,15 @@ export class AdminDashboard implements OnInit {
   selectedChampCountryLabel = 'Todos los países';
   selectedChampTypeLabel = 'Todos los tipos';
   championshipToDeleteId = signal<number | null>(null);
+
+  // Partidos
+  matchSearchText = signal('');
+  selectedMatchStatus = signal('ALL');
+  currentMatchPage = signal(1);
+  itemsPerPageMatches = 6;
+  isMatchStatusDropdownOpen = false;
+  selectedMatchStatusLabel = 'Todos los estados';
+  matchToDeleteId = signal<number | null>(null);
 
   // Jugadores
   playerSearchText = signal('');
@@ -98,6 +112,7 @@ export class AdminDashboard implements OnInit {
     this.teamService.getAll();
     this.championshipService.getAll();
     this.playerService.getAll();
+    this.matchService.getAll();
 
     if (this.authService.getAllUsers) {
       this.authService.getAllUsers().subscribe({
@@ -111,6 +126,11 @@ export class AdminDashboard implements OnInit {
         error: (err: any) => console.error('Error al cargar usuarios:', err),
       });
     }
+  }
+
+  getTeamName(teamId: number): string {
+    const team = this.teamService.teams().find((t) => t.id === teamId);
+    return team ? team.name : `Equipo #${teamId}`;
   }
 
   confirmToggleRole(user: any): void {
@@ -169,6 +189,13 @@ export class AdminDashboard implements OnInit {
     { value: 'ALL', label: 'Todos los tipos' },
     { value: 'Liga', label: 'Liga' },
     { value: 'Copa', label: 'Copa' },
+  ]);
+
+  matchStatusOptions = computed(() => [
+    { value: 'ALL', label: 'Todos los estados' },
+    { value: 'Programado', label: 'Programado' },
+    { value: 'En Vivo', label: 'En Vivo' },
+    { value: 'Finalizado', label: 'Finalizado' },
   ]);
 
   playerPositionOptions = computed(() => [
@@ -244,6 +271,18 @@ export class AdminDashboard implements OnInit {
     const found = this.champTypeOptions().find((o) => o.value === type);
     this.selectedChampTypeLabel = found ? found.label : 'Todos los tipos';
     this.isChampTypeDropdownOpen = false;
+  }
+
+  toggleMatchStatusDropdown(event: MouseEvent): void {
+    event.stopPropagation();
+    this.isMatchStatusDropdownOpen = !this.isMatchStatusDropdownOpen;
+  }
+
+  selectMatchStatus(status: string): void {
+    this.selectedMatchStatus.set(status);
+    const found = this.matchStatusOptions().find((o) => o.value === status);
+    this.selectedMatchStatusLabel = found ? found.label : 'Todos los estados';
+    this.isMatchStatusDropdownOpen = false;
   }
 
   togglePlayerPositionDropdown(event: MouseEvent): void {
@@ -324,6 +363,45 @@ export class AdminDashboard implements OnInit {
   });
   changeChampPage(page: number): void {
     if (page >= 1 && page <= this.totalChampPages()) this.currentChampPage.set(page);
+  }
+
+  // Filtrado y paginación de partidos
+  filteredMatches = computed(() => {
+    const matches = this.matchService.matches();
+    const search = this.matchSearchText().toLowerCase().trim();
+    const status = this.selectedMatchStatus();
+
+    return matches.filter((m) => {
+      const localName = this.getTeamName(m.localTeamID).toLowerCase();
+      const awayName = this.getTeamName(m.awayTeamID).toLowerCase();
+      const matchesSearch = !search || localName.includes(search) || awayName.includes(search);
+      const matchesStatus = status === 'ALL' || (m.status || 'Programado') === status;
+      return matchesSearch && matchesStatus;
+    });
+  });
+
+  paginatedMatchesForAdmin = computed(() => {
+    const matches = this.filteredMatches();
+    const start = (this.currentMatchPage() - 1) * this.itemsPerPageMatches;
+    return matches.slice(start, start + this.itemsPerPageMatches);
+  });
+
+  totalMatchPages = computed(() =>
+    Math.max(1, Math.ceil(this.filteredMatches().length / this.itemsPerPageMatches)),
+  );
+
+  matchPagesArray = computed(() => Array.from({ length: this.totalMatchPages() }, (_, i) => i + 1));
+
+  matchPaginationInfoText = computed(() => {
+    const total = this.filteredMatches().length;
+    if (total === 0) return 'No hay registros';
+    const start = (this.currentMatchPage() - 1) * this.itemsPerPageMatches + 1;
+    const end = Math.min(this.currentMatchPage() * this.itemsPerPageMatches, total);
+    return `Mostrando ${start} - ${end} de ${total} registros`;
+  });
+
+  changeMatchPage(page: number): void {
+    if (page >= 1 && page <= this.totalMatchPages()) this.currentMatchPage.set(page);
   }
 
   filteredPlayers = computed(() => {
@@ -419,6 +497,28 @@ export class AdminDashboard implements OnInit {
     this.championshipToDeleteId.set(null);
   }
 
+  confirmDeleteMatch(id: number): void {
+    this.matchToDeleteId.set(id);
+  }
+  cancelDeleteMatch(): void {
+    this.matchToDeleteId.set(null);
+  }
+  executeDeleteMatch(): void {
+    const id = this.matchToDeleteId();
+    if (id !== null && this.matchService.delete) {
+      this.matchService.delete(id).subscribe({
+        next: () => {
+          this.loadAdminData();
+          this.matchToDeleteId.set(null);
+        },
+        error: (err) => {
+          console.error('Error al eliminar partido:', err);
+          this.matchToDeleteId.set(null);
+        },
+      });
+    }
+  }
+
   confirmDeletePlayer(id: number): void {
     this.playerToDeleteId.set(id);
   }
@@ -453,5 +553,9 @@ export class AdminDashboard implements OnInit {
     } else {
       this.userToDeleteId.set(null);
     }
+  }
+
+  convertToNumber(value: any): number {
+    return Number(value);
   }
 }

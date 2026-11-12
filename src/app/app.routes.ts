@@ -7,16 +7,15 @@ import { PlayerDetailPage } from './pages/player-detail/player-detail';
 import { Players } from './pages/players/players';
 import { ChampionshipDetailPage } from './pages/championship-detail/championship-detail';
 import { Championships } from './pages/championships/championships';
-import { MatchDetail } from './pages/match-detail/match-detail';
 import { ProfileEdit } from './components/profile-edit/profile-edit';
 
-// Importación de Páginas, Guards y Panel de Administración
 import { TeamDetailPage } from './pages/team-detail/team-detail';
 import { Teams } from './pages/teams/teams';
 import { authGuard } from './guards/auth-guard';
 import { adminGuard } from './guards/admin-guard';
 import { AdminDashboard } from './components/admin-dashboard/admin-dashboard';
 import { MatchList } from './components/match-list/match-list';
+import { MatchDetailPage } from './pages/match-detail/match-detail';
 
 export const routes: Routes = [
   { path: '', component: Home },
@@ -31,23 +30,24 @@ export const routes: Routes = [
   { path: 'profile/edit', component: ProfileEdit },
   { path: 'teams', component: Teams },
 
-  /* Rutas de equipos (Soporta tanto por ID como por nombre/slug) */
+  /* Rutas de equipos */
   { path: 'team/:id', component: TeamDetailPage },
   { path: 'team/name/:name', component: TeamDetailPage },
   { path: 'teams/:id', redirectTo: 'team/:id', pathMatch: 'full' },
 
-  /* Rutas de jugadores corregidas a PlayerDetailPage */
+  /* Rutas de jugadores */
   { path: 'players', component: Players },
   { path: 'player/:id', component: PlayerDetailPage },
   { path: 'players/:id', redirectTo: 'player/:id', pathMatch: 'full' },
 
   { path: 'championships', component: Championships },
 
-  /* Ruta de detalles de campeonato apuntando a la page */
-  { path: 'championship/:id', component: ChampionshipDetailPage },
-  { path: 'championships/:id', redirectTo: 'championship/:id', pathMatch: 'full' },
+  /* Ruta de detalles de campeonato por nombre/slug (CORREGIDO) */
+  { path: 'championship/:name', component: ChampionshipDetailPage },
+  { path: 'championships/:name', redirectTo: 'championship/:name', pathMatch: 'full' },
+
   { path: 'matches', component: MatchList },
-  { path: 'match/:id', component: MatchDetail },
+  { path: 'match/:id', component: MatchDetailPage },
   {
     path: 'admin',
     component: AdminDashboard,

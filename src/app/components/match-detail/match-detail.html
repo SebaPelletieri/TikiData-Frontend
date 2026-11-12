@@ -1,0 +1,581 @@
+@if (match()) {
+  <div class="footstat-detail-container">
+    <!-- BANNER SUPERIOR HERO -->
+    <div class="match-hero-banner">
+      <div class="hero-top-row">
+        <a
+          [routerLink]="[
+            '/championship',
+            championship()
+              ?.name?.split(/[-–—]|Fecha/)[0]
+              .toLowerCase()
+              .trim()
+              .replace(/\s+/g, '-'),
+          ]"
+          class="championship-badge-top clickable-championship"
+        >
+          <img [src]="championship()?.logo" class="championship-logo" alt="Logo Campeonato" />
+          <span>{{ championship()?.name }}</span>
+        </a>
+        <span class="status-badge-hero" [class.live]="match()?.status === 'En Vivo'">
+          {{ match()?.status }}
+        </span>
+      </div>
+
+      <div class="hero-content-grid">
+        <!-- EQUIPO LOCAL -->
+        <div class="team-hero-side">
+          <div class="shield-container-hero large">
+            <img [src]="localTeam()?.shield" [alt]="localTeam()?.name" />
+          </div>
+          <h2 class="team-hero-name">{{ localTeam()?.name }}</h2>
+          <div class="team-country-badge">
+            <span class="country-flag">🇦🇷</span>
+            <span class="team-hero-country">{{ localTeam()?.country }}</span>
+          </div>
+        </div>
+
+        <!-- MARCADOR CENTRAL -->
+        <div class="score-center-hero">
+          <div class="score-box-hero">
+            <span class="num">{{ match()?.localGoals }}</span>
+            <span class="dash">-</span>
+            <span class="num">{{ match()?.awayGoals }}</span>
+          </div>
+          <span class="datetime-hero">{{
+            match()?.date | date: 'EEE, d of MMM of yyyy - HH:mm'
+          }}</span>
+          <div class="stadium-hero-info">
+            <span><i class="fas fa-map-marker-alt"></i>&nbsp; {{ match()?.stadium }}</span>
+          </div>
+        </div>
+
+        <!-- EQUIPO VISITANTE -->
+        <div class="team-hero-side">
+          <div class="shield-container-hero large">
+            <img [src]="awayTeam()?.shield" [alt]="awayTeam()?.name" />
+          </div>
+          <h2 class="team-hero-name">{{ awayTeam()?.name }}</h2>
+          <div class="team-country-badge">
+            <span class="country-flag">🇦🇷</span>
+            <span class="team-hero-country">{{ awayTeam()?.country }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PESTAÑAS DE NAVEGACIÓN -->
+    <div class="footstat-tabs-bar">
+      @for (
+        tab of ['Resumen', 'Estadísticas', 'Alineaciones', 'Eventos', 'Cara a cara', 'Tabla'];
+        track tab
+      ) {
+        <button class="tab-pill" [class.active]="activeTab() === tab" (click)="setTab($any(tab))">
+          {{ tab }}
+        </button>
+      }
+    </div>
+
+    <!-- ================= CONTENIDO DINÁMICO SEGÚN LA PESTAÑA ACTIVA ================= -->
+
+    @if (activeTab() === 'Alineaciones') {
+      <!-- ================= PESTAÑA: ALINEACIONES (3 COLUMNAS - SIN PUNTAJES) ================= -->
+      <div class="fs-card lineups-card-area">
+        <h3>Alineaciones Iniciales</h3>
+
+        <div class="lineups-main-layout">
+          <!-- COLUMNA IZQUIERDA: LOCAL (Entrenador + Suplentes SIN NOTAS) -->
+          <div class="lineup-side-panel">
+            <div class="side-team-header">
+              <img [src]="localTeam()?.shield" class="side-team-logo" alt="" />
+              <span>{{ localTeam()?.name }}</span>
+              <span class="formation-pill">4-3-3</span>
+            </div>
+
+            <div class="coach-box">
+              <span class="section-subtitle-mini">Entrenador</span>
+              <div class="coach-info-row">
+                <div class="coach-avatar">👔</div>
+                <div>
+                  <h4>Martín Demichelis</h4>
+                  <small>🇦🇷 Argentina</small>
+                </div>
+              </div>
+            </div>
+
+            <div class="substitutes-box">
+              <span class="section-subtitle-mini">Suplentes</span>
+              <div class="table-responsive">
+                <table class="sub-table">
+                  <thead>
+                    <tr>
+                      <th>N°</th>
+                      <th>Jugador</th>
+                      <th>Pos</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>33</td>
+                      <td>F. Centurión</td>
+                      <td>POR</td>
+                    </tr>
+                    <tr>
+                      <td>2</td>
+                      <td>S. Boselli</td>
+                      <td>DEF</td>
+                    </tr>
+                    <tr>
+                      <td>20</td>
+                      <td>M. Casco</td>
+                      <td>DEF</td>
+                    </tr>
+                    <tr>
+                      <td>5</td>
+                      <td>M. Kranevitter</td>
+                      <td>MED</td>
+                    </tr>
+                    <tr>
+                      <td>8</td>
+                      <td>I. Fernández</td>
+                      <td>MED</td>
+                    </tr>
+                    <tr>
+                      <td>31</td>
+                      <td>F. Mastantuono</td>
+                      <td>MED</td>
+                    </tr>
+                    <tr>
+                      <td>7</td>
+                      <td>F. Colidio</td>
+                      <td>DEL</td>
+                    </tr>
+                    <tr>
+                      <td>18</td>
+                      <td>G. Martínez</td>
+                      <td>DEL</td>
+                    </tr>
+                    <tr>
+                      <td>30</td>
+                      <td>R. Aliendro</td>
+                      <td>MED</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- COLUMNAS CENTRALES: CANCHAS SIN BADGES DE RATING -->
+          <div class="pitches-dual-container">
+            <!-- Cancha Local -->
+            <div class="pitch-box-pro">
+              <div class="football-pitch-iso">
+                <div class="iso-field-lines">
+                  <div class="iso-box-top"></div>
+                  <div class="iso-box-bottom"></div>
+                  <div class="iso-center-line"></div>
+                  <div class="iso-center-circle"></div>
+                </div>
+                <div class="pitch-line fwd">
+                  <div class="player-pill"><span>36</span><small>M. Solari</small></div>
+                  <div class="player-pill"><span>9</span><small>M. Borja</small></div>
+                  <div class="player-pill"><span>10</span><small>M. Simón</small></div>
+                </div>
+                <div class="pitch-line mid">
+                  <div class="player-pill"><span>24</span><small>E. Pérez</small></div>
+                  <div class="player-pill"><span>29</span><small>A. Aliendro</small></div>
+                  <div class="player-pill"><span>11</span><small>De la Cruz</small></div>
+                </div>
+                <div class="pitch-line def">
+                  <div class="player-pill"><span>4</span><small>Montiel</small></div>
+                  <div class="player-pill"><span>6</span><small>P. Díaz</small></div>
+                  <div class="player-pill"><span>14</span><small>G. Pezzella</small></div>
+                  <div class="player-pill"><span>13</span><small>E. Díaz</small></div>
+                </div>
+                <div class="pitch-line gk">
+                  <div class="player-pill"><span>1</span><small>Armani</small></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Cancha Visitante -->
+            <div class="pitch-box-pro">
+              <div class="football-pitch-iso">
+                <div class="iso-field-lines">
+                  <div class="iso-box-top"></div>
+                  <div class="iso-box-bottom"></div>
+                  <div class="iso-center-line"></div>
+                  <div class="iso-center-circle"></div>
+                </div>
+                <div class="pitch-line fwd">
+                  <div class="player-pill"><span>10</span><small>Cavani</small></div>
+                  <div class="player-pill"><span>16</span><small>Merentiel</small></div>
+                </div>
+                <div class="pitch-line mid">
+                  <div class="player-pill"><span>8</span><small>F. Fernández</small></div>
+                  <div class="player-pill"><span>21</span><small>E. Fernández</small></div>
+                  <div class="player-pill"><span>36</span><small>Medina</small></div>
+                  <div class="player-pill"><span>22</span><small>Zenón</small></div>
+                </div>
+                <div class="pitch-line def">
+                  <div class="player-pill"><span>17</span><small>Advíncula</small></div>
+                  <div class="player-pill"><span>6</span><small>Rojo</small></div>
+                  <div class="player-pill"><span>2</span><small>Lema</small></div>
+                  <div class="player-pill"><span>3</span><small>Fabra</small></div>
+                </div>
+                <div class="pitch-line gk">
+                  <div class="player-pill"><span>1</span><small>Romero</small></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- COLUMNA DERECHA: VISITANTE (Entrenador + Suplentes SIN NOTAS) -->
+          <div class="lineup-side-panel">
+            <div class="side-team-header">
+              <img [src]="awayTeam()?.shield" class="side-team-logo" alt="" />
+              <span>{{ awayTeam()?.name }}</span>
+              <span class="formation-pill">4-4-2</span>
+            </div>
+
+            <div class="coach-box">
+              <span class="section-subtitle-mini">Entrenador</span>
+              <div class="coach-info-row">
+                <div class="coach-avatar">👔</div>
+                <div>
+                  <h4>Diego Martínez</h4>
+                  <small>🇦🇷 Argentina</small>
+                </div>
+              </div>
+            </div>
+
+            <div class="substitutes-box">
+              <span class="section-subtitle-mini">Suplentes</span>
+              <div class="table-responsive">
+                <table class="sub-table">
+                  <thead>
+                    <tr>
+                      <th>N°</th>
+                      <th>Jugador</th>
+                      <th>Pos</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>12</td>
+                      <td>J. García</td>
+                      <td>POR</td>
+                    </tr>
+                    <tr>
+                      <td>4</td>
+                      <td>L. Figal</td>
+                      <td>DEF</td>
+                    </tr>
+                    <tr>
+                      <td>15</td>
+                      <td>N. Valentini</td>
+                      <td>DEF</td>
+                    </tr>
+                    <tr>
+                      <td>18</td>
+                      <td>F. Fabra</td>
+                      <td>DEF</td>
+                    </tr>
+                    <tr>
+                      <td>5</td>
+                      <td>J. Campuzano</td>
+                      <td>MED</td>
+                    </tr>
+                    <tr>
+                      <td>23</td>
+                      <td>L. Janson</td>
+                      <td>MED</td>
+                    </tr>
+                    <tr>
+                      <td>11</td>
+                      <td>Exequiel Zeballos</td>
+                      <td>DEL</td>
+                    </tr>
+                    <tr>
+                      <td>19</td>
+                      <td>L. Langoni</td>
+                      <td>DEL</td>
+                    </tr>
+                    <tr>
+                      <td>9</td>
+                      <td>M. Benedetto</td>
+                      <td>DEL</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SECCIÓN INFERIOR -->
+        <div class="lineups-footer-grid">
+          <div class="footer-card-box">
+            <h4>Comparativa de equipos</h4>
+            <div class="comp-row">
+              <span>26.4</span>
+              <div class="comp-bar-wrapper">
+                <div class="fill-l" style="width: 48%"></div>
+                <div class="fill-a" style="width: 52%"></div>
+              </div>
+              <span>28.1</span>
+            </div>
+            <small class="comp-label">Edad promedio</small>
+
+            <div class="comp-row" style="margin-top: 0.8rem">
+              <span>179 cm</span>
+              <div class="comp-bar-wrapper">
+                <div class="fill-l" style="width: 50%"></div>
+                <div class="fill-a" style="width: 50%"></div>
+              </div>
+              <span>181 cm</span>
+            </div>
+            <small class="comp-label">Altura promedio</small>
+          </div>
+
+          <div class="footer-card-box">
+            <h4>Cambios</h4>
+            <div class="subs-row-flex">
+              <div class="subs-team-col">
+                <span class="team-mini-title">River Plate</span>
+                <div class="sub-event">
+                  <strong>67'</strong> 🔴 Sale M. Solari <br />🟢 Entra F. Colidio
+                </div>
+                <div class="sub-event">
+                  <strong>75'</strong> 🔴 Sale E. Pérez <br />🟢 Entra I. Fernández
+                </div>
+              </div>
+              <div class="subs-team-col">
+                <span class="team-mini-title">Boca Juniors</span>
+                <div class="sub-event">
+                  <strong>67'</strong> 🔴 Sale Medina <br />🟢 Entra L. Janson
+                </div>
+                <div class="sub-event">
+                  <strong>70'</strong> 🔴 Sale Zenón <br />🟢 Entra E. Zeballos
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="footer-card-box">
+            <h4>Jugadores no disponibles</h4>
+            <div class="unavailable-list">
+              <div class="unavail-item">
+                <span class="team-dot local"></span>
+                <div>
+                  <strong>P. Solari</strong> <small class="text-muted">- Lesión muscular</small>
+                </div>
+              </div>
+              <div class="unavail-item">
+                <span class="team-dot away"></span>
+                <div><strong>M. Rojo</strong> <small class="text-muted">- Suspendido</small></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    } @else {
+      <!-- ================= PESTAÑA POR DEFECTO (RESUMEN) ================= -->
+      <div class="footstat-layout-grid">
+        <!-- 1. EVENTOS -->
+        <div class="fs-card events-card-area">
+          <h3>Eventos del partido</h3>
+          <div class="events-timeline">
+            @for (inc of match()?.incidences; track inc.minute) {
+              <div class="event-row">
+                <span class="ev-min">{{ inc.minute }}'</span>
+                <span class="ev-icon">
+                  @if (inc.type === 'GOAL') {
+                    ⚽
+                  }
+                  @if (inc.type === 'YELLOW_CARD') {
+                    🟨
+                  }
+                  @if (inc.type === 'RED_CARD') {
+                    🟥
+                  }
+                </span>
+                <span class="ev-desc">{{ inc.text }}</span>
+                @if (inc.type === 'GOAL') {
+                  <span class="ev-score">2 - 0</span>
+                }
+              </div>
+            }
+          </div>
+        </div>
+
+        <!-- 2. ESTADÍSTICAS -->
+        <div class="fs-card stats-card-area">
+          <h3>Estadísticas del partido</h3>
+          @if (match()?.statistics) {
+            @for (stat of match()?.statistics; track stat.label) {
+              <div class="stat-bar-group">
+                <div class="stat-labels-row">
+                  <span>{{ stat.local }}{{ stat.unit || '' }}</span>
+                  <span class="s-name">{{ stat.label }}</span>
+                  <span>{{ stat.away }}{{ stat.unit || '' }}</span>
+                </div>
+                <div class="dual-progress-bar">
+                  <div
+                    class="fill-red"
+                    [style.width.%]="(stat.local / (stat.local + stat.away)) * 100"
+                  ></div>
+                  <div
+                    class="fill-blue"
+                    [style.width.%]="(stat.away / (stat.local + stat.away)) * 100"
+                  ></div>
+                </div>
+              </div>
+            }
+          }
+        </div>
+
+        <!-- 3. PANEL DERECHO -->
+        <div class="right-sidebar-area">
+          <div class="fs-card">
+            <h3>Figura del partido</h3>
+            <div class="mvp-box-fs">
+              <div class="mvp-avatar-placeholder">👤</div>
+              <div class="mvp-info">
+                <h4>{{ match()?.summary?.manOfTheMatch?.name }}</h4>
+                <p>
+                  {{ match()?.summary?.manOfTheMatch?.team }}
+                  · {{ match()?.summary?.manOfTheMatch?.position }}
+                  <span class="mvp-nationality">
+                    ({{ match()?.summary?.manOfTheMatch?.flag }}
+                    {{ match()?.summary?.manOfTheMatch?.nationality }})
+                  </span>
+                </p>
+              </div>
+              <div class="mvp-rating-badge">⭐ {{ match()?.summary?.manOfTheMatch?.rating }}</div>
+            </div>
+            <div class="mvp-sub-stats">
+              <div class="mss-item"><span>1</span><label>Goles</label></div>
+              <div class="mss-item"><span>4</span><label>Tiros</label></div>
+              <div class="mss-item"><span>2</span><label>Pases clave</label></div>
+              <div class="mss-item"><span>87'</span><label>Minutos</label></div>
+            </div>
+          </div>
+
+          <div class="fs-card" style="margin-top: 1rem">
+            <h3>Estadio</h3>
+            <div class="stadium-card-fs">
+              <div class="stadium-img-box">🏟️ {{ match()?.stadium }}</div>
+              <div class="stadium-details-fs">
+                <p><strong>Capacidad:</strong> 84.567</p>
+                <p><strong>Ciudad:</strong> Buenos Aires, Argentina</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="fs-card" style="margin-top: 1rem">
+            <h3>Árbitro</h3>
+            <div class="referee-box-fs">
+              <div class="ref-avatar">👨‍⚖️</div>
+              <div class="ref-info">
+                <h4>Darío Herrera</h4>
+                <p>🇦🇷 Argentina</p>
+              </div>
+              <div class="ref-cards">
+                <span class="yellow">🟨 5</span>
+                <span class="red">🟥 1</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. ALINEACIONES CLÁSICAS EN LA PESTAÑA RESUMEN -->
+        <div class="fs-card lineups-card-area">
+          <h3>Alineaciones Iniciales</h3>
+          <div class="pitches-grid">
+            <!-- Cancha Local (4-3-3) -->
+            <div class="pitch-box">
+              <div class="pitch-header">
+                <div class="pitch-title-with-logo">
+                  <img [src]="localTeam()?.shield" class="pitch-team-logo" alt="Logo Local" />
+                  <span>Alineación - {{ localTeam()?.name }}</span>
+                </div>
+                <span class="formation-tag">4-3-3</span>
+              </div>
+              <div class="football-pitch-iso">
+                <div class="iso-field-lines">
+                  <div class="iso-box-top"></div>
+                  <div class="iso-box-bottom"></div>
+                  <div class="iso-center-line"></div>
+                  <div class="iso-center-circle"></div>
+                </div>
+
+                <div class="pitch-line fwd">
+                  <div class="player-pill"><span>36</span><small>M. Solari</small></div>
+                  <div class="player-pill"><span>9</span><small>M. Borja</small></div>
+                  <div class="player-pill"><span>10</span><small>M. Simón</small></div>
+                </div>
+                <div class="pitch-line mid">
+                  <div class="player-pill"><span>24</span><small>E. Pérez</small></div>
+                  <div class="player-pill"><span>29</span><small>A. Aliendro</small></div>
+                  <div class="player-pill"><span>11</span><small>De la Cruz</small></div>
+                </div>
+                <div class="pitch-line def">
+                  <div class="player-pill"><span>4</span><small>Montiel</small></div>
+                  <div class="player-pill"><span>6</span><small>P. Díaz</small></div>
+                  <div class="player-pill"><span>14</span><small>G. Pezzella</small></div>
+                  <div class="player-pill"><span>13</span><small>E. Díaz</small></div>
+                </div>
+                <div class="pitch-line gk">
+                  <div class="player-pill"><span>1</span><small>Armani</small></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Cancha Visitante (4-4-2) -->
+            <div class="pitch-box">
+              <div class="pitch-header">
+                <div class="pitch-title-with-logo">
+                  <img [src]="awayTeam()?.shield" class="pitch-team-logo" alt="Logo Visitante" />
+                  <span>Alineación - {{ awayTeam()?.name }}</span>
+                </div>
+                <span class="formation-tag">4-4-2</span>
+              </div>
+              <div class="football-pitch-iso">
+                <div class="iso-field-lines">
+                  <div class="iso-box-top"></div>
+                  <div class="iso-box-bottom"></div>
+                  <div class="iso-center-line"></div>
+                  <div class="iso-center-circle"></div>
+                </div>
+
+                <div class="pitch-line fwd">
+                  <div class="player-pill"><span>10</span><small>Cavani</small></div>
+                  <div class="player-pill"><span>16</span><small>Merentiel</small></div>
+                </div>
+                <div class="pitch-line mid">
+                  <div class="player-pill"><span>8</span><small>F. Fernández</small></div>
+                  <div class="player-pill"><span>21</span><small>E. Fernández</small></div>
+                  <div class="player-pill"><span>36</span><small>Medina</small></div>
+                  <div class="player-pill"><span>22</span><small>Zenón</small></div>
+                </div>
+                <div class="pitch-line def">
+                  <div class="player-pill"><span>17</span><small>Advíncula</small></div>
+                  <div class="player-pill"><span>6</span><small>Rojo</small></div>
+                  <div class="player-pill"><span>2</span><small>Lema</small></div>
+                  <div class="player-pill"><span>3</span><small>Fabra</small></div>
+                </div>
+                <div class="pitch-line gk">
+                  <div class="player-pill"><span>1</span><small>Romero</small></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+} @else {
+  <div class="loading-fs"><p>Cargando detalles...</p></div>
+}

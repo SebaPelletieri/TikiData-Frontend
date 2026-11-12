@@ -1,202 +1,537 @@
 <div class="champ-detail-container">
-  <!-- ================= BANNER SUPERIOR ================= -->
-  <div class="champ-header-banner">
-    <div class="champ-main-info">
-      <div class="champ-logo-wrapper">
-        <img [src]="championship().logo" [alt]="championship().name" class="champ-logo" />
-      </div>
-      <div class="champ-text-data">
-        <h1>{{ championship().name }}</h1>
-        <div class="champ-meta-badges">
-          <span class="meta-item">🏴󠁧󠁢󠁥󠁮󠁧󠁿 {{ championship().country }}</span>
-          <span class="separator">•</span>
-          <span class="meta-item">{{ championship().type }}</span>
-          <span class="separator">•</span>
-          <span class="meta-item">Temporada {{ championship().season }}</span>
+  @if (championship(); as champ) {
+    <!-- ================= BANNER SUPERIOR ================= -->
+    <div class="champ-header-banner">
+      <div class="champ-main-info">
+        <div class="champ-logo-wrapper">
+          <img [src]="champ.logo" [alt]="champ.name" class="champ-logo" />
+        </div>
+        <div class="champ-text-data">
+          <h1>{{ champ.name }}</h1>
+          <div class="champ-meta-badges">
+            <span class="meta-item">🇦🇷 {{ champ.country }}</span>
+            <span class="separator">•</span>
+            <span class="meta-item">{{ champ.type }}</span>
+            @if (champ.season) {
+              <span class="separator">•</span>
+              <span class="meta-item">Temporada {{ champ.season }}</span>
+            }
+          </div>
         </div>
       </div>
+
+      <button
+        type="button"
+        class="btn-follow-champ"
+        [class.following]="isFollowing()"
+        (click)="toggleFollow()"
+      >
+        <span class="follow-icon">
+          {{ isFollowing() ? '✓' : '+' }}
+        </span>
+        <span>
+          {{ isFollowing() ? 'Siguiendo' : 'Seguir' }}
+        </span>
+      </button>
     </div>
 
-    <button
-      type="button"
-      class="btn-follow-champ"
-      [class.following]="isFollowing()"
-      (click)="toggleFollow()"
-    >
-      <span class="follow-icon">
-        {{ isFollowing() ? '✓' : '+' }}
-      </span>
-      <span>
-        {{ isFollowing() ? 'Siguiendo' : 'Seguir' }}
-      </span>
-    </button>
-  </div>
+    <!-- ================= NAVEGACIÓN DE PESTAÑAS (TABS) ================= -->
+    <div class="champ-tabs-nav">
+      <button class="tab-btn" [class.active]="activeTab() === 'general'" (click)="setTab('general')">
+        Vista general
+      </button>
+      <button class="tab-btn" [class.active]="activeTab() === 'table'" (click)="setTab('table')">
+        Tabla
+      </button>
+      <button class="tab-btn" [class.active]="activeTab() === 'matches'" (click)="setTab('matches')">
+        Partidos
+      </button>
+      <button class="tab-btn" [class.active]="activeTab() === 'scorers'" (click)="setTab('scorers')">
+        Goleadores
+      </button>
+      <button class="tab-btn" [class.active]="activeTab() === 'cards'" (click)="setTab('cards')">
+        Tarjetas
+      </button>
+    </div>
 
-  <!-- ================= NAVEGACIÓN DE PESTAÑAS (TABS) ================= -->
-  <div class="champ-tabs-nav">
-    <button class="tab-btn" [class.active]="activeTab() === 'general'" (click)="setTab('general')">
-      Vista general
-    </button>
-    <button class="tab-btn" [class.active]="activeTab() === 'table'" (click)="setTab('table')">
-      Tabla
-    </button>
-    <button class="tab-btn" [class.active]="activeTab() === 'matches'" (click)="setTab('matches')">
-      Partidos
-    </button>
-    <button class="tab-btn" [class.active]="activeTab() === 'scorers'" (click)="setTab('scorers')">
-      Goleadores
-    </button>
-    <button class="tab-btn" [class.active]="activeTab() === 'cards'" (click)="setTab('cards')">
-      Tarjetas
-    </button>
-  </div>
+    <!-- ================= CONTENIDO DE LA VISTA GENERAL ================= -->
+    @if (activeTab() === 'general') {
+      <div class="champ-content-grid">
+        <!-- TABLA DE POSICIONES (CON ZONAS/GRUPOS O TABLA ÚNICA) -->
+        @if (hasZones()) {
+          <div class="lower-grid-row">
+            @for (zone of zoneTables(); track zone.zoneName) {
+              <div class="card-box half-card">
+                <div class="card-header-row">
+                  <h3>Tabla de posiciones - {{ zone.zoneName }}</h3>
+                </div>
 
-  <!-- ================= CONTENIDO DE LA VISTA GENERAL ================= -->
-  @if (activeTab() === 'general') {
-    <div class="champ-content-grid">
-      <!-- TABLA DE POSICIONES (TOP 5) -->
-      <div class="card-box full-width-card">
-        <div class="card-header-row">
-          <h3>Tabla de posiciones</h3>
-        </div>
+                <div class="table-responsive">
+                  <table class="custom-data-table">
+                    <thead>
+                      <tr>
+                        <th class="text-center" style="width: 40px">#</th>
+                        <th>Equipo</th>
+                        <th class="text-center">PJ</th>
+                        <th class="text-center">DG</th>
+                        <th class="text-center">Pts</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      @for (row of zone.rows.slice(0, 5); track row.teamId) {
+                        <tr>
+                          <td class="text-center fw-bold">{{ row.position }}</td>
+                          <td>
+                            <div class="team-cell">
+                              <img [src]="row.shield" [alt]="row.name" class="mini-shield" />
+                              <span>{{ row.name }}</span>
+                            </div>
+                          </td>
+                          <td class="text-center">{{ row.pj }}</td>
+                          <td class="text-center">{{ row.dg }}</td>
+                          <td class="text-center fw-bold text-accent">{{ row.pts }}</td>
+                        </tr>
+                      } @empty {
+                        <tr>
+                          <td colspan="5" class="text-center placeholder-text">
+                            Sin equipos cargados en {{ zone.zoneName }}.
+                          </td>
+                        </tr>
+                      }
+                    </tbody>
+                  </table>
+                </div>
 
-        <div class="table-responsive">
-          <table class="custom-data-table">
-            <thead>
-              <tr>
-                <th class="text-center" style="width: 50px">#</th>
-                <th>Equipo</th>
-                <th class="text-center">PJ</th>
-                <th class="text-center">G</th>
-                <th class="text-center">E</th>
-                <th class="text-center">P</th>
-                <th class="text-center">DG</th>
-                <th class="text-center">Pts</th>
-              </tr>
-            </thead>
-            <tbody>
-              @for (row of standings(); track row.position) {
-                <tr>
-                  <td class="text-center fw-bold">{{ row.position }}</td>
-                  <td>
-                    <div class="team-cell">
-                      <img [src]="row.shield" [alt]="row.name" class="mini-shield" />
-                      <span>{{ row.name }}</span>
-                    </div>
-                  </td>
-                  <td class="text-center">{{ row.pj }}</td>
-                  <td class="text-center">{{ row.g }}</td>
-                  <td class="text-center">{{ row.e }}</td>
-                  <td class="text-center">{{ row.p }}</td>
-                  <td class="text-center">{{ row.dg }}</td>
-                  <td class="text-center fw-bold text-accent">{{ row.pts }}</td>
-                </tr>
-              }
-            </tbody>
-          </table>
-        </div>
-
-        <div class="card-footer-link">
-          <button type="button" class="link-action-btn" (click)="setTab('table')">
-            Ver tabla completa ➔
-          </button>
-        </div>
-      </div>
-
-      <!-- SECCIÓN INFERIOR EN DOS COLUMNAS -->
-      <div class="lower-grid-row">
-        <!-- PRÓXIMOS PARTIDOS -->
-        <div class="card-box half-card">
-          <div class="card-header-row">
-            <h3>Próximos partidos</h3>
-            <button type="button" class="link-action-btn" (click)="setTab('matches')">
-              Ver todos ➔
-            </button>
-          </div>
-
-          <div class="matches-mini-list">
-            @for (match of upcomingMatches(); track $index) {
-              <div class="match-mini-row">
-                <span class="match-date-badge">{{ match.date }}</span>
-                <div class="match-teams-info">
-                  <span class="team-right-side"
-                    >{{ match.homeName }} <img [src]="match.homeShield" class="tiny-shield" alt=""
-                  /></span>
-                  <span class="vs-text">vs</span>
-                  <span class="team-left-side"
-                    ><img [src]="match.awayShield" class="tiny-shield" alt="" />
-                    {{ match.awayName }}</span
+                <div class="card-footer-link">
+                  <button
+                    type="button"
+                    class="link-action-btn"
+                    (click)="openZoneTable(zone.zoneName)"
                   >
+                    Ver {{ zone.zoneName }} completa ➔
+                  </button>
                 </div>
               </div>
             }
           </div>
-        </div>
+        } @else {
+          <div class="card-box full-width-card">
+            <div class="card-header-row">
+              <h3>Tabla de posiciones</h3>
+            </div>
 
-        <!-- GOLEADORES -->
-        <div class="card-box half-card">
-          <div class="card-header-row">
-            <h3>Goleadores</h3>
-            <button type="button" class="link-action-btn" (click)="setTab('scorers')">
-              Ver todos ➔
+            <div class="table-responsive">
+              <table class="custom-data-table">
+                <thead>
+                  <tr>
+                    <th class="text-center" style="width: 50px">#</th>
+                    <th>Equipo</th>
+                    <th class="text-center">PJ</th>
+                    <th class="text-center">G</th>
+                    <th class="text-center">E</th>
+                    <th class="text-center">P</th>
+                    <th class="text-center">DG</th>
+                    <th class="text-center">Pts</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (row of standings(); track row.position) {
+                    <tr>
+                      <td class="text-center fw-bold">{{ row.position }}</td>
+                      <td>
+                        <div class="team-cell">
+                          <img [src]="row.shield" [alt]="row.name" class="mini-shield" />
+                          <span>{{ row.name }}</span>
+                        </div>
+                      </td>
+                      <td class="text-center">{{ row.pj }}</td>
+                      <td class="text-center">{{ row.g }}</td>
+                      <td class="text-center">{{ row.e }}</td>
+                      <td class="text-center">{{ row.p }}</td>
+                      <td class="text-center">{{ row.dg }}</td>
+                      <td class="text-center fw-bold text-accent">{{ row.pts }}</td>
+                    </tr>
+                  } @empty {
+                    <tr>
+                      <td colspan="8" class="text-center placeholder-text">
+                        No hay equipos registrados en este campeonato.
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+
+            <div class="card-footer-link">
+              <button type="button" class="link-action-btn" (click)="setTab('table')">
+                Ver tabla completa ➔
+              </button>
+            </div>
+          </div>
+        }
+
+        <!-- SECCIÓN INFERIOR EN DOS COLUMNAS -->
+        <div class="lower-grid-row">
+          <!-- PRÓXIMOS PARTIDOS -->
+          <div class="card-box half-card">
+            <div class="card-header-row">
+              <h3>Próximos partidos</h3>
+              <button type="button" class="link-action-btn" (click)="setTab('matches')">
+                Ver todos ➔
+              </button>
+            </div>
+
+            <div class="matches-mini-list">
+              @for (match of upcomingMatches(); track $index) {
+                <div class="match-mini-row">
+                  <span class="match-date-badge">{{ match.date }}</span>
+                  <div class="match-teams-info">
+                    <span class="team-right-side">
+                      {{ match.homeName }} <img [src]="match.homeShield" class="tiny-shield" alt="" />
+                    </span>
+                    <span class="vs-text">vs</span>
+                    <span class="team-left-side">
+                      <img [src]="match.awayShield" class="tiny-shield" alt="" /> {{ match.awayName }}
+                    </span>
+                  </div>
+                </div>
+              } @empty {
+                <p class="placeholder-text">No hay próximos partidos programados.</p>
+              }
+            </div>
+          </div>
+
+          <!-- GOLEADORES -->
+          <div class="card-box half-card">
+            <div class="card-header-row">
+              <h3>Goleadores</h3>
+              <button type="button" class="link-action-btn" (click)="setTab('scorers')">
+                Ver todos ➔
+              </button>
+            </div>
+
+            <div class="table-responsive">
+              <table class="custom-data-table scorers-table">
+                <thead>
+                  <tr>
+                    <th style="width: 40px">#</th>
+                    <th>Jugador</th>
+                    <th class="text-end">Goles</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (scorer of topScorers(); track scorer.position) {
+                    <tr>
+                      <td class="fw-bold">{{ scorer.position }}</td>
+                      <td>
+                        <div class="player-cell">
+                          <img [src]="scorer.photo" [alt]="scorer.name" class="player-avatar" />
+                          <span>{{ scorer.name }}</span>
+                        </div>
+                      </td>
+                      <td class="text-end fw-bold text-accent">{{ scorer.goals }}</td>
+                    </tr>
+                  } @empty {
+                    <tr>
+                      <td colspan="3" class="text-center placeholder-text">
+                        Sin goles registrados.
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- ================= PESTAÑA: TABLA COMPLETA (ZONAS O ÚNICA) ================= -->
+    @if (activeTab() === 'table') {
+      @if (hasZones()) {
+        <div class="champ-content-grid">
+          <!-- BARRA DE FILTRO POR ZONA / GRUPO -->
+          <div class="zone-filter-bar">
+            <button
+              type="button"
+              class="zone-pill-btn"
+              [class.active]="selectedZone() === 'ALL'"
+              (click)="selectedZone.set('ALL')"
+            >
+              Todas las zonas
             </button>
+            @for (zone of zoneTables(); track zone.zoneName) {
+              <button
+                type="button"
+                class="zone-pill-btn"
+                [class.active]="selectedZone() === zone.zoneName"
+                (click)="selectedZone.set(zone.zoneName)"
+              >
+                {{ zone.zoneName }}
+              </button>
+            }
+          </div>
+
+          @for (zone of filteredZoneTables(); track zone.zoneName) {
+            <div class="card-box">
+              <div class="card-header-row">
+                <h3>{{ zone.zoneName }} ({{ zone.rows.length }} equipos)</h3>
+              </div>
+
+              <div class="table-responsive">
+                <table class="custom-data-table">
+                  <thead>
+                    <tr>
+                      <th class="text-center" style="width: 50px">#</th>
+                      <th>Equipo</th>
+                      <th class="text-center">PJ</th>
+                      <th class="text-center">G</th>
+                      <th class="text-center">E</th>
+                      <th class="text-center">P</th>
+                      <th class="text-center">GF</th>
+                      <th class="text-center">GC</th>
+                      <th class="text-center">DG</th>
+                      <th class="text-center">Pts</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @for (row of zone.rows; track row.teamId) {
+                      <tr>
+                        <td class="text-center fw-bold">{{ row.position }}</td>
+                        <td>
+                          <div class="team-cell">
+                            <img [src]="row.shield" [alt]="row.name" class="mini-shield" />
+                            <span>{{ row.name }}</span>
+                          </div>
+                        </td>
+                        <td class="text-center">{{ row.pj }}</td>
+                        <td class="text-center">{{ row.g }}</td>
+                        <td class="text-center">{{ row.e }}</td>
+                        <td class="text-center">{{ row.p }}</td>
+                        <td class="text-center">{{ row.gf }}</td>
+                        <td class="text-center">{{ row.gc }}</td>
+                        <td class="text-center">{{ row.dg }}</td>
+                        <td class="text-center fw-bold text-accent">{{ row.pts }}</td>
+                      </tr>
+                    } @empty {
+                      <tr>
+                        <td colspan="10" class="text-center placeholder-text">
+                          No hay equipos asignados a {{ zone.zoneName }}.
+                        </td>
+                      </tr>
+                    }
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          }
+        </div>
+      } @else {
+        <div class="card-box">
+          <div class="card-header-row">
+            <h3>Tabla de posiciones completa ({{ fullStandings().length }} equipos)</h3>
           </div>
 
           <div class="table-responsive">
-            <table class="custom-data-table scorers-table">
+            <table class="custom-data-table">
               <thead>
                 <tr>
-                  <th style="width: 40px">#</th>
-                  <th>Jugador</th>
-                  <th class="text-end">Goles</th>
+                  <th class="text-center" style="width: 50px">#</th>
+                  <th>Equipo</th>
+                  <th class="text-center">PJ</th>
+                  <th class="text-center">G</th>
+                  <th class="text-center">E</th>
+                  <th class="text-center">P</th>
+                  <th class="text-center">GF</th>
+                  <th class="text-center">GC</th>
+                  <th class="text-center">DG</th>
+                  <th class="text-center">Pts</th>
                 </tr>
               </thead>
               <tbody>
-                @for (scorer of topScorers(); track scorer.position) {
+                @for (row of fullStandings(); track row.teamId) {
                   <tr>
-                    <td class="fw-bold">{{ scorer.position }}</td>
+                    <td class="text-center fw-bold">{{ row.position }}</td>
                     <td>
-                      <div class="player-cell">
-                        <img [src]="scorer.photo" [alt]="scorer.name" class="player-avatar" />
-                        <span>{{ scorer.name }}</span>
+                      <div class="team-cell">
+                        <img [src]="row.shield" [alt]="row.name" class="mini-shield" />
+                        <span>{{ row.name }}</span>
                       </div>
                     </td>
-                    <td class="text-end fw-bold text-accent">{{ scorer.goals }}</td>
+                    <td class="text-center">{{ row.pj }}</td>
+                    <td class="text-center">{{ row.g }}</td>
+                    <td class="text-center">{{ row.e }}</td>
+                    <td class="text-center">{{ row.p }}</td>
+                    <td class="text-center">{{ row.gf }}</td>
+                    <td class="text-center">{{ row.gc }}</td>
+                    <td class="text-center">{{ row.dg }}</td>
+                    <td class="text-center fw-bold text-accent">{{ row.pts }}</td>
+                  </tr>
+                } @empty {
+                  <tr>
+                    <td colspan="10" class="text-center placeholder-text">
+                      No hay equipos asignados a este campeonato.
+                    </td>
                   </tr>
                 }
               </tbody>
             </table>
           </div>
         </div>
-      </div>
-    </div>
-  }
+      }
+    }
 
-  <!-- VISTAS PARA LAS OTRAS PESTAÑAS -->
-  @if (activeTab() === 'table') {
-    <div class="card-box">
-      <h3>Tabla de posiciones completa</h3>
-      <p class="placeholder-text">
-        Aquí se mostrará la tabla completa con todos los equipos de la liga.
-      </p>
-    </div>
-  }
-  @if (activeTab() === 'matches') {
-    <div class="card-box">
-      <h3>Calendario de partidos</h3>
-      <p class="placeholder-text">Listado completo de partidos de la temporada.</p>
-    </div>
-  }
-  @if (activeTab() === 'scorers') {
-    <div class="card-box">
-      <h3>Tabla de Goleadores</h3>
-      <p class="placeholder-text">Listado completo de máximos artilleros del torneo.</p>
-    </div>
-  }
-  @if (activeTab() === 'cards') {
-    <div class="card-box">
-      <h3>Tarjetas y Disciplina</h3>
-      <p class="placeholder-text">Estadísticas de tarjetas amarillas y rojas.</p>
-    </div>
+    <!-- ================= PESTAÑA: PARTIDOS POR FECHA (ACORDEÓN) ================= -->
+    @if (activeTab() === 'matches') {
+      <div class="card-box">
+        <div class="card-header-row">
+          <h3>Calendario de partidos por fecha ({{ allTournamentMatches().length }})</h3>
+        </div>
+
+        <div class="rounds-accordion-list">
+          @for (group of matchesByRound(); track group.roundTitle) {
+            <div class="round-accordion-item" [class.expanded]="isRoundExpanded(group.roundTitle)">
+              <button
+                type="button"
+                class="round-accordion-header"
+                (click)="toggleRound(group.roundTitle)"
+              >
+                <div class="round-header-left">
+                  <span class="round-title-text">{{ group.roundTitle }}</span>
+                  <span class="round-count-badge">
+                    {{ group.matches.length }}
+                    {{ group.matches.length === 1 ? 'partido' : 'partidos' }}
+                  </span>
+                </div>
+
+                <span class="accordion-chevron">
+                  {{ isRoundExpanded(group.roundTitle) ? '▲' : '▼' }}
+                </span>
+              </button>
+
+              @if (isRoundExpanded(group.roundTitle)) {
+                <div class="round-accordion-body">
+                  <div class="matches-mini-list">
+                    @for (match of group.matches; track $index) {
+                      <div class="match-mini-row">
+                        <span class="match-date-badge">{{ match.date }}</span>
+                        <div class="match-teams-info">
+                          <span class="team-right-side">
+                            {{ match.homeName }}
+                            <img [src]="match.homeShield" class="tiny-shield" alt="" />
+                          </span>
+                          <span
+                            class="vs-text fw-bold"
+                            [class.score-played]="match.status === 'Finalizado'"
+                          >
+                            {{ match.score }}
+                          </span>
+                          <span class="team-left-side">
+                            <img [src]="match.awayShield" class="tiny-shield" alt="" />
+                            {{ match.awayName }}
+                          </span>
+                        </div>
+                      </div>
+                    }
+                  </div>
+                </div>
+              }
+            </div>
+          } @empty {
+            <p class="placeholder-text">No hay partidos registrados para este campeonato.</p>
+          }
+        </div>
+      </div>
+    }
+
+    <!-- ================= PESTAÑA: GOLEADORES ================= -->
+    @if (activeTab() === 'scorers') {
+      <div class="card-box">
+        <div class="card-header-row">
+          <h3>Tabla de Goleadores</h3>
+        </div>
+
+        <div class="table-responsive">
+          <table class="custom-data-table scorers-table">
+            <thead>
+              <tr>
+                <th style="width: 50px">#</th>
+                <th>Jugador</th>
+                <th>Equipo</th>
+                <th class="text-end">Goles</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (scorer of allScorers(); track scorer.position) {
+                <tr>
+                  <td class="fw-bold">{{ scorer.position }}</td>
+                  <td>
+                    <div class="player-cell">
+                      <img [src]="scorer.photo" [alt]="scorer.name" class="player-avatar" />
+                      <span>{{ scorer.name }}</span>
+                    </div>
+                  </td>
+                  <td class="text-muted">{{ scorer.teamName }}</td>
+                  <td class="text-end fw-bold text-accent">{{ scorer.goals }}</td>
+                </tr>
+              } @empty {
+                <tr>
+                  <td colspan="4" class="text-center placeholder-text">
+                    Aún no hay goles registrados en este torneo.
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    }
+
+    <!-- ================= PESTAÑA: TARJETAS ================= -->
+    @if (activeTab() === 'cards') {
+      <div class="card-box">
+        <div class="card-header-row">
+          <h3>Tarjetas y Disciplina</h3>
+        </div>
+
+        <div class="table-responsive">
+          <table class="custom-data-table">
+            <thead>
+              <tr>
+                <th style="width: 50px">#</th>
+                <th>Jugador</th>
+                <th>Equipo</th>
+                <th class="text-center">🟨 Amarillas</th>
+                <th class="text-center">🟥 Rojas</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (item of allCards(); track item.position) {
+                <tr>
+                  <td class="fw-bold">{{ item.position }}</td>
+                  <td>
+                    <div class="player-cell">
+                      <img [src]="item.photo" [alt]="item.name" class="player-avatar" />
+                      <span>{{ item.name }}</span>
+                    </div>
+                  </td>
+                  <td class="text-muted">{{ item.teamName }}</td>
+                  <td class="text-center fw-bold">{{ item.yellowCards }}</td>
+                  <td class="text-center fw-bold text-accent">{{ item.redCards }}</td>
+                </tr>
+              } @empty {
+                <tr>
+                  <td colspan="5" class="text-center placeholder-text">
+                    No hay tarjetas registradas para los jugadores de este torneo.
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    }
+  } @else {
+    <p class="placeholder-text">Cargando información del campeonato...</p>
   }
 </div>

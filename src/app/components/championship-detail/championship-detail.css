@@ -1,46 +1,40 @@
-/* =========================================
-   Contenedor Principal y Banner
-   ========================================= */
 .champ-detail-container {
   max-width: 1200px;
-  margin: 2rem auto;
-  padding: 0 1.5rem;
-  font-family:
-    'Plus Jakarta Sans',
-    -apple-system,
-    BlinkMacSystemFont,
-    sans-serif;
-  color: #fff;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+  color: #f8fafc;
 }
 
+/* ================= BANNER SUPERIOR ================= */
 .champ-header-banner {
-  background: linear-gradient(135deg, #071a36 0%, #041022 100%);
-  border: 1px solid #0d2a52;
-  border-radius: 16px;
-  padding: 2rem;
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  align-items: center;
+  gap: 1.5rem;
+  background: #0d1829;
+  border: 1px solid rgba(56, 189, 248, 0.16);
+  border-radius: 14px;
+  padding: 1.5rem 2rem;
   margin-bottom: 1.5rem;
 }
 
 .champ-main-info {
   display: flex;
   align-items: center;
-  gap: 1.5rem;
+  gap: 1.25rem;
 }
 
 .champ-logo-wrapper {
-  width: 75px;
-  height: 75px;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 14px;
+  width: 68px;
+  height: 68px;
+  border-radius: 12px;
+  background: #08101e;
+  border: 1px solid rgba(255, 255, 255, 0.1);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 8px;
-  border: 1px solid #173867;
+  padding: 0.5rem;
+  flex-shrink: 0;
 }
 
 .champ-logo {
@@ -50,134 +44,103 @@
 }
 
 .champ-text-data h1 {
-  font-size: 1.8rem;
+  margin: 0 0 0.35rem 0;
+  font-size: 1.75rem;
   font-weight: 700;
-  margin: 0 0 6px 0;
   color: #ffffff;
 }
 
 .champ-meta-badges {
   display: flex;
   align-items: center;
-  gap: 10px;
-  font-size: 0.88rem;
-  color: #8da6c4;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: #94a3b8;
 }
 
 .separator {
-  color: #38bdf8;
+  color: #475569;
 }
 
-/* =========================================
-   Botón Seguir Unificado
-   ========================================= */
 .btn-follow-champ {
-  font-family: inherit;
-  background-color: #2563eb;
-  color: #ffffff;
-  border: none;
-  padding: 6px 16px;
-  border-radius: 8px;
-  font-weight: 600;
-  font-size: 0.9rem;
-  cursor: pointer;
-  width: fit-content;
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  gap: 6px;
-  white-space: nowrap;
-  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
-  transition:
-    transform 0.2s,
-    background-color 0.2s;
-}
-
-.follow-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  line-height: 1;
-  transform: translateY(-1px);
+  gap: 0.45rem;
+  background: #2563eb;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.6rem 1.15rem;
+  font-size: 0.92rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.15s ease;
 }
 
 .btn-follow-champ:hover {
-  background-color: #1d4ed8;
-  transform: translateY(-1px);
+  background: #1d4ed8;
 }
 
 .btn-follow-champ.following {
-  background-color: #065f46;
-  border: 1px solid #10b981;
+  background: rgba(16, 185, 129, 0.15);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.4);
 }
 
-.btn-follow-champ.following:hover {
-  background-color: #047857;
-}
-
-/* =========================================
-   Pestañas de Navegación (Tabs) con Animación Suave y Estilo Naranja TikiData
-   ========================================= */
+/* ================= NAVEGACIÓN DE PESTAÑAS ================= */
 .champ-tabs-nav {
   display: flex;
-  gap: 8px;
-  border-bottom: 1px solid #0d2a52;
-  margin-bottom: 2rem;
-  padding-bottom: 0.5rem;
+  align-items: center;
+  gap: 0.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  margin-bottom: 1.5rem;
+  overflow-x: auto;
 }
 
 .tab-btn {
   background: transparent;
   border: none;
-  color: #8da6c4;
+  border-bottom: 2px solid transparent;
+  color: #94a3b8;
+  padding: 0.75rem 1.1rem;
   font-size: 0.95rem;
   font-weight: 600;
-  padding: 0.75rem 1.25rem;
-  border-radius: 8px;
   cursor: pointer;
-  position: relative;
-  outline: none;
-  -webkit-tap-highlight-color: transparent;
-  /* Transición fluida idéntica al componente de equipos */
-  transition:
-    color 0.25s ease,
-    background-color 0.25s ease,
-    transform 0.15s ease;
+  transition: color 0.2s ease, border-color 0.2s ease;
+  white-space: nowrap;
 }
 
 .tab-btn:hover {
-  color: #ffffff;
-  background: rgba(249, 115, 22, 0.08); /* Tinte naranja sutil en hover */
-}
-
-.tab-btn:active,
-.tab-btn:focus {
-  outline: none;
-  box-shadow: none;
-  transform: scale(0.97); /* Efecto sutil de presión al hacer clic sin rastro blanco */
+  color: #e2e8f0;
 }
 
 .tab-btn.active {
   color: #ffffff;
-  background: #0d2a52;
-  border-bottom: 2px solid #f97316; /* Borde activo inferior en naranja TikiData */
+  border-bottom-color: #f97316;
+  background: rgba(255, 255, 255, 0.03);
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
 }
 
-/* =========================================
-   Contenedores y Tarjetas (Cards)
-   ========================================= */
+/* ================= TARJETAS Y GRID ================= */
 .champ-content-grid {
   display: flex;
   flex-direction: column;
-  gap: 1.8rem;
+  gap: 1.5rem;
+}
+
+.lower-grid-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
 }
 
 .card-box {
-  background-color: #041326;
-  border: 1px solid #0d2a52;
-  border-radius: 16px;
+  background: #0d1829;
+  border: 1px solid rgba(56, 189, 248, 0.15);
+  border-radius: 14px;
   padding: 1.5rem;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
 }
 
 .card-header-row {
@@ -188,40 +151,36 @@
 }
 
 .card-header-row h3 {
-  font-size: 1.15rem;
-  font-weight: 700;
   margin: 0;
+  font-size: 1.1rem;
+  font-weight: 700;
   color: #ffffff;
 }
 
-/* Botones de acción (Ver todos / Ver tabla completa) idénticos a equipos */
+.card-footer-link {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
 .link-action-btn {
   background: transparent;
   border: none;
   color: #f97316;
-  font-family: inherit;
-  font-size: 0.85rem;
+  font-size: 0.88rem;
   font-weight: 600;
   cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  padding: 4px 8px;
-  border-radius: 4px;
-  transition:
-    color 0.2s ease,
-    background-color 0.2s ease;
+  padding: 0;
+  transition: color 0.2s ease;
 }
 
 .link-action-btn:hover {
   color: #fb923c;
-  background-color: rgba(56, 189, 248, 0.1);
-  text-decoration: none;
 }
 
-/* =========================================
-   Tablas de Datos
-   ========================================= */
+/* ================= TABLAS DE DATOS ================= */
 .table-responsive {
   width: 100%;
   overflow-x: auto;
@@ -230,44 +189,42 @@
 .custom-data-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 0.9rem;
-  color: #d1dced;
+  font-size: 0.92rem;
 }
 
-.custom-data-table th {
+.custom-data-table thead th {
   text-align: left;
-  padding: 10px 12px;
-  color: #7d96b3;
-  font-weight: 600;
-  border-bottom: 1px solid #0d2a52;
-  font-size: 0.82rem;
+  padding: 0.75rem 0.65rem;
+  font-size: 0.78rem;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.04em;
+  color: #94a3b8;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.custom-data-table td {
-  padding: 12px;
-  border-bottom: 1px solid #081d3a;
-  vertical-align: middle;
+.custom-data-table tbody td {
+  padding: 0.75rem 0.65rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  color: #e2e8f0;
 }
 
-.custom-data-table tr:last-child td {
-  border-bottom: none;
+.custom-data-table tbody tr:hover {
+  background: rgba(255, 255, 255, 0.025);
 }
 
 .team-cell,
 .player-cell {
   display: flex;
   align-items: center;
-  gap: 10px;
-  font-weight: 600;
-  color: #ffffff;
+  gap: 0.65rem;
 }
 
 .mini-shield {
   width: 24px;
   height: 24px;
   object-fit: contain;
+  flex-shrink: 0;
 }
 
 .player-avatar {
@@ -275,104 +232,244 @@
   height: 28px;
   border-radius: 50%;
   object-fit: cover;
-  background: #0d2a52;
+  background: #1e293b;
+  flex-shrink: 0;
 }
 
 .text-center {
-  text-align: center;
+  text-align: center !important;
 }
+
 .text-end {
-  text-align: right;
+  text-align: right !important;
 }
+
 .fw-bold {
   font-weight: 700;
 }
+
 .text-accent {
-  color: #38bdf8;
+  color: #f97316 !important;
 }
 
-.card-footer-link {
-  margin-top: 1rem;
-  text-align: right;
+.text-muted {
+  color: #94a3b8;
 }
 
-/* =========================================
-   Grilla Inferior (2 Columnas)
-   ========================================= */
-.lower-grid-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.8rem;
+.placeholder-text {
+  color: #64748b;
+  font-size: 0.92rem;
+  padding: 1.5rem 0;
+  text-align: center;
+  margin: 0;
 }
 
-@media (max-width: 900px) {
-  .lower-grid-row {
-    grid-template-columns: 100%;
-  }
+/* ================= ACORDEÓN DE FECHAS ================= */
+.rounds-accordion-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
 }
 
+.round-accordion-item {
+  width: 100%;
+  background: rgba(15, 23, 42, 0.55);
+  border: 1px solid rgba(56, 189, 248, 0.16);
+  border-radius: 10px;
+  overflow: hidden;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.round-accordion-item:hover {
+  border-color: rgba(56, 189, 248, 0.35);
+}
+
+.round-accordion-item.expanded {
+  border-color: rgba(249, 115, 22, 0.45);
+}
+
+.round-accordion-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.9rem 1.2rem;
+  background: transparent;
+  border: none;
+  color: #f8fafc;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.round-accordion-header:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.round-header-left {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.round-title-text {
+  font-size: 0.92rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #ffffff;
+}
+
+.round-count-badge {
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: #94a3b8;
+  background: rgba(56, 189, 248, 0.08);
+  border: 1px solid rgba(56, 189, 248, 0.18);
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+}
+
+.accordion-chevron {
+  font-size: 0.75rem;
+  color: #f97316;
+  transition: transform 0.2s ease;
+}
+
+.round-accordion-body {
+  padding: 0.85rem 1.1rem 1.1rem 1.1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  background: rgba(8, 16, 30, 0.65);
+}
+
+/* ================= LISTA DE PARTIDOS ================= */
 .matches-mini-list {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 0.6rem;
 }
 
 .match-mini-row {
   display: flex;
   align-items: center;
-  background: #071932;
-  border: 1px solid #0d2a52;
-  padding: 10px 14px;
+  gap: 1rem;
+  background: #08101e;
+  border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 10px;
-  font-size: 0.85rem;
+  padding: 0.7rem 1rem;
+  transition: border-color 0.2s ease;
+}
+
+.match-mini-row:hover {
+  border-color: rgba(56, 189, 248, 0.25);
 }
 
 .match-date-badge {
-  color: #7d96b3;
-  font-weight: 600;
-  min-width: 65px;
+  font-size: 0.82rem;
+  color: #94a3b8;
+  min-width: 55px;
+  flex-shrink: 0;
 }
 
 .match-teams-info {
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
   flex: 1;
-  color: #ffffff;
-}
-
-.team-right-side,
-.team-left-side {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  gap: 8px;
-  width: 42%;
+  gap: 0.85rem;
+  font-size: 0.92rem;
 }
 
 .team-right-side {
+  display: flex;
+  align-items: center;
   justify-content: flex-end;
+  gap: 0.5rem;
   text-align: right;
+  color: #f1f5f9;
 }
+
 .team-left-side {
+  display: flex;
+  align-items: center;
   justify-content: flex-start;
+  gap: 0.5rem;
   text-align: left;
+  color: #f1f5f9;
 }
 
 .tiny-shield {
   width: 20px;
   height: 20px;
   object-fit: contain;
+  flex-shrink: 0;
 }
 
 .vs-text {
-  color: #536d8d;
-  font-weight: 700;
-  font-size: 0.75rem;
-  text-transform: uppercase;
+  color: #94a3b8;
+  font-size: 0.85rem;
+  padding: 0.2rem 0.55rem;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.04);
+  min-width: 48px;
+  text-align: center;
 }
 
-.placeholder-text {
-  color: #7d96b3;
-  font-size: 0.9rem;
-  margin: 1rem 0;
+.vs-text.score-played {
+  color: #ffffff;
+  background: rgba(249, 115, 22, 0.15);
+  border: 1px solid rgba(249, 115, 22, 0.35);
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 768px) {
+  .champ-header-banner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .lower-grid-row {
+    grid-template-columns: 1fr;
+  }
+
+  .match-mini-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.4rem;
+  }
+
+  .match-date-badge {
+    text-align: center;
+  }
+}
+
+/* ================= FILTRO DE ZONAS / GRUPOS ================= */
+.zone-filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.zone-pill-btn {
+  background: #0d1829;
+  border: 1px solid rgba(56, 189, 248, 0.2);
+  color: #94a3b8;
+  padding: 0.45rem 1rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.zone-pill-btn:hover {
+  color: #ffffff;
+  border-color: rgba(56, 189, 248, 0.45);
+}
+
+.zone-pill-btn.active {
+  background: rgba(249, 115, 22, 0.16);
+  border-color: #f97316;
+  color: #ffffff;
 }

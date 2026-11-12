@@ -66,8 +66,7 @@ export interface Match {
   localGoals: number;
   awayGoals: number;
   status?: Status;
-
-  stadium?: string;
+  stadium: string;
   championshipName?: string;
   localGoalsDetail?: GoalDetail[];
   awayGoalsDetail?: GoalDetail[];
@@ -75,5 +74,4 @@ export interface Match {
   incidences?: Incidence[];
   lineups?: MatchLineups;
   summary?: MatchSummary;
-  h2h?: H2HSummary;
 }

@@ -48,11 +48,11 @@
   height: 50px;
   border-radius: 14px;
   background: #030d1a;
-  border: 1px solid #1e497e;
+  border: 1px solid #332011;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #38bdf8;
+  color: #f97316; /* Naranja TikiData */
   flex-shrink: 0;
 }
 
@@ -120,15 +120,15 @@
 }
 
 .form-group input:hover {
-  border-color: #38bdf8;
-  background: linear-gradient(180deg, #071a33 0%, #051428 100%);
-  box-shadow: 0 0 12px rgba(56, 189, 248, 0.15);
+  border-color: #f97316; /* Naranja TikiData */
+  background: linear-gradient(180deg, #1f1007 0%, #0c0805 100%);
+  box-shadow: 0 0 12px rgba(249, 115, 22, 0.15);
 }
 
 .form-group input:focus {
-  border-color: #38bdf8;
-  background: linear-gradient(180deg, #071a33 0%, #051428 100%);
-  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.22);
+  border-color: #f97316; /* Naranja TikiData */
+  background: linear-gradient(180deg, #1f1007 0%, #0c0805 100%);
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.22);
 }
 
 /* =========================================
@@ -207,9 +207,9 @@
 }
 
 .dropzone:hover {
-  border-color: #38bdf8;
-  color: #38bdf8;
-  background: linear-gradient(180deg, #071a33 0%, #051428 100%);
+  border-color: #f97316; /* Naranja TikiData */
+  color: #f97316;
+  background: linear-gradient(180deg, #1f1007 0%, #0c0805 100%);
   transform: translateY(-1px);
 }
 
@@ -224,7 +224,7 @@
 }
 
 .dropzone:hover .upload-icon {
-  color: #38bdf8;
+  color: #f97316; /* Naranja TikiData */
   transform: translateY(-2px);
 }
 
@@ -273,7 +273,7 @@
   height: 70px;
   object-fit: cover;
   border-radius: 50%;
-  border: 2px solid #38bdf8;
+  border: 2px solid #f97316; /* Naranja TikiData */
 }
 
 .btn-remove-shield {
@@ -329,7 +329,7 @@
 .btn-cancel:hover {
   background: rgba(255, 255, 255, 0.05);
   color: #ffffff;
-  border-color: #38bdf8;
+  border-color: #f97316; /* Naranja TikiData */
 }
 
 .btn-save-championship {

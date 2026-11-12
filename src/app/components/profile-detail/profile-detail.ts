@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnInit, inject, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { User } from '../../models/User';
@@ -31,6 +31,11 @@ export class ProfileDetail implements OnInit {
   favoriteTeamsList = signal<Team[]>([]);
   favoriteChampionshipsList = signal<Championship[]>([]);
   favoritePlayersList = signal<Player[]>([]);
+
+  // 👇 CONTADORES REACTIVOS AUTOMÁTICOS 👇
+  favoriteTeamsCount = computed(() => this.favoriteTeamsList().length);
+  favoritePlayersCount = computed(() => this.favoritePlayersList().length);
+  favoriteChampionshipsCount = computed(() => this.favoriteChampionshipsList().length);
 
   showAllTeams = signal<boolean>(false);
   showAllPlayers = signal<boolean>(false);
@@ -129,24 +134,45 @@ export class ProfileDetail implements OnInit {
     if (!user || !user.id) return;
 
     let updatedFields: any = {};
+    const cleanId = Number(idToRemove);
+
     if (type === 'team' && user.favoriteTeams) {
-      updatedFields = {
-        favoriteTeams: user.favoriteTeams.filter((id: number) => id !== idToRemove),
-      };
-      this.favoriteTeamsList.update((teams) => teams.filter((t) => t.id !== idToRemove));
+      const newFavoriteTeams = user.favoriteTeams
+        .map((id: any) => Number(id))
+        .filter((id: number) => id !== cleanId);
+      updatedFields = { favoriteTeams: newFavoriteTeams };
+
+      // Actualización visual inmediata
+      this.favoriteTeamsList.update((teams) => teams.filter((t) => Number(t.id) !== cleanId));
     } else if (type === 'player' && user.favoritePlayers) {
-      updatedFields = {
-        favoritePlayers: user.favoritePlayers.filter((id: number) => id !== idToRemove),
-      };
-      this.favoritePlayersList.update((players) => players.filter((p) => p.id !== idToRemove));
+      const newFavoritePlayers = user.favoritePlayers
+        .map((id: any) => Number(id))
+        .filter((id: number) => id !== cleanId);
+      updatedFields = { favoritePlayers: newFavoritePlayers };
+
+      this.favoritePlayersList.update((players) => players.filter((p) => Number(p.id) !== cleanId));
     } else if (type === 'championship' && user.favoriteChampionships) {
-      updatedFields = {
-        favoriteChampionships: user.favoriteChampionships.filter((id: number) => id !== idToRemove),
-      };
-      this.favoriteChampionshipsList.update((champs) => champs.filter((c) => c.id !== idToRemove));
+      const newFavoriteChamps = user.favoriteChampionships
+        .map((id: any) => Number(id))
+        .filter((id: number) => id !== cleanId);
+      updatedFields = { favoriteChampionships: newFavoriteChamps };
+
+      this.favoriteChampionshipsList.update((champs) =>
+        champs.filter((c) => Number(c.id) !== cleanId),
+      );
     }
 
-    this.authService.updateUser(user.id, updatedFields).subscribe();
+    // 👇 AQUÍ ESTABA EL ERROR: Nos suscribimos explícitamente a la respuesta del servidor 👇
+    this.authService.updateUser(user.id, updatedFields).subscribe({
+      next: (updatedUser) => {
+        console.log('Favorito eliminado y persistido en el servidor con éxito:', updatedUser);
+      },
+      error: (err) => {
+        console.error('Error al guardar en el backend:', err);
+        // Si falla la petición, puedes recargar los favoritos originales para mantener consistencia
+        this.loadFavorites();
+      },
+    });
   }
 
   navigateToEdit() {

@@ -1,8 +1,25 @@
-<div class="admin-form-card">
+<div class="team-form-container">
   <div class="form-header">
-    <div class="form-icon-box">⚽</div>
+    <div class="header-icon">
+      <svg
+        width="22"
+        height="22"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <circle cx="12" cy="12" r="10"></circle>
+        <path
+          d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"
+        ></path>
+        <path d="M2 12h20"></path>
+      </svg>
+    </div>
     <div>
-      <h3>{{ isEditing ? 'Editar Partido' : 'Nuevo Partido' }}</h3>
+      <h2>{{ isEditing ? 'Editar Partido' : 'Nuevo Partido' }}</h2>
       <p>Configura los detalles y equipos del encuentro.</p>
     </div>
   </div>
@@ -11,112 +28,371 @@
     <div class="alert-error">{{ errorMessage }}</div>
   }
 
-  <form (ngSubmit)="saveMatch()" class="admin-form">
-    <!-- Campeonato -->
-    <div class="form-group">
-      <label>Campeonato *</label>
-      <select
-        class="form-control"
-        [(ngModel)]="matchData.championshipID"
-        name="championshipID"
-        required
-      >
-        <option value="" disabled>Selecciona un campeonato</option>
-        @for (champ of championshipService.championships(); track champ.id) {
-          <option [value]="champ.id">{{ champ.name }}</option>
-        }
-      </select>
-    </div>
-
-    <!-- Fecha y Hora -->
-    <div class="form-group">
-      <label>Fecha y Hora *</label>
-      <input
-        type="datetime-local"
-        class="form-control"
-        [(ngModel)]="matchData.date"
-        name="date"
-        required
-      />
-    </div>
-
-    <!-- Equipos (Local vs Visitante) -->
-    <div class="form-row-grid">
-      <div class="form-group">
-        <label>Equipo Local *</label>
-        <select
-          class="form-control"
-          [(ngModel)]="matchData.localTeamID"
-          name="localTeamID"
-          required
+  <form (ngSubmit)="saveMatch()">
+    <!-- ================= CAMPEONATO (CON ESCUDO/LOGO) ================= -->
+    <div class="form-group search-dropdown-container">
+      <label>Campeonato <span class="required">*</span></label>
+      <div class="search-input-wrapper">
+        <svg
+          class="search-lens-icon"
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
         >
-          <option value="" disabled>Selecciona local</option>
-          @for (team of teamService.teams(); track team.id) {
-            <option [value]="team.id">{{ team.name }}</option>
-          }
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label>Equipo Visitante *</label>
-        <select class="form-control" [(ngModel)]="matchData.awayTeamID" name="awayTeamID" required>
-          <option value="" disabled>Selecciona visitante</option>
-          @for (team of teamService.teams(); track team.id) {
-            <option [value]="team.id">{{ team.name }}</option>
-          }
-        </select>
-      </div>
-    </div>
-
-    <!-- Goles (Local y Visitante) -->
-    <div class="form-row-grid">
-      <div class="form-group">
-        <label>Goles Local</label>
-        <input
-          type="number"
-          class="form-control"
-          [(ngModel)]="matchData.localGoals"
-          name="localGoals"
-          min="0"
-        />
-      </div>
-
-      <div class="form-group">
-        <label>Goles Visitante</label>
-        <input
-          type="number"
-          class="form-control"
-          [(ngModel)]="matchData.awayGoals"
-          name="awayGoals"
-          min="0"
-        />
-      </div>
-    </div>
-
-    <!-- Estadio y Estado -->
-    <div class="form-row-grid">
-      <div class="form-group">
-        <label>Estadio</label>
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
         <input
           type="text"
-          class="form-control"
-          [(ngModel)]="matchData.stadium"
-          name="stadium"
-          placeholder="Ej. Más Monumental"
+          class="form-control with-icon"
+          [(ngModel)]="championshipSearchQuery"
+          name="championshipSearchQuery"
+          (input)="onSearchChampionships()"
+          (focus)="onSearchChampionships()"
+          placeholder="Escribe para buscar un campeonato..."
+          autocomplete="off"
+          required
         />
       </div>
 
-      <div class="form-group">
-        <label>Estado del Partido *</label>
-        <select class="form-control" [(ngModel)]="matchData.status" name="status" required>
-          <option value="Programado">Programado</option>
-          <option value="En Vivo">En Vivo</option>
-          <option value="Finalizado">Finalizado</option>
-        </select>
+      @if (showChampionshipDropdown && filteredChampionships().length > 0) {
+        <ul class="search-results-list">
+          @for (champ of filteredChampionships(); track champ.id) {
+            <li class="search-result-item" (click)="selectChampionship(champ)">
+              @if (champ.shield) {
+                <img [src]="champ.shield" class="result-thumb" alt="" />
+              }
+              <div class="result-info">
+                <span class="result-name">{{ champ.name }}</span>
+                <span class="result-meta">{{ champ.country || 'General' }}</span>
+              </div>
+            </li>
+          }
+        </ul>
+      }
+    </div>
+
+    <!-- ================= FECHA Y HORA ================= -->
+    <div class="form-group calendar-field-container">
+      <label>Fecha y Hora <span class="required">*</span></label>
+
+      <button
+        type="button"
+        class="calendar-trigger"
+        [class.open]="isCalendarOpen"
+        (click)="toggleCalendar($event)"
+      >
+        <span [class.placeholder]="!selectedDate">
+          {{ formattedSelectedDateTime || 'Seleccione una fecha' }}
+        </span>
+        <svg
+          class="calendar-icon"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+          <line x1="16" y1="2" x2="16" y2="6"></line>
+          <line x1="8" y1="2" x2="8" y2="6"></line>
+          <line x1="3" y1="10" x2="21" y2="10"></line>
+        </svg>
+      </button>
+
+      @if (isCalendarOpen) {
+        <div class="calendar-popover" (click)="$event.stopPropagation()">
+          <div class="calendar-header">
+            <button
+              type="button"
+              class="calendar-nav-btn"
+              (click)="prevMonth(); $event.stopPropagation()"
+            >
+              &#8249;
+            </button>
+
+            <div class="calendar-selects">
+              <!-- Selector de Mes -->
+              <div
+                class="custom-dropdown calendar-dropdown month-dropdown"
+                [class.open]="isMonthOpen"
+              >
+                <button
+                  type="button"
+                  class="dropdown-trigger header-trigger"
+                  (click)="toggleMonthDropdown(); $event.stopPropagation()"
+                >
+                  <span>{{ months[currentMonth] }}</span>
+                  <span class="triangle-icon"></span>
+                </button>
+                @if (isMonthOpen) {
+                  <ul class="dropdown-menu">
+                    @for (m of months; track $index) {
+                      <li
+                        class="dropdown-item"
+                        [class.active]="currentMonth === $index"
+                        (click)="selectMonth($index); $event.stopPropagation()"
+                      >
+                        <span>{{ m }}</span>
+                      </li>
+                    }
+                  </ul>
+                }
+              </div>
+
+              <!-- Selector de Año -->
+              <div
+                class="custom-dropdown calendar-dropdown year-dropdown"
+                [class.open]="isYearOpen"
+              >
+                <button
+                  type="button"
+                  class="dropdown-trigger header-trigger"
+                  (click)="toggleYearDropdown(); $event.stopPropagation()"
+                >
+                  <span>{{ currentYear }}</span>
+                  <span class="triangle-icon"></span>
+                </button>
+                @if (isYearOpen) {
+                  <ul class="dropdown-menu">
+                    @for (y of yearsList; track y) {
+                      <li
+                        class="dropdown-item"
+                        [class.active]="currentYear === y"
+                        (click)="selectYear(y); $event.stopPropagation()"
+                      >
+                        <span>{{ y }}</span>
+                      </li>
+                    }
+                  </ul>
+                }
+              </div>
+            </div>
+
+            <button
+              type="button"
+              class="calendar-nav-btn"
+              (click)="nextMonth(); $event.stopPropagation()"
+            >
+              &#8250;
+            </button>
+          </div>
+
+          <div class="calendar-weekdays">
+            @for (dayName of weekDays; track dayName) {
+              <span class="calendar-weekday">{{ dayName }}</span>
+            }
+          </div>
+
+          <div class="calendar-grid">
+            @for (item of calendarDays; track $index) {
+              <button
+                type="button"
+                class="calendar-day"
+                [class.other-month]="!item.isCurrentMonth"
+                [class.disabled-day]="isDayDisabled(item.date)"
+                [class.selected]="isDaySelected(item.date)"
+                [disabled]="isDayDisabled(item.date)"
+                (click)="selectDate(item.date); $event.stopPropagation()"
+              >
+                {{ item.day }}
+              </button>
+            }
+          </div>
+
+          <!-- Selector de Hora Estilo TikiData -->
+          <div class="calendar-time-section">
+            <div class="time-dropdown-wrapper" (click)="$event.stopPropagation()">
+              <button
+                type="button"
+                class="time-main-trigger"
+                [class.open]="isTimeOpen"
+                (click)="toggleTimeDropdown()"
+              >
+                <span>{{ selectedHour }} : {{ selectedMinute }} hs</span>
+                <span class="triangle-icon"></span>
+              </button>
+
+              @if (isTimeOpen) {
+                <div class="time-popover-menu">
+                  <!-- Horas -->
+                  <div class="time-column">
+                    <div class="time-col-title">Hora</div>
+                    <div class="time-options-list">
+                      @for (h of hoursList; track h) {
+                        <div
+                          class="time-option-item"
+                          [class.active]="selectedHour === h"
+                          (click)="selectHour(h)"
+                        >
+                          {{ h }}
+                        </div>
+                      }
+                    </div>
+                  </div>
+
+                  <!-- Minutos -->
+                  <div class="time-column">
+                    <div class="time-col-title">Min</div>
+                    <div class="time-options-list">
+                      @for (m of ['00', '15', '30', '45']; track m) {
+                        <div
+                          class="time-option-item"
+                          [class.active]="selectedMinute === m"
+                          (click)="selectMinute(m)"
+                        >
+                          {{ m }}
+                        </div>
+                      }
+                    </div>
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+
+    <!-- ================= EQUIPOS: LOCAL Y VISITANTE ================= -->
+    <div class="form-row">
+      <!-- Local -->
+      <div class="form-group search-dropdown-container">
+        <label>Equipo Local <span class="required">*</span></label>
+        <div class="search-input-wrapper">
+          <svg
+            class="search-lens-icon"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input
+            type="text"
+            class="form-control with-icon"
+            [(ngModel)]="localTeamSearchQuery"
+            name="localTeamSearchQuery"
+            (input)="onSearchLocalTeam()"
+            (focus)="onSearchLocalTeam()"
+            placeholder="Buscar equipo local..."
+            autocomplete="off"
+            required
+          />
+        </div>
+
+        @if (showLocalDropdown && filteredLocalTeams().length > 0) {
+          <ul class="search-results-list">
+            @for (team of filteredLocalTeams(); track team.id) {
+              <li class="search-result-item" (click)="selectLocalTeam(team)">
+                @if (team.shield) {
+                  <img [src]="team.shield" class="result-thumb" alt="" />
+                }
+                <span class="result-name">{{ team.name }}</span>
+              </li>
+            }
+          </ul>
+        }
+      </div>
+
+      <!-- Visitante -->
+      <div class="form-group search-dropdown-container">
+        <label>Equipo Visitante <span class="required">*</span></label>
+        <div class="search-input-wrapper">
+          <svg
+            class="search-lens-icon"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input
+            type="text"
+            class="form-control with-icon"
+            [(ngModel)]="awayTeamSearchQuery"
+            name="awayTeamSearchQuery"
+            (input)="onSearchAwayTeam()"
+            (focus)="onSearchAwayTeam()"
+            placeholder="Buscar equipo visitante..."
+            autocomplete="off"
+            required
+          />
+        </div>
+
+        @if (showAwayDropdown && filteredAwayTeams().length > 0) {
+          <ul class="search-results-list">
+            @for (team of filteredAwayTeams(); track team.id) {
+              <li class="search-result-item" (click)="selectAwayTeam(team)">
+                @if (team.shield) {
+                  <img [src]="team.shield" class="result-thumb" alt="" />
+                }
+                <span class="result-name">{{ team.name }}</span>
+              </li>
+            }
+          </ul>
+        }
       </div>
     </div>
 
-    <!-- Acciones -->
+    <!-- ================= ESTADIO ================= -->
+    <div class="form-group search-dropdown-container">
+      <label>Estadio</label>
+      <div class="search-input-wrapper">
+        <svg
+          class="search-lens-icon"
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input
+          type="text"
+          class="form-control with-icon"
+          [(ngModel)]="stadiumSearchQuery"
+          name="stadiumSearchQuery"
+          (input)="onSearchStadiums()"
+          (focus)="onSearchStadiums()"
+          placeholder="Escribe o busca estadio..."
+          autocomplete="off"
+        />
+      </div>
+
+      @if (showStadiumDropdown && filteredStadiums().length > 0) {
+        <ul class="search-results-list">
+          @for (stadium of filteredStadiums(); track $index) {
+            <li class="search-result-item" (click)="selectStadium(stadium)">
+              <span class="result-name">{{ stadium }}</span>
+            </li>
+          }
+        </ul>
+      }
+    </div>
+
+    <!-- ================= ACCIONES ================= -->
     <div class="form-actions">
       <button type="button" class="btn-cancel" (click)="onCancel()">Cancelar</button>
       <button type="submit" class="btn-save">

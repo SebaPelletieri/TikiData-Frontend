@@ -76,7 +76,7 @@
       rgba(4, 18, 36, 0.3) 70%
     ),
     url('/estadio.png') 30% 60% / cover no-repeat;
-  border: 1px solid #143560;
+  border: 1px solid #45220c; /* Borde naranja muy discreto */
   border-radius: 20px;
   padding: 2.5rem;
   margin-bottom: 2rem;
@@ -142,7 +142,7 @@
 .user-meta-list svg {
   width: 16px;
   height: 16px;
-  color: #7d96b3;
+  color: #f97316;
 }
 
 .stats-cards-grid {
@@ -155,7 +155,7 @@
 
 .stat-card {
   background: linear-gradient(180deg, #06182e 0%, #041224 100%);
-  border: 1px solid #143560;
+  border: 1px solid #45220c; /* Borde naranja muy discreto */
   border-radius: 16px;
   padding: 1.5rem;
   display: flex;
@@ -178,7 +178,8 @@
 .stat-icon-wrapper.blue-group,
 .stat-icon-wrapper.blue-trophy {
   background: #030d1a;
-  color: #38bdf8;
+  color: #f97316;
+  border: 1px solid rgba(249, 115, 22, 0.3);
 }
 
 .stat-data {
@@ -205,7 +206,7 @@
 
 .admin-left-pane {
   background: linear-gradient(180deg, #06182e 0%, #041224 100%);
-  border: 1px solid #143560;
+  border: 1px solid #45220c; /* Borde naranja muy discreto */
   border-radius: 18px;
   padding: 1.5rem;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
@@ -227,12 +228,13 @@
   width: 48px;
   height: 48px;
   background: #030d1a;
-  border: 1px solid #143560;
+  border: 1px solid #45220c; /* Borde naranja muy discreto */
   border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 1.3rem;
+  color: #f97316;
 }
 
 .teams-title-block h3 {
@@ -258,7 +260,7 @@
 
 .favorite-team-card {
   background: linear-gradient(180deg, #030d1a 0%, #020813 100%);
-  border: 1px solid #143560;
+  border: 1px solid #45220c; /* Borde naranja muy discreto */
   border-radius: 16px;
   padding: 1.5rem 1rem;
   display: flex;
@@ -271,9 +273,9 @@
 }
 
 .favorite-team-card:hover {
-  border-color: #38bdf8;
+  border-color: #ff6b00; /* Naranja encendido solo al pasar el mouse */
   transform: translateY(-3px);
-  box-shadow: 0 12px 25px rgba(56, 189, 248, 0.15);
+  box-shadow: 0 12px 25px rgba(255, 107, 0, 0.25);
 }
 
 .favorite-team-shield {
@@ -323,15 +325,15 @@
 }
 
 .btn-icon-action.view {
-  background-color: rgba(37, 99, 235, 0.15);
-  border: 1px solid #2563eb;
-  color: #38bdf8;
+  background-color: rgba(249, 115, 22, 0.15);
+  border: 1px solid #ea580c;
+  color: #fb923c;
 }
 
 .btn-icon-action.view:hover {
-  background-color: #2563eb;
+  background-color: #ea580c;
   color: #ffffff;
-  box-shadow: 0 0 10px rgba(37, 99, 235, 0.5);
+  box-shadow: 0 0 10px rgba(234, 88, 12, 0.5);
 }
 
 .btn-icon-action.delete {
@@ -362,7 +364,7 @@
   color: #7d96b3;
   font-weight: 600;
   padding: 12px;
-  border-bottom: 1px solid #143560;
+  border-bottom: 1px solid #45220c; /* Borde naranja muy discreto */
   text-transform: uppercase;
   font-size: 0.75rem;
   letter-spacing: 0.5px;
@@ -370,7 +372,7 @@
 
 .admin-table td {
   padding: 12px;
-  border-bottom: 1px solid rgba(20, 53, 96, 0.4);
+  border-bottom: 1px solid rgba(69, 34, 12, 0.3);
   color: #c9d8eb;
 }
 

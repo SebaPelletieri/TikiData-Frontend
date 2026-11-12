@@ -1,108 +1,59 @@
 <div class="profile-container">
-  @if (successMessage) {
-    <div class="alert-success">{{ successMessage }}</div>
-  }
-  @if (errorMessage) {
-    <div class="alert-error">{{ errorMessage }}</div>
-  }
-
-  <!-- ================= ENCABEZADO DE PERFIL ================= -->
+  <!-- Barra Superior -->
   <div class="profile-top-bar">
     <div>
       <span class="breadcrumb">Inicio > Mi Perfil</span>
       <h2>Mi Perfil</h2>
       <p class="subtitle">Gestiona tu información, estadísticas y preferencias de usuario.</p>
     </div>
-    <button type="button" class="btn-edit-profile" (click)="navigateToEdit()">
-      <svg
-        viewBox="0 0 24 24"
-        width="16"
-        height="16"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      >
-        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-      </svg>
-      Editar Perfil
-    </button>
+    <button class="btn-edit-profile" (click)="navigateToEdit()">Editar Perfil</button>
   </div>
 
-  <!-- BANNER PRINCIPAL DE USUARIO -->
+  <!-- Banner Hero / Perfil -->
   <div class="profile-hero-banner">
     <div class="hero-content">
-      <div class="user-avatar-container">
-        <div class="avatar-circle" style="overflow: hidden">
-          @if (currentUser?.avatar) {
-            <img
-              [src]="currentUser?.avatar"
-              alt="Avatar"
-              style="width: 100%; height: 100%; object-fit: cover"
-            />
-          } @else {
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-              <circle cx="12" cy="7" r="4"></circle>
-            </svg>
-          }
-        </div>
+      <div class="avatar-circle">
+        <span>👤</span>
       </div>
       <div class="user-main-info">
         <h3>{{ currentUser?.username }}</h3>
-        <ul class="user-meta-list">
-          <li>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path
-                d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"
-              ></path>
-              <polyline points="22,6 12,13 2,6"></polyline>
-            </svg>
-            <strong>Email:</strong> {{ currentUser?.email }}
-          </li>
-        </ul>
+        <p class="admin-banner-subtitle">Email: {{ currentUser?.email }}</p>
       </div>
     </div>
   </div>
 
-  <!-- TARJETAS DE CONTADORES -->
+  <!-- Tarjetas de Estadísticas con Contadores Reactivos -->
   <div class="stats-cards-grid">
     <div class="stat-card">
       <div class="stat-icon-wrapper blue-shield">🛡️</div>
       <div class="stat-data">
         <span class="stat-label">Equipos favoritos</span>
-        <div class="stat-main-row">
-          <span class="stat-number">{{ currentUser?.favoriteTeams?.length || 0 }}</span>
-        </div>
+        <span class="stat-number">{{ favoriteTeamsCount() }}</span>
         <span class="stat-footer">Equipos seguidos en la plataforma</span>
       </div>
     </div>
+
     <div class="stat-card">
       <div class="stat-icon-wrapper blue-group">👤</div>
       <div class="stat-data">
         <span class="stat-label">Jugadores favoritos</span>
-        <div class="stat-main-row">
-          <span class="stat-number">{{ currentUser?.favoritePlayers?.length || 0 }}</span>
-        </div>
+        <span class="stat-number">{{ favoritePlayersCount() }}</span>
         <span class="stat-footer">Futbolistas seguidos</span>
       </div>
     </div>
+
     <div class="stat-card">
       <div class="stat-icon-wrapper blue-trophy">🏆</div>
       <div class="stat-data">
         <span class="stat-label">Campeonatos favoritos</span>
-        <div class="stat-main-row">
-          <span class="stat-number">{{ currentUser?.favoriteChampionships?.length || 0 }}</span>
-        </div>
+        <span class="stat-number">{{ favoriteChampionshipsCount() }}</span>
         <span class="stat-footer">Torneos y ligas seguidas</span>
       </div>
     </div>
   </div>
 
-  <!-- SECCIÓN 1: MIS EQUIPOS FAVORITOS (GRILLA DE TARJETAS) -->
-  <div class="admin-left-pane" style="width: 100%; margin-top: 1.5rem">
+  <!-- Sección: Equipos Favoritos -->
+  <div class="admin-left-pane" style="margin-bottom: 2rem">
     <div class="teams-admin-header-row">
       <div class="teams-title-block">
         <div class="team-shield-icon-box">🛡️</div>
@@ -113,69 +64,33 @@
       </div>
     </div>
 
-    @if (favoriteTeamsList().length === 0) {
-      <p class="empty-msg">No tienes equipos favoritos guardados todavía.</p>
-    } @else {
-      <div class="favorite-cards-grid">
-        @for (team of favoriteTeamsList(); track team.id) {
-          <div class="favorite-team-card">
-            <!-- Escudo del equipo -->
-            <div class="favorite-team-shield">
-              <img [src]="team.shield" [alt]="team.name" />
-            </div>
-            <!-- Nombre del equipo -->
-            <h4 class="favorite-team-name">{{ team.name }}</h4>
-            <span class="favorite-team-country">{{ team.country }}</span>
-
-            <!-- Botones de acción con iconos (Ojo y Tacho) -->
-            <div class="favorite-card-actions">
-              <button
-                type="button"
-                class="btn-icon-action view"
-                [routerLink]="['/teams', team.id]"
-                title="Ver perfil del equipo"
-              >
-                <svg
-                  viewBox="0 0 24 24"
-                  width="18"
-                  height="18"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                >
-                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                  <circle cx="12" cy="12" r="3"></circle>
-                </svg>
-              </button>
-              <button
-                type="button"
-                class="btn-icon-action delete"
-                (click)="removeFavorite('team', team.id!)"
-                title="Quitar de favoritos"
-              >
-                <svg
-                  viewBox="0 0 24 24"
-                  width="18"
-                  height="18"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                >
-                  <polyline points="3 6 5 6 21 6"></polyline>
-                  <path
-                    d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
-                  ></path>
-                </svg>
-              </button>
-            </div>
+    <div class="favorite-cards-grid">
+      @for (team of favoriteTeamsList(); track team.id) {
+        <div class="favorite-team-card">
+          <div class="favorite-team-shield">
+            <img [src]="team.shield || 'https://via.placeholder.com/45'" [alt]="team.name" />
           </div>
-        }
-      </div>
-    }
+          <h4 class="favorite-team-name">{{ team.name }}</h4>
+          <span class="favorite-team-country">{{ team.country }}</span>
+
+          <div class="favorite-card-actions">
+            <button
+              class="btn-icon-action delete"
+              (click)="removeFavorite('team', team.id!)"
+              title="Eliminar de favoritos"
+            >
+              🗑️
+            </button>
+          </div>
+        </div>
+      } @empty {
+        <p class="empty-msg">No tienes equipos favoritos guardados todavía.</p>
+      }
+    </div>
   </div>
 
-  <!-- SECCIÓN 2: MIS CAMPEONATOS FAVORITOS -->
-  <div class="admin-left-pane" style="width: 100%; margin-top: 1.5rem">
+  <!-- Sección: Campeonatos Favoritos -->
+  <div class="admin-left-pane" style="margin-bottom: 2rem">
     <div class="teams-admin-header-row">
       <div class="teams-title-block">
         <div class="team-shield-icon-box">🏆</div>
@@ -186,55 +101,28 @@
       </div>
     </div>
 
-    @if (favoriteChampionshipsList().length === 0) {
-      <p class="empty-msg">No tienes campeonatos favoritos guardados todavía.</p>
-    } @else {
-      <div class="admin-table-wrapper" style="margin-top: 1rem">
-        <table class="admin-table">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Nombre</th>
-              <th>Tipo</th>
-              <th>Temporada</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            @for (champ of favoriteChampionshipsList(); track champ.id; let idx = $index) {
-              <tr>
-                <td>{{ idx + 1 }}</td>
-                <td>
-                  <strong>{{ champ.name }}</strong>
-                </td>
-                <td>{{ champ.type }}</td>
-                <td>{{ champ.season }}</td>
-                <td>
-                  <div class="table-actions">
-                    <button
-                      class="btn-action-view-custom"
-                      [routerLink]="['/championship', champ.id]"
-                    >
-                      Ver Torneo
-                    </button>
-                    <button
-                      class="btn-action-delete-custom"
-                      (click)="removeFavorite('championship', champ.id!)"
-                    >
-                      Quitar de Favoritos
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            }
-          </tbody>
-        </table>
-      </div>
-    }
+    <div class="favorite-cards-grid">
+      @for (champ of favoriteChampionshipsList(); track champ.id) {
+        <div class="favorite-team-card">
+          <h4 class="favorite-team-name">{{ champ.name }}</h4>
+          <div class="favorite-card-actions">
+            <button
+              class="btn-icon-action delete"
+              (click)="removeFavorite('championship', champ.id!)"
+              title="Eliminar de favoritos"
+            >
+              🗑️
+            </button>
+          </div>
+        </div>
+      } @empty {
+        <p class="empty-msg">No tienes campeonatos favoritos guardados todavía.</p>
+      }
+    </div>
   </div>
 
-  <!-- SECCIÓN 3: MIS JUGADORES FAVORITOS -->
-  <div class="admin-left-pane" style="width: 100%; margin-top: 1.5rem">
+  <!-- Sección: Jugadores Favoritos -->
+  <div class="admin-left-pane">
     <div class="teams-admin-header-row">
       <div class="teams-title-block">
         <div class="team-shield-icon-box">👤</div>
@@ -245,47 +133,23 @@
       </div>
     </div>
 
-    @if (favoritePlayersList().length === 0) {
-      <p class="empty-msg">No tienes jugadores favoritos guardados todavía.</p>
-    } @else {
-      <div class="admin-table-wrapper" style="margin-top: 1rem">
-        <table class="admin-table">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Nombre</th>
-              <th>Posición</th>
-              <th>Nacionalidad</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            @for (player of favoritePlayersList(); track player.id; let idx = $index) {
-              <tr>
-                <td>{{ idx + 1 }}</td>
-                <td>
-                  <strong>{{ player.name }}</strong>
-                </td>
-                <td>{{ player.position }}</td>
-                <td>{{ player.nationality }}</td>
-                <td>
-                  <div class="table-actions">
-                    <button class="btn-action-view-custom" [routerLink]="['/player', player.id]">
-                      Ver Jugador
-                    </button>
-                    <button
-                      class="btn-action-delete-custom"
-                      (click)="removeFavorite('player', player.id!)"
-                    >
-                      Quitar de Favoritos
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            }
-          </tbody>
-        </table>
-      </div>
-    }
+    <div class="favorite-cards-grid">
+      @for (player of favoritePlayersList(); track player.id) {
+        <div class="favorite-team-card">
+          <h4 class="favorite-team-name">{{ player.name }}</h4>
+          <div class="favorite-card-actions">
+            <button
+              class="btn-icon-action delete"
+              (click)="removeFavorite('player', player.id!)"
+              title="Eliminar de favoritos"
+            >
+              🗑️
+            </button>
+          </div>
+        </div>
+      } @empty {
+        <p class="empty-msg">No tienes jugadores favoritos guardados todavía.</p>
+      }
+    </div>
   </div>
 </div>

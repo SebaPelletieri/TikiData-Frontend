@@ -1,11 +1,17 @@
-export type ChampionshipType = 'LIGA' | 'COPA'; 
+export type ChampionshipType = 'LIGA' | 'COPA';
+
+export interface ChampionshipZone {
+  name: string;
+  teamIDs: (number | string)[];
+}
 
 export interface Championship {
-  id?: number;
+  id?: number | string;
   name: string;
   logo: string;
   type: ChampionshipType;
-  teamsIDs?: number[];
+  teamsIDs?: (number | string)[];
+  zones?: ChampionshipZone[];
   season?: string;
-  country: string; 
+  country: string;
 }

@@ -13,8 +13,8 @@ import { PlayerForm } from '../player-form/player-form';
 import { AdminForm } from '../admin-form/admin-form';
 import { MatchForm } from '../match-form/match-form';
 import { ChampionshipEdit } from '../championship-edit/championship-edit';
+import { MatchEdit } from '../match-edit/match-edit'; // 👈 Asegúrate de importar MatchEdit
 
-/** Cantidad máxima de botones de página visibles a la vez. */
 const MAX_VISIBLE_PAGES = 10;
 
 function getVisiblePages(total: number, current: number, size = MAX_VISIBLE_PAGES): number[] {
@@ -36,6 +36,7 @@ function getVisiblePages(total: number, current: number, size = MAX_VISIBLE_PAGE
     AdminForm,
     MatchForm,
     ChampionshipEdit,
+    MatchEdit, // 👈 Añadido aquí
   ],
   templateUrl: './admin-dashboard.html',
   styleUrl: './admin-dashboard.css',
@@ -48,6 +49,7 @@ export class AdminDashboard implements OnInit {
   private matchService = inject(MatchService);
 
   editingChampionshipId = signal<number | string | null>(null);
+  editingMatchId = signal<number | string | null>(null); // 👈 Señal para la edición de partidos
   successMessage = '';
   errorMessage = '';
 
@@ -113,7 +115,6 @@ export class AdminDashboard implements OnInit {
   selectedUserRoleLabel = 'Todos los roles';
   userToDeleteId = signal<number | null>(null);
 
-  // Estado para la modal de confirmación de cambio de rol
   userToChangeRole = signal<{ user: any; newRole: 'Administrador' | 'Usuario' } | null>(null);
 
   ngOnInit(): void {
@@ -133,7 +134,6 @@ export class AdminDashboard implements OnInit {
             ...u,
             username: u.username || u.name || u.email?.split('@')[0] || 'Usuario',
           }));
-          // Ordenados alfabéticamente por username de forma automática
           normalizedUsers.sort((a, b) => (a.username || '').localeCompare(b.username || ''));
           this.allUsersForAdmin.set(normalizedUsers);
         },
@@ -337,7 +337,6 @@ export class AdminDashboard implements OnInit {
     this.isUserRoleDropdownOpen = false;
   }
 
-  // ================= EQUIPOS (Ordenados alfabéticamente) =================
   filteredTeams = computed(() => {
     const teams = this.teamService.sortedTeams();
     const search = this.adminSearchText().toLowerCase().trim();
@@ -382,7 +381,6 @@ export class AdminDashboard implements OnInit {
     if (page >= 1 && page <= this.totalPages()) this.currentPage.set(page);
   }
 
-  // ================= CAMPEONATOS (Ordenados alfabéticamente) =================
   filteredChampionships = computed(() => {
     const champs = [...this.championshipService.championships()].sort((a, b) =>
       (a.name || '').localeCompare(b.name || ''),
@@ -426,7 +424,6 @@ export class AdminDashboard implements OnInit {
     if (page >= 1 && page <= this.totalChampPages()) this.currentChampPage.set(page);
   }
 
-  // ================= PARTIDOS =================
   filteredMatches = computed(() => {
     const matches = this.matchService.matches();
     const search = this.matchSearchText().toLowerCase().trim();
@@ -467,7 +464,6 @@ export class AdminDashboard implements OnInit {
     if (page >= 1 && page <= this.totalMatchPages()) this.currentMatchPage.set(page);
   }
 
-  // ================= JUGADORES (Ordenados alfabéticamente) =================
   filteredPlayers = computed(() => {
     const players = this.playerService.sortedPlayers();
     const search = this.playerSearchText().toLowerCase().trim();
@@ -504,7 +500,6 @@ export class AdminDashboard implements OnInit {
     if (page >= 1 && page <= this.totalPlayerPages()) this.currentPlayerPage.set(page);
   }
 
-  // ================= USUARIOS (Ordenados alfabéticamente por username) =================
   filteredUsers = computed(() => {
     const users = this.allUsersForAdmin();
     const search = this.userSearchText().toLowerCase().trim();
@@ -538,7 +533,6 @@ export class AdminDashboard implements OnInit {
     if (page >= 1 && page <= this.totalUserPages()) this.currentUserPage.set(page);
   }
 
-  // ================= ELIMINACIONES =================
   confirmDelete(id: number): void {
     this.teamToDeleteId.set(id);
   }
@@ -631,5 +625,23 @@ export class AdminDashboard implements OnInit {
 
   cancelChampionshipEdit(): void {
     this.editingChampionshipId.set(null);
+  }
+
+  selectMatchToEdit(id: number | string): void {
+    this.editingMatchId.set(Number(id));
+  }
+
+  cancelMatchEdit(): void {
+    this.editingMatchId.set(null);
+  }
+
+  formatPlayerSlug(name: string): string {
+    if (!name) return '';
+    return name
+      .toLowerCase()
+      .trim()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/\s+/g, '-');
   }
 }

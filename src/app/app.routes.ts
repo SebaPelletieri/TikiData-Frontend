@@ -27,27 +27,61 @@ export const routes: Routes = [
     component: Profile,
     canActivate: [authGuard],
   },
+  {
+    path: 'profile/:id',
+    component: Profile,
+    canActivate: [adminGuard],
+  },
   { path: 'profile/edit', component: ProfileEdit },
   { path: 'teams', component: Teams },
 
   /* Rutas de equipos */
+  {
+    path: 'team/edit/:id',
+    loadComponent: () =>
+      import('./pages/team-edit-page/team-edit-page').then((m) => m.TeamEditPage),
+    canActivate: [adminGuard],
+  },
   { path: 'team/:id', component: TeamDetailPage },
   { path: 'team/name/:name', component: TeamDetailPage },
   { path: 'teams/:id', redirectTo: 'team/:id', pathMatch: 'full' },
 
   /* Rutas de jugadores */
+  {
+    path: 'player/edit/:id',
+    loadComponent: () =>
+      import('./pages/player-edit-page/player-edit-page').then((m) => m.PlayerEditPage),
+    canActivate: [adminGuard],
+  },
   { path: 'players', component: Players },
-  { path: 'player/:id', component: PlayerDetailPage },
-  { path: 'players/:id', redirectTo: 'player/:id', pathMatch: 'full' },
+  { path: 'player/:name', component: PlayerDetailPage },
+  { path: 'player/id/:id', redirectTo: 'player/:id', pathMatch: 'full' },
+  { path: 'players/:name', redirectTo: 'player/:name', pathMatch: 'full' },
 
+  /* Rutas de campeonatos */
+  {
+    path: 'championship/edit/:id',
+    loadComponent: () =>
+      import('./pages/championship-edit-page/championship-edit-page').then(
+        (m) => m.ChampionshipEditPage,
+      ),
+    canActivate: [adminGuard],
+  },
   { path: 'championships', component: Championships },
-
-  /* Ruta de detalles de campeonato por nombre/slug (CORREGIDO) */
   { path: 'championship/:name', component: ChampionshipDetailPage },
   { path: 'championships/:name', redirectTo: 'championship/:name', pathMatch: 'full' },
 
-  { path: 'matches', component: MatchList },
+  /* Rutas de partidos (Rutas específicas de edición primero) */
+  {
+    path: 'match/edit/:id',
+    loadComponent: () =>
+      import('./pages/match-edit-page/match-edit-page').then((m) => m.MatchEditPage),
+    canActivate: [adminGuard],
+  },
   { path: 'match/:id', component: MatchDetailPage },
+  { path: 'matches', component: MatchList },
+
+  /* Rutas de administración */
   {
     path: 'admin',
     component: AdminDashboard,

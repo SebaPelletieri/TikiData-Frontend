@@ -1,1 +1,170 @@
-<p>team-edit works!</p>
+<div class="team-form-container">
+  <!-- Cabecera -->
+  <div class="form-header">
+    <div class="form-icon-box">
+      <svg
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2.2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+      </svg>
+    </div>
+    <div>
+      <h3>Editar Equipo</h3>
+      <p>Modifica los datos principales del club y gestiona los futbolistas de su plantilla.</p>
+    </div>
+  </div>
+
+  <form [formGroup]="teamForm" (ngSubmit)="onSubmit()" class="team-form">
+    <!-- Nombre y País -->
+    <div class="form-row">
+      <div class="form-group">
+        <label>Nombre del Equipo <span class="required">*</span></label>
+        <input type="text" formControlName="name" placeholder="Ej. Fluminense" />
+        <div
+          class="error-feedback"
+          *ngIf="teamForm.get('name')?.invalid && teamForm.get('name')?.touched"
+        >
+          <span class="error-text">El nombre del equipo es obligatorio.</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>País de Origen <span class="required">*</span></label>
+        <div class="custom-dropdown" [class.open]="isCountryOpen">
+          <div class="dropdown-trigger" (click)="toggleCountryDropdown()">
+            <span [class.placeholder]="!teamForm.get('country')?.value">
+              {{ teamForm.get('country')?.value || 'Seleccionar país...' }}
+            </span>
+            <span class="triangle-icon"></span>
+          </div>
+          <ul class="dropdown-menu" *ngIf="isCountryOpen">
+            <li class="dropdown-item" *ngFor="let c of countries" (click)="selectCountry(c)">
+              <span>{{ c }}</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Estadio y Escudo URL -->
+    <div class="form-group">
+      <label>Estadio Principal</label>
+      <div class="direct-search-input-box" style="position: relative">
+        <input
+          type="text"
+          [formControl]="stadiumSearchCtrl"
+          placeholder="Escribe para buscar estadio..."
+          autocomplete="off"
+        />
+        <ul
+          class="direct-suggestions-list"
+          *ngIf="isStadiumDropdownOpen && filteredStadiums.length > 0"
+        >
+          <li
+            class="suggestion-item"
+            *ngFor="let std of filteredStadiums"
+            (click)="selectStadium(std)"
+          >
+            <span>{{ std }}</span>
+            <span class="add-action-text">Seleccionar</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- SECCIÓN: Plantel de Futbolistas -->
+    <div class="section-divider"></div>
+    <div class="section-title-box">
+      <h4>Plantel de Futbolistas</h4>
+      <p>Busca o incorpora nuevos jugadores a la plantilla actual del equipo.</p>
+    </div>
+
+    <!-- Buscador / Input para agregar jugadores -->
+    <div class="player-adder-box">
+      <div class="form-row player-row-grid">
+        <div class="form-group search-player-group">
+          <label>Nombre del Jugador</label>
+          <div class="direct-search-input-box">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input type="text" [formControl]="playerSearchCtrl" placeholder="Buscar jugador..." />
+          </div>
+          <!-- Sugerencias -->
+          <ul class="direct-suggestions-list" *ngIf="filteredPlayers.length > 0">
+            <li class="suggestion-item" *ngFor="let fp of filteredPlayers" (click)="addPlayer(fp)">
+              <span
+                >{{ fp.name }} <small>({{ fp.position }})</small></span
+              >
+              <span class="add-action-text">+ Agregar</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="form-group">
+          <label>Posición</label>
+          <div class="custom-dropdown" [class.open]="isPositionOpen">
+            <div class="dropdown-trigger" (click)="togglePositionDropdown()">
+              <span>{{ selectedPositionCtrl.value }}</span>
+              <span class="triangle-icon"></span>
+            </div>
+            <ul class="dropdown-menu" *ngIf="isPositionOpen">
+              <li class="dropdown-item" *ngFor="let pos of positions" (click)="selectPosition(pos)">
+                <span>{{ pos }}</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="form-group number-col">
+          <label>Dorsal (#)</label>
+          <input type="number" [formControl]="playerNumberCtrl" placeholder="Ej. 10" />
+        </div>
+
+        <div class="form-group btn-col">
+          <label>&nbsp;</label>
+          <button type="button" class="btn-add-player" (click)="addPlayer()">Añadir</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chips / Lista visual de jugadores actuales -->
+    <div class="added-players-container" *ngIf="playersList.length > 0">
+      <span class="players-counter-badge">Plantel actual ({{ playersList.length }})</span>
+      <div class="players-chips-grid">
+        <div class="player-chip-card" *ngFor="let p of playersList; let i = index">
+          <div class="player-chip-info">
+            <span class="p-num" *ngIf="p.number">#{{ p.number }}</span>
+            <span class="p-name">{{ p.name }}</span>
+            <span class="p-pos">{{ p.position }}</span>
+          </div>
+          <button
+            type="button"
+            class="btn-remove-chip"
+            (click)="removePlayer(i)"
+            title="Quitar jugador"
+          >
+            ×
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Botones de Acción -->
+    <div class="form-actions">
+      <button type="button" class="btn-cancel" (click)="onCancel()">Cancelar</button>
+      <button type="submit" class="btn-submit" [disabled]="teamForm.invalid">
+        Guardar Cambios
+      </button>
+    </div>
+  </form>
+</div>

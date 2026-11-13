@@ -80,6 +80,7 @@
   font-weight: 600;
   margin-bottom: 0.5rem;
   color: #ffffff;
+  pointer-events: none;
 }
 
 .required {
@@ -98,18 +99,21 @@
 /* =========================================
    Inputs Genéricos y Específicos
    ========================================= */
-.form-group input {
+.form-group input[type='text'],
+.form-group input[type='number'],
+.form-group input[type='url'] {
   width: 100%;
   height: 44px;
   padding: 0 14px;
   background: linear-gradient(180deg, #071a33 0%, #051428 100%);
   color: #ffffff;
-  border: 1px solid #1e497e;
+  border: 1px solid #4a290c;
   border-radius: 10px;
   font-size: 0.9rem;
   font-family: inherit;
   outline: none;
   transition: all 0.25s ease;
+  box-sizing: border-box;
 }
 
 .form-group input::placeholder {
@@ -142,7 +146,7 @@
   height: 44px;
   background: linear-gradient(180deg, #071a33 0%, #051428 100%);
   color: #ffffff;
-  border: 1px solid #1e497e;
+  border: 1px solid #4a290c;
   border-radius: 10px;
   padding: 0 14px;
   display: flex;
@@ -197,7 +201,7 @@
   max-height: 220px;
   overflow-y: auto;
   background-color: #06182e;
-  border: 1px solid #3d220a;
+  border: 1px solid #4a290c;
   border-radius: 12px;
   padding: 6px;
   margin: 0;
@@ -281,67 +285,32 @@
 }
 
 /* =========================================
-   Zona de Foto (Drag & Drop con Animación)
+   Zona de Foto del Jugador (URL & Vista Previa)
    ========================================= */
 .shield-container {
   display: grid;
-  grid-template-columns: 1.8fr 1fr;
+  grid-template-columns: 3.2fr 1fr;
   gap: 1rem;
+  align-items: stretch;
+  margin: 0;
+  padding: 0;
+  width: 100%;
 }
 
-.visually-hidden {
-  display: none;
-}
-
-.dropzone {
+.url-input-wrapper {
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
-  border-radius: 12px;
-  padding: 1.25rem 0.5rem;
-  cursor: pointer;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-  border: 1.5px dashed #382413;
-  background: linear-gradient(180deg, #071a33 0%, #051428 100%);
-  transition: all 0.25s ease;
-}
-
-.dropzone:hover {
-  border-color: #ff6b00;
-  background: linear-gradient(180deg, #1c1511 0%, #0e121a 100%);
-  transform: translateY(-1px);
-}
-
-.dropzone:hover .upload-icon {
-  color: #ff6b00;
-  transform: translateY(-2px);
-}
-
-.upload-icon {
-  width: 26px;
-  height: 26px;
-  color: #ff6b00;
-  margin-bottom: 8px;
-  transition:
-    transform 0.2s ease,
-    color 0.2s ease;
-}
-
-.dropzone-text {
-  font-family: inherit;
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: #d1dced;
+  height: 100%;
+  margin: 0;
 }
 
 .dropzone-hint {
   font-family: inherit;
   font-size: 0.68rem;
   color: #617b9b;
-  margin-top: 3px;
+  margin-top: 4px;
+  display: block;
 }
 
 .preview-box {
@@ -349,48 +318,53 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border: 1px solid #3d220a;
+  border: 1px solid #4a290c;
   border-radius: 12px;
-  background: radial-gradient(circle at center, #1c1008 0%, #061528 100%);
-  padding: 1rem;
+  background: linear-gradient(180deg, #071a33 0%, #051428 100%);
+  box-shadow: none;
+  padding: 8px;
+  margin: 0;
   position: relative;
+  height: 100%;
+  min-height: 90px;
 }
 
 .shield-icon {
-  width: 42px;
-  height: 42px;
-  color: #66320e;
-  margin-bottom: 6px;
+  width: 36px;
+  height: 36px;
+  color: #cc5500; /* 👈 Naranja tiki data más apagado */
+  margin-bottom: 4px;
 }
 
 .preview-text {
   font-family: inherit;
   font-size: 0.75rem;
-  color: #7d96b3;
+  color: #7d96b3; /* 👈 Naranja tiki data más apagado */
 }
 
 .uploaded-shield-img {
-  max-width: 60px;
-  max-height: 60px;
+  max-width: 50px;
+  max-height: 50px;
   object-fit: contain;
 }
 
 .btn-remove-shield {
   position: absolute;
-  top: 8px;
-  right: 8px;
+  top: 6px;
+  right: 6px;
   background: rgba(239, 68, 68, 0.2);
   border: 1px solid #ef4444;
   color: #ef4444;
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
   border-radius: 50%;
-  font-size: 11px;
+  font-size: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: all 0.2s ease;
+  z-index: 25;
 }
 
 .btn-remove-shield:hover {
@@ -470,7 +444,7 @@
   height: 44px;
   background: linear-gradient(180deg, #071a33 0%, #051428 100%);
   color: #ffffff;
-  border: 1px solid #1e497e;
+  border: 1px solid #4a290c;
   border-radius: 10px;
   padding: 0 14px;
   display: flex;
@@ -514,7 +488,7 @@
   width: 100%;
   min-width: 290px;
   background-color: #06182e;
-  border: 1px solid #3d220a;
+  border: 1px solid #4a290c;
   border-radius: 12px;
   box-shadow:
     0 14px 32px rgba(0, 0, 0, 0.65),

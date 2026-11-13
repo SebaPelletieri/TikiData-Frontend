@@ -6,23 +6,23 @@
    Contenedor Principal de la Tarjeta
    ========================================= */
 .team-form-container {
-  max-width: 680px;
-  width: 95%;
+  max-width: 100%;
+  width: 100%;
   margin: 0;
   padding: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background-color: #041326;
+  background-color: transparent;
   border: none;
-  border-radius: 20px;
+  border-radius: 0;
   color: #fff;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  box-shadow: none;
 }
 
 .form-header {
   display: flex;
   align-items: center;
   gap: 14px;
-  margin-bottom: 2.5rem;
+  margin-bottom: 2rem;
 }
 
 .header-icon {
@@ -53,14 +53,15 @@
 .form-group {
   display: flex;
   flex-direction: column;
-  margin-bottom: 2.2rem;
+  margin-bottom: 1.5rem;
+  position: relative;
 }
 
 .form-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.2rem;
-  margin-bottom: 2.2rem;
+  margin-bottom: 1.5rem;
 }
 
 .form-row .form-group {
@@ -70,7 +71,7 @@
 .form-group label {
   font-size: 0.85rem;
   font-weight: 600;
-  margin-bottom: 0.6rem;
+  margin-bottom: 0.4rem;
   color: #ffffff;
   pointer-events: none;
 }
@@ -81,19 +82,22 @@
 }
 
 /* =========================================
-   Inputs (Nombre)
+   Inputs Generales (Nombre / URL)
    ========================================= */
-.form-group input {
+.form-group input[type='text'],
+.form-group input[type='url'] {
   width: 100%;
-  height: 44px;
-  padding: 0 14px;
+  height: 46px;
+  padding: 0 16px;
+  margin: 0;
   background: linear-gradient(180deg, #071a33 0%, #051428 100%);
   color: #ffffff;
-  border: 1px solid #1e497e;
+  border: 1px solid #4a290c;
   border-radius: 10px;
-  font-size: 0.9rem;
+  font-size: 0.92rem;
   outline: none;
   transition: all 0.25s ease;
+  box-sizing: border-box;
 }
 
 .form-group input::placeholder {
@@ -115,7 +119,7 @@
 }
 
 /* =========================================
-   Desplegables Generales (País)
+   Desplegables Generales (País / Posición / Pie)
    ========================================= */
 .custom-dropdown {
   position: relative;
@@ -124,16 +128,16 @@
 
 .dropdown-trigger {
   width: 100%;
-  height: 44px;
+  height: 46px;
   background: linear-gradient(180deg, #071a33 0%, #051428 100%);
   color: #ffffff;
-  border: 1px solid #1e497e;
+  border: 1px solid #4a290c;
   border-radius: 10px;
-  padding: 0 14px;
+  padding: 0 16px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 0.9rem;
+  font-size: 0.92rem;
   font-family: inherit;
   cursor: pointer;
   outline: none;
@@ -178,15 +182,15 @@
 
 .dropdown-menu {
   position: absolute;
-  top: calc(100% + 6px);
+  top: calc(100% + 4px);
   left: 0;
   width: 100%;
   max-height: 220px;
   overflow-y: auto;
   background-color: #06182e;
-  border: 1px solid #3d220a;
+  border: 1px solid #4a290c;
   border-radius: 12px;
-  padding: 6px;
+  padding: 4px;
   margin: 0;
   list-style: none;
   z-index: 100;
@@ -226,7 +230,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 14px;
+  padding: 8px 12px;
   font-size: 0.88rem;
   color: #c9d8eb;
   border-radius: 8px;
@@ -284,19 +288,22 @@
   color: #ff6b00;
   pointer-events: none;
   z-index: 2;
+  width: 16px;
+  height: 16px;
 }
 
 .direct-search-input-box input {
   width: 100%;
-  height: 44px;
+  height: 46px;
   background: linear-gradient(180deg, #071a33 0%, #051428 100%);
   color: #ffffff;
-  border: 1px solid #1e497e;
+  border: 1px solid #4a290c;
   border-radius: 10px;
-  padding: 0 14px 0 40px;
-  font-size: 0.9rem;
+  padding: 0 16px 0 42px !important;
+  font-size: 0.92rem;
   outline: none;
   transition: all 0.25s ease;
+  box-sizing: border-box;
 }
 
 .direct-search-input-box input:hover {
@@ -315,15 +322,15 @@
 
 .direct-suggestions-list {
   position: absolute;
-  top: calc(100% + 6px);
+  top: calc(100% + 4px);
   left: 0;
   width: 100%;
   max-height: 160px;
   overflow-y: auto;
   background-color: #06182e;
-  border: 1px solid #3d220a;
+  border: 1px solid #4a290c;
   border-radius: 12px;
-  padding: 6px;
+  padding: 4px;
   margin: 0;
   list-style: none;
   z-index: 1000;
@@ -336,7 +343,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 14px;
+  padding: 8px 12px;
   font-size: 0.86rem;
   color: #c9d8eb;
   border-radius: 8px;
@@ -352,7 +359,7 @@
 }
 
 .suggestion-empty {
-  padding: 12px;
+  padding: 10px;
   text-align: center;
   font-size: 0.84rem;
   color: #7d96b3;
@@ -373,7 +380,7 @@
   background-color: #1a120b;
   border: 1px solid #4a290c;
   border-radius: 20px;
-  padding: 6px 14px;
+  padding: 4px 12px;
   color: #ffd8bd;
   font-size: 0.85rem;
   font-weight: 600;
@@ -413,84 +420,31 @@
 }
 
 /* =========================================
-   Zona de Foto / Escudo (Drag & Drop)
+   Zona de Escudo (Vista Previa)
    ========================================= */
 .shield-container {
   display: grid;
-  grid-template-columns: 1.8fr 1fr;
-  gap: 1.2rem;
+  grid-template-columns: 3.2fr 1fr;
+  gap: 1rem;
   align-items: stretch;
-}
-
-.dropzone-wrapper {
-  position: relative;
+  margin: 0;
+  padding: 0;
   width: 100%;
-  height: 100%;
-  cursor: pointer;
 }
 
-/* El input invisible cubre el 100% y está por encima (z-index alto) */
-.file-input-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  cursor: pointer;
-  z-index: 20;
-}
-
-/* La dropzone visual queda abajo. Sin pointer-events para que el input reciba el clic en toda el área */
-.dropzone {
+.url-input-wrapper {
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
-  border-radius: 10px;
-  padding: 2.2rem 0.5rem;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-  border: 1.5px dashed #1e497e;
-  background: linear-gradient(180deg, #071a33 0%, #051428 100%);
-  transition: all 0.25s ease;
   height: 100%;
-  pointer-events: none;
-}
-
-.dropzone-wrapper:hover .dropzone {
-  border-color: #ff6b00;
-  background: linear-gradient(180deg, #1c1511 0%, #0e121a 100%);
-  box-shadow: 0 0 12px rgba(255, 107, 0, 0.2);
-  transform: translateY(-1px);
-}
-
-.dropzone-wrapper:hover .upload-icon {
-  color: #ff6b00;
-  transform: translateY(-2px);
-}
-
-.upload-icon {
-  width: 26px;
-  height: 26px;
-  color: #ff6b00;
-  margin-bottom: 8px;
-  transition:
-    transform 0.2s ease,
-    color 0.2s ease;
-}
-
-.dropzone-text {
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: #d1dced;
+  margin: 0;
 }
 
 .dropzone-hint {
   font-size: 0.68rem;
   color: #617b9b;
-  margin-top: 3px;
+  margin-top: 4px;
+  display: block;
 }
 
 .preview-box {
@@ -498,46 +452,46 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border: 1px solid #3d220a;
+  border: 1px solid #4a290c;
   border-radius: 12px;
-  background: radial-gradient(circle at center, #1c1008 0%, #061528 100%);
-  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.4);
-  padding: 1rem;
+  background: linear-gradient(180deg, #071a33 0%, #051428 100%);
+  box-shadow: none;
+  padding: 8px;
+  margin: 0;
   position: relative;
   height: 100%;
+  min-height: 90px;
 }
 
 .shield-icon {
-  width: 42px;
-  height: 42px;
-  color: #66320e;
-  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.3));
-  margin-bottom: 6px;
+  width: 36px;
+  height: 36px;
+  color: #cc5500; 
+  margin-bottom: 4px;
 }
 
 .preview-text {
   font-size: 0.75rem;
-  color: #7d96b3;
+  color: #7d96b3; 
 }
 
 .uploaded-shield-img {
-  max-width: 60px;
-  max-height: 60px;
+  max-width: 50px;
+  max-height: 50px;
   object-fit: contain;
-  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.4));
 }
 
 .btn-remove-shield {
   position: absolute;
-  top: 8px;
-  right: 8px;
+  top: 6px;
+  right: 6px;
   background: rgba(239, 68, 68, 0.2);
   border: 1px solid #ef4444;
   color: #ef4444;
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
   border-radius: 50%;
-  font-size: 11px;
+  font-size: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -556,13 +510,14 @@
    ========================================= */
 .form-actions {
   display: flex;
-  gap: 1.2rem;
-  margin-top: 2.8rem;
+  gap: 1rem;
+  margin-top: 2rem;
+  padding: 0;
 }
 
 .btn-cancel {
   flex: 1;
-  height: 48px;
+  height: 46px;
   background-color: transparent;
   border: 1px solid #4a280c;
   color: #ffffff;
@@ -586,7 +541,7 @@
 
 .btn-save {
   flex: 1;
-  height: 48px;
+  height: 46px;
   background: linear-gradient(180deg, #ff6b00 0%, #e05e00 100%);
   border: none;
   color: #ffffff;
@@ -612,7 +567,7 @@
 }
 
 /* =========================================
-   Calendario Desplegable y Selectores
+   Calendario Desplegable
    ========================================= */
 .calendar-field-container {
   position: relative;
@@ -621,16 +576,16 @@
 
 .calendar-trigger {
   width: 100%;
-  height: 44px;
+  height: 46px;
   background: linear-gradient(180deg, #071a33 0%, #051428 100%);
   color: #ffffff;
-  border: 1px solid #1e497e;
+  border: 1px solid #4a290c;
   border-radius: 10px;
-  padding: 0 14px;
+  padding: 0 16px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 0.9rem;
+  font-size: 0.92rem;
   font-family: inherit;
   cursor: pointer;
   outline: none;
@@ -682,12 +637,12 @@
 
 .calendar-popover {
   position: absolute;
-  top: calc(100% + 6px);
+  top: calc(100% + 4px);
   left: 0;
   right: 0;
   width: 100%;
   background-color: #06182e;
-  border: 1px solid #3d220a;
+  border: 1px solid #4a290c;
   border-radius: 12px;
   box-shadow: 0 14px 32px rgba(0, 0, 0, 0.7);
   backdrop-filter: blur(8px);
@@ -721,7 +676,6 @@
 .calendar-dropdown.month-dropdown {
   flex: 1.4;
 }
-
 .calendar-dropdown.year-dropdown {
   flex: 0.8;
 }
@@ -732,12 +686,6 @@
   padding: 0 8px !important;
   font-size: 0.76rem !important;
   border-radius: 6px !important;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.header-trigger span:first-child {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -822,7 +770,7 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  margin-top: 6px;
+  margin-top: 4px;
   animation: errorSlideIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 

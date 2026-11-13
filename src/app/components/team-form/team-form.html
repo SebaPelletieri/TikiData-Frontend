@@ -273,41 +273,27 @@
       </div>
     </div>
 
-    <!-- Escudo -->
+    <!-- Escudo (URL) -->
     <div class="form-group">
-      <label>Escudo <span class="required">*</span></label>
+      <label for="shield">Escudo <span class="required">*</span></label>
       <div class="shield-container">
-        <div class="dropzone-wrapper">
+        <div class="url-input-wrapper">
           <input
-            type="file"
-            id="shield-file"
-            accept="image/png, image/jpeg"
-            class="file-input-overlay"
-            (change)="onFileSelected($event)"
+            id="shield"
+            type="url"
+            formControlName="shield"
+            placeholder="https://ejemplo.com/escudo.png"
           />
-
-          <div class="dropzone">
-            <svg
-              class="upload-icon"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-              <polyline points="17 8 12 3 7 8" />
-              <line x1="12" y1="3" x2="12" y2="15" />
-            </svg>
-            <span class="dropzone-text">Haz clic para subir el escudo</span>
-            <span class="dropzone-hint">PNG, JPG (máx. 2MB)</span>
-          </div>
+          <span class="dropzone-hint">Ingresa la URL pública de la imagen del escudo</span>
         </div>
 
         <div class="preview-box">
-          @if (shieldPreview) {
-            <img [src]="shieldPreview" alt="Escudo" class="uploaded-shield-img" />
+          @if (formulario.controls['shield'].value) {
+            <img
+              [src]="formulario.controls['shield'].value"
+              alt="Escudo"
+              class="uploaded-shield-img"
+            />
             <button type="button" class="btn-remove-shield" (click)="removeShield($event)">
               ✕
             </button>
@@ -319,9 +305,26 @@
           }
         </div>
       </div>
+
+      @if (formulario.controls['shield'].touched && formulario.controls['shield'].invalid) {
+        <div class="error-feedback">
+          <svg
+            class="error-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+          <span class="error-text">La URL del escudo es obligatoria.</span>
+        </div>
+      }
     </div>
 
-    <!-- Estadio (Sin ícono) -->
+    <!-- Estadio -->
     <div class="form-group">
       <label for="stadium-search">Estadio <span class="required">*</span></label>
 

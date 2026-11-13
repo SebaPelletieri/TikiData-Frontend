@@ -59,7 +59,7 @@ export class AdminDashboard implements OnInit {
   totalChampionshipsCount = computed(() => this.championshipService.championships().length);
   totalMatchesCount = computed(() => this.matchService.matches().length);
 
-  // Equipos (Actualizado a 10)
+  // Equipos
   adminSearchText = signal('');
   selectedAdminCountry = signal('ALL');
   selectedAdminChampionship = signal('ALL');
@@ -71,7 +71,7 @@ export class AdminDashboard implements OnInit {
   selectedChampionshipLabel = 'Todos los campeonatos';
   teamToDeleteId = signal<number | null>(null);
 
-  // Campeonatos (Actualizado a 10)
+  // Campeonatos
   championshipSearchText = signal('');
   selectedChampionshipCountry = signal('ALL');
   selectedChampionshipType = signal('ALL');
@@ -83,7 +83,7 @@ export class AdminDashboard implements OnInit {
   selectedChampTypeLabel = 'Todos los tipos';
   championshipToDeleteId = signal<number | string | null>(null);
 
-  // Partidos (Actualizado a 10)
+  // Partidos
   matchSearchText = signal('');
   selectedMatchStatus = signal('ALL');
   currentMatchPage = signal(1);
@@ -92,7 +92,7 @@ export class AdminDashboard implements OnInit {
   selectedMatchStatusLabel = 'Todos los estados';
   matchToDeleteId = signal<number | null>(null);
 
-  // Jugadores (Ya estaba en 10)
+  // Jugadores
   playerSearchText = signal('');
   selectedPlayerPosition = signal('ALL');
   selectedPlayerNationality = signal('ALL');
@@ -104,7 +104,7 @@ export class AdminDashboard implements OnInit {
   selectedPlayerNationalityLabel = 'Todas las nacionalidades';
   playerToDeleteId = signal<number | null>(null);
 
-  // Usuarios (Ya estaba en 10)
+  // Usuarios
   userSearchText = signal('');
   selectedUserRole = signal('ALL');
   currentUserPage = signal(1);
@@ -129,10 +129,12 @@ export class AdminDashboard implements OnInit {
     if (this.authService.getAllUsers) {
       this.authService.getAllUsers().subscribe({
         next: (users: any[]) => {
-          const normalizedUsers = users.map((u) => ({
+          const normalizedUsers = users.map((u: any) => ({
             ...u,
             username: u.username || u.name || u.email?.split('@')[0] || 'Usuario',
           }));
+          // Ordenados alfabéticamente por username de forma automática
+          normalizedUsers.sort((a, b) => (a.username || '').localeCompare(b.username || ''));
           this.allUsersForAdmin.set(normalizedUsers);
         },
         error: (err: any) => console.error('Error al cargar usuarios:', err),
@@ -168,7 +170,7 @@ export class AdminDashboard implements OnInit {
           this.userToChangeRole.set(null);
           setTimeout(() => (this.successMessage = ''), 3000);
         },
-        error: (err) => {
+        error: (err: any) => {
           console.error('Error al actualizar rol:', err);
           this.errorMessage = 'No se pudo actualizar el rol del usuario.';
           this.userToChangeRole.set(null);
@@ -335,9 +337,9 @@ export class AdminDashboard implements OnInit {
     this.isUserRoleDropdownOpen = false;
   }
 
-  // ================= EQUIPOS =================
+  // ================= EQUIPOS (Ordenados alfabéticamente) =================
   filteredTeams = computed(() => {
-    const teams = this.teamService.teams();
+    const teams = this.teamService.sortedTeams();
     const search = this.adminSearchText().toLowerCase().trim();
     const country = this.selectedAdminCountry();
     const championshipId = this.selectedAdminChampionship();
@@ -380,9 +382,11 @@ export class AdminDashboard implements OnInit {
     if (page >= 1 && page <= this.totalPages()) this.currentPage.set(page);
   }
 
-  // ================= CAMPEONATOS =================
+  // ================= CAMPEONATOS (Ordenados alfabéticamente) =================
   filteredChampionships = computed(() => {
-    const champs = this.championshipService.championships();
+    const champs = [...this.championshipService.championships()].sort((a, b) =>
+      (a.name || '').localeCompare(b.name || ''),
+    );
     const search = this.championshipSearchText().toLowerCase().trim();
     const country = this.selectedChampionshipCountry();
     const type = this.selectedChampionshipType();
@@ -463,9 +467,9 @@ export class AdminDashboard implements OnInit {
     if (page >= 1 && page <= this.totalMatchPages()) this.currentMatchPage.set(page);
   }
 
-  // ================= JUGADORES =================
+  // ================= JUGADORES (Ordenados alfabéticamente) =================
   filteredPlayers = computed(() => {
-    const players = this.playerService.players();
+    const players = this.playerService.sortedPlayers();
     const search = this.playerSearchText().toLowerCase().trim();
     const pos = this.selectedPlayerPosition();
     const nat = this.selectedPlayerNationality();
@@ -500,7 +504,7 @@ export class AdminDashboard implements OnInit {
     if (page >= 1 && page <= this.totalPlayerPages()) this.currentPlayerPage.set(page);
   }
 
-  // ================= USUARIOS =================
+  // ================= USUARIOS (Ordenados alfabéticamente por username) =================
   filteredUsers = computed(() => {
     const users = this.allUsersForAdmin();
     const search = this.userSearchText().toLowerCase().trim();
@@ -573,7 +577,7 @@ export class AdminDashboard implements OnInit {
           this.loadAdminData();
           this.matchToDeleteId.set(null);
         },
-        error: (err) => {
+        error: (err: any) => {
           console.error('Error al eliminar partido:', err);
           this.matchToDeleteId.set(null);
         },
@@ -607,7 +611,7 @@ export class AdminDashboard implements OnInit {
           this.loadAdminData();
           this.userToDeleteId.set(null);
         },
-        error: (err) => {
+        error: (err: any) => {
           console.error('Error al eliminar usuario:', err);
           this.userToDeleteId.set(null);
         },

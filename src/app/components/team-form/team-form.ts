@@ -54,7 +54,6 @@ export class TeamForm {
 
     this.teamService.saveTeam(teamActual);
     this.formulario.reset();
-    this.shieldPreview = null;
     this.championshipSearchText.set('');
     this.stadiumSearchText.set('');
 
@@ -63,7 +62,6 @@ export class TeamForm {
 
   cancel() {
     this.formulario.reset();
-    this.shieldPreview = null;
     this.championshipSearchText.set('');
     this.stadiumSearchText.set('');
 
@@ -91,24 +89,9 @@ export class TeamForm {
     this.isCountryOpen = false;
   }
 
-  // --- Escudo ---
-  shieldPreview: string | null = null;
-
-  onFileSelected(event: Event) {
-    const file = (event.target as HTMLInputElement).files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        this.shieldPreview = reader.result as string;
-        this.formulario.patchValue({ shield: this.shieldPreview });
-      };
-      reader.readAsDataURL(file);
-    }
-  }
-
+  // --- Escudo (URL) ---
   removeShield(event: Event) {
     event.stopPropagation();
-    this.shieldPreview = null;
     this.formulario.patchValue({ shield: '' });
   }
 

@@ -1,25 +1,8 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-
-export type Position = 'ARQ' | 'DEF' | 'MED' | 'DEL';
-
-export interface Player {
-  id?: number;
-  name: string;
-  photo: string;
-  age: number;
-  position: Position;
-  currentTeamID?: number;
-  bithDate: string;
-  nacionality: string;
-  preferredFoot: string;
-  matchesPlayed: number;
-  goals: number;
-  assists: number;
-  yellowCards: number;
-  redCards: number;
-}
+import { PlayerService } from '../../services/player-service';
+import { Player, Position } from '../../models/Player';
 
 interface CalendarDay {
   day: number;
@@ -36,6 +19,10 @@ interface CalendarDay {
 })
 export class PlayerForm implements OnInit {
   private fb = inject(FormBuilder);
+  public playerService = inject(PlayerService);
+
+  @Output() closePanel = new EventEmitter<void>();
+
   formulario!: FormGroup;
 
   positions: { value: Position; label: string }[] = [
@@ -69,8 +56,6 @@ export class PlayerForm implements OnInit {
     'Diciembre',
   ];
 
-  photoPreview: string | null = null;
-
   ngOnInit(): void {
     this.initForm();
     this.generateYearsList();
@@ -84,8 +69,8 @@ export class PlayerForm implements OnInit {
       age: [{ value: '', disabled: true }, [Validators.required, Validators.min(10)]],
       position: ['', [Validators.required]],
       currentTeamID: [null],
-      bithDate: ['', [Validators.required]],
-      nacionality: ['', [Validators.required, Validators.minLength(3)]],
+      birthDate: ['', [Validators.required]],
+      nationality: ['', [Validators.required, Validators.minLength(3)]],
       preferredFoot: ['', [Validators.required]],
 
       matchesPlayed: [0, [Validators.required, Validators.min(0)]],
@@ -103,8 +88,8 @@ export class PlayerForm implements OnInit {
       age: '',
       position: '',
       currentTeamID: null,
-      bithDate: '',
-      nacionality: '',
+      birthDate: '',
+      nationality: '',
       preferredFoot: '',
       matchesPlayed: 0,
       goals: 0,
@@ -112,10 +97,10 @@ export class PlayerForm implements OnInit {
       yellowCards: 0,
       redCards: 0,
     });
-    this.photoPreview = null;
     this.isCalendarOpen = false;
     this.isPositionOpen = false;
     this.isFootOpen = false;
+    this.closePanel.emit();
   }
 
   generateYearsList(): void {
@@ -134,7 +119,7 @@ export class PlayerForm implements OnInit {
     this.isFootOpen = false;
 
     if (!this.isCalendarOpen) {
-      this.formulario.controls['bithDate'].markAsTouched();
+      this.formulario.controls['birthDate'].markAsTouched();
     }
   }
 
@@ -152,22 +137,22 @@ export class PlayerForm implements OnInit {
     }
 
     this.formulario.patchValue({
-      bithDate: formattedDate,
+      birthDate: formattedDate,
       age: calculatedAge,
     });
-    this.formulario.controls['bithDate'].markAsTouched();
+    this.formulario.controls['birthDate'].markAsTouched();
     this.isCalendarOpen = false;
   }
 
   isSelected(date: Date): boolean {
-    const val = this.formulario.controls['bithDate'].value;
+    const val = this.formulario.controls['birthDate'].value;
     if (!val) return false;
     const [y, m, d] = val.split('-').map(Number);
     return date.getFullYear() === y && date.getMonth() === m - 1 && date.getDate() === d;
   }
 
   get formattedBirthDate(): string {
-    const val = this.formulario.controls['bithDate'].value;
+    const val = this.formulario.controls['birthDate'].value;
     if (!val) return '';
     const [y, m, d] = val.split('-');
     return `${d}/${m}/${y}`;
@@ -197,13 +182,12 @@ export class PlayerForm implements OnInit {
     const year = this.currentDate.getFullYear();
     const month = this.currentDate.getMonth();
 
-    const firstDayIndex = new Date(year, month, 1).getDay(); // 0 = Domingo
+    const firstDayIndex = new Date(year, month, 1).getDay();
     const totalDaysInMonth = new Date(year, month + 1, 0).getDate();
     const totalDaysPrevMonth = new Date(year, month, 0).getDate();
 
     const days: CalendarDay[] = [];
 
-    // Días del mes anterior para alinear con Domingo como primer día
     for (let i = firstDayIndex - 1; i >= 0; i--) {
       days.push({
         day: totalDaysPrevMonth - i,
@@ -212,7 +196,6 @@ export class PlayerForm implements OnInit {
       });
     }
 
-    // Días del mes corriente
     for (let i = 1; i <= totalDaysInMonth; i++) {
       days.push({
         day: i,
@@ -221,7 +204,6 @@ export class PlayerForm implements OnInit {
       });
     }
 
-    // Días del mes siguiente para completar la cuadrícula de 42 días (6 filas x 7 cols)
     const remainingDays = 42 - days.length;
     for (let i = 1; i <= remainingDays; i++) {
       days.push({
@@ -270,24 +252,9 @@ export class PlayerForm implements OnInit {
     this.isFootOpen = false;
   }
 
-  // --- FOTO ---
-  onFileSelected(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files[0]) {
-      const file = input.files[0];
-      const reader = new FileReader();
-      reader.onload = () => {
-        this.photoPreview = reader.result as string;
-        this.formulario.patchValue({ photo: this.photoPreview });
-        this.formulario.controls['photo'].markAsTouched();
-      };
-      reader.readAsDataURL(file);
-    }
-  }
-
+  // --- FOTO (URL) ---
   removePhoto(event: Event): void {
     event.stopPropagation();
-    this.photoPreview = null;
     this.formulario.patchValue({ photo: '' });
   }
 
@@ -301,7 +268,8 @@ export class PlayerForm implements OnInit {
     const newPlayer: Player = {
       ...raw,
       name: raw.name.trim(),
-      nacionality: raw.nacionality.trim(),
+      nationality: raw.nationality.trim(),
+      birthDate: raw.birthDate,
       matchesPlayed: Number(raw.matchesPlayed) || 0,
       goals: Number(raw.goals) || 0,
       assists: Number(raw.assists) || 0,
@@ -309,7 +277,8 @@ export class PlayerForm implements OnInit {
       redCards: Number(raw.redCards) || 0,
     };
 
-    console.log('Jugador a guardar:', newPlayer);
+    this.playerService.savePlayer(newPlayer);
+    this.cancel();
   }
 
   onNumericInput(controlName: string, event: Event): void {

@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable, signal } from '@angular/core';
+import { inject, Injectable, signal, computed } from '@angular/core'; // 👈 Añade computed
 import { Team } from '../models/Team';
 import { map, Observable } from 'rxjs';
 
@@ -10,6 +10,11 @@ export class TeamService {
   error = signal<string | null>(null);
   teams = signal<Team[]>([]);
   teamActual = signal<Team | null>(null);
+
+  // 👇 Lista ordenada alfabéticamente de forma automática y reactiva
+  sortedTeams = computed(() => {
+    return [...this.teams()].sort((a, b) => a.name.localeCompare(b.name));
+  });
 
   // Método para obtener todos los equipos como Observable (nuevo)
   getAllTeams(): Observable<Team[]> {

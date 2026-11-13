@@ -117,11 +117,14 @@ export class AuthService {
 
   getAllUsers(): Observable<User[]> {
     return this.http.get<any[]>(`${this.apiUrl}/usuarios`).pipe(
-      map((users) =>
-        users.map((u) => ({
-          ...u,
-          username: u.username || u.name || 'Usuario', 
-        })),
+      map(
+        (users) =>
+          users
+            .map((u) => ({
+              ...u,
+              username: u.username || u.name || 'Usuario',
+            }))
+            .sort((a, b) => (a.username || '').localeCompare(b.username || '')), // 👈 Ordenados alfabéticamente aquí
       ),
     );
   }

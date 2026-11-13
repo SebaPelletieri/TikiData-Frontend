@@ -127,7 +127,7 @@ export class MatchForm implements OnInit {
     '23',
   ];
 
-  // --- BÚSQUEDAS DINÁMICAS (Señales) ---
+  // --- BÚSQUEDAS DINÁMICAS (Señales reactivas con computed) ---
   championshipSearchText = signal<string>('');
   isChampionshipFocused = signal<boolean>(false);
 
@@ -167,13 +167,37 @@ export class MatchForm implements OnInit {
     return this.teamService.teams().find((t) => t.id === id);
   }
 
-  filteredChampionships = signal<any[]>([]);
-  filteredLocalTeams = signal<any[]>([]);
-  filteredAwayTeams = signal<any[]>([]);
+  // Se reemplazaron las señales estáticas por computed para filtrar en tiempo real
+  filteredChampionships = computed(() => {
+    const search = this.championshipSearchText().toLowerCase().trim();
+    const champs = this.championshipService.championships();
+    if (!search) return champs;
+    return champs.filter((c) => c.name.toLowerCase().includes(search));
+  });
+
+  filteredLocalTeams = computed(() => {
+    const search = this.localTeamSearchText().toLowerCase().trim();
+    const teams = this.teamService.teams();
+    const awayId = this.matchForm.controls['awayTeamID'].value;
+    // Excluimos el equipo que ya esté seleccionado como visitante
+    return teams.filter(
+      (t) => t.id !== awayId && (!search || t.name.toLowerCase().includes(search)),
+    );
+  });
+
+  filteredAwayTeams = computed(() => {
+    const search = this.awayTeamSearchText().toLowerCase().trim();
+    const teams = this.teamService.teams();
+    const localId = this.matchForm.controls['localTeamID'].value;
+    // Excluimos el equipo que ya esté seleccionado como local
+    return teams.filter(
+      (t) => t.id !== localId && (!search || t.name.toLowerCase().includes(search)),
+    );
+  });
 
   filteredStadiums = computed(() => {
     const search = this.stadiumSearchText().toLowerCase().trim();
-    if (!search) return [];
+    if (!search) return this.availableStadiums;
     return this.availableStadiums.filter((s) => s.toLowerCase().includes(search));
   });
 
@@ -181,15 +205,6 @@ export class MatchForm implements OnInit {
     this.today.setHours(0, 0, 0, 0);
     this.teamService.getAll();
     this.championshipService.getAll();
-
-    // Actualizar filtros al escribir en campeonatos
-    this.matchForm.controls['championshipID'].valueChanges.subscribe(() => {
-      const search = this.championshipSearchText().toLowerCase().trim();
-      const matches = this.championshipService
-        .championships()
-        .filter((c) => c.name.toLowerCase().includes(search));
-      this.filteredChampionships.set(matches);
-    });
 
     const idFromRoute = this.route.snapshot.paramMap.get('id') || this.matchIdInput();
     if (idFromRoute) {
@@ -364,7 +379,7 @@ export class MatchForm implements OnInit {
     this.matchForm.controls['date'].markAsTouched();
   }
 
-  // --- SELECCIONES Y BÚSQUEDAS ---
+  // --- SELECCIONES Y BÚSQUEDAS CORREGIDAS ---
   selectChampionship(champ: any) {
     this.matchForm.controls['championshipID'].setValue(champ.id);
     this.matchForm.controls['championshipID'].markAsTouched();
@@ -407,8 +422,8 @@ export class MatchForm implements OnInit {
   onStadiumInputChange(value: string) {
     this.stadiumSearchText.set(value);
     this.isStadiumFocused.set(true);
-    this.matchForm.controls['stadium'].setValue(value);
-    this.matchForm.controls['stadium'].markAsTouched();
+    // 💡 IMPORTANTE: Ya no seteamos el valor en el form al escribir cada letra,
+    // solo actualizamos la señal de búsqueda para que la lista siga abierta.
   }
 
   selectStadium(stadiumName: string) {

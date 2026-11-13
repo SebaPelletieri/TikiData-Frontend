@@ -60,12 +60,12 @@
         <input
           id="nacionality"
           type="text"
-          formControlName="nacionality"
+          formControlName="nationality"
           placeholder="Ej. Argentina"
         />
 
         @if (
-          formulario.controls['nacionality'].touched && formulario.controls['nacionality'].invalid
+          formulario.controls['nationality'].touched && formulario.controls['nationality'].invalid
         ) {
           <div class="error-feedback">
             <svg
@@ -94,7 +94,7 @@
           "
         >
           <button type="button" class="dropdown-trigger" (click)="togglePositionDropdown()">
-            <span [class.placeholder]="!formulario.controls['position'].value">
+            <span [style.color]="formulario.controls['position'].value ? '#ffffff' : '#637d9d'">
               {{ selectedPositionLabel || 'Selecciona posición' }}
             </span>
             <span class="triangle-icon"></span>
@@ -158,12 +158,11 @@
           class="calendar-trigger"
           [class.open]="isCalendarOpen"
           [class.input-error]="
-            (formulario.controls['birthDate'] || formulario.controls['bithDate'])?.touched &&
-            (formulario.controls['birthDate'] || formulario.controls['bithDate'])?.invalid
+            formulario.controls['birthDate'].touched && formulario.controls['birthDate'].invalid
           "
           (click)="toggleCalendar()"
         >
-          <span [class.placeholder]="!formattedBirthDate">
+          <span [style.color]="formattedBirthDate ? '#ffffff' : '#637d9d'">
             {{ formattedBirthDate || 'Selecciona fecha' }}
           </span>
           <svg
@@ -181,7 +180,7 @@
         </button>
 
         @if (isCalendarOpen) {
-          <div class="calendar-popover">
+          <div class="calendar-popover" (click)="$event.stopPropagation()">
             <div class="calendar-header">
               <button type="button" class="calendar-nav-btn" (click)="prevMonth()">‹</button>
               <div class="calendar-selects">
@@ -224,7 +223,7 @@
                   class="calendar-day"
                   [class.other-month]="!day.isCurrentMonth"
                   [class.selected]="isSelected(day.date)"
-                  (click)="selectDate(day.date)"
+                  (click)="selectDate(day.date); $event.stopPropagation()"
                 >
                   {{ day.day }}
                 </button>
@@ -233,10 +232,7 @@
           </div>
         }
 
-        @if (
-          (formulario.controls['birthDate'] || formulario.controls['bithDate'])?.touched &&
-          (formulario.controls['birthDate'] || formulario.controls['bithDate'])?.invalid
-        ) {
+        @if (formulario.controls['birthDate'].touched && formulario.controls['birthDate'].invalid) {
           <div class="error-feedback">
             <svg
               class="error-icon"
@@ -279,7 +275,7 @@
         "
       >
         <button type="button" class="dropdown-trigger" (click)="toggleFootDropdown()">
-          <span [class.placeholder]="!formulario.controls['preferredFoot'].value">
+          <span [style.color]="formulario.controls['preferredFoot'].value ? '#ffffff' : '#637d9d'">
             {{ formulario.controls['preferredFoot'].value || 'Selecciona pie hábil' }}
           </span>
           <span class="triangle-icon"></span>
@@ -335,37 +331,27 @@
       }
     </div>
 
-    <!-- Foto del Jugador -->
+    <!-- Foto del Jugador (URL) -->
     <div class="form-group">
-      <label>Foto del jugador <span class="required">*</span></label>
+      <label for="photo">Foto del jugador <span class="required">*</span></label>
       <div class="shield-container">
-        <label class="dropzone" for="photo-file">
+        <div class="url-input-wrapper">
           <input
-            type="file"
-            id="photo-file"
-            accept="image/png, image/jpeg"
-            class="visually-hidden"
-            (change)="onFileSelected($event)"
+            id="photo"
+            type="url"
+            formControlName="photo"
+            placeholder="https://ejemplo.com/jugador.png"
           />
-          <svg
-            class="upload-icon"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-            <polyline points="17 8 12 3 7 8" />
-            <line x1="12" y1="3" x2="12" y2="15" />
-          </svg>
-          <span class="dropzone-text">Haz clic para subir la foto</span>
-          <span class="dropzone-hint">PNG, JPG (máx. 2MB)</span>
-        </label>
+          <span class="dropzone-hint">Ingresa la URL pública de la foto del jugador</span>
+        </div>
+
         <div class="preview-box">
-          @if (photoPreview) {
-            <img [src]="photoPreview" alt="Foto Jugador" class="uploaded-shield-img" />
+          @if (formulario.controls['photo'].value) {
+            <img
+              [src]="formulario.controls['photo'].value"
+              alt="Foto Jugador"
+              class="uploaded-shield-img"
+            />
             <button type="button" class="btn-remove-shield" (click)="removePhoto($event)">✕</button>
           } @else {
             <svg
@@ -396,7 +382,7 @@
             <line x1="12" y1="8" x2="12" y2="12"></line>
             <line x1="12" y1="16" x2="12.01" y2="16"></line>
           </svg>
-          <span class="error-text">La foto del jugador es obligatoria.</span>
+          <span class="error-text">La URL de la foto del jugador es obligatoria.</span>
         </div>
       }
     </div>

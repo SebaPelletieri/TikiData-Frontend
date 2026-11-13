@@ -1,1 +1,117 @@
-<p>player-edit works!</p>
+<div class="team-form-container">
+  <!-- Cabecera -->
+  <div class="form-header">
+    <div class="form-icon-box">
+      <svg
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2.2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+      </svg>
+    </div>
+    <div>
+      <h3>Editar Jugador</h3>
+      <p>Modifica la ficha técnica, datos personales y características del futbolista.</p>
+    </div>
+  </div>
+
+  <form [formGroup]="playerForm" (ngSubmit)="onSubmit()" class="team-form">
+    <!-- Nombre Completo -->
+    <div class="form-group">
+      <label>Nombre Completo <span class="required">*</span></label>
+      <input type="text" formControlName="name" placeholder="Ej. Lionel Messi" />
+      <div
+        class="error-feedback"
+        *ngIf="playerForm.get('name')?.invalid && playerForm.get('name')?.touched"
+      >
+        <span class="error-text">El nombre es obligatorio.</span>
+      </div>
+    </div>
+
+    <!-- Nacionalidad y Posición -->
+    <div class="form-row">
+      <!-- Selector de Nacionalidad -->
+      <div class="form-group">
+        <label>Nacionalidad <span class="required">*</span></label>
+        <div class="custom-dropdown" [class.open]="isCountryOpen">
+          <div class="dropdown-trigger" (click)="toggleCountryDropdown()">
+            <span [class.placeholder]="!playerForm.get('nationality')?.value">
+              {{ playerForm.get('nationality')?.value || 'Seleccionar nacionalidad...' }}
+            </span>
+            <span class="triangle-icon"></span>
+          </div>
+          <ul class="dropdown-menu" *ngIf="isCountryOpen">
+            <li class="dropdown-item" *ngFor="let c of countries" (click)="selectCountry(c)">
+              <span>{{ c }}</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Selector de Posición -->
+      <div class="form-group">
+        <label>Posición <span class="required">*</span></label>
+        <div class="custom-dropdown" [class.open]="isPositionOpen">
+          <div class="dropdown-trigger" (click)="togglePositionDropdown()">
+            <span [class.placeholder]="!playerForm.get('position')?.value">
+              {{ playerForm.get('position')?.value || 'Seleccionar posición...' }}
+            </span>
+            <span class="triangle-icon"></span>
+          </div>
+          <ul class="dropdown-menu" *ngIf="isPositionOpen">
+            <li class="dropdown-item" *ngFor="let pos of positions" (click)="selectPosition(pos)">
+              <span>{{ pos }}</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Fecha de Nacimiento y Pie Hábil -->
+    <div class="form-row">
+      <div class="form-group">
+        <label>Fecha de Nacimiento</label>
+        <input type="date" formControlName="birthDate" />
+      </div>
+
+      <!-- Selector de Pie Hábil -->
+      <div class="form-group">
+        <label>Pie Hábil</label>
+        <div class="custom-dropdown" [class.open]="isFootOpen">
+          <div class="dropdown-trigger" (click)="toggleFootDropdown()">
+            <span [class.placeholder]="!playerForm.get('preferredFoot')?.value">
+              {{ playerForm.get('preferredFoot')?.value || 'Seleccionar pie hábil...' }}
+            </span>
+            <span class="triangle-icon"></span>
+          </div>
+          <ul class="dropdown-menu" *ngIf="isFootOpen">
+            <li class="dropdown-item" *ngFor="let f of footPreferences" (click)="selectFoot(f)">
+              <span>{{ f }}</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- URL de la Foto -->
+    <div class="form-group">
+      <label>URL de la Foto</label>
+      <input type="text" formControlName="photo" placeholder="https://..." />
+    </div>
+
+    <!-- Botones de Acción -->
+    <div class="form-actions">
+      <button type="button" class="btn-cancel" (click)="onCancel()">Cancelar</button>
+      <button type="submit" class="btn-submit" [disabled]="playerForm.invalid">
+        Guardar Cambios
+      </button>
+    </div>
+  </form>
+</div>

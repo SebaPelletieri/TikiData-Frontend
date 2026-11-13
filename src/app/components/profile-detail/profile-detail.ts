@@ -1,6 +1,6 @@
 import { Component, OnInit, inject, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterModule } from '@angular/router';
+import { Router, RouterModule, ActivatedRoute } from '@angular/router'; // 👈 Añadido ActivatedRoute
 import { User } from '../../models/User';
 import { AuthService } from '../../services/auth-service';
 import { Team } from '../../models/Team';
@@ -24,15 +24,18 @@ export class ProfileDetail implements OnInit {
   private championshipService = inject(ChampionshipService);
   private playerService = inject(PlayerService);
   private router = inject(Router);
+  private route = inject(ActivatedRoute); // 👈 Inyectamos la ruta activa
 
   successMessage: string | null = null;
   errorMessage: string | null = null;
+
+  // 👈 Señal para almacenar el usuario que se está visualizando (si es ajeno)
+  profileUser = signal<User | null>(null);
 
   favoriteTeamsList = signal<Team[]>([]);
   favoriteChampionshipsList = signal<Championship[]>([]);
   favoritePlayersList = signal<Player[]>([]);
 
-  // 👇 CONTADORES REACTIVOS AUTOMÁTICOS 👇
   favoriteTeamsCount = computed(() => this.favoriteTeamsList().length);
   favoritePlayersCount = computed(() => this.favoritePlayersList().length);
   favoriteChampionshipsCount = computed(() => this.favoriteChampionshipsList().length);
@@ -42,14 +45,30 @@ export class ProfileDetail implements OnInit {
   showAllChampionships = signal<boolean>(false);
 
   ngOnInit() {
-    this.loadFavorites();
+    // 👈 Verificamos si la ruta trae un ID (ej: /profile/1)
+    this.route.paramMap.subscribe((params) => {
+      const id = params.get('id');
+      if (id) {
+        this.authService.getUserById(id).subscribe({
+          next: (user) => {
+            this.profileUser.set(user);
+            this.loadFavoritesForUser(user); // Cargamos sus favoritos
+          },
+          error: (err) => console.error('Error al cargar el usuario:', err),
+        });
+      } else {
+        // Si no hay ID, es el perfil propio del usuario logueado
+        this.profileUser.set(this.authService.currentUser());
+        this.loadFavorites();
+      }
+    });
   }
 
-  loadFavorites() {
-    const user = this.currentUser;
+  // 👈 Método auxiliar para cargar favoritos de cualquier usuario
+  loadFavoritesForUser(user: User) {
     if (!user) return;
 
-    // 1. Cargar Equipos Favoritos
+    // 1. Equipos
     if (user.favoriteTeams && user.favoriteTeams.length > 0) {
       const loadedTeams: Team[] = [];
       user.favoriteTeams.forEach((id: any) => {
@@ -62,15 +81,12 @@ export class ProfileDetail implements OnInit {
                 this.favoriteTeamsList.set([...loadedTeams]);
               }
             },
-            error: (err: any) => {
-              console.error(`Error al cargar el equipo con ID ${teamId}:`, err);
-            },
           });
         }
       });
     }
 
-    // 2. Cargar Campeonatos Favoritos
+    // 2. Campeonatos
     if (user.favoriteChampionships && user.favoriteChampionships.length > 0) {
       const loadedChamps: Championship[] = [];
       user.favoriteChampionships.forEach((id: any) => {
@@ -83,15 +99,12 @@ export class ProfileDetail implements OnInit {
                 this.favoriteChampionshipsList.set([...loadedChamps]);
               }
             },
-            error: (err: any) => {
-              console.error(`Error al cargar el campeonato con ID ${champId}:`, err);
-            },
           });
         }
       });
     }
 
-    // 3. Cargar Jugadores Favoritos
+    // 3. Jugadores
     if (user.favoritePlayers && user.favoritePlayers.length > 0) {
       const loadedPlayers: Player[] = [];
       user.favoritePlayers.forEach((id: any) => {
@@ -104,28 +117,30 @@ export class ProfileDetail implements OnInit {
                 this.favoritePlayersList.set([...loadedPlayers]);
               }
             },
-            error: (err: any) => {
-              console.error(`Error al cargar el jugador con ID ${playerId}:`, err);
-            },
           });
         }
       });
     }
   }
 
+  loadFavorites() {
+    this.loadFavoritesForUser(this.currentUser!);
+  }
+
   get currentUser(): User | null {
-    const userValue = (this.authService.currentUser as any)();
-    if (!userValue || typeof userValue !== 'object') return null;
+    // 👈 Si estamos viendo un perfil por ID, devolvemos ese, sino el logueado
+    const targetUser = this.profileUser() || (this.authService.currentUser as any)();
+    if (!targetUser || typeof targetUser !== 'object') return null;
 
     return {
-      ...userValue,
+      ...targetUser,
       username:
-        userValue.username ||
-        userValue.name ||
-        userValue.userName ||
-        userValue.email?.split('@')[0] ||
+        targetUser.username ||
+        targetUser.name ||
+        targetUser.userName ||
+        targetUser.email?.split('@')[0] ||
         'Usuario',
-      role: userValue.role || 'Usuario',
+      role: targetUser.role || 'Usuario',
     } as User;
   }
 
@@ -133,6 +148,7 @@ export class ProfileDetail implements OnInit {
     const user = this.currentUser;
     if (!user || !user.id) return;
 
+    // Si es un perfil ajeno que está viendo el admin, idealmente no debería modificar sus favoritos o sí, pero respetamos la lógica actual:
     let updatedFields: any = {};
     const cleanId = Number(idToRemove);
 
@@ -141,35 +157,29 @@ export class ProfileDetail implements OnInit {
         .map((id: any) => Number(id))
         .filter((id: number) => id !== cleanId);
       updatedFields = { favoriteTeams: newFavoriteTeams };
-
-      // Actualización visual inmediata
       this.favoriteTeamsList.update((teams) => teams.filter((t) => Number(t.id) !== cleanId));
     } else if (type === 'player' && user.favoritePlayers) {
       const newFavoritePlayers = user.favoritePlayers
         .map((id: any) => Number(id))
         .filter((id: number) => id !== cleanId);
       updatedFields = { favoritePlayers: newFavoritePlayers };
-
       this.favoritePlayersList.update((players) => players.filter((p) => Number(p.id) !== cleanId));
     } else if (type === 'championship' && user.favoriteChampionships) {
       const newFavoriteChamps = user.favoriteChampionships
         .map((id: any) => Number(id))
         .filter((id: number) => id !== cleanId);
       updatedFields = { favoriteChampionships: newFavoriteChamps };
-
       this.favoriteChampionshipsList.update((champs) =>
         champs.filter((c) => Number(c.id) !== cleanId),
       );
     }
 
-    // 👇 AQUÍ ESTABA EL ERROR: Nos suscribimos explícitamente a la respuesta del servidor 👇
     this.authService.updateUser(user.id, updatedFields).subscribe({
       next: (updatedUser) => {
-        console.log('Favorito eliminado y persistido en el servidor con éxito:', updatedUser);
+        console.log('Favorito actualizado con éxito:', updatedUser);
       },
       error: (err) => {
         console.error('Error al guardar en el backend:', err);
-        // Si falla la petición, puedes recargar los favoritos originales para mantener consistencia
         this.loadFavorites();
       },
     });

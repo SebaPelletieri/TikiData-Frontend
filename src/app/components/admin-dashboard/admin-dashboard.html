@@ -264,7 +264,7 @@
                         </button>
                         <button
                           class="btn-action-edit-custom"
-                          [routerLink]="['/teams/edit', team.id]"
+                          [routerLink]="['/team/edit', team.id]"
                         >
                           <svg
                             viewBox="0 0 24 24"
@@ -460,7 +460,7 @@
         </div>
       </div>
 
-      <!-- Tabla fija de campeonatos paginada (Con Logo y País, sin Temporada) -->
+      <!-- Tabla fija de campeonatos paginada -->
       <div class="admin-table-fixed-container">
         @if (paginatedChampionshipsForAdmin().length === 0) {
           <p class="empty-msg">No se encontraron campeonatos con los filtros seleccionados.</p>
@@ -599,7 +599,7 @@
       </div>
     </div>
 
-    <!-- COLUMNA DERECHA: Formulario dinámico (crear / editar) -->
+    <!-- COLUMNA DERECHA: Formulario dinámico de Campeonatos -->
     <div class="admin-right-pane">
       @if (editingChampionshipId() === null) {
         <app-championship-form (closePanel)="loadAdminData()"></app-championship-form>
@@ -739,7 +739,7 @@
                         </button>
                         <button
                           class="btn-action-edit-custom"
-                          [routerLink]="['/matches/edit', match.id]"
+                          [routerLink]="['/match/edit', match.id]"
                         >
                           <svg
                             viewBox="0 0 24 24"
@@ -821,9 +821,16 @@
       </div>
     </div>
 
-    <!-- COLUMNA DERECHA: Formulario integrado de Partidos -->
+    <!-- COLUMNA DERECHA: Formulario dinámico de Partidos (crear / editar) -->
     <div class="admin-right-pane">
-      <app-match-form (closePanel)="loadAdminData()"></app-match-form>
+      @if (editingMatchId() === null) {
+        <app-match-form (closePanel)="loadAdminData()"></app-match-form>
+      } @else {
+        <app-match-edit
+          [matchIdInput]="editingMatchId()!"
+          (closePanel)="cancelMatchEdit(); loadAdminData()"
+        ></app-match-edit>
+      }
     </div>
   </div>
 
@@ -955,7 +962,6 @@
                   <th>Nombre</th>
                   <th>Posición</th>
                   <th>Nacionalidad</th>
-                  <!-- NUEVA COLUMNA -->
                   <th>Edad</th>
                   <th>Acciones</th>
                 </tr>
@@ -972,13 +978,12 @@
                     </td>
                     <td>{{ player.position }}</td>
                     <td>{{ player.nationality }}</td>
-                    <!-- NUEVA CELDA -->
                     <td>{{ player.age }}</td>
                     <td>
                       <div class="table-actions">
                         <button
                           class="btn-action-view-custom"
-                          [routerLink]="['/players', player.id]"
+                          [routerLink]="['/player', formatPlayerSlug(player.name)]"
                         >
                           <svg
                             viewBox="0 0 24 24"
@@ -995,7 +1000,7 @@
                         </button>
                         <button
                           class="btn-action-edit-custom"
-                          [routerLink]="['/players/edit', player.id]"
+                          [routerLink]="['/player/edit', player.id]"
                         >
                           <svg
                             viewBox="0 0 24 24"
@@ -1185,7 +1190,7 @@
                     </td>
                     <td>
                       <div class="table-actions">
-                        <button class="btn-action-view-custom" [routerLink]="['/users', user.id]">
+                        <button class="btn-action-view-custom" [routerLink]="['/profile', user.id]">
                           <svg
                             viewBox="0 0 24 24"
                             width="15"
@@ -1200,7 +1205,6 @@
                           Ver
                         </button>
 
-                        <!-- Botón Unificado de Cambio de Rol -->
                         <button
                           class="btn-action-role-custom"
                           [class.make-admin]="user.role !== 'Administrador'"
@@ -1283,7 +1287,7 @@
     </div>
   </div>
 
-  <!-- ================= MODAL DE CONFIRMACIÓN (CAMBIO DE ROL) ================= -->
+  <!-- Modales de confirmación -->
   @if (userToChangeRole() !== null) {
     <div class="custom-modal-backdrop">
       <div class="custom-modal-box">
@@ -1315,7 +1319,6 @@
     </div>
   }
 
-  <!-- ================= MODAL DE CONFIRMACIÓN (EQUIPOS) ================= -->
   @if (teamToDeleteId() !== null) {
     <div class="custom-modal-backdrop">
       <div class="custom-modal-box">
@@ -1332,7 +1335,6 @@
     </div>
   }
 
-  <!-- ================= MODAL DE CONFIRMACIÓN (CAMPEONATOS) ================= -->
   @if (championshipToDeleteId() !== null) {
     <div class="custom-modal-backdrop">
       <div class="custom-modal-box">
@@ -1351,7 +1353,6 @@
     </div>
   }
 
-  <!-- ================= MODAL DE CONFIRMACIÓN (PARTIDOS) ================= -->
   @if (matchToDeleteId() !== null) {
     <div class="custom-modal-backdrop">
       <div class="custom-modal-box">
@@ -1370,7 +1371,6 @@
     </div>
   }
 
-  <!-- ================= MODAL DE CONFIRMACIÓN (JUGADORES) ================= -->
   @if (playerToDeleteId() !== null) {
     <div class="custom-modal-backdrop">
       <div class="custom-modal-box">
@@ -1389,7 +1389,6 @@
     </div>
   }
 
-  <!-- ================= MODAL DE CONFIRMACIÓN (USUARIOS) ================= -->
   @if (userToDeleteId() !== null) {
     <div class="custom-modal-backdrop">
       <div class="custom-modal-box">

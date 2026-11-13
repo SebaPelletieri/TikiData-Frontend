@@ -136,4 +136,13 @@ export class AuthService {
   deleteUser(id: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/usuarios/${id}`);
   }
+
+  getUserById(id: number | string): Observable<User> {
+    return this.http.get<any>(`${this.apiUrl}/usuarios/${id}`).pipe(
+      map((u) => ({
+        ...u,
+        username: u.username || u.name || 'Usuario',
+      })),
+    );
+  }
 }

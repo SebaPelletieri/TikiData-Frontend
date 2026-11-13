@@ -194,4 +194,14 @@ export class PlayerList implements OnInit {
   pagesArray = computed(() => {
     return Array.from({ length: this.totalPages() }, (_, i) => i + 1);
   });
+
+  formatPlayerSlug(name: string): string {
+    if (!name) return '';
+    return name
+      .toLowerCase()
+      .trim()
+      .normalize('NFD') // Remueve tildes (opcional pero recomendado)
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/\s+/g, '-'); // Reemplaza espacios por guiones
+  }
 }

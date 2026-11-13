@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { Championship } from '../models/Championship';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class ChampionshipService {
@@ -55,17 +55,15 @@ export class ChampionshipService {
     });
   }
 
-  updateChampionship(id: number, championship: Championship) {
-    this.http.put<Championship>(`${this.apiUrl}/${id}`, championship).subscribe({
-      next: (data) => {
+  updateChampionship(id: number, championship: Championship): Observable<Championship> {
+    return this.http.put<Championship>(`${this.apiUrl}/${id}`, championship).pipe(
+      map((data) => {
         this.getAll();
         this.error.set(null);
         this.championshipActual.set(data);
-      },
-      error: (error) => {
-        this.error.set('No se pudo actualizar el campeonato en la base de datos');
-      },
-    });
+        return data;
+      }),
+    );
   }
 
   getByName(name: string): Observable<Championship[]> {

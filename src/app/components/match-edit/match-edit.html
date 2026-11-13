@@ -1,1 +1,178 @@
-<p>match-edit works!</p>
+<div class="team-form-container">
+  <!-- Cabecera -->
+  <div class="form-header">
+    <div class="form-icon-box">
+      <svg
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2.2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+      </svg>
+    </div>
+    <div>
+      <h3>Editar Partido</h3>
+      <p>Modifica la fecha, los equipos contendientes, goles y el estado actual del encuentro.</p>
+    </div>
+  </div>
+
+  <form [formGroup]="matchForm" (ngSubmit)="onSubmit()" class="team-form">
+    <!-- Buscador de Campeonato -->
+    <div class="form-group">
+      <label>Campeonato <span class="required">*</span></label>
+      <div class="direct-search-input-box" style="position: relative">
+        <input
+          type="text"
+          [formControl]="championshipSearchCtrl"
+          placeholder="Escribe para buscar campeonato..."
+          autocomplete="off"
+        />
+        <ul
+          class="direct-suggestions-list"
+          *ngIf="isChampDropdownOpen && filteredChampionships.length > 0"
+        >
+          <li
+            class="suggestion-item"
+            *ngFor="let c of filteredChampionships"
+            (click)="selectChampionship(c)"
+          >
+            <span>{{ c.name }}</span>
+            <span class="add-action-text">Seleccionar</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Fecha y Hora + Estado -->
+    <div class="form-row">
+      <div class="form-group">
+        <label>Fecha y Hora <span class="required">*</span></label>
+        <input type="datetime-local" formControlName="matchDate" />
+      </div>
+
+      <!-- Selector de Estado -->
+      <div class="form-group">
+        <label>Estado del Partido <span class="required">*</span></label>
+        <div class="custom-dropdown" [class.open]="isStatusOpen">
+          <div class="dropdown-trigger" (click)="toggleStatusDropdown()">
+            <span [class.placeholder]="!matchForm.get('status')?.value">
+              {{ matchForm.get('status')?.value || 'Seleccionar estado...' }}
+            </span>
+            <span class="triangle-icon"></span>
+          </div>
+          <ul class="dropdown-menu" *ngIf="isStatusOpen">
+            <li class="dropdown-item" *ngFor="let st of statuses" (click)="selectStatus(st)">
+              <span>{{ st }}</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Equipo Local y Equipo Visitante (Buscadores) -->
+    <div class="form-row">
+      <div class="form-group">
+        <label>Equipo Local <span class="required">*</span></label>
+        <div class="direct-search-input-box" style="position: relative">
+          <input
+            type="text"
+            [formControl]="localSearchCtrl"
+            placeholder="Buscar equipo local..."
+            autocomplete="off"
+          />
+          <ul
+            class="direct-suggestions-list"
+            *ngIf="isLocalDropdownOpen && filteredLocalTeams.length > 0"
+          >
+            <li
+              class="suggestion-item"
+              *ngFor="let t of filteredLocalTeams"
+              (click)="selectLocalTeam(t)"
+            >
+              <span>{{ t.name }}</span>
+              <span class="add-action-text">Seleccionar</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Equipo Visitante <span class="required">*</span></label>
+        <div class="direct-search-input-box" style="position: relative">
+          <input
+            type="text"
+            [formControl]="visitorSearchCtrl"
+            placeholder="Buscar equipo visitante..."
+            autocomplete="off"
+          />
+          <ul
+            class="direct-suggestions-list"
+            *ngIf="isVisitorDropdownOpen && filteredVisitorTeams.length > 0"
+          >
+            <li
+              class="suggestion-item"
+              *ngFor="let t of filteredVisitorTeams"
+              (click)="selectVisitorTeam(t)"
+            >
+              <span>{{ t.name }}</span>
+              <span class="add-action-text">Seleccionar</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Goles (Local - Visitante) -->
+    <div class="form-row">
+      <div class="form-group">
+        <label>Goles Local</label>
+        <input type="number" formControlName="homeGoals" min="0" />
+      </div>
+
+      <div class="form-group">
+        <label>Goles Visitante</label>
+        <input type="number" formControlName="awayGoals" min="0" />
+      </div>
+    </div>
+
+    <!-- Estadio con Buscador -->
+    <div class="form-group">
+      <label>Estadio Principal</label>
+      <div class="direct-search-input-box" style="position: relative">
+        <input
+          type="text"
+          [formControl]="stadiumSearchCtrl"
+          placeholder="Escribe o busca un estadio..."
+          autocomplete="off"
+        />
+        <ul
+          class="direct-suggestions-list"
+          *ngIf="isStadiumDropdownOpen && filteredStadiums.length > 0"
+        >
+          <li
+            class="suggestion-item"
+            *ngFor="let stad of filteredStadiums"
+            (click)="selectStadium(stad)"
+          >
+            <span>{{ stad }}</span>
+            <span class="add-action-text">Seleccionar</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Botones de Acción -->
+    <div class="form-actions">
+      <button type="button" class="btn-cancel" (click)="onCancel()">Cancelar</button>
+      <button type="submit" class="btn-submit" [disabled]="matchForm.invalid">
+        Guardar Cambios
+      </button>
+    </div>
+  </form>
+</div>

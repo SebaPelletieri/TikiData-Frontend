@@ -22,18 +22,37 @@ export class PlayerDetailPage implements OnInit {
 
   ngOnInit() {
     this.route.paramMap.subscribe((params) => {
-      const id = params.get('id');
-      if (id) {
-        this.loadPlayer(id);
+      const nameParam = params.get('name'); // 👈 Capturamos el :name de la ruta
+      if (nameParam) {
+        this.loadPlayerByName(nameParam);
       }
     });
   }
 
-  loadPlayer(id: string) {
+  loadPlayerByName(nameSlug: string) {
     this.isLoading.set(true);
+
+    // Normalizamos el slug de la URL para que coincida con el nombre (ej: "rodrigo-rey" -> "rodrigo rey")
+    const cleanSearchName = nameSlug
+      .toLowerCase()
+      .trim()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/-/g, ' ');
+
     this.playerService.getAllPlayers().subscribe({
       next: (players: Player[]) => {
-        const found = players.find((p: any) => String(p.id) === String(id));
+        const found = players.find((p: any) => {
+          if (!p.name) return false;
+          const playerNameClean = p.name
+            .toLowerCase()
+            .trim()
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '');
+
+          return playerNameClean === cleanSearchName;
+        });
+
         if (found) {
           this.playerActual.set(found);
           this.playerService.playerActual.set(found);

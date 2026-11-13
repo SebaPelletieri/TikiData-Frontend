@@ -50,17 +50,15 @@ export class PlayerService {
     });
   }
 
-  updatePlayer(id: number, player: Player) {
-    this.http.put<Player>(`${this.apiUrl}/${id}`, player).subscribe({
-      next: (data) => {
+  updatePlayer(id: number, player: Player): Observable<Player> {
+    return this.http.put<Player>(`${this.apiUrl}/${id}`, player).pipe(
+      map((data) => {
         this.getAll();
         this.playerActual.set(data);
         this.error.set(null);
-      },
-      error: () => {
-        this.error.set('No se pudo actualizar el jugador en la base de datos');
-      },
-    });
+        return data;
+      }),
+    );
   }
 
   deletePlayer(id: number) {
@@ -88,5 +86,12 @@ export class PlayerService {
           this.error.set('No se pudieron obtener los goleadores');
         },
       });
+  }
+
+  getByName(name: string): Observable<Player | undefined> {
+    const formattedName = name.replace(/-/g, ' ').toLowerCase();
+    return this.http
+      .get<Player[]>(this.apiUrl)
+      .pipe(map((players) => players.find((p) => p.name.toLowerCase() === formattedName)));
   }
 }

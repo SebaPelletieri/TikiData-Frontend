@@ -46,17 +46,15 @@ export class TeamService {
     });
   }
 
-  updateTeam(id: number, team: Team) {
-    this.http.put<Team>(`${this.apiUrl}/${id}`, team).subscribe({
-      next: (data) => {
+  updateTeam(id: number, team: Team): Observable<Team> {
+    return this.http.put<Team>(`${this.apiUrl}/${id}`, team).pipe(
+      map((data) => {
         this.teamActual.set(data);
         this.getAll();
         this.error.set(null);
-      },
-      error: () => {
-        this.error.set('No se puedo actualizar el equipo en el sistema');
-      },
-    });
+        return data;
+      }),
+    );
   }
 
   deleteTeam(id: number) {

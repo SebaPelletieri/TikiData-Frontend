@@ -119,7 +119,7 @@
       </thead>
       <tbody>
         @for (player of paginatedPlayers(); track player.id) {
-          <tr [routerLink]="['/player', player.id]" class="player-row">
+          <tr [routerLink]="['/player', formatPlayerSlug(player.name)]" class="player-row">
             <td class="col-photo">
               <div class="avatar-wrapper">
                 <img [src]="player.photo" [alt]="player.name" />

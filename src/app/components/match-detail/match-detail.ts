@@ -135,25 +135,29 @@ export class MatchDetail implements OnInit {
   });
 
   ngOnInit(): void {
-    this.route.paramMap.subscribe((params) => {
-      const matchId = params.get('id');
-      if (matchId) {
-        this.http.get<Match>(`http://localhost:3000/partidos/${matchId}`).subscribe({
-          next: (data) => {
-            this.match.set(data);
-            this.loadTeamDetails(data.localTeamID, data.awayTeamID);
+  this.route.paramMap.subscribe((params) => {
+    const matchId = params.get('id');
+    if (matchId) {
+      this.http.get<Match>(`http://localhost:3000/partidos/${matchId}?_expand=championship`).subscribe({
+        next: (data) => {
+          this.match.set(data);
+          this.loadTeamDetails(data.localTeamID, data.awayTeamID);
+          this.loadTeamPlayers(data);
+          
+          // Validación segura del ID del campeonato antes de invocar los métodos
+          if (data.championshipID) {
             this.loadChampionshipDetails(data.championshipID);
-            this.loadTeamPlayers(data);
             this.loadStandingsData(data.championshipID);
-          },
-          error: (err) => {
-            console.error('Error al cargar el partido:', err);
-            this.errorLoading.set(true);
-          },
-        });
-      }
-    });
-  }
+          }
+        },
+        error: (err) => {
+          console.error('Error al cargar el partido:', err);
+          this.errorLoading.set(true);
+        },
+      });
+    }
+  });
+}
 
   setTab(tab: string): void {
     this.activeTab.set(tab);

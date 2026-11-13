@@ -1,3 +1,5 @@
+import { Championship } from "./Championship";
+
 export type Status = 'Programado' | 'En Vivo' | 'Finalizado';
 
 export interface GoalDetail {
@@ -63,9 +65,9 @@ export interface Match {
   id?: number | string;
   localTeamID: number;
   awayTeamID: number;
+  championshipID?: number;
   date: Date | string;
-  championshipID: number;
-  localGoals: number;
+  championship?: Championship;  localGoals: number;
   awayGoals: number;
   status?: Status;
   stadium: string;

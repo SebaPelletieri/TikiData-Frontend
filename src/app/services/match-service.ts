@@ -32,7 +32,6 @@ export class MatchService {
     });
   }
 
-  // Compatible con getById y getByTeam / getByID
   getByID(id: number): void {
     this.loading.set(true);
     this.error.set(null);
@@ -50,7 +49,6 @@ export class MatchService {
     });
   }
 
-  // Método que devuelve un Observable para el formulario de edición
   getById(id: number): Observable<Match> {
     return this.http.get<Match>(`${this.apiUrl}/${id}`).pipe(
       catchError((err) => {
@@ -72,7 +70,6 @@ export class MatchService {
     );
   }
 
-  // Alias para mantener compatibilidad con el formulario
   createMatch(matchData: Partial<Match>): Observable<Match> {
     return this.create(matchData);
   }
@@ -90,7 +87,6 @@ export class MatchService {
     );
   }
 
-  // Alias para mantener compatibilidad con el formulario
   updateMatch(id: number, matchData: Partial<Match>): Observable<Match> {
     return this.update(id, matchData);
   }
@@ -103,7 +99,6 @@ export class MatchService {
     );
   }
 
-  // Alias para mantener compatibilidad con el panel de administración
   deleteMatch(id: number): Observable<any> {
     return this.delete(id);
   }

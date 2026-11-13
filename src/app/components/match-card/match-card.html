@@ -1,7 +1,10 @@
 @if (match) {
   <div class="match-card" [routerLink]="['/match', match.id]">
     <div class="match-card-header">
-      <span class="championship-badge">Liga Profesional</span>
+      <!-- CAMBIO AQUÍ: Usamos el nombre del campeonato dinámico -->
+      <span class="championship-badge">
+        {{ match.championship?.name || match.championshipName || 'TORNEO' }}
+      </span>
       <span class="status-badge" [class.live]="match.status === 'En Vivo'">
         {{ match.status || 'Finalizado' }}
       </span>

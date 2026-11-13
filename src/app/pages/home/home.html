@@ -7,8 +7,8 @@
         Resultados en vivo, estadísticas, posiciones y mucho más. Todo el fútbol en un solo lugar.
       </p>
       <div class="hero-buttons">
-        <button class="btn btn-primary">Ver partidos en vivo</button>
-        <button class="btn btn-outline" routerLink="/campeonatos">Explorar ligas</button>
+        <button class="btn btn-primary" routerLink="/matches">Ver partidos</button>
+        <button class="btn btn-outline" routerLink="/championships">Explorar ligas</button>
       </div>
     </div>
     <div class="hero-side-badge">
@@ -17,30 +17,31 @@
     </div>
   </section>
 
-  <!-- 2. LIGAS DESTACADAS -->
+  <!-- 2. LIGAS DESTACADAS (SIN CHAMPIONS Y CON REDIRECCIÓN DINÁMICA) -->
   <section class="leagues-section">
     <div class="leagues-grid">
-      <div class="league-card active">
-        <div class="league-flag">🇦🇷</div>
-        <span>Argentina</span>
-        <span class="league-sub">Liga Profesional &or;</span>
-      </div>
-      <div class="league-card">
-        <div class="league-flag-shield">🛡️</div>
-        <span>Copa Argentina</span>
-      </div>
-      <div class="league-card">
-        <div class="league-flag-shield">🏆</div>
-        <span>Libertadores</span>
-      </div>
-      <div class="league-card">
-        <div class="league-flag-shield">⭐</div>
-        <span>Champions League</span>
-      </div>
-      <div class="league-card more-leagues">
+      @for (champ of featuredLeagues(); track champ.id; let idx = $index) {
+        <a
+          class="league-card"
+          [class.active]="idx === 0"
+          [routerLink]="['/championship', champ.name]"
+        >
+          @if (champ.logo) {
+            <img [src]="champ.logo" [alt]="champ.name" class="league-logo-img" />
+          } @else {
+            <div class="league-flag">{{ getLeagueIcon(champ.name) }}</div>
+          }
+          <span>{{ champ.name }}</span>
+          @if (champ.country) {
+            <span class="league-sub">{{ champ.country }}</span>
+          }
+        </a>
+      }
+
+      <a class="league-card more-leagues" routerLink="/championships">
         <span class="dots">+</span>
         <span>Más campeonatos</span>
-      </div>
+      </a>
     </div>
   </section>
 
@@ -72,205 +73,70 @@
       </div>
 
       <div class="dash-list">
-        <div class="match-row">
-          <span class="match-time">17:00</span>
-          <div class="match-teams">
-            <span class="team-name text-right">River Plate</span>
-            <img
-              src="https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/river-plate.png"
-              class="team-shield"
-              alt=""
-            />
-            <span class="vs">vs</span>
-            <img
-              src="https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/boca-juniors.png"
-              class="team-shield"
-              alt=""
-            />
-            <span class="team-name">Boca Juniors</span>
-          </div>
-          <div class="match-info-right">
-            <span class="match-league">🇦🇷 Liga Profesional</span>
-            <button class="btn-ver">
-              <svg
-                class="eye-icon"
-                viewBox="0 0 24 24"
-                width="14"
-                height="14"
-                stroke="currentColor"
-                stroke-width="2"
-                fill="none"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                <circle cx="12" cy="12" r="3"></circle>
-              </svg>
-              Ver
-            </button>
-          </div>
-        </div>
+        @for (match of featuredMatches(); track match.id) {
+          @let local = getTeamById(match.localTeamID);
+          @let away = getTeamById(match.awayTeamID);
 
-        <div class="match-row">
-          <span class="match-time">19:30</span>
-          <div class="match-teams">
-            <span class="team-name text-right">Racing Club</span>
-            <img
-              src="https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/racing-club.png"
-              class="team-shield"
-              alt=""
-            />
-            <span class="vs">vs</span>
-            <img
-              src="https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/independiente.png"
-              class="team-shield"
-              alt=""
-            />
-            <span class="team-name">Independiente</span>
-          </div>
-          <div class="match-info-right">
-            <span class="match-league">🇦🇷 Liga Profesional</span>
-            <button class="btn-ver">
-              <svg
-                class="eye-icon"
-                viewBox="0 0 24 24"
-                width="14"
-                height="14"
-                stroke="currentColor"
-                stroke-width="2"
-                fill="none"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+          <div class="match-row">
+            <span class="match-time">{{ match.date | date: 'HH:mm' }}</span>
+            <div class="match-teams">
+              <a
+                class="team-name text-right clickable-link"
+                [routerLink]="['/team', match.localTeamID]"
               >
-                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                <circle cx="12" cy="12" r="3"></circle>
-              </svg>
-              Ver
-            </button>
-          </div>
-        </div>
+                {{ local?.name || 'Local' }}
+              </a>
+              <img
+                [src]="local?.shield || '/Escudos Liga Argentina/default.png'"
+                class="team-shield"
+                [alt]="local?.name || ''"
+              />
 
-        <div class="match-row">
-          <span class="match-time">21:00</span>
-          <div class="match-teams">
-            <span class="team-name text-right">Barcelona</span>
-            <img
-              src="https://upload.wikimedia.org/wikipedia/en/2/2e/FC_Barcelona_%28crest%29.svg"
-              class="team-shield"
-              alt=""
-            />
-            <span class="vs">vs</span>
-            <img
-              src="https://upload.wikimedia.org/wikipedia/en/5/56/Real_Madrid_CF.svg"
-              class="team-shield"
-              alt=""
-            />
-            <span class="team-name">Real Madrid</span>
-          </div>
-          <div class="match-info-right">
-            <span class="match-league">🇪🇸 LaLiga</span>
-            <button class="btn-ver">
-              <svg
-                class="eye-icon"
-                viewBox="0 0 24 24"
-                width="14"
-                height="14"
-                stroke="currentColor"
-                stroke-width="2"
-                fill="none"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                <circle cx="12" cy="12" r="3"></circle>
-              </svg>
-              Ver
-            </button>
-          </div>
-        </div>
+              @if (match.status === 'Finalizado' || match.status === 'En Vivo') {
+                <span class="vs score-pill">{{ match.localGoals }} - {{ match.awayGoals }}</span>
+              } @else {
+                <span class="vs">vs</span>
+              }
 
-        <div class="match-row">
-          <span class="match-time">16:00</span>
-          <div class="match-teams">
-            <span class="team-name text-right">Manchester City</span>
-            <img
-              src="https://upload.wikimedia.org/wikipedia/en/e/eb/Manchester_City_FC_badge.svg"
-              class="team-shield"
-              alt=""
-            />
-            <span class="vs">vs</span>
-            <img
-              src="https://upload.wikimedia.org/wikipedia/en/5/53/Arsenal_FC.svg"
-              class="team-shield"
-              alt=""
-            />
-            <span class="team-name">Arsenal</span>
+              <img
+                [src]="away?.shield || '/Escudos Liga Argentina/default.png'"
+                class="team-shield"
+                [alt]="away?.name || ''"
+              />
+              <a class="team-name clickable-link" [routerLink]="['/team', match.awayTeamID]">
+                {{ away?.name || 'Visitante' }}
+              </a>
+            </div>
+            <div class="match-info-right">
+              <span class="match-league">
+                {{ match.championshipName || getChampionshipName(match.championshipID) }}
+              </span>
+              <a class="btn-ver" [routerLink]="['/match', match.id]">
+                <svg
+                  class="eye-icon"
+                  viewBox="0 0 24 24"
+                  width="14"
+                  height="14"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  fill="none"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                  <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+                Ver
+              </a>
+            </div>
           </div>
-          <div class="match-info-right">
-            <span class="match-league">🏴󠁧󠁢󠁥󠁮󠁧󠁿 Premier League</span>
-            <button class="btn-ver">
-              <svg
-                class="eye-icon"
-                viewBox="0 0 24 24"
-                width="14"
-                height="14"
-                stroke="currentColor"
-                stroke-width="2"
-                fill="none"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                <circle cx="12" cy="12" r="3"></circle>
-              </svg>
-              Ver
-            </button>
-          </div>
-        </div>
-
-        <div class="match-row">
-          <span class="match-time">13:30</span>
-          <div class="match-teams">
-            <span class="team-name text-right">Inter</span>
-            <img
-              src="https://upload.wikimedia.org/wikipedia/en/0/05/FC_Internazionale_Milano_2021.svg"
-              class="team-shield"
-              alt=""
-            />
-            <span class="vs">vs</span>
-            <img
-              src="https://upload.wikimedia.org/wikipedia/en/d/d0/AC_Milan_logo.svg"
-              class="team-shield"
-              alt=""
-            />
-            <span class="team-name">Milan</span>
-          </div>
-          <div class="match-info-right">
-            <span class="match-league">🇮🇹 Serie A</span>
-            <button class="btn-ver">
-              <svg
-                class="eye-icon"
-                viewBox="0 0 24 24"
-                width="14"
-                height="14"
-                stroke="currentColor"
-                stroke-width="2"
-                fill="none"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                <circle cx="12" cy="12" r="3"></circle>
-              </svg>
-              Ver
-            </button>
-          </div>
-        </div>
+        } @empty {
+          <p class="empty-msg">No hay partidos cargados en este momento.</p>
+        }
       </div>
 
-      <!-- Enlace con la clase unificada link-action y routerLink a partidos -->
       <div class="bottom-link-container">
-        <a class="link-action" routerLink="/partidos">Ver todos los partidos de hoy &rarr;</a>
+        <a class="link-action" routerLink="/matches">Ver todos los partidos &rarr;</a>
       </div>
     </div>
 
@@ -278,7 +144,9 @@
     <div class="dash-card panel-posiciones">
       <div class="dash-header">
         <h3>Posiciones - Liga Profesional</h3>
-        <a class="link-action">Ver tabla completa &rarr;</a>
+        <a class="link-action" [routerLink]="['/championship', ligaProfesionalName()]">
+          Ver tabla completa &rarr;
+        </a>
       </div>
       <div class="table-container">
         <table>
@@ -297,81 +165,27 @@
                 <tr>
                   <td>{{ idx + 1 }}</td>
                   <td class="team-cell">
-                    <img [src]="team.shield" alt="" class="table-shield" />
-                    {{ team.name }}
+                    <a class="row-link" [routerLink]="['/team', team.id]">
+                      <img [src]="team.shield" alt="" class="table-shield" />
+                      {{ team.name }}
+                    </a>
                   </td>
                   <td>
-                    <strong>{{ $any(team).points || 16 - idx * 2 }}</strong>
+                    <strong>{{ $any(team).points ?? 16 - idx * 2 }}</strong>
                   </td>
-                  <td>7</td>
-                  <td>{{ 10 - idx * 2 > 0 ? '+' + (10 - idx * 2) : 10 - idx * 2 }}</td>
+                  <td>{{ $any(team).played ?? 7 }}</td>
+                  <td>
+                    {{
+                      ($any(team).goalDifference ?? 10 - idx * 2) > 0
+                        ? '+' + ($any(team).goalDifference ?? 10 - idx * 2)
+                        : ($any(team).goalDifference ?? 10 - idx * 2)
+                    }}
+                  </td>
                 </tr>
               }
             } @empty {
               <tr>
-                <td>1</td>
-                <td class="team-cell">
-                  <img
-                    src="https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/river-plate.png"
-                    class="table-shield"
-                  />
-                  River Plate
-                </td>
-                <td><strong>16</strong></td>
-                <td>7</td>
-                <td>+10</td>
-              </tr>
-              <tr>
-                <td>2</td>
-                <td class="team-cell">
-                  <img
-                    src="https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/talleres.png"
-                    class="table-shield"
-                  />
-                  Talleres (C)
-                </td>
-                <td><strong>14</strong></td>
-                <td>7</td>
-                <td>+6</td>
-              </tr>
-              <tr>
-                <td>3</td>
-                <td class="team-cell">
-                  <img
-                    src="https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/velez-sarsfield.png"
-                    class="table-shield"
-                  />
-                  Vélez Sarsfield
-                </td>
-                <td><strong>13</strong></td>
-                <td>7</td>
-                <td>+5</td>
-              </tr>
-              <tr>
-                <td>4</td>
-                <td class="team-cell">
-                  <img
-                    src="https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/huracan.png"
-                    class="table-shield"
-                  />
-                  Huracán
-                </td>
-                <td><strong>12</strong></td>
-                <td>7</td>
-                <td>+4</td>
-              </tr>
-              <tr>
-                <td>5</td>
-                <td class="team-cell">
-                  <img
-                    src="https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/racing-club.png"
-                    class="table-shield"
-                  />
-                  Racing Club
-                </td>
-                <td><strong>12</strong></td>
-                <td>7</td>
-                <td>+3</td>
+                <td colspan="5" class="empty-msg">Cargando posiciones...</td>
               </tr>
             }
           </tbody>
@@ -383,7 +197,13 @@
     <div class="dash-card panel-goleadores">
       <div class="dash-header">
         <h3>Goleadores - Liga Profesional</h3>
-        <a class="link-action">Ver todos &rarr;</a>
+        <a
+          class="link-action"
+          [routerLink]="['/championship', ligaProfesionalName()]"
+          [queryParams]="{ tab: 'goleadores' }"
+        >
+          Ver todos &rarr;
+        </a>
       </div>
       <div class="table-container">
         <table>
@@ -396,96 +216,37 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>1</td>
-              <td class="player-cell">
-                <img
-                  src="https://images.fotmob.com/image_resources/playerimages/395133.png"
-                  class="player-avatar"
-                />
-                M. Borja
-              </td>
-              <td class="team-sub-cell">
-                <img
-                  src="https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/river-plate.png"
-                  class="tiny-shield"
-                />
-                River Plate
-              </td>
-              <td><strong>7</strong></td>
-            </tr>
-            <tr>
-              <td>2</td>
-              <td class="player-cell">
-                <img
-                  src="https://ui-avatars.com/api/?name=L+Gondou&background=06182e&color=fff&size=128"
-                  class="player-avatar"
-                />
-                L. Gondou
-              </td>
-              <td class="team-sub-cell">
-                <img
-                  src="https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/argentinos-juniors.png"
-                  class="tiny-shield"
-                />
-                Argentinos Jrs.
-              </td>
-              <td><strong>6</strong></td>
-            </tr>
-            <tr>
-              <td>3</td>
-              <td class="player-cell">
-                <img
-                  src="https://images.fotmob.com/image_resources/playerimages/737424.png"
-                  class="player-avatar"
-                />
-                M. Merentiel
-              </td>
-              <td class="team-sub-cell">
-                <img
-                  src="https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/boca-juniors.png"
-                  class="tiny-shield"
-                />
-                Boca Juniors
-              </td>
-              <td><strong>6</strong></td>
-            </tr>
-            <tr>
-              <td>4</td>
-              <td class="player-cell">
-                <img
-                  src="https://ui-avatars.com/api/?name=T+Badaloni&background=06182e&color=fff&size=128"
-                  class="player-avatar"
-                />
-                T. Badaloni
-              </td>
-              <td class="team-sub-cell">
-                <img
-                  src="https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/instituto.png"
-                  class="tiny-shield"
-                />
-                Instituto
-              </td>
-              <td><strong>5</strong></td>
-            </tr>
-            <tr>
-              <td>5</td>
-              <td class="player-cell">
-                <img
-                  src="https://images.fotmob.com/image_resources/playerimages/232497.png"
-                  class="player-avatar"
-                />
-                A. Martínez
-              </td>
-              <td class="team-sub-cell">
-                <img
-                  src="https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/racing-club.png"
-                  class="tiny-shield"
-                />
-                Racing Club
-              </td>
-              <td><strong>5</strong></td>
-            </tr>
+            @for (player of topScorers(); track player.id; let idx = $index) {
+              @if (idx < 5) {
+                @let playerTeam = getTeamById(player.currentTeamID);
+                <tr>
+                  <td>{{ idx + 1 }}</td>
+                  <td class="player-cell">
+                    <a class="row-link" [routerLink]="['/player', player.id]">
+                      <img [src]="getPlayerAvatar(player)" class="player-avatar" alt="" />
+                      {{ player.name }}
+                    </a>
+                  </td>
+                  <td class="team-sub-cell">
+                    @if (playerTeam) {
+                      <a class="row-link" [routerLink]="['/team', playerTeam.id]">
+                        <img [src]="playerTeam.shield" class="tiny-shield" alt="" />
+                        {{ playerTeam.name }}
+                      </a>
+                    } @else {
+                      <span>Sin equipo</span>
+                    }
+                  </td>
+                  <td>
+                    <strong>{{ getPlayerGoals(player) }}</strong>
+                  </td>
+                </tr>
+              }
+            } @empty {
+              <tr>
+                <td colspan="4" class="empty-msg">No hay goleadores cargados aún.</td>
+              </tr>
+            }
           </tbody>
         </table>
       </div>

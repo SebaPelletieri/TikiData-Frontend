@@ -415,3 +415,49 @@
     grid-template-columns: repeat(2, 1fr);
   }
 }
+a.league-card,
+a.btn-ver,
+a.row-link,
+a.clickable-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+a.row-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+a.row-link:hover,
+a.clickable-link:hover {
+  color: #38bdf8;
+}
+
+.league-logo-img {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+}
+
+.score-pill {
+  font-weight: 700;
+  color: #f8fafc;
+}
+
+.empty-msg {
+  text-align: center;
+  color: #94a3b8;
+  padding: 16px;
+  font-size: 0.9rem;
+}
+
+.score-pill {
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  font-weight: 700;
+  color: #f8fafc;
+}

@@ -1019,6 +1019,273 @@
       "statistics": [],
       "incidences": [],
       "lineups": null
+    },
+    {
+      "id": "5",
+      "localTeamID": 1,
+      "awayTeamID": 3,
+      "date": "2026-11-13T17:00:00.000Z",
+      "championshipID": 1,
+      "localGoals": 1,
+      "awayGoals": 1,
+      "status": "En Vivo",
+      "stadium": "Mâs Monumental",
+      "championshipName": "Liga Profesional - Fecha 13",
+      "localGoalsDetail": [
+        { "player": "M. Borja", "minute": 22 }
+      ],
+      "awayGoalsDetail": [
+        { "player": "A. Martínez", "minute": 58 }
+      ],
+      "statistics": [
+        { "label": "Posesión", "local": 61, "away": 39, "unit": "%" },
+        { "label": "Remates", "local": 8, "away": 5 },
+        { "label": "Remates al arco", "local": 3, "away": 2 },
+        { "label": "Faltas", "local": 7, "away": 9 },
+        { "label": "Tarjetas amarillas", "local": 1, "away": 2 },
+        { "label": "Tiros de esquina", "local": 4, "away": 1 }
+      ],
+      "incidences": [
+        { "minute": 22, "type": "GOAL", "text": "Gol de M. Borja (1-0)" },
+        { "minute": 41, "type": "YELLOW_CARD", "text": "Tarjeta Amarilla en Racing Club" },
+        { "minute": 58, "type": "GOAL", "text": "Gol de A. Martínez (1-1)" }
+      ],
+      "lineups": {
+        "local": [
+          { "number": 1, "name": "F. Armani", "position": "POR" },
+          { "number": 16, "name": "F. Bustos", "position": "DEF" },
+          { "number": 6, "name": "G. Pezzella", "position": "DEF" },
+          { "number": 17, "name": "P. Díaz", "position": "DEF" },
+          { "number": 24, "name": "M. Acuña", "position": "DEF" },
+          { "number": 5, "name": "M. Kranevitter", "position": "MED" },
+          { "number": 29, "name": "R. Aliendro", "position": "MED" },
+          { "number": 8, "name": "M. Meza", "position": "MED" },
+          { "number": 19, "name": "C. Echeverri", "position": "MED" },
+          { "number": 11, "name": "F. Colidio", "position": "DEL" },
+          { "number": 9, "name": "M. Borja", "position": "DEL" }
+        ],
+        "localSubstitutes": [
+          { "number": 25, "name": "J. Ledesma", "position": "POR" },
+          { "number": 14, "name": "L. González Pirez", "position": "DEF" },
+          { "number": 20, "name": "M. Casco", "position": "DEF" },
+          { "number": 26, "name": "I. Fernández", "position": "MED" },
+          { "number": 10, "name": "M. Lanzini", "position": "MED" },
+          { "number": 36, "name": "P. Solari", "position": "DEL" },
+          { "number": 7, "name": "A. Bareiro", "position": "DEL" }
+        ],
+        "away": [
+          { "number": 21, "name": "G. Arias", "position": "POR" },
+          { "number": 3, "name": "M. Di Cesare", "position": "DEF" },
+          { "number": 13, "name": "S. Sosa", "position": "DEF" },
+          { "number": 35, "name": "S. Quirós", "position": "DEF" },
+          { "number": 15, "name": "G. Martirena", "position": "MED" },
+          { "number": 5, "name": "J. Nardoni", "position": "MED" },
+          { "number": 32, "name": "A. Almendra", "position": "MED" },
+          { "number": 27, "name": "G. Rojas", "position": "MED" },
+          { "number": 8, "name": "J. Quintero", "position": "MED" },
+          { "number": 7, "name": "M. Salas", "position": "DEL" },
+          { "number": 9, "name": "A. Martínez", "position": "DEL" }
+        ],
+        "awaySubstitutes": [
+          { "number": 1, "name": "F. Cambeses", "position": "POR" },
+          { "number": 2, "name": "N. Colombo", "position": "DEF" },
+          { "number": 6, "name": "L. Sigali", "position": "DEF" },
+          { "number": 19, "name": "B. Zuculini", "position": "MED" },
+          { "number": 10, "name": "R. Martínez", "position": "DEL" },
+          { "number": 17, "name": "J. Carbonero", "position": "DEL" }
+        ]
+      },
+      "summary": null,
+      "h2h": {
+        "totalMatches": 206,
+        "localWins": 100,
+        "awayWins": 55,
+        "draws": 51,
+        "previousMatches": [
+          {
+            "date": "28/07/2023",
+            "competition": "Liga Profesional",
+            "homeTeam": "River Plate",
+            "awayTeam": "Racing Club",
+            "score": "2 - 1"
+          }
+        ]
+      }
+    },
+    {
+      "id": "6",
+      "localTeamID": 13,
+      "awayTeamID": 14,
+      "date": "2026-11-13T17:00:00.000Z",
+      "championshipID": 1,
+      "localGoals": 2,
+      "awayGoals": 1,
+      "status": "En Vivo",
+      "stadium": "Estadio Mario Alberto Kempes",
+      "championshipName": "Liga Profesional - Fecha 13",
+      "localGoalsDetail": [
+        { "player": "R. Botta", "minute": 15 },
+        { "player": "F. Girotti", "minute": 64 }
+      ],
+      "awayGoalsDetail": [
+        { "player": "F. Jara", "minute": 39 }
+      ],
+      "statistics": [
+        { "label": "Posesión", "local": 54, "away": 46, "unit": "%" },
+        { "label": "Remates", "local": 9, "away": 6 },
+        { "label": "Remates al arco", "local": 4, "away": 2 },
+        { "label": "Faltas", "local": 10, "away": 12 },
+        { "label": "Tarjetas amarillas", "local": 1, "away": 3 },
+        { "label": "Tiros de esquina", "local": 4, "away": 2 }
+      ],
+      "incidences": [
+        { "minute": 15, "type": "GOAL", "text": "Gol de R. Botta (1-0)" },
+        { "minute": 39, "type": "GOAL", "text": "Gol de F. Jara (1-1)" },
+        { "minute": 55, "type": "YELLOW_CARD", "text": "Tarjeta Amarilla en Belgrano" },
+        { "minute": 64, "type": "GOAL", "text": "Gol de F. Girotti (2-1)" }
+      ],
+      "lineups": {
+        "local": [
+          { "number": 22, "name": "G. Herrera", "position": "POR" },
+          { "number": 29, "name": "G. Benavídez", "position": "DEF" },
+          { "number": 4, "name": "M. Catalán", "position": "DEF" },
+          { "number": 6, "name": "J. Rodríguez", "position": "DEF" },
+          { "number": 15, "name": "B. Riveros", "position": "DEF" },
+          { "number": 27, "name": "J. Portilla", "position": "MED" },
+          { "number": 30, "name": "U. Ortegoza", "position": "MED" },
+          { "number": 10, "name": "R. Botta", "position": "MED" },
+          { "number": 7, "name": "S. Palacios", "position": "DEL" },
+          { "number": 9, "name": "F. Girotti", "position": "DEL" },
+          { "number": 11, "name": "B. Barticciotto", "position": "DEL" }
+        ],
+        "localSubstitutes": [
+          { "number": 17, "name": "L. Morales", "position": "POR" },
+          { "number": 3, "name": "L. Suárez", "position": "DEF" },
+          { "number": 5, "name": "M. Galarza", "position": "MED" },
+          { "number": 8, "name": "M. Esquivel", "position": "MED" },
+          { "number": 25, "name": "C. Tarragona", "position": "DEL" }
+        ],
+        "away": [
+          { "number": 25, "name": "J. Espínola", "position": "POR" },
+          { "number": 4, "name": "J. Barinaga", "position": "DEF" },
+          { "number": 6, "name": "A. Rébola", "position": "DEF" },
+          { "number": 2, "name": "M. Troilo", "position": "DEF" },
+          { "number": 3, "name": "R. Delgado", "position": "DEF" },
+          { "number": 5, "name": "E. Rolón", "position": "MED" },
+          { "number": 16, "name": "F. Quignón", "position": "MED" },
+          { "number": 11, "name": "B. Reyna", "position": "MED" },
+          { "number": 10, "name": "F. González Metilli", "position": "MED" },
+          { "number": 29, "name": "F. Jara", "position": "DEL" },
+          { "number": 9, "name": "N. Fernández", "position": "DEL" }
+        ],
+        "awaySubstitutes": [
+          { "number": 1, "name": "I. Chicco", "position": "POR" },
+          { "number": 13, "name": "N. Meriano", "position": "DEF" },
+          { "number": 8, "name": "G. Heredia", "position": "MED" },
+          { "number": 19, "name": "P. Chavarría", "position": "DEL" },
+          { "number": 22, "name": "L. Passerini", "position": "DEL" }
+        ]
+      },
+      "summary": null,
+      "h2h": {
+        "totalMatches": 255,
+        "localWins": 96,
+        "awayWins": 76,
+        "draws": 83,
+        "previousMatches": [
+          {
+            "date": "24/02/2024",
+            "competition": "Copa de la Liga",
+            "homeTeam": "Belgrano (Córdoba)",
+            "awayTeam": "Talleres (Córdoba)",
+            "score": "2 - 2"
+          }
+        ]
+      }
+    },
+    {
+      "id": "7",
+      "localTeamID": 18,
+      "awayTeamID": 17,
+      "date": "2026-11-13T17:00:00.000Z",
+      "championshipID": 1,
+      "localGoals": 0,
+      "awayGoals": 0,
+      "status": "En Vivo",
+      "stadium": "Ciudad de Lanús - Néstor Díaz Pérez",
+      "championshipName": "Liga Profesional - Fecha 13",
+      "localGoalsDetail": [],
+      "awayGoalsDetail": [],
+      "statistics": [
+        { "label": "Posesión", "local": 55, "away": 45, "unit": "%" },
+        { "label": "Remates", "local": 4, "away": 3 },
+        { "label": "Remates al arco", "local": 1, "away": 1 },
+        { "label": "Faltas", "local": 8, "away": 10 },
+        { "label": "Tarjetas amarillas", "local": 1, "away": 2 },
+        { "label": "Tiros de esquina", "local": 3, "away": 1 }
+      ],
+      "incidences": [
+        { "minute": 28, "type": "YELLOW_CARD", "text": "Tarjeta Amarilla en Lanús" },
+        { "minute": 44, "type": "YELLOW_CARD", "text": "Tarjeta Amarilla en Banfield" }
+      ],
+      "lineups": {
+        "local": [
+          { "number": 26, "name": "N. Losada", "position": "POR" },
+          { "number": 4, "name": "G. Pérez", "position": "DEF" },
+          { "number": 24, "name": "C. Izquierdoz", "position": "DEF" },
+          { "number": 13, "name": "E. Muñoz", "position": "DEF" },
+          { "number": 6, "name": "J. Soler", "position": "DEF" },
+          { "number": 5, "name": "F. Peña Biafore", "position": "MED" },
+          { "number": 15, "name": "R. Loaiza", "position": "MED" },
+          { "number": 10, "name": "M. Moreno", "position": "MED" },
+          { "number": 11, "name": "E. Salvio", "position": "DEL" },
+          { "number": 9, "name": "W. Bou", "position": "DEL" },
+          { "number": 27, "name": "D. Aquino", "position": "DEL" }
+        ],
+        "localSubstitutes": [
+          { "number": 1, "name": "A. Aguerre", "position": "POR" },
+          { "number": 2, "name": "N. Morgantini", "position": "DEF" },
+          { "number": 8, "name": "L. Boggio", "position": "MED" },
+          { "number": 7, "name": "L. Acosta", "position": "DEL" },
+          { "number": 20, "name": "J. Torres", "position": "DEL" }
+        ],
+        "away": [
+          { "number": 1, "name": "F. Sanguinetti", "position": "POR" },
+          { "number": 24, "name": "R. Di Luciano", "position": "DEF" },
+          { "number": 2, "name": "A. Maciel", "position": "DEF" },
+          { "number": 6, "name": "G. Hernández", "position": "DEF" },
+          { "number": 3, "name": "M. De Ritis", "position": "DEF" },
+          { "number": 5, "name": "C. Núñez", "position": "MED" },
+          { "number": 8, "name": "J. Rodríguez", "position": "MED" },
+          { "number": 10, "name": "D. Díaz", "position": "MED" },
+          { "number": 7, "name": "I. Rodríguez", "position": "DEL" },
+          { "number": 9, "name": "B. Sepúlveda", "position": "DEL" },
+          { "number": 11, "name": "J. Bisanz", "position": "DEL" }
+        ],
+        "awaySubstitutes": [
+          { "number": 21, "name": "J. Devecchi", "position": "POR" },
+          { "number": 4, "name": "E. Bonifacio", "position": "DEF" },
+          { "number": 16, "name": "E. Cañete", "position": "MED" },
+          { "number": 18, "name": "M. Giménez", "position": "DEL" },
+          { "number": 29, "name": "M. Garro", "position": "DEL" }
+        ]
+      },
+      "summary": null,
+      "h2h": {
+        "totalMatches": 102,
+        "localWins": 32,
+        "awayWins": 41,
+        "draws": 29,
+        "previousMatches": [
+          {
+            "date": "25/02/2024",
+            "competition": "Copa de la Liga",
+            "homeTeam": "Lanús",
+            "awayTeam": "Banfield",
+            "score": "1 - 1"
+          }
+        ]
+      }
     }
   ],
   "jugadores": [

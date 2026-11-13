@@ -86,8 +86,52 @@
 
     <!-- ================= CONTENIDO DINÁMICO SEGÚN LA PESTAÑA ACTIVA ================= -->
 
-    @if (activeTab() === 'Alineaciones') {
-      <!-- ================= PESTAÑA: ALINEACIONES (TITULARES Y SUPLENTES SEPARADOS) ================= -->
+    @if (activeTab() === 'Estadísticas') {
+      <!-- ================= PESTAÑA: ESTADÍSTICAS ================= -->
+      <div class="fs-card stats-card-area">
+        <div class="side-team-header" style="display: flex; justify-content: space-between; margin-bottom: 1.5rem;">
+          <div class="pitch-title-with-logo">
+            <img [src]="localTeam()?.shield" class="side-team-logo" alt="" />
+            <span>{{ localTeam()?.name }}</span>
+          </div>
+          <h3>Estadísticas del Partido</h3>
+          <div class="pitch-title-with-logo">
+            <span>{{ awayTeam()?.name }}</span>
+            <img [src]="awayTeam()?.shield" class="side-team-logo" alt="" />
+          </div>
+        </div>
+
+        @if (match()?.statistics?.length) {
+          @for (stat of match()?.statistics; track stat.label) {
+            <div class="stat-bar-group">
+              <div class="stat-labels-row">
+                <span>{{ stat.local }}{{ stat.unit || '' }}</span>
+                <span class="s-name">{{ stat.label }}</span>
+                <span>{{ stat.away }}{{ stat.unit || '' }}</span>
+              </div>
+              <div class="dual-progress-bar">
+                <div
+                  class="fill-red"
+                  [style.width.%]="
+                    stat.local + stat.away > 0 ? (stat.local / (stat.local + stat.away)) * 100 : 50
+                  "
+                ></div>
+                <div
+                  class="fill-blue"
+                  [style.width.%]="
+                    stat.local + stat.away > 0 ? (stat.away / (stat.local + stat.away)) * 100 : 50
+                  "
+                ></div>
+              </div>
+            </div>
+          }
+        } @else {
+          <p class="empty-msg">No hay estadísticas disponibles para este partido.</p>
+        }
+      </div>
+
+    } @else if (activeTab() === 'Alineaciones') {
+      <!-- ================= PESTAÑA: ALINEACIONES ================= -->
       <div class="fs-card lineups-card-area">
         <h3>Alineaciones del Partido</h3>
 
@@ -102,7 +146,6 @@
                 </div>
               </div>
 
-              <!-- BLOQUE TITULARES LOCAL -->
               <div class="lineup-group-block">
                 <span class="section-subtitle-mini">Titulares</span>
                 <div class="table-responsive">
@@ -117,29 +160,22 @@
                     <tbody>
                       @for (player of lineups.local; track $index) {
                         <tr>
-                          <td>
-                            <strong>{{ player.number ?? '-' }}</strong>
-                          </td>
+                          <td><strong>{{ player.number ?? '-' }}</strong></td>
                           <td>{{ player.name }}</td>
                           <td>
                             @if (player.position) {
-                              <span class="pos-badge" [attr.data-pos]="player.position">
-                                {{ player.position }}
-                              </span>
+                              <span class="pos-badge" [attr.data-pos]="player.position">{{ player.position }}</span>
                             }
                           </td>
                         </tr>
                       } @empty {
-                        <tr>
-                          <td colspan="3" class="empty-lineup-cell">Sin titulares cargados</td>
-                        </tr>
+                        <tr><td colspan="3" class="empty-lineup-cell">Sin titulares cargados</td></tr>
                       }
                     </tbody>
                   </table>
                 </div>
               </div>
 
-              <!-- BLOQUE SUPLENTES LOCAL -->
               <div class="lineup-group-block subs-divider">
                 <span class="section-subtitle-mini">Suplentes</span>
                 <div class="table-responsive">
@@ -154,22 +190,16 @@
                     <tbody>
                       @for (sub of lineups.localSubstitutes; track $index) {
                         <tr>
-                          <td>
-                            <strong>{{ sub.number ?? '-' }}</strong>
-                          </td>
+                          <td><strong>{{ sub.number ?? '-' }}</strong></td>
                           <td>{{ sub.name }}</td>
                           <td>
                             @if (sub.position) {
-                              <span class="pos-badge" [attr.data-pos]="sub.position">
-                                {{ sub.position }}
-                              </span>
+                              <span class="pos-badge" [attr.data-pos]="sub.position">{{ sub.position }}</span>
                             }
                           </td>
                         </tr>
                       } @empty {
-                        <tr>
-                          <td colspan="3" class="empty-lineup-cell">Sin suplentes cargados</td>
-                        </tr>
+                        <tr><td colspan="3" class="empty-lineup-cell">Sin suplentes cargados</td></tr>
                       }
                     </tbody>
                   </table>
@@ -186,7 +216,6 @@
                 </div>
               </div>
 
-              <!-- BLOQUE TITULARES VISITANTE -->
               <div class="lineup-group-block">
                 <span class="section-subtitle-mini">Titulares</span>
                 <div class="table-responsive">
@@ -201,29 +230,22 @@
                     <tbody>
                       @for (player of lineups.away; track $index) {
                         <tr>
-                          <td>
-                            <strong>{{ player.number ?? '-' }}</strong>
-                          </td>
+                          <td><strong>{{ player.number ?? '-' }}</strong></td>
                           <td>{{ player.name }}</td>
                           <td>
                             @if (player.position) {
-                              <span class="pos-badge" [attr.data-pos]="player.position">
-                                {{ player.position }}
-                              </span>
+                              <span class="pos-badge" [attr.data-pos]="player.position">{{ player.position }}</span>
                             }
                           </td>
                         </tr>
                       } @empty {
-                        <tr>
-                          <td colspan="3" class="empty-lineup-cell">Sin titulares cargados</td>
-                        </tr>
+                        <tr><td colspan="3" class="empty-lineup-cell">Sin titulares cargados</td></tr>
                       }
                     </tbody>
                   </table>
                 </div>
               </div>
 
-              <!-- BLOQUE SUPLENTES VISITANTE -->
               <div class="lineup-group-block subs-divider">
                 <span class="section-subtitle-mini">Suplentes</span>
                 <div class="table-responsive">
@@ -238,22 +260,16 @@
                     <tbody>
                       @for (sub of lineups.awaySubstitutes; track $index) {
                         <tr>
-                          <td>
-                            <strong>{{ sub.number ?? '-' }}</strong>
-                          </td>
+                          <td><strong>{{ sub.number ?? '-' }}</strong></td>
                           <td>{{ sub.name }}</td>
                           <td>
                             @if (sub.position) {
-                              <span class="pos-badge" [attr.data-pos]="sub.position">
-                                {{ sub.position }}
-                              </span>
+                              <span class="pos-badge" [attr.data-pos]="sub.position">{{ sub.position }}</span>
                             }
                           </td>
                         </tr>
                       } @empty {
-                        <tr>
-                          <td colspan="3" class="empty-lineup-cell">Sin suplentes cargados</td>
-                        </tr>
+                        <tr><td colspan="3" class="empty-lineup-cell">Sin suplentes cargados</td></tr>
                       }
                     </tbody>
                   </table>
@@ -265,6 +281,152 @@
           <p class="empty-msg">No hay alineaciones disponibles para este partido.</p>
         }
       </div>
+
+    } @else if (activeTab() === 'Eventos') {
+      <!-- ================= PESTAÑA: EVENTOS ================= -->
+      <div class="fs-card events-card-area">
+        <h3>Cronología de Eventos</h3>
+        <div class="events-timeline">
+          @for (inc of match()?.incidences; track $index) {
+            <div class="event-row">
+              <span class="ev-min">{{ inc.minute }}'</span>
+              <span class="ev-icon">
+                @if (inc.type === 'GOAL') {
+                  ⚽
+                } @else if (inc.type === 'YELLOW_CARD') {
+                  🟨
+                } @else if (inc.type === 'RED_CARD') {
+                  🟥
+                } @else if (inc.type === 'SUBSTITUTION') {
+                  🔄
+                }
+              </span>
+              <span class="ev-desc">{{ inc.text }}</span>
+            </div>
+          } @empty {
+            <p class="empty-msg">No hay eventos registrados para este partido.</p>
+          }
+        </div>
+      </div>
+
+    } @else if (activeTab() === 'Cara a cara') {
+      <!-- ================= PESTAÑA: CARA A CARA (H2H) ================= -->
+      <div class="fs-card">
+        <h3>Historial Cara a Cara</h3>
+
+        @if (h2hData(); as h2h) {
+          <div style="margin-bottom: 1.5rem;">
+            <div class="stat-labels-row" style="margin-bottom: 0.5rem;">
+              <span><strong>{{ localTeam()?.name }}:</strong> {{ h2h.localWins }} PG</span>
+              <span class="s-name">Empates: {{ h2h.draws }} (Total: {{ h2h.totalMatches }})</span>
+              <span><strong>{{ awayTeam()?.name }}:</strong> {{ h2h.awayWins }} PG</span>
+            </div>
+            <div class="dual-progress-bar">
+              <div
+                class="fill-red"
+                [style.width.%]="h2h.totalMatches > 0 ? (h2h.localWins / h2h.totalMatches) * 100 : 33"
+              ></div>
+              <div
+                style="background-color: #64748b; height: 100%;"
+                [style.width.%]="h2h.totalMatches > 0 ? (h2h.draws / h2h.totalMatches) * 100 : 34"
+              ></div>
+              <div
+                class="fill-blue"
+                [style.width.%]="h2h.totalMatches > 0 ? (h2h.awayWins / h2h.totalMatches) * 100 : 33"
+              ></div>
+            </div>
+          </div>
+
+          <span class="section-subtitle-mini">Últimos enfrentamientos</span>
+          <div class="table-responsive">
+            <table class="sub-table">
+              <thead>
+                <tr>
+                  <th>Fecha</th>
+                  <th>Competición</th>
+                  <th>Local</th>
+                  <th style="text-align: center;">Resultado</th>
+                  <th>Visitante</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (prev of h2h.previousMatches; track $index) {
+                  <tr>
+                    <td>{{ prev.date }}</td>
+                    <td>{{ prev.competition }}</td>
+                    <td>{{ prev.homeTeam }}</td>
+                    <td style="text-align: center;"><strong>{{ prev.score }}</strong></td>
+                    <td>{{ prev.awayTeam }}</td>
+                  </tr>
+                } @empty {
+                  <tr>
+                    <td colspan="5" class="empty-lineup-cell">Sin enfrentamientos previos cargados</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        } @else {
+          <p class="empty-msg">No hay historial cara a cara cargado para este cruce.</p>
+        }
+      </div>
+
+    } @else if (activeTab() === 'Tabla') {
+      <!-- ================= PESTAÑA: TABLA DE POSICIONES ================= -->
+      <div class="fs-card">
+        <h3>Tabla de Posiciones — {{ championship()?.name || match()?.championshipName }}</h3>
+
+        @if (standings().length) {
+          <div class="table-responsive">
+            <table class="sub-table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Equipo</th>
+                  <th>PJ</th>
+                  <th>PG</th>
+                  <th>PE</th>
+                  <th>PP</th>
+                  <th>GF</th>
+                  <th>GC</th>
+                  <th>DG</th>
+                  <th>PTS</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (row of standings(); track row.teamId; let i = $index) {
+                  <tr
+                    [style.background-color]="
+                      isMatchTeam(row.teamId) ? 'rgba(249, 115, 22, 0.14)' : 'transparent'
+                    "
+                  >
+                    <td><strong>{{ i + 1 }}</strong></td>
+                    <td>
+                      <div class="pitch-title-with-logo">
+                        <img [src]="row.shield" class="side-team-logo" alt="" />
+                        <span [style.font-weight]="isMatchTeam(row.teamId) ? '700' : '400'">
+                          {{ row.teamName }}
+                        </span>
+                      </div>
+                    </td>
+                    <td>{{ row.pj }}</td>
+                    <td>{{ row.pg }}</td>
+                    <td>{{ row.pe }}</td>
+                    <td>{{ row.pp }}</td>
+                    <td>{{ row.gf }}</td>
+                    <td>{{ row.gc }}</td>
+                    <td>{{ row.dg > 0 ? '+' + row.dg : row.dg }}</td>
+                    <td><strong>{{ row.pts }}</strong></td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        } @else {
+          <p class="empty-msg">No hay datos de tabla disponibles para este campeonato.</p>
+        }
+      </div>
+
     } @else {
       <!-- ================= PESTAÑA POR DEFECTO (RESUMEN) ================= -->
       <div class="footstat-layout-grid">
@@ -374,7 +536,7 @@
         </div>
 
         <!-- 4. ALINEACIONES EN LISTA EN LA PESTAÑA RESUMEN -->
-        @if (match()?.lineups; as lineups) {
+        @if (dynamicLineups(); as lineups) {
           <div class="fs-card lineups-card-area">
             <h3>Alineaciones Iniciales</h3>
             <div class="pitches-grid">
@@ -387,7 +549,6 @@
                   </div>
                 </div>
 
-                <!-- Titulares Local -->
                 <div class="lineup-group-block">
                   <span class="section-subtitle-mini">Titulares</span>
                   <div class="table-responsive">
@@ -402,9 +563,7 @@
                       <tbody>
                         @for (player of lineups.local; track $index) {
                           <tr>
-                            <td>
-                              <strong>{{ player.number ?? '-' }}</strong>
-                            </td>
+                            <td><strong>{{ player.number ?? '-' }}</strong></td>
                             <td>{{ player.name }}</td>
                             <td>
                               @if (player.position) {
@@ -420,7 +579,6 @@
                   </div>
                 </div>
 
-                <!-- Suplentes Local (si existen) -->
                 @if (lineups.localSubstitutes?.length) {
                   <div class="lineup-group-block subs-divider">
                     <span class="section-subtitle-mini">Suplentes</span>
@@ -436,9 +594,7 @@
                         <tbody>
                           @for (sub of lineups.localSubstitutes; track $index) {
                             <tr>
-                              <td>
-                                <strong>{{ sub.number ?? '-' }}</strong>
-                              </td>
+                              <td><strong>{{ sub.number ?? '-' }}</strong></td>
                               <td>{{ sub.name }}</td>
                               <td>
                                 @if (sub.position) {
@@ -465,7 +621,6 @@
                   </div>
                 </div>
 
-                <!-- Titulares Visitante -->
                 <div class="lineup-group-block">
                   <span class="section-subtitle-mini">Titulares</span>
                   <div class="table-responsive">
@@ -480,9 +635,7 @@
                       <tbody>
                         @for (player of lineups.away; track $index) {
                           <tr>
-                            <td>
-                              <strong>{{ player.number ?? '-' }}</strong>
-                            </td>
+                            <td><strong>{{ player.number ?? '-' }}</strong></td>
                             <td>{{ player.name }}</td>
                             <td>
                               @if (player.position) {
@@ -498,7 +651,6 @@
                   </div>
                 </div>
 
-                <!-- Suplentes Visitante (si existen) -->
                 @if (lineups.awaySubstitutes?.length) {
                   <div class="lineup-group-block subs-divider">
                     <span class="section-subtitle-mini">Suplentes</span>
@@ -514,9 +666,7 @@
                         <tbody>
                           @for (sub of lineups.awaySubstitutes; track $index) {
                             <tr>
-                              <td>
-                                <strong>{{ sub.number ?? '-' }}</strong>
-                              </td>
+                              <td><strong>{{ sub.number ?? '-' }}</strong></td>
                               <td>{{ sub.name }}</td>
                               <td>
                                 @if (sub.position) {

@@ -3,12 +3,15 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth-service';
+import { TeamService } from '../../services/team-service'; // Verificá que la ruta coincida con tus archivos
+import { PlayerService } from '../../services/player-service';
+import { ChampionshipService } from '../../services/championship-service';
 
 interface SearchResult {
-  id: number;
+  id: number | string;
   name: string;
   type: 'equipo' | 'campeonato' | 'jugador';
-  route: string; // Ej: '/teams/1', '/championships/2', '/players/1'
+  route: string;
   subtitle?: string;
 }
 
@@ -21,6 +24,9 @@ interface SearchResult {
 })
 export class Navbar implements OnInit {
   public authService = inject(AuthService);
+  private teamService = inject(TeamService);
+  private playerService = inject(PlayerService);
+  private championshipService = inject(ChampionshipService);
   private router = inject(Router);
 
   isLightMode = signal(false);
@@ -30,48 +36,48 @@ export class Navbar implements OnInit {
   searchText = signal<string>('');
   isSearchFocused = signal<boolean>(false);
 
-  // Datos simulados con las rutas de detalle específicas por ID
-  private allElements: SearchResult[] = [
-    {
-      id: 1,
-      name: 'Liga Profesional',
+  // Construimos dinámicamente todos los elementos desde los Signals de los servicios
+  private allElements = computed<SearchResult[]>(() => {
+    const championships: SearchResult[] = this.championshipService.championships().map((c: any) => ({
+      id: c.id,
+      name: c.name,
       type: 'campeonato',
-      route: '/championships/1',
-      subtitle: 'Campeonato Activo',
-    },
-    {
-      id: 2,
-      name: 'Copa Libertadores',
-      type: 'campeonato',
-      route: '/championships/2',
-      subtitle: 'Internacional',
-    },
-    { id: 1, name: 'River Plate', type: 'equipo', route: '/teams/1', subtitle: 'Argentina' },
-    { id: 2, name: 'Boca Juniors', type: 'equipo', route: '/teams/2', subtitle: 'Argentina' },
-    {
-      id: 1,
-      name: 'Franco Armani',
-      type: 'jugador',
-      route: '/players/1',
-      subtitle: 'Arquero • Boca Juniors',
-    },
-    {
-      id: 2,
-      name: 'Edinson Cavani',
-      type: 'jugador',
-      route: '/players/2',
-      subtitle: 'Delantero • Boca Juniors',
-    },
-  ];
+      route: `/championships/${c.id}`,
+      subtitle: [c.type, c.country].filter(Boolean).join(' • ') || 'Campeonato',
+    }));
 
-  // Filtrado reactivo con computed
+    const teams: SearchResult[] = this.teamService.teams().map((t: any) => ({
+      id: t.id,
+      name: t.name,
+      type: 'equipo',
+      route: `/teams/${t.id}`,
+      subtitle: t.country || 'Equipo',
+    }));
+
+    const players: SearchResult[] = this.playerService.players().map((p: any) => ({
+      id: p.id,
+      name: p.name,
+      type: 'jugador',
+      route: `/players/${p.id}`,
+      subtitle: [p.position, p.teamName].filter(Boolean).join(' • ') || 'Jugador',
+    }));
+
+    return [...championships, ...teams, ...players];
+  });
+
+  // Filtrado reactivo ignorando tildes y mayúsculas
   searchResults = computed(() => {
-    const query = this.searchText().toLowerCase().trim();
+    const query = this.normalizeText(this.searchText());
     if (!query) return [];
 
-    return this.allElements.filter(
-      (item) => item.name.toLowerCase().includes(query) || item.type.toLowerCase().includes(query),
-    );
+    return this.allElements()
+      .filter(
+        (item) =>
+          this.normalizeText(item.name).includes(query) ||
+          this.normalizeText(item.type).includes(query) ||
+          (item.subtitle && this.normalizeText(item.subtitle).includes(query))
+      )
+      .slice(0, 12); // Limita a 12 resultados visibles para no desbordar el dropdown
   });
 
   isAdmin = computed(() => {
@@ -91,7 +97,24 @@ export class Navbar implements OnInit {
   });
 
   ngOnInit() {
-    console.log('Usuario actual en Navbar:', this.authService.currentUser());
+    // Aseguramos que los datos estén cargados en los servicios al iniciar el Navbar
+    if (this.championshipService.championships().length === 0) {
+      this.championshipService.getAll();
+    }
+    if (this.teamService.teams().length === 0) {
+      this.teamService.getAll();
+    }
+    if (this.playerService.players().length === 0) {
+      this.playerService.getAll();
+    }
+  }
+
+  private normalizeText(text: string): string {
+    return text
+      .toLowerCase()
+      .trim()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '');
   }
 
   @HostListener('document:click', ['$event'])

@@ -77,40 +77,47 @@ export class ChampionshipDetail implements OnInit {
   });
 
   // Partidos agrupados por fecha/jornada (jugados y por jugar)
+  // Partidos agrupados por fecha/jornada (jugados y por jugar)
   matchesByRound = computed(() => {
     const allMatches = this.allTournamentMatches();
-    const groupsMap = new Map<string, any[]>();
+    const groupsMap = new Map<string, { roundNum: number; matches: any[] }>();
 
     allMatches.forEach((m) => {
       let roundLabel = 'Sin fecha asignada';
+      let roundNum = 999;
 
-      const roundNum = m.round ?? m.matchday ?? m.jornada ?? m.fecha;
-      if (roundNum !== undefined && roundNum !== null && String(roundNum).trim() !== '') {
-        roundLabel = isNaN(Number(roundNum)) ? String(roundNum) : `Fecha ${roundNum}`;
-      } else if (m.championshipName && /fecha\s*\d+/i.test(m.championshipName)) {
-        const matchText = m.championshipName.match(/fecha\s*\d+/i);
-        if (matchText) {
-          roundLabel = matchText[0].replace(/^f/i, 'F');
+      // Intentamos obtener el número de fecha de múltiples propiedades posibles
+      const rawRound = m.round ?? m.matchday ?? m.jornada ?? m.fecha;
+      if (rawRound !== undefined && rawRound !== null && String(rawRound).trim() !== '') {
+        const parsed = parseInt(String(rawRound).replace(/\D/g, ''), 10);
+        if (!isNaN(parsed)) {
+          roundNum = parsed;
+          roundLabel = `Fecha ${roundNum}`;
+        } else {
+          roundLabel = String(rawRound);
+        }
+      } else if (m.championshipName) {
+        // Buscar patrón tipo "Fecha X" o "Jornada X" en el nombre del campeonato o del partido
+        const matchText = m.championshipName.match(/(?:fecha|jornada)\s*(\d+)/i);
+        if (matchText && matchText[1]) {
+          roundNum = parseInt(matchText[1], 10);
+          roundLabel = `Fecha ${roundNum}`;
         }
       }
 
       if (!groupsMap.has(roundLabel)) {
-        groupsMap.set(roundLabel, []);
+        groupsMap.set(roundLabel, { roundNum, matches: [] });
       }
-      groupsMap.get(roundLabel)!.push(m);
+      groupsMap.get(roundLabel)!.matches.push(m);
     });
 
     return Array.from(groupsMap.entries())
-      .map(([roundTitle, matches]) => ({
+      .map(([roundTitle, data]) => ({
         roundTitle,
-        matches,
+        roundNum: data.roundNum,
+        matches: data.matches,
       }))
-      .sort((a, b) => {
-        const numA = parseInt(a.roundTitle.replace(/\D/g, ''), 10);
-        const numB = parseInt(b.roundTitle.replace(/\D/g, ''), 10);
-        if (!isNaN(numA) && !isNaN(numB)) return numA - numB;
-        return a.roundTitle.localeCompare(b.roundTitle);
-      });
+      .sort((a, b) => a.roundNum - b.roundNum || a.roundTitle.localeCompare(b.roundTitle));
   });
 
   // Control del acordeón de fechas desplegadas
@@ -384,84 +391,127 @@ export class ChampionshipDetail implements OnInit {
       participatingIdsSet.has(String(p.currentTeamID)),
     );
 
-    const goalsMap = new Map<string, number>();
-    const yellowMap = new Map<string, number>();
-    const redMap = new Map<string, number>();
+    const scorersMap = new Map<string, { name: string; teamName: string; photo?: string; goals: number }>();
+    const cardsMap = new Map<string, { name: string; teamName: string; photo?: string; yellowCards: number; redCards: number }>();
+
+    const findPlayerPhoto = (playerName: string, teamId: string): string | undefined => {
+      const clean = playerName.trim().toLowerCase();
+      const found = leaguePlayers.find(
+        (p) =>
+          String(p.currentTeamID) === teamId &&
+          (p.name.toLowerCase() === clean || p.name.toLowerCase().includes(clean.split(' ').pop() || '')),
+      );
+      return found?.photo;
+    };
+
+    const addGoal = (playerName: string, teamId: string) => {
+      if (!playerName) return;
+      const team = allTeams.find((t) => String(t.id) === teamId);
+      const teamName = team?.name || '';
+      const key = `${playerName.trim().toLowerCase()}_${teamId}`;
+      const existing = scorersMap.get(key);
+      if (existing) {
+        existing.goals += 1;
+      } else {
+        scorersMap.set(key, {
+          name: playerName.trim(),
+          teamName,
+          photo: findPlayerPhoto(playerName, teamId),
+          goals: 1,
+        });
+      }
+    };
+
+    const addCard = (playerName: string, teamId: string, cardType: 'YELLOW' | 'RED') => {
+      if (!playerName) return;
+      const team = allTeams.find((t) => String(t.id) === teamId);
+      const teamName = team?.name || '';
+      const key = `${playerName.trim().toLowerCase()}_${teamId}`;
+      const existing = cardsMap.get(key) || {
+        name: playerName.trim(),
+        teamName,
+        photo: findPlayerPhoto(playerName, teamId),
+        yellowCards: 0,
+        redCards: 0,
+      };
+      if (cardType === 'YELLOW') existing.yellowCards += 1;
+      if (cardType === 'RED') existing.redCards += 1;
+      cardsMap.set(key, existing);
+    };
 
     champMatches.forEach((m) => {
-      (m.events || m.goalsList || []).forEach((ev: any) => {
-        const pId = String(ev.playerID ?? ev.playerId ?? '');
-        if (!pId) return;
-        if (ev.type === 'GOAL' || ev.type === 'Gol' || !ev.type) {
-          goalsMap.set(pId, (goalsMap.get(pId) || 0) + 1);
-        } else if (ev.type === 'YELLOW_CARD' || ev.type === 'Amarilla') {
-          yellowMap.set(pId, (yellowMap.get(pId) || 0) + 1);
-        } else if (ev.type === 'RED_CARD' || ev.type === 'Roja') {
-          redMap.set(pId, (redMap.get(pId) || 0) + 1);
+      const localId = String(m.localTeamID);
+      const awayId = String(m.awayTeamID);
+
+      // 1. Goles desde localGoalsDetail y awayGoalsDetail
+      (m.localGoalsDetail || []).forEach((g: any) => addGoal(g.player, localId));
+      (m.awayGoalsDetail || []).forEach((g: any) => addGoal(g.player, awayId));
+
+      // 2. Tarjetas desde incidences (ej: "Tarjeta Amarilla a G. Cano" o "Tarjeta Roja a M. Rojo")
+      (m.incidences || []).forEach((inc: any) => {
+        if (inc.type === 'YELLOW_CARD' || inc.type === 'RED_CARD') {
+          const text: string = inc.text || '';
+          const matchPlayer = text.match(/(?:a|para)\s+([^(]+)/i);
+          if (matchPlayer && matchPlayer[1]) {
+            const playerName = matchPlayer[1].trim();
+            // Determinamos el equipo buscando en alineaciones o asignando al local por defecto
+            const inAway = (m.lineups?.away || []).some((p: any) =>
+              p.name.toLowerCase().includes(playerName.toLowerCase()),
+            );
+            const teamId = inAway ? awayId : localId;
+            addCard(playerName, teamId, inc.type === 'YELLOW_CARD' ? 'YELLOW' : 'RED');
+          }
         }
       });
     });
 
-    const hasMatchEvents = goalsMap.size > 0 || yellowMap.size > 0 || redMap.size > 0;
+    // Respaldo para Liga Profesional (id "1") si aún no tiene goles cargados en partidos
+    if (scorersMap.size === 0 && champIdStr === '1') {
+      leaguePlayers
+        .filter((p) => (p.goals || 0) > 0)
+        .forEach((p) => {
+          const team = allTeams.find((t) => String(t.id) === String(p.currentTeamID));
+          scorersMap.set(`${p.id}`, {
+            name: p.name,
+            teamName: team?.name || p.teamName || '',
+            photo: p.photo,
+            goals: p.goals,
+          });
+        });
+    }
 
-    const getStat = (
-      p: any,
-      field: 'goals' | 'yellowCards' | 'redCards',
-      eventMap: Map<string, number>,
-    ) => {
-      const pId = String(p.id);
-      if (hasMatchEvents) {
-        return eventMap.get(pId) || 0;
-      }
-      if (p.statsByChampionship && p.statsByChampionship[champIdStr]) {
-        return p.statsByChampionship[champIdStr][field] || 0;
-      }
-      if (champIdStr === '1') {
-        return p[field] || 0;
-      }
-      return 0;
-    };
+    if (cardsMap.size === 0 && champIdStr === '1') {
+      leaguePlayers
+        .filter((p) => (p.yellowCards || 0) > 0 || (p.redCards || 0) > 0)
+        .forEach((p) => {
+          const team = allTeams.find((t) => String(t.id) === String(p.currentTeamID));
+          cardsMap.set(`${p.id}`, {
+            name: p.name,
+            teamName: team?.name || p.teamName || '',
+            photo: p.photo,
+            yellowCards: p.yellowCards || 0,
+            redCards: p.redCards || 0,
+          });
+        });
+    }
 
-    const scorers = leaguePlayers
-      .map((p) => ({
-        player: p,
-        goals: getStat(p, 'goals', goalsMap),
-      }))
-      .filter((item) => item.goals > 0)
-      .sort((a, b) => b.goals - a.goals)
-      .map((item, idx) => {
-        const team = allTeams.find((t) => String(t.id) === String(item.player.currentTeamID));
-        return {
-          position: idx + 1,
-          name: item.player.name,
-          photo: item.player.photo,
-          teamName: team?.name || item.player.teamName || '',
-          goals: item.goals,
-        };
-      });
+    const scorers = Array.from(scorersMap.values())
+      .sort((a, b) => b.goals - a.goals || a.name.localeCompare(b.name))
+      .map((item, idx) => ({
+        position: idx + 1,
+        ...item,
+      }));
 
-    const cards = leaguePlayers
-      .map((p) => ({
-        player: p,
-        yellowCards: getStat(p, 'yellowCards', yellowMap),
-        redCards: getStat(p, 'redCards', redMap),
-      }))
-      .filter((item) => item.yellowCards > 0 || item.redCards > 0)
+    const cards = Array.from(cardsMap.values())
       .sort(
         (a, b) =>
-          b.redCards * 3 + b.yellowCards - (a.redCards * 3 + a.yellowCards),
+          b.redCards * 3 + b.yellowCards - (a.redCards * 3 + a.yellowCards) ||
+          a.name.localeCompare(b.name),
       )
-      .map((item, idx) => {
-        const team = allTeams.find((t) => String(t.id) === String(item.player.currentTeamID));
-        return {
-          position: idx + 1,
-          name: item.player.name,
-          photo: item.player.photo,
-          teamName: team?.name || item.player.teamName || '',
-          yellowCards: item.yellowCards,
-          redCards: item.redCards,
-        };
-      });
+      .map((item, idx) => ({
+        position: idx + 1,
+        ...item,
+      }));
 
     this.allScorers.set(scorers);
     this.allCards.set(cards);

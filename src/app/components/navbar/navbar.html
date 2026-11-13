@@ -59,7 +59,7 @@
       <!-- Resultados desplegables del buscador -->
       @if (isSearchFocused() && searchText().trim() !== '') {
         <ul class="navbar__search-dropdown" (mousedown)="$event.preventDefault()">
-          @for (item of searchResults(); track item.id + item.type) {
+          @for (item of searchResults(); track item.type + '-' + item.id) {
             <li class="search-dropdown-item" (click)="selectSearchResult(item)">
               <div class="search-item-info">
                 <span class="search-item-name">{{ item.name }}</span>

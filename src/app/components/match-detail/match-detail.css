@@ -1,64 +1,48 @@
-/* ================= CONTENEDOR PRINCIPAL ================= */
-.footstat-detail-container {
-  width: 100%;
-  max-width: none;
-  margin: 0;
-  padding: 1rem 2.5rem;
-  box-sizing: border-box;
-  color: #ffffff;
+:host {
+  display: block;
+  color: #f8fafc;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
 }
 
-/* ================= BANNER SUPERIOR HERO (ESTADIO) ================= */
-.match-hero-banner {
-  background:
-    linear-gradient(
-      135deg,
-      rgba(3, 12, 24, 0.45) 0%,
-      rgba(5, 22, 45, 0.35) 50%,
-      rgba(2, 8, 16, 0.5) 100%
-    ),
-    url('/estadio.png') bottom center / 100% 100% no-repeat;
+.footstat-detail-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 1.5rem;
+}
 
-  border: 1px solid #143560;
-  border-radius: 18px;
-  padding: 2.5rem 3rem;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
-  width: 100%;
-  min-height: 250px;
-  box-sizing: border-box;
-  position: relative;
-  overflow: hidden;
+/* ==================== HERO BANNER ==================== */
+.match-hero-banner {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  border: 1px solid #1e293b;
+  border-radius: 16px;
+  padding: 1.5rem 2rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
 }
 
 .hero-top-row {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  position: relative;
   margin-bottom: 1.5rem;
 }
 
-.championship-badge-top.clickable-championship {
-  display: flex;
+.championship-badge-top {
+  display: inline-flex;
   align-items: center;
-  justify-content: center;
-  gap: 8px;
-  color: #f97316;
-  font-weight: 700;
-  font-size: 0.95rem;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  gap: 0.6rem;
+  background: rgba(255, 255, 255, 0.06);
+  padding: 0.4rem 0.9rem;
+  border-radius: 999px;
+  color: #e2e8f0;
   text-decoration: none;
-  cursor: pointer;
-  padding: 6px 14px;
-  border-radius: 10px;
-  transition: all 0.2s ease-in-out;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: background 0.2s;
 }
 
-.championship-badge-top.clickable-championship:hover {
-  background: rgba(249, 115, 22, 0.12);
-  color: #fb923c;
-  transform: translateY(-1px);
+.championship-badge-top:hover {
+  background: rgba(255, 255, 255, 0.12);
 }
 
 .championship-logo {
@@ -68,824 +52,448 @@
 }
 
 .status-badge-hero {
-  position: absolute;
-  right: 0;
-  background: #0b2545;
-  color: #94a3b8;
-  padding: 5px 14px;
-  border-radius: 16px;
-  font-weight: 700;
-  font-size: 0.78rem;
-  border: 1px solid #1e4b85;
+  background: #334155;
+  color: #cbd5e1;
+  padding: 0.35rem 0.85rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
 }
 
 .status-badge-hero.live {
-  background: #ef4444;
-  color: #ffffff;
-  border-color: #f87171;
+  background: rgba(239, 68, 68, 0.2);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.4);
 }
 
 .hero-content-grid {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
+  gap: 2rem;
   text-align: center;
-  gap: 1.5rem;
 }
 
 .team-hero-side {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 0.5rem;
 }
 
 .shield-container-hero.large img {
-  max-width: 95px;
-  max-height: 95px;
-  width: 95px;
-  height: 95px;
+  width: 76px;
+  height: 76px;
   object-fit: contain;
-  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.6));
 }
 
 .team-hero-name {
-  font-size: 1.3rem;
-  font-weight: 800;
   margin: 0;
+  font-size: 1.35rem;
+  font-weight: 700;
   color: #ffffff;
 }
 
 .team-country-badge {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 6px;
-  margin-top: 2px;
-}
-
-.country-flag {
-  font-size: 0.95rem;
-}
-
-.team-hero-country {
-  font-size: 0.82rem;
-  color: #8fa3bf;
-  font-weight: 600;
+  gap: 0.35rem;
+  font-size: 0.85rem;
+  color: #94a3b8;
 }
 
 .score-center-hero {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 0.5rem;
 }
 
 .score-box-hero {
   display: flex;
   align-items: center;
-  gap: 14px;
-  background: #030b17;
-  padding: 8px 22px;
-  border-radius: 14px;
-  border: 1px solid #1a4375;
-}
-
-.score-box-hero .num {
-  font-size: 2.6rem;
-  font-weight: 900;
+  gap: 1rem;
+  font-size: 2.75rem;
+  font-weight: 800;
   color: #ffffff;
+  background: rgba(15, 23, 42, 0.6);
+  padding: 0.5rem 1.5rem;
+  border-radius: 12px;
+  border: 1px solid #334155;
 }
 
 .score-box-hero .dash {
-  font-size: 2rem;
-  font-weight: 900;
-  color: #38bdf8;
+  color: #64748b;
 }
 
-.datetime-hero {
-  font-size: 0.8rem;
+.datetime-hero,
+.stadium-hero-info {
+  font-size: 0.85rem;
   color: #94a3b8;
 }
 
-.stadium-hero-info span {
-  font-size: 0.75rem;
-  color: #f97316;
-  background: rgba(249, 115, 22, 0.08);
-  padding: 4px 12px;
-  border-radius: 10px;
-  border: 1px solid rgba(249, 115, 22, 0.2);
-}
-
-.stadium-hero-info i {
-  margin-right: 6px;
-}
-
-/* ================= PESTAÑAS (TABS) ================= */
+/* ==================== TABS BAR ==================== */
 .footstat-tabs-bar {
   display: flex;
-  gap: 8px;
-  margin: 1.5rem 0;
+  gap: 0.5rem;
   overflow-x: auto;
-  padding-bottom: 4px;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
 }
 
 .tab-pill {
-  background: #05162b;
-  border: 1px solid #143560;
+  background: #0f172a;
   color: #94a3b8;
-  padding: 8px 18px;
-  border-radius: 10px;
-  font-weight: 700;
-  font-size: 0.82rem;
+  border: 1px solid #1e293b;
+  padding: 0.6rem 1.2rem;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s;
   white-space: nowrap;
+  transition: all 0.2s;
 }
 
-.tab-pill:hover,
+.tab-pill:hover {
+  color: #ffffff;
+  border-color: #334155;
+}
+
 .tab-pill.active {
-  background: #1a0c04;
-  color: #f97316;
-  border-color: #f97316;
+  background: #2563eb;
+  color: #ffffff;
+  border-color: #3b82f6;
 }
 
-/* ================= GRILLA GENERAL ANCHO COMPLETO (RESUMEN) ================= */
+/* ==================== LAYOUT GRID RESUMEN ==================== */
 .footstat-layout-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 1.5rem;
-  width: 100%;
-}
-
-.events-card-area {
-  grid-column: 1 / 2;
-}
-.stats-card-area {
-  grid-column: 2 / 3;
-}
-.right-sidebar-area {
-  grid-column: 3 / 4;
-  grid-row: 1 / 3;
-  display: flex;
-  flex-direction: column;
-}
-.lineups-card-area {
-  grid-column: 1 / 3;
+  grid-template-columns: 1fr 1.2fr 1fr;
+  gap: 1.25rem;
 }
 
 .fs-card {
-  background: #05162b;
-  border: 1px solid #143560;
-  border-radius: 16px;
-  padding: 1.4rem;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-  box-sizing: border-box;
-  width: 100%;
+  background: #0f172a;
+  border: 1px solid #1e293b;
+  border-radius: 14px;
+  padding: 1.25rem;
 }
 
 .fs-card h3 {
-  font-size: 1rem;
-  font-weight: 700;
   margin: 0 0 1rem 0;
-  color: #ffffff;
-  border-bottom: 1px solid #0f2b4c;
-  padding-bottom: 0.6rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #f1f5f9;
 }
 
-/* ================= EVENTOS ================= */
+.lineups-card-area {
+  grid-column: 1 / -1;
+}
+
+/* ==================== EVENTOS ==================== */
 .events-timeline {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 0.75rem;
 }
 
 .event-row {
   display: flex;
   align-items: center;
-  gap: 12px;
-  background: #030e1c;
-  padding: 10px 14px;
-  border-radius: 10px;
-  border: 1px solid #112c4d;
-  font-size: 0.85rem;
+  gap: 0.75rem;
+  padding: 0.6rem 0.8rem;
+  background: rgba(30, 41, 59, 0.5);
+  border-radius: 8px;
+  font-size: 0.9rem;
 }
 
 .ev-min {
-  font-weight: 800;
+  font-weight: 700;
   color: #38bdf8;
-  min-width: 25px;
-}
-.ev-desc {
-  flex: 1;
-  color: #cbd5e1;
-}
-.ev-score {
-  font-weight: 800;
-  color: #ffffff;
-  background: #0b2545;
-  padding: 2px 8px;
-  border-radius: 6px;
+  min-width: 32px;
 }
 
-/* ================= CANCHAS TÁCTICAS CLÁSICAS (RESUMEN) ================= */
+.ev-desc {
+  flex: 1;
+  color: #e2e8f0;
+}
+
+/* ==================== ESTADÍSTICAS ==================== */
+.stat-bar-group {
+  margin-bottom: 1rem;
+}
+
+.stat-labels-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  margin-bottom: 0.35rem;
+  color: #cbd5e1;
+}
+
+.stat-labels-row .s-name {
+  color: #94a3b8;
+}
+
+.dual-progress-bar {
+  display: flex;
+  height: 6px;
+  background: #1e293b;
+  border-radius: 999px;
+  overflow: hidden;
+  gap: 2px;
+}
+
+.fill-red {
+  background: #ef4444;
+  height: 100%;
+}
+
+.fill-blue {
+  background: #3b82f6;
+  height: 100%;
+}
+
+/* ==================== SIDEBAR DERECHO (MVP, CRÓNICA, ESTADIO) ==================== */
+.mvp-box-fs {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.mvp-avatar-placeholder {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #1e293b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+}
+
+.mvp-info {
+  flex: 1;
+}
+
+.mvp-info h4 {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #ffffff;
+}
+
+.mvp-info p {
+  margin: 0.2rem 0 0;
+  font-size: 0.8rem;
+  color: #94a3b8;
+}
+
+.mvp-rating-badge {
+  background: rgba(234, 179, 8, 0.15);
+  color: #facc15;
+  border: 1px solid rgba(234, 179, 8, 0.3);
+  padding: 0.3rem 0.6rem;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+.summary-text {
+  margin: 0;
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: #cbd5e1;
+}
+
+.stadium-img-box {
+  background: #1e293b;
+  padding: 0.85rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+/* ==================== ALINEACIONES EN LISTA ==================== */
+.lineups-lists-grid,
 .pitches-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 1rem;
+  gap: 1.5rem;
 }
 
+.lineup-side-panel,
 .pitch-box {
-  background: #030e1c;
-  border: 1px solid #112c4d;
+  background: rgba(15, 23, 42, 0.7);
+  border: 1px solid #1e293b;
   border-radius: 12px;
-  padding: 12px;
+  padding: 1.15rem;
 }
 
+.side-team-header,
 .pitch-header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  font-size: 0.78rem;
-  font-weight: 700;
-  margin-bottom: 10px;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding-bottom: 0.85rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid #1e293b;
+  font-weight: 600;
+  color: #f8fafc;
 }
 
 .pitch-title-with-logo {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 0.6rem;
 }
+
+.side-team-logo,
 .pitch-team-logo {
-  width: 20px;
-  height: 20px;
-  object-fit: contain;
-}
-.formation-tag {
-  background: rgba(249, 115, 22, 0.12);
-  color: #f97316;
-  padding: 2px 8px;
-  border-radius: 6px;
-  border: 1px solid rgba(249, 115, 22, 0.3);
-  font-weight: 700;
-}
-
-/* ================= CANCHAS 3D NÍTIDAS (ALINEACIONES) ================= */
-.pitches-dual-container {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.5rem;
-  width: 100%;
-}
-
-.pitch-box-pro {
-  background: #030e1c;
-  border: 1px solid #112c4d;
-  border-radius: 12px;
-  padding: 12px;
-}
-
-.football-pitch-iso {
-  background: linear-gradient(135deg, #0b3d22 0%, #062213 50%, #03140b 100%);
-  height: 380px;
-  border-radius: 14px;
-  position: relative;
-  border: 2px solid #145a32;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 35px 20px;
-  box-sizing: border-box;
-  margin-top: 10px;
-  overflow: hidden;
-  box-shadow:
-    0 12px 35px rgba(0, 0, 0, 0.6),
-    inset 0 0 40px rgba(0, 0, 0, 0.7),
-    inset 0 2px 4px rgba(255, 255, 255, 0.15);
-}
-
-.iso-field-lines {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  pointer-events: none;
-  z-index: 1;
-  opacity: 0.85;
-}
-
-.iso-box-top {
-  position: absolute;
-  top: -2px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 160px;
-  height: 65px;
-  border: 2px solid rgba(255, 255, 255, 0.35);
-  border-top: none;
-  border-radius: 0 0 12px 12px;
-}
-
-.iso-box-bottom {
-  position: absolute;
-  bottom: -2px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 160px;
-  height: 65px;
-  border: 2px solid rgba(255, 255, 255, 0.35);
-  border-bottom: none;
-  border-radius: 12px 12px 0 0;
-}
-
-.iso-center-line {
-  position: absolute;
-  top: 50%;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: rgba(255, 255, 255, 0.35);
-}
-
-.iso-center-circle {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 90px;
-  height: 90px;
-  border: 2px solid rgba(255, 255, 255, 0.35);
-  border-radius: 50%;
-}
-
-.pitch-line {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  position: relative;
-  z-index: 2;
-  margin: 0 auto;
-  padding: 0 10px;
-  box-sizing: border-box;
-}
-
-.player-pill {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-  transition: transform 0.2s ease;
-  text-align: center;
-  flex: 1;
-}
-
-/* ================= CAMISETAS (LOCAL VS VISITANTE NARANJA TIKIDATA) ================= */
-
-/* Equipo Local (Cancha Izquierda): Azul Clásico */
-.pitch-box-pro:first-child .player-pill span {
-  background: radial-gradient(circle at 35% 35%, #38bdf8 0%, #0369a1 60%, #0b2545 100%);
-  border: 2px solid #7dd3fc;
-  color: #ffffff;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.75rem;
-  font-weight: 900;
-  box-shadow:
-    0 6px 16px rgba(0, 0, 0, 0.7),
-    inset 0 2px 4px rgba(255, 255, 255, 0.5);
-  margin: 0 auto;
-}
-
-/* Equipo Visitante (Cancha Derecha): NARANJA TIKIDATA */
-.pitch-box-pro:last-child .player-pill span {
-  background: radial-gradient(circle at 35% 35%, #fb923c 0%, #ea580c 60%, #9a3412 100%);
-  border: 2px solid #fdba74;
-  color: #ffffff;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.75rem;
-  font-weight: 900;
-  box-shadow:
-    0 6px 16px rgba(0, 0, 0, 0.7),
-    inset 0 2px 4px rgba(255, 255, 255, 0.5);
-  margin: 0 auto;
-}
-
-.player-pill small {
-  font-size: 0.65rem;
-  white-space: nowrap;
-  color: #ffffff;
-  background: rgba(2, 6, 15, 0.92);
-  padding: 2px 8px;
-  border-radius: 5px;
-  border: 1px solid rgba(56, 189, 248, 0.4);
-  font-weight: 700;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
-}
-
-/* ================= ESTILOS PRO PARA LA PESTAÑA ALINEACIONES (3 COLUMNAS) ================= */
-.lineups-main-layout {
-  display: grid;
-  grid-template-columns: 320px 1fr 320px;
-  gap: 1.5rem;
-  align-items: start;
-}
-
-.lineup-side-panel {
-  background: #030e1c;
-  border: 1px solid #112c4d;
-  border-radius: 12px;
-  padding: 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1.2rem;
-}
-
-.side-team-header {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-weight: 800;
-  font-size: 0.95rem;
-  border-bottom: 1px solid #112c4d;
-  padding-bottom: 0.8rem;
-}
-
-.side-team-logo {
-  width: 24px;
-  height: 24px;
+  width: 26px;
+  height: 26px;
   object-fit: contain;
 }
 
 .formation-pill {
-  margin-left: auto;
-  background: rgba(249, 115, 22, 0.12);
-  color: #f97316;
-  border: 1px solid rgba(249, 115, 22, 0.3);
-  padding: 2px 8px;
+  background: rgba(56, 189, 248, 0.12);
+  color: #38bdf8;
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  padding: 0.2rem 0.65rem;
   border-radius: 6px;
-  font-size: 0.75rem;
+  font-size: 0.78rem;
+  font-weight: 600;
 }
 
-.section-subtitle-mini {
-  font-size: 0.75rem;
-  color: #8fa3bf;
-  text-transform: uppercase;
-  font-weight: 700;
-  display: block;
-  margin-bottom: 6px;
-}
-
-.coach-info-row {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  background: #05162b;
-  padding: 8px 12px;
-  border-radius: 8px;
-  border: 1px solid #143560;
-}
-
-.coach-avatar {
-  font-size: 1.4rem;
-}
-
-.coach-info-row h4 {
-  margin: 0;
-  font-size: 0.85rem;
-}
-
-.coach-info-row small {
-  color: #8fa3bf;
-  font-size: 0.7rem;
+/* ==================== TABLA DE JUGADORES ==================== */
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
 }
 
 .sub-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 0.78rem;
-}
-
-.sub-table th {
-  color: #8fa3bf;
-  text-align: left;
-  border-bottom: 1px solid #112c4d;
-  padding-bottom: 4px;
-  font-weight: 600;
-}
-
-.sub-table td {
-  padding: 6px 0;
-  border-bottom: 1px solid rgba(17, 44, 77, 0.4);
-  color: #cbd5e1;
-}
-
-.lineups-footer-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.5rem;
-  margin-top: 1.5rem;
-}
-
-.footer-card-box {
-  background: #030e1c;
-  border: 1px solid #112c4d;
-  border-radius: 12px;
-  padding: 1.2rem;
-}
-
-.footer-card-box h4 {
-  margin: 0 0 1rem 0;
   font-size: 0.9rem;
-  border-bottom: 1px solid #112c4d;
-  padding-bottom: 0.5rem;
 }
 
-.comp-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-weight: 700;
-  font-size: 0.85rem;
-}
-
-.comp-bar-wrapper {
-  flex: 1;
-  display: flex;
-  height: 6px;
-  background: #05162b;
-  margin: 0 12px;
-  border-radius: 3px;
-  overflow: hidden;
-}
-
-.fill-l {
-  background: #f97316;
-  border-radius: 3px 0 0 3px;
-}
-.fill-a {
-  background: #38bdf8;
-  border-radius: 0 3px 3px 0;
-}
-.comp-label {
-  display: block;
-  text-align: center;
-  color: #8fa3bf;
-  font-size: 0.72rem;
-  margin-top: 4px;
-}
-
-.subs-row-flex {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-}
-
-.team-mini-title {
-  display: block;
-  font-weight: 700;
+.sub-table thead th {
+  text-align: left;
+  padding: 0.55rem 0.75rem;
+  color: #94a3b8;
   font-size: 0.78rem;
-  color: #38bdf8;
-  margin-bottom: 6px;
-}
-
-.sub-event {
-  font-size: 0.75rem;
-  color: #cbd5e1;
-  background: #05162b;
-  padding: 6px;
-  border-radius: 6px;
-  margin-bottom: 6px;
-  border: 1px solid #143560;
-}
-
-.unavailable-list {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.unavail-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: #05162b;
-  padding: 8px;
-  border-radius: 8px;
-  border: 1px solid #143560;
-  font-size: 0.78rem;
-}
-
-.team-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-}
-.team-dot.local {
-  background: #f97316;
-}
-.team-dot.away {
-  background: #38bdf8;
-}
-
-/* ================= ESTADÍSTICAS BARRAS ================= */
-.stat-bar-group {
-  margin-bottom: 1rem;
-}
-.stat-labels-row {
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.82rem;
-  font-weight: 700;
-  margin-bottom: 4px;
-}
-.s-name {
-  color: #8fa3bf;
-  font-weight: 600;
-}
-.dual-progress-bar {
-  display: flex;
-  height: 7px;
-  background: #030b17;
-  border-radius: 4px;
-  overflow: hidden;
-  gap: 2px;
-}
-.fill-red {
-  background: #f97316;
-  border-radius: 3px 0 0 3px;
-}
-.fill-blue {
-  background: #38bdf8;
-  border-radius: 0 3px 3px 0;
-}
-
-/* ================= MVP ================= */
-.mvp-box-fs {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  background: #030e1c;
-  padding: 10px;
-  border-radius: 10px;
-  border: 1px solid #112c4d;
-  margin-bottom: 10px;
-}
-.mvp-avatar-placeholder {
-  width: 40px;
-  height: 40px;
-  background: #0b2545;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.mvp-info {
-  flex: 1;
-}
-.mvp-info h4 {
-  margin: 0;
-  font-size: 0.88rem;
-}
-.mvp-info p {
-  margin: 0;
-  font-size: 0.7rem;
-  color: #8fa3bf;
-}
-.mvp-rating-badge {
-  background: #f59e0b;
-  color: #000;
-  font-weight: 800;
-  font-size: 0.78rem;
-  padding: 3px 8px;
-  border-radius: 12px;
-}
-.mvp-sub-stats {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 6px;
-  text-align: center;
-}
-.mss-item {
-  background: #030e1c;
-  padding: 6px 2px;
-  border-radius: 8px;
-  border: 1px solid #112c4d;
-}
-.mss-item span {
-  display: block;
-  font-weight: 800;
-  font-size: 0.85rem;
-  color: #38bdf8;
-}
-.mss-item label {
-  font-size: 0.6rem;
-  color: #8fa3bf;
   text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border-bottom: 1px solid #1e293b;
 }
 
-/* ================= ESTADIO Y ÁRBITRO ================= */
-.stadium-card-fs {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+.sub-table thead th:first-child,
+.sub-table tbody td:first-child {
+  width: 48px;
+  text-align: center;
+  color: #38bdf8;
 }
-.stadium-img-box {
-  background: #030e1c;
-  height: 80px;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #8fa3bf;
+
+.sub-table thead th:last-child,
+.sub-table tbody td:last-child {
+  width: 72px;
+  text-align: right;
+}
+
+.sub-table tbody tr {
+  border-bottom: 1px solid rgba(30, 41, 59, 0.6);
+  transition: background 0.15s;
+}
+
+.sub-table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.sub-table tbody tr:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.sub-table tbody td {
+  padding: 0.6rem 0.75rem;
+  color: #e2e8f0;
+}
+
+.pos-badge {
+  display: inline-block;
+  padding: 0.18rem 0.5rem;
+  border-radius: 5px;
+  font-size: 0.72rem;
   font-weight: 700;
-  font-size: 0.85rem;
-  border: 1px solid #112c4d;
-}
-.stadium-details-fs p {
-  margin: 2px 0;
-  font-size: 0.78rem;
+  background: rgba(148, 163, 184, 0.14);
   color: #cbd5e1;
 }
 
-.referee-box-fs {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  background: #030e1c;
-  padding: 10px;
-  border-radius: 10px;
-  border: 1px solid #112c4d;
+.pos-badge[data-pos='POR'],
+.pos-badge[data-pos='ARQ'] {
+  background: rgba(234, 179, 8, 0.15);
+  color: #facc15;
 }
-.ref-avatar {
-  font-size: 1.5rem;
+
+.pos-badge[data-pos='DEF'] {
+  background: rgba(59, 130, 246, 0.15);
+  color: #60a5fa;
 }
-.ref-info {
-  flex: 1;
+
+.pos-badge[data-pos='MED'] {
+  background: rgba(16, 185, 129, 0.15);
+  color: #34d399;
 }
-.ref-info h4 {
-  margin: 0;
-  font-size: 0.85rem;
+
+.pos-badge[data-pos='DEL'] {
+  background: rgba(239, 68, 68, 0.15);
+  color: #f87171;
 }
-.ref-info p {
-  margin: 0;
-  font-size: 0.7rem;
-  color: #8fa3bf;
-}
-.ref-cards {
-  display: flex;
-  gap: 6px;
-  font-size: 0.75rem;
-  font-weight: 700;
-}
-.ref-cards .yellow {
-  color: #f59e0b;
-}
-.ref-cards .red {
-  color: #ef4444;
+
+.empty-msg,
+.empty-lineup-cell {
+  color: #94a3b8;
+  font-size: 0.88rem;
+  text-align: center;
+  padding: 1rem;
 }
 
 .loading-fs {
   text-align: center;
-  padding: 4rem;
+  padding: 3rem;
   color: #94a3b8;
 }
 
-/* ================= RESPONSIVE DESIGN ================= */
-@media (max-width: 1300px) {
-  .lineups-main-layout {
-    grid-template-columns: 1fr;
-  }
-  .pitches-dual-container {
-    grid-template-columns: 1fr;
-  }
-  .lineups-footer-grid {
+/* ==================== RESPONSIVE ==================== */
+@media (max-width: 992px) {
+  .footstat-layout-grid {
     grid-template-columns: 1fr;
   }
 }
 
-@media (max-width: 1100px) {
-  .footstat-layout-grid {
-    grid-template-columns: 1fr;
-  }
-  .events-card-area,
-  .stats-card-area,
-  .right-sidebar-area,
-  .lineups-card-area {
-    grid-column: 1 / -1;
-    grid-row: auto;
-  }
+@media (max-width: 768px) {
+  .hero-content-grid,
+  .lineups-lists-grid,
   .pitches-grid {
     grid-template-columns: 1fr;
   }
+}
+
+.section-subtitle-mini {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #38bdf8;
+  background: rgba(56, 189, 248, 0.1);
+  border: 1px solid rgba(56, 189, 248, 0.2);
+  padding: 0.25rem 0.65rem;
+  border-radius: 6px;
+  margin-bottom: 0.75rem;
+}
+
+.subs-divider {
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px dashed #334155;
 }

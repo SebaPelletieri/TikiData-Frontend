@@ -1,7 +1,7 @@
 export type ChampionshipType = 'LIGA' | 'COPA'; 
 
 export interface Championship {
-  id?: number | string;
+  id?: number ;
   name: string;
   logo: string;
   type: ChampionshipType;

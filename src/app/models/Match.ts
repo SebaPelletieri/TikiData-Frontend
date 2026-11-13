@@ -25,8 +25,10 @@ export interface LineupPlayer {
 }
 
 export interface MatchLineups {
-  local: LineupPlayer[];
-  away: LineupPlayer[];
+  local: LineupPlayer[];             
+  away: LineupPlayer[];              
+  localSubstitutes?: LineupPlayer[];  
+  awaySubstitutes?: LineupPlayer[];  
 }
 
 export interface H2HMatch {

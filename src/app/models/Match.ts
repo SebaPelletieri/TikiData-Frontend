@@ -1,4 +1,4 @@
-import { Championship } from "./Championship";
+import { Championship } from './Championship';
 
 export type Status = 'Programado' | 'En Vivo' | 'Finalizado';
 
@@ -27,10 +27,10 @@ export interface LineupPlayer {
 }
 
 export interface MatchLineups {
-  local: LineupPlayer[];             
-  away: LineupPlayer[];              
-  localSubstitutes?: LineupPlayer[];  
-  awaySubstitutes?: LineupPlayer[];  
+  local: LineupPlayer[];
+  away: LineupPlayer[];
+  localSubstitutes?: LineupPlayer[];
+  awaySubstitutes?: LineupPlayer[];
 }
 
 export interface H2HMatch {
@@ -67,7 +67,8 @@ export interface Match {
   awayTeamID: number;
   championshipID?: number;
   date: Date | string;
-  championship?: Championship;  localGoals: number;
+  championship?: Championship;
+  localGoals: number;
   awayGoals: number;
   status?: Status;
   stadium: string;

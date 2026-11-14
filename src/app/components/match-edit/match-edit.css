@@ -106,6 +106,10 @@
   box-sizing: border-box;
 }
 
+.form-group input[type='datetime-local'] {
+  color-scheme: dark;
+}
+
 .form-group input:hover,
 .dropdown-trigger:hover,
 .direct-search-input-box input:hover {
@@ -182,7 +186,7 @@
 }
 
 .dropdown-item:hover {
-  background-color: #ff6b00;
+  background-color: rgba(255, 107, 0, 0.2);
   color: #ffffff;
 }
 
@@ -221,7 +225,7 @@
 }
 
 .suggestion-item:hover {
-  background-color: #ff6b00;
+  background-color: rgba(255, 107, 0, 0.2);
   color: #fff;
 }
 

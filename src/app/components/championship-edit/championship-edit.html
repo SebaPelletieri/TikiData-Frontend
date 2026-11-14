@@ -28,12 +28,11 @@
       <div class="form-group">
         <label>Nombre del Campeonato <span class="required">*</span></label>
         <input type="text" formControlName="name" placeholder="Ej. Liga Profesional" />
-        <div
-          class="error-feedback"
-          *ngIf="champForm.get('name')?.invalid && champForm.get('name')?.touched"
-        >
-          <span class="error-text">El nombre es obligatorio.</span>
-        </div>
+        @if (champForm.get('name')?.invalid && champForm.get('name')?.touched) {
+          <div class="error-feedback">
+            <span class="error-text">El nombre es obligatorio.</span>
+          </div>
+        }
       </div>
 
       <div class="form-group">
@@ -45,38 +44,46 @@
     <!-- País y Tipo de Torneo (Desplegables) -->
     <div class="form-row">
       <!-- Selector de País -->
-      <div class="form-group">
+      <div class="form-group country-group">
         <label>País / Región <span class="required">*</span></label>
         <div class="custom-dropdown" [class.open]="isCountryOpen">
-          <div class="dropdown-trigger" (click)="toggleCountryDropdown()">
+          <button type="button" class="dropdown-trigger" (click)="toggleCountryDropdown($event)">
             <span [class.placeholder]="!champForm.get('country')?.value">
               {{ champForm.get('country')?.value || 'Seleccionar país...' }}
             </span>
             <span class="triangle-icon"></span>
-          </div>
-          <ul class="dropdown-menu" *ngIf="isCountryOpen">
-            <li class="dropdown-item" *ngFor="let c of countries" (click)="selectCountry(c)">
-              <span>{{ c }}</span>
-            </li>
-          </ul>
+          </button>
+          @if (isCountryOpen) {
+            <ul class="dropdown-menu">
+              @for (c of countries; track c) {
+                <li class="dropdown-item" (click)="selectCountry(c)">
+                  <span>{{ c }}</span>
+                </li>
+              }
+            </ul>
+          }
         </div>
       </div>
 
       <!-- Selector de Tipo de Torneo -->
-      <div class="form-group">
+      <div class="form-group type-group">
         <label>Tipo de Torneo <span class="required">*</span></label>
         <div class="custom-dropdown" [class.open]="isTypeOpen">
-          <div class="dropdown-trigger" (click)="toggleTypeDropdown()">
+          <button type="button" class="dropdown-trigger" (click)="toggleTypeDropdown($event)">
             <span [class.placeholder]="!champForm.get('type')?.value">
               {{ champForm.get('type')?.value || 'Seleccionar tipo...' }}
             </span>
             <span class="triangle-icon"></span>
-          </div>
-          <ul class="dropdown-menu" *ngIf="isTypeOpen">
-            <li class="dropdown-item" *ngFor="let t of types" (click)="selectType(t)">
-              <span>{{ t }}</span>
-            </li>
-          </ul>
+          </button>
+          @if (isTypeOpen) {
+            <ul class="dropdown-menu">
+              @for (t of types; track t) {
+                <li class="dropdown-item" (click)="selectType(t)">
+                  <span>{{ t }}</span>
+                </li>
+              }
+            </ul>
+          }
         </div>
       </div>
     </div>

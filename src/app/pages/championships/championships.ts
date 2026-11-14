@@ -1,5 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
-import { ChampionshipForm } from '../../components/championship-form/championship-form';
+import { Component } from '@angular/core';
 import { ChampionshipList } from '../../components/championship-list/championship-list';
 import { CommonModule } from '@angular/common';
 
@@ -8,7 +7,6 @@ import { CommonModule } from '@angular/common';
   imports: [CommonModule, ChampionshipList],
   selector: 'app-championships',
   styleUrl: './championships.css',
-  templateUrl: './championships.html',
+  templateUrl: './championships.html', // (O tu templateUrl original)
 })
-export class Championships{
-}
+export class Championships {}

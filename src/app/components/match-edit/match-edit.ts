@@ -1,4 +1,12 @@
-import { Component, OnInit, Input, Output, EventEmitter, inject } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  Output,
+  EventEmitter,
+  inject,
+  HostListener,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   FormBuilder,
@@ -34,6 +42,7 @@ export class MatchEdit implements OnInit {
 
   matchForm!: FormGroup;
   matchId: number | null = null;
+  loadedMatchData: any = null;
 
   allTeams: Team[] = [];
   allChampionships: Championship[] = [];
@@ -46,32 +55,29 @@ export class MatchEdit implements OnInit {
     'Estadio Mario Alberto Kempes',
     'Estadio José Amalfitani',
     'Estadio Monumental de Victoria',
-  ]; // Puedes expandir o cargar esto dinámicamente si prefieres
+  ];
 
   // Buscador de Campeonato
   championshipSearchCtrl = new FormControl('');
   filteredChampionships: Championship[] = [];
   isChampDropdownOpen = false;
-  selectedChampionshipName = '';
 
   // Buscador de Equipo Local
   localSearchCtrl = new FormControl('');
   filteredLocalTeams: Team[] = [];
   isLocalDropdownOpen = false;
-  selectedLocalTeamName = '';
 
   // Buscador de Equipo Visitante
   visitorSearchCtrl = new FormControl('');
   filteredVisitorTeams: Team[] = [];
   isVisitorDropdownOpen = false;
-  selectedVisitorTeamName = '';
 
   // Buscador de Estadio
   stadiumSearchCtrl = new FormControl('');
   filteredStadiums: string[] = [];
   isStadiumDropdownOpen = false;
 
-  // 1. Opciones de Estado del Partido limitadas exactamente a 3
+  // Opciones de Estado del Partido
   statuses = ['Programado', 'En vivo', 'Finalizado'];
   isStatusOpen = false;
 
@@ -79,15 +85,19 @@ export class MatchEdit implements OnInit {
     this.initForm();
 
     this.teamService.getAllTeams().subscribe({
-      next: (teams) => {
+      next: (teams: Team[]) => {
         this.allTeams = teams;
+        this.tryResolveNames();
       },
+      error: (err: any) => console.error('Error al cargar equipos:', err),
     });
 
     this.championshipService.getAllChampionships().subscribe({
-      next: (champs) => {
+      next: (champs: Championship[]) => {
         this.allChampionships = champs;
+        this.tryResolveNames();
       },
+      error: (err: any) => console.error('Error al cargar campeonatos:', err),
     });
 
     if (this.matchIdInput) {
@@ -103,7 +113,7 @@ export class MatchEdit implements OnInit {
       });
     }
 
-    // Filtro reactivo para Campeonatos
+    // Filtros reactivos de búsqueda
     this.championshipSearchCtrl.valueChanges.subscribe((query) => {
       const q = (query || '').toLowerCase().trim();
       if (!q) {
@@ -117,7 +127,6 @@ export class MatchEdit implements OnInit {
       }
     });
 
-    // Filtro reactivo para Local
     this.localSearchCtrl.valueChanges.subscribe((query) => {
       const q = (query || '').toLowerCase().trim();
       if (!q) {
@@ -129,7 +138,6 @@ export class MatchEdit implements OnInit {
       }
     });
 
-    // Filtro reactivo para Visitante
     this.visitorSearchCtrl.valueChanges.subscribe((query) => {
       const q = (query || '').toLowerCase().trim();
       if (!q) {
@@ -141,18 +149,27 @@ export class MatchEdit implements OnInit {
       }
     });
 
-    // 2. Filtro reactivo para el Buscador de Estadio
     this.stadiumSearchCtrl.valueChanges.subscribe((query) => {
       const q = (query || '').toLowerCase().trim();
-      this.matchForm.get('stadium')?.setValue(query); // Sincroniza el valor con el form group
+      this.matchForm.get('stadium')?.setValue(query);
       if (!q) {
         this.filteredStadiums = [];
         this.isStadiumDropdownOpen = false;
       } else {
         this.filteredStadiums = this.allStadiums.filter((s) => s.toLowerCase().includes(q));
-        this.isStadiumDropdownOpen = true; // Muestra sugerencias o permite dejar el texto escrito
+        this.isStadiumDropdownOpen = this.filteredStadiums.length > 0;
       }
     });
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent): void {
+    const target = event.target as HTMLElement;
+    if (!target.closest('.championship-group')) this.isChampDropdownOpen = false;
+    if (!target.closest('.local-group')) this.isLocalDropdownOpen = false;
+    if (!target.closest('.visitor-group')) this.isVisitorDropdownOpen = false;
+    if (!target.closest('.stadium-group')) this.isStadiumDropdownOpen = false;
+    if (!target.closest('.status-group')) this.isStatusOpen = false;
   }
 
   initForm() {
@@ -172,56 +189,88 @@ export class MatchEdit implements OnInit {
     this.matchService.getById(id).subscribe({
       next: (match: any) => {
         if (match) {
+          this.loadedMatchData = match;
+
+          // 👈 Formato YYYY-MM-DDTHH:mm requerido por input datetime-local
+          const rawDate = match.matchDate || match.fecha || '';
+          const formattedDate = rawDate ? rawDate.substring(0, 16) : '';
+
           this.matchForm.patchValue({
-            championshipId: match.championshipId || match.campeonatoId,
-            matchDate: match.matchDate || match.fecha,
-            homeTeamId: match.homeTeamId || match.equipoLocalId,
-            awayTeamId: match.awayTeamId || match.equipoVisitanteId,
-            stadium: match.stadium || match.estadio,
+            championshipId: match.championshipId || match.campeonatoId || match.champId,
+            matchDate: formattedDate,
+            homeTeamId: match.homeTeamId || match.equipoLocalId || match.localTeamId,
+            awayTeamId: match.awayTeamId || match.equipoVisitanteId || match.visitorTeamId,
+            stadium: match.stadium || match.estadio || '',
             status: match.status || match.estado || 'Programado',
             homeGoals: match.homeGoals ?? match.golesLocal ?? 0,
             awayGoals: match.awayGoals ?? match.golesVisitante ?? 0,
           });
 
-          if (match.championshipName) {
-            this.selectedChampionshipName = match.championshipName;
-            this.championshipSearchCtrl.setValue(match.championshipName, { emitEvent: false });
-          }
-          if (match.homeTeamName) {
-            this.selectedLocalTeamName = match.homeTeamName;
-            this.localSearchCtrl.setValue(match.homeTeamName, { emitEvent: false });
-          }
-          if (match.awayTeamName) {
-            this.selectedVisitorTeamName = match.awayTeamName;
-            this.visitorSearchCtrl.setValue(match.awayTeamName, { emitEvent: false });
-          }
-          if (match.stadium || match.estadio) {
-            const stad = match.stadium || match.estadio;
-            this.stadiumSearchCtrl.setValue(stad, { emitEvent: false });
-          }
+          this.tryResolveNames();
         }
       },
-      error: (err) => console.error('Error al cargar partido:', err),
+      error: (err: any) => console.error('Error al cargar partido:', err),
     });
+  }
+
+  tryResolveNames() {
+    if (!this.loadedMatchData) return;
+    const match = this.loadedMatchData;
+
+    // 1. Resolver Nombre Campeonato
+    if (match.championshipName) {
+      this.championshipSearchCtrl.setValue(match.championshipName, { emitEvent: false });
+    } else {
+      const champId = match.championshipId || match.campeonatoId || match.champId;
+      if (champId && this.allChampionships.length > 0) {
+        const found = this.allChampionships.find((c) => c.id == champId);
+        if (found) this.championshipSearchCtrl.setValue(found.name, { emitEvent: false });
+      }
+    }
+
+    // 2. Resolver Nombre Equipo Local
+    if (match.homeTeamName) {
+      this.localSearchCtrl.setValue(match.homeTeamName, { emitEvent: false });
+    } else {
+      const homeId = match.homeTeamId || match.equipoLocalId || match.localTeamId;
+      if (homeId && this.allTeams.length > 0) {
+        const found = this.allTeams.find((t) => t.id == homeId);
+        if (found) this.localSearchCtrl.setValue(found.name, { emitEvent: false });
+      }
+    }
+
+    // 3. Resolver Nombre Equipo Visitante
+    if (match.awayTeamName) {
+      this.visitorSearchCtrl.setValue(match.awayTeamName, { emitEvent: false });
+    } else {
+      const awayId = match.awayTeamId || match.equipoVisitanteId || match.visitorTeamId;
+      if (awayId && this.allTeams.length > 0) {
+        const found = this.allTeams.find((t) => t.id == awayId);
+        if (found) this.visitorSearchCtrl.setValue(found.name, { emitEvent: false });
+      }
+    }
+
+    // 4. Estadio
+    const stad = match.stadium || match.estadio;
+    if (stad) {
+      this.stadiumSearchCtrl.setValue(stad, { emitEvent: false });
+    }
   }
 
   selectChampionship(champ: Championship) {
     this.matchForm.get('championshipId')?.setValue(champ.id);
-    this.selectedChampionshipName = champ.name;
     this.championshipSearchCtrl.setValue(champ.name, { emitEvent: false });
     this.isChampDropdownOpen = false;
   }
 
   selectLocalTeam(team: Team) {
     this.matchForm.get('homeTeamId')?.setValue(team.id);
-    this.selectedLocalTeamName = team.name;
     this.localSearchCtrl.setValue(team.name, { emitEvent: false });
     this.isLocalDropdownOpen = false;
   }
 
   selectVisitorTeam(team: Team) {
     this.matchForm.get('awayTeamId')?.setValue(team.id);
-    this.selectedVisitorTeamName = team.name;
     this.visitorSearchCtrl.setValue(team.name, { emitEvent: false });
     this.isVisitorDropdownOpen = false;
   }
@@ -232,7 +281,8 @@ export class MatchEdit implements OnInit {
     this.isStadiumDropdownOpen = false;
   }
 
-  toggleStatusDropdown() {
+  toggleStatusDropdown(event?: MouseEvent) {
+    if (event) event.stopPropagation();
     this.isStatusOpen = !this.isStatusOpen;
   }
 
@@ -243,7 +293,7 @@ export class MatchEdit implements OnInit {
 
   onSubmit() {
     if (this.matchForm.valid && this.matchId !== null) {
-      this.matchService.updateMatch(this.matchId, this.matchForm.value).subscribe({
+      this.matchService.update(this.matchId, this.matchForm.value).subscribe({
         next: () => {
           this.closePanel.emit();
         },

@@ -242,7 +242,7 @@
 }
 
 /* =========================================
-   MODAL: Estilo exacto de Player Form
+   MODAL
    ========================================= */
 .modal-overlay {
   position: fixed;
@@ -289,7 +289,6 @@
   }
 }
 
-/* Cabecera del Formulario */
 .form-header {
   display: flex;
   align-items: center;
@@ -344,7 +343,6 @@
   transform: scale(1.1);
 }
 
-/* Campos del Modal */
 .modal-body {
   display: flex;
   flex-direction: column;
@@ -383,7 +381,6 @@
   width: 100%;
 }
 
-/* Lupa dentro del input */
 .search-lens-icon {
   position: absolute;
   left: 14px;
@@ -436,7 +433,6 @@
   background-color: #184683;
 }
 
-/* Menú desplegable con los resultados */
 .search-results-list {
   position: absolute;
   top: calc(100% + 6px);
@@ -458,11 +454,6 @@
 .search-results-list::-webkit-scrollbar {
   width: 5px;
 }
-
-.search-results-list::-webkit-scrollbar-track {
-  background: transparent;
-}
-
 .search-results-list::-webkit-scrollbar-thumb {
   background: #143560;
   border-radius: 4px;
@@ -580,107 +571,6 @@
 }
 
 /* Input de Dorsal */
-.dorsal-assign-group input {
-  width: 100%;
-  height: 44px;
-  padding: 0 14px;
-  background-color: #081d38;
-  color: #ffffff;
-  border: 1px solid #143560;
-  border-radius: 10px;
-  font-size: 0.9rem;
-  outline: none;
-  font-family: inherit;
-  transition:
-    border-color 0.2s ease,
-    background-color 0.2s ease,
-    box-shadow 0.2s ease;
-}
-
-.dorsal-assign-group input:hover,
-.dorsal-assign-group input:focus {
-  border-color: #38bdf8;
-  background-color: #092244;
-  box-shadow: 0 0 12px rgba(56, 189, 248, 0.15);
-}
-
-.field-hint {
-  font-size: 0.75rem;
-  color: #637d9d;
-  margin-top: 4px;
-}
-
-/* =========================================
-   Botones de Acción
-   ========================================= */
-.form-actions {
-  display: flex;
-  gap: 1rem;
-  margin-top: 1.5rem;
-}
-
-.btn-cancel {
-  flex: 1;
-  height: 48px;
-  background-color: transparent;
-  border: 1px solid #1a3d6b;
-  color: #ffffff;
-  border-radius: 12px;
-  font-size: 0.95rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition:
-    border-color 0.2s ease,
-    background-color 0.2s ease,
-    box-shadow 0.2s ease,
-    transform 0.2s ease;
-}
-
-.btn-cancel:hover {
-  border-color: #38bdf8;
-  background-color: #092244;
-  box-shadow: 0 0 12px rgba(56, 189, 248, 0.2);
-  transform: translateY(-1px);
-}
-
-.btn-cancel:active {
-  transform: translateY(0);
-}
-
-.btn-save {
-  flex: 1;
-  height: 48px;
-  background: linear-gradient(180deg, #2563eb 0%, #1d4ed8 100%);
-  border: none;
-  color: #ffffff;
-  border-radius: 12px;
-  font-size: 0.95rem;
-  font-weight: 600;
-  cursor: pointer;
-  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
-  transition: all 0.2s ease;
-}
-
-.btn-save:hover:not(:disabled) {
-  background: linear-gradient(180deg, #3b82f6 0%, #2563eb 100%);
-  box-shadow: 0 6px 18px rgba(37, 99, 235, 0.45);
-  transform: translateY(-1px);
-}
-
-.btn-save:active:not(:disabled) {
-  transform: translateY(0);
-  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
-}
-
-.btn-save:disabled {
-  background: #143560;
-  color: #637d9d;
-  box-shadow: none;
-  cursor: not-allowed;
-  transform: none;
-}
-
-/* Input de Dorsal */
 .dorsal-assign-group {
   margin-top: 0.5rem;
 }
@@ -720,4 +610,65 @@
   border-color: #ef4444 !important;
   background-color: #0b1a2f !important;
   box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15) !important;
+}
+
+/* =========================================
+   Botones de Acción
+   ========================================= */
+.form-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.btn-cancel {
+  flex: 1;
+  height: 48px;
+  background-color: transparent;
+  border: 1px solid #1a3d6b;
+  color: #ffffff;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+.btn-cancel:hover {
+  border-color: #38bdf8;
+  background-color: #092244;
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.2);
+  transform: translateY(-1px);
+}
+
+.btn-save {
+  flex: 1;
+  height: 48px;
+  background: linear-gradient(180deg, #2563eb 0%, #1d4ed8 100%);
+  border: none;
+  color: #ffffff;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+  transition: all 0.2s ease;
+}
+
+.btn-save:hover:not(:disabled) {
+  background: linear-gradient(180deg, #3b82f6 0%, #2563eb 100%);
+  box-shadow: 0 6px 18px rgba(37, 99, 235, 0.45);
+  transform: translateY(-1px);
+}
+
+.btn-save:disabled {
+  background: #143560;
+  color: #637d9d;
+  box-shadow: none;
+  cursor: not-allowed;
+  transform: none;
 }

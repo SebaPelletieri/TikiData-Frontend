@@ -27,9 +27,9 @@
     <!-- Dropdown Personalizado de País -->
     <div class="select-filters">
       <div class="custom-dropdown" [class.open]="isCountryDropdownOpen()">
-        <button type="button" class="dropdown-trigger" (click)="toggleCountryDropdown()">
+        <button type="button" class="dropdown-trigger" (click)="toggleCountryDropdown($event)">
           <span [class.placeholder]="selectedCountry() === 'ALL'">
-            {{ selectedCountry() === 'ALL' ? 'Todos los paises' : selectedCountry() }}
+            {{ selectedCountry() === 'ALL' ? 'Todos los países' : selectedCountry() }}
           </span>
           <span class="triangle-icon" [class.rotate]="isCountryDropdownOpen()"></span>
         </button>
@@ -42,7 +42,7 @@
               (click)="selectCountry('ALL')"
             >
               <div class="item-content">
-                <span>Todos los paises</span>
+                <span>Todos los países</span>
               </div>
               @if (selectedCountry() === 'ALL') {
                 <svg
@@ -59,7 +59,6 @@
               }
             </li>
 
-            <!-- 👈 CORREGIDO: Se invoca como countries() por ser computed signal -->
             @for (country of countries(); track country) {
               <li
                 class="dropdown-item"

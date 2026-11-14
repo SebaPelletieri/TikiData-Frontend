@@ -24,7 +24,7 @@
 
   <form [formGroup]="matchForm" (ngSubmit)="onSubmit()" class="team-form">
     <!-- Buscador de Campeonato -->
-    <div class="form-group">
+    <div class="form-group championship-group">
       <label>Campeonato <span class="required">*</span></label>
       <div class="direct-search-input-box" style="position: relative">
         <input
@@ -32,20 +32,18 @@
           [formControl]="championshipSearchCtrl"
           placeholder="Escribe para buscar campeonato..."
           autocomplete="off"
+          (focus)="isChampDropdownOpen = filteredChampionships.length > 0"
         />
-        <ul
-          class="direct-suggestions-list"
-          *ngIf="isChampDropdownOpen && filteredChampionships.length > 0"
-        >
-          <li
-            class="suggestion-item"
-            *ngFor="let c of filteredChampionships"
-            (click)="selectChampionship(c)"
-          >
-            <span>{{ c.name }}</span>
-            <span class="add-action-text">Seleccionar</span>
-          </li>
-        </ul>
+        @if (isChampDropdownOpen && filteredChampionships.length > 0) {
+          <ul class="direct-suggestions-list" (mousedown)="$event.preventDefault()">
+            @for (c of filteredChampionships; track c.id) {
+              <li class="suggestion-item" (click)="selectChampionship(c)">
+                <span>{{ c.name }}</span>
+                <span class="add-action-text">Seleccionar</span>
+              </li>
+            }
+          </ul>
+        }
       </div>
     </div>
 
@@ -57,27 +55,31 @@
       </div>
 
       <!-- Selector de Estado -->
-      <div class="form-group">
+      <div class="form-group status-group">
         <label>Estado del Partido <span class="required">*</span></label>
         <div class="custom-dropdown" [class.open]="isStatusOpen">
-          <div class="dropdown-trigger" (click)="toggleStatusDropdown()">
+          <button type="button" class="dropdown-trigger" (click)="toggleStatusDropdown($event)">
             <span [class.placeholder]="!matchForm.get('status')?.value">
               {{ matchForm.get('status')?.value || 'Seleccionar estado...' }}
             </span>
             <span class="triangle-icon"></span>
-          </div>
-          <ul class="dropdown-menu" *ngIf="isStatusOpen">
-            <li class="dropdown-item" *ngFor="let st of statuses" (click)="selectStatus(st)">
-              <span>{{ st }}</span>
-            </li>
-          </ul>
+          </button>
+          @if (isStatusOpen) {
+            <ul class="dropdown-menu">
+              @for (st of statuses; track st) {
+                <li class="dropdown-item" (click)="selectStatus(st)">
+                  <span>{{ st }}</span>
+                </li>
+              }
+            </ul>
+          }
         </div>
       </div>
     </div>
 
     <!-- Equipo Local y Equipo Visitante (Buscadores) -->
     <div class="form-row">
-      <div class="form-group">
+      <div class="form-group local-group">
         <label>Equipo Local <span class="required">*</span></label>
         <div class="direct-search-input-box" style="position: relative">
           <input
@@ -85,24 +87,22 @@
             [formControl]="localSearchCtrl"
             placeholder="Buscar equipo local..."
             autocomplete="off"
+            (focus)="isLocalDropdownOpen = filteredLocalTeams.length > 0"
           />
-          <ul
-            class="direct-suggestions-list"
-            *ngIf="isLocalDropdownOpen && filteredLocalTeams.length > 0"
-          >
-            <li
-              class="suggestion-item"
-              *ngFor="let t of filteredLocalTeams"
-              (click)="selectLocalTeam(t)"
-            >
-              <span>{{ t.name }}</span>
-              <span class="add-action-text">Seleccionar</span>
-            </li>
-          </ul>
+          @if (isLocalDropdownOpen && filteredLocalTeams.length > 0) {
+            <ul class="direct-suggestions-list" (mousedown)="$event.preventDefault()">
+              @for (t of filteredLocalTeams; track t.id) {
+                <li class="suggestion-item" (click)="selectLocalTeam(t)">
+                  <span>{{ t.name }}</span>
+                  <span class="add-action-text">Seleccionar</span>
+                </li>
+              }
+            </ul>
+          }
         </div>
       </div>
 
-      <div class="form-group">
+      <div class="form-group visitor-group">
         <label>Equipo Visitante <span class="required">*</span></label>
         <div class="direct-search-input-box" style="position: relative">
           <input
@@ -110,20 +110,18 @@
             [formControl]="visitorSearchCtrl"
             placeholder="Buscar equipo visitante..."
             autocomplete="off"
+            (focus)="isVisitorDropdownOpen = filteredVisitorTeams.length > 0"
           />
-          <ul
-            class="direct-suggestions-list"
-            *ngIf="isVisitorDropdownOpen && filteredVisitorTeams.length > 0"
-          >
-            <li
-              class="suggestion-item"
-              *ngFor="let t of filteredVisitorTeams"
-              (click)="selectVisitorTeam(t)"
-            >
-              <span>{{ t.name }}</span>
-              <span class="add-action-text">Seleccionar</span>
-            </li>
-          </ul>
+          @if (isVisitorDropdownOpen && filteredVisitorTeams.length > 0) {
+            <ul class="direct-suggestions-list" (mousedown)="$event.preventDefault()">
+              @for (t of filteredVisitorTeams; track t.id) {
+                <li class="suggestion-item" (click)="selectVisitorTeam(t)">
+                  <span>{{ t.name }}</span>
+                  <span class="add-action-text">Seleccionar</span>
+                </li>
+              }
+            </ul>
+          }
         </div>
       </div>
     </div>
@@ -142,7 +140,7 @@
     </div>
 
     <!-- Estadio con Buscador -->
-    <div class="form-group">
+    <div class="form-group stadium-group">
       <label>Estadio Principal</label>
       <div class="direct-search-input-box" style="position: relative">
         <input
@@ -150,20 +148,18 @@
           [formControl]="stadiumSearchCtrl"
           placeholder="Escribe o busca un estadio..."
           autocomplete="off"
+          (focus)="isStadiumDropdownOpen = filteredStadiums.length > 0"
         />
-        <ul
-          class="direct-suggestions-list"
-          *ngIf="isStadiumDropdownOpen && filteredStadiums.length > 0"
-        >
-          <li
-            class="suggestion-item"
-            *ngFor="let stad of filteredStadiums"
-            (click)="selectStadium(stad)"
-          >
-            <span>{{ stad }}</span>
-            <span class="add-action-text">Seleccionar</span>
-          </li>
-        </ul>
+        @if (isStadiumDropdownOpen && filteredStadiums.length > 0) {
+          <ul class="direct-suggestions-list" (mousedown)="$event.preventDefault()">
+            @for (stad of filteredStadiums; track stad) {
+              <li class="suggestion-item" (click)="selectStadium(stad)">
+                <span>{{ stad }}</span>
+                <span class="add-action-text">Seleccionar</span>
+              </li>
+            }
+          </ul>
+        }
       </div>
     </div>
 

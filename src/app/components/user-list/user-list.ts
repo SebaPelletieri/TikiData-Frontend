@@ -1,17 +1,16 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { AuthService } from '../../../services/auth-service';
-import { User } from '../../../models/User';
+import { User } from '../../models/User';
+import { UserManagementService } from '../../services/user-management-service';
 
 @Component({
   selector: 'app-user-list',
   standalone: true,
-  imports: [CommonModule],
   templateUrl: './user-list.html',
   styleUrl: './user-list.css',
 })
 export class UserList implements OnInit {
-  public authService = inject(AuthService);
+  private userManagementService = inject(UserManagementService);
+
   users = signal<User[]>([]);
   errorMessage = signal('');
 
@@ -20,7 +19,7 @@ export class UserList implements OnInit {
   }
 
   loadUsers(): void {
-    this.authService.getAllUsers().subscribe({
+    this.userManagementService.getAllUsers().subscribe({
       next: (data) => this.users.set(data),
       error: () => this.errorMessage.set('Error al cargar los usuarios del sistema.'),
     });
@@ -30,7 +29,7 @@ export class UserList implements OnInit {
     if (!user.id) return;
     const newRole = user.role === 'Administrador' ? 'Usuario' : 'Administrador';
 
-    this.authService.updateUserRole(user.id, newRole).subscribe({
+    this.userManagementService.updateUserRole(user.id, newRole).subscribe({
       next: () => {
         this.users.update((list) =>
           list.map((u) => (u.id === user.id ? { ...u, role: newRole } : u)),
@@ -43,7 +42,7 @@ export class UserList implements OnInit {
   deleteUser(id?: number): void {
     if (!id || !confirm('¿Estás seguro de eliminar este usuario?')) return;
 
-    this.authService.deleteUser(id).subscribe({
+    this.userManagementService.deleteUser(id).subscribe({
       next: () => {
         this.users.update((list) => list.filter((u) => u.id !== id));
       },

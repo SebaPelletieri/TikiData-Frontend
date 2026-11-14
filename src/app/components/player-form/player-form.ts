@@ -158,13 +158,13 @@ export class PlayerForm implements OnInit {
     return `${d}/${m}/${y}`;
   }
 
-  onMonthChange(monthIndex: any): void {
-    this.currentDate = new Date(this.currentDate.getFullYear(), Number(monthIndex), 1);
+  onMonthChange(monthIndex: number): void {
+    this.currentDate = new Date(this.currentDate.getFullYear(), monthIndex, 1);
     this.generateCalendar();
   }
 
-  onYearChange(year: any): void {
-    this.currentDate = new Date(Number(year), this.currentDate.getMonth(), 1);
+  onYearChange(year: number): void {
+    this.currentDate = new Date(year, this.currentDate.getMonth(), 1);
     this.generateCalendar();
   }
 

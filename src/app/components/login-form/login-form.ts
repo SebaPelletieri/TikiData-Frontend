@@ -1,6 +1,6 @@
 import { Component, EventEmitter, inject, Output, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { LoginRequest } from '../../models/Login Request';
+import { LoginRequest } from '../../models/LoginRequest';
 import { RouterLink } from '@angular/router';
 
 @Component({
@@ -16,7 +16,7 @@ export class LoginForm {
 
   loginForm = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required, Validators.minLength(6)]]
+    password: ['', [Validators.required, Validators.minLength(6)]],
   });
 
   onSubmit() {
@@ -28,8 +28,6 @@ export class LoginForm {
   }
 
   togglePasswordVisibility() {
-    this.showPassword.update(value => !value);
+    this.showPassword.update((value) => !value);
   }
-
-  
 }

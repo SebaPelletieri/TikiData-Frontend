@@ -6,7 +6,7 @@
       <h2>Mi Perfil</h2>
       <p class="subtitle">Gestiona tu información, estadísticas y preferencias de usuario.</p>
     </div>
-    <button class="btn-edit-profile" (click)="navigateToEdit()">Editar Perfil</button>
+    <button type="button" class="btn-edit-profile" (click)="navigateToEdit()">Editar Perfil</button>
   </div>
 
   <!-- Banner Hero / Perfil -->
@@ -75,6 +75,7 @@
 
           <div class="favorite-card-actions">
             <button
+              type="button"
               class="btn-icon-action delete"
               (click)="removeFavorite('team', team.id!)"
               title="Eliminar de favoritos"
@@ -104,9 +105,15 @@
     <div class="favorite-cards-grid">
       @for (champ of favoriteChampionshipsList(); track champ.id) {
         <div class="favorite-team-card">
+          <div class="favorite-team-shield">
+            <img [src]="champ.logo || 'https://via.placeholder.com/45'" [alt]="champ.name" />
+          </div>
           <h4 class="favorite-team-name">{{ champ.name }}</h4>
+          <span class="favorite-team-country">{{ champ.country }} • {{ champ.type }}</span>
+
           <div class="favorite-card-actions">
             <button
+              type="button"
               class="btn-icon-action delete"
               (click)="removeFavorite('championship', +champ.id!)"
               title="Eliminar de favoritos"
@@ -136,9 +143,17 @@
     <div class="favorite-cards-grid">
       @for (player of favoritePlayersList(); track player.id) {
         <div class="favorite-team-card">
+          <div class="favorite-team-shield">
+            <img [src]="player.photo || 'https://via.placeholder.com/45'" [alt]="player.name" />
+          </div>
           <h4 class="favorite-team-name">{{ player.name }}</h4>
+          <span class="favorite-team-country"
+            >{{ player.position }} • {{ player.nationality || 'Argentina' }}</span
+          >
+
           <div class="favorite-card-actions">
             <button
+              type="button"
               class="btn-icon-action delete"
               (click)="removeFavorite('player', player.id!)"
               title="Eliminar de favoritos"

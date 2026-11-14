@@ -1,4 +1,4 @@
-import { inject, Injectable, signal, computed } from '@angular/core'; // 👈 Añade computed
+import { inject, Injectable, signal, computed } from '@angular/core';
 import { Player } from '../models/Player';
 import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
@@ -7,17 +7,18 @@ import { map, Observable } from 'rxjs';
 export class PlayerService {
   private http = inject(HttpClient);
   private apiUrl = 'http://localhost:3000/jugadores';
+
   players = signal<Player[]>([]);
   playerActual = signal<Player | null>(null);
   error = signal<string | null>(null);
   topScorers = signal<Player[]>([]);
 
-  // 👇 Lista de jugadores ordenada alfabéticamente por nombre de manera reactiva
   sortedPlayers = computed(() => {
-    return [...this.players()].sort((a, b) => a.name.localeCompare(b.name));
+    return [...this.players()].sort((a, b) =>
+      a.name.localeCompare(b.name, 'es', { sensitivity: 'accent' }),
+    );
   });
 
-  // Métodos del HTTP
   getAll() {
     this.http.get<Player[]>(this.apiUrl).subscribe({
       next: (data) => {
@@ -76,7 +77,7 @@ export class PlayerService {
   getTopScorers(): void {
     this.http
       .get<Player[]>(this.apiUrl)
-      .pipe(map((players) => players.sort((a: any, b: any) => (b.goals || 0) - (a.goals || 0))))
+      .pipe(map((players) => players.sort((a, b) => (b.goals || 0) - (a.goals || 0))))
       .subscribe({
         next: (data) => {
           this.topScorers.set(data);

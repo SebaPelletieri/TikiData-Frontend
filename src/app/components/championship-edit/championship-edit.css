@@ -167,6 +167,14 @@
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.65);
 }
 
+.dropdown-menu::-webkit-scrollbar {
+  width: 4px;
+}
+.dropdown-menu::-webkit-scrollbar-thumb {
+  background: #1a3154;
+  border-radius: 4px;
+}
+
 .dropdown-item {
   padding: 10px 14px;
   font-size: 0.9rem;
@@ -179,8 +187,18 @@
 }
 
 .dropdown-item:hover {
-  background-color: #ff6b00;
+  background-color: rgba(255, 107, 0, 0.2);
   color: #ffffff;
+}
+
+/* Mensaje de error */
+.error-feedback {
+  margin-top: 4px;
+}
+
+.error-text {
+  color: #ef4444;
+  font-size: 0.78rem;
 }
 
 /* Botones de Acción del Formulario */

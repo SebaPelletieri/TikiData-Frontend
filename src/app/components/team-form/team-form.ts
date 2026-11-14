@@ -6,6 +6,7 @@ import {
   ChangeDetectionStrategy,
   Output,
   EventEmitter,
+  HostListener,
 } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -41,6 +42,34 @@ export class TeamForm {
     stadiumID: ['', [Validators.required]],
   });
 
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent): void {
+    const target = event.target as HTMLElement;
+    if (
+      !target.closest('.custom-dropdown') &&
+      !target.closest('.calendar-field-container') &&
+      !target.closest('.searchable-input-container')
+    ) {
+      this.closeAllDropdowns();
+    }
+  }
+
+  closeAllDropdowns(): void {
+    if (this.isCountryOpen) {
+      this.formulario.controls['country'].markAsTouched();
+    }
+    if (this.isCalendarOpen) {
+      this.formulario.controls['yearOfFoundation'].markAsTouched();
+    }
+
+    this.isCountryOpen = false;
+    this.isCalendarOpen = false;
+    this.isMonthOpen = false;
+    this.isYearOpen = false;
+    this.isStadiumFocused.set(false);
+    this.isChampionshipsFocused.set(false);
+  }
+
   saveTeam() {
     let teamActual: Team = {
       name: this.formulario.controls['name'].value,
@@ -68,15 +97,213 @@ export class TeamForm {
     this.closePanel.emit();
   }
 
-  // --- Países ---
-  countries = ['Argentina', 'Brasil', 'Uruguay', 'Chile'];
+  // --- Países (Lista completa mundial ordenada) ---
+  countries = [
+    'Afganistán',
+    'Albania',
+    'Alemania',
+    'Andorra',
+    'Angola',
+    'Antigua y Barbuda',
+    'Arabia Saudita',
+    'Argelia',
+    'Argentina',
+    'Armenia',
+    'Australia',
+    'Austria',
+    'Azerbaiyán',
+    'Bahamas',
+    'Bangladés',
+    'Barbados',
+    'Baréin',
+    'Bélgica',
+    'Belice',
+    'Benín',
+    'Bielorrusia',
+    'Birmania',
+    'Bolivia',
+    'Bosnia y Herzegovina',
+    'Botsuana',
+    'Brasil',
+    'Brunéi',
+    'Bulgaria',
+    'Burkina Faso',
+    'Burundi',
+    'Bután',
+    'Cabo Verde',
+    'Camboya',
+    'Camerún',
+    'Canadá',
+    'Catar',
+    'Chad',
+    'Chile',
+    'China',
+    'Chipre',
+    'Colombia',
+    'Comoras',
+    'Congo',
+    'Corea del Norte',
+    'Corea del Sur',
+    'Costa de Marfil',
+    'Costa Rica',
+    'Croacia',
+    'Cuba',
+    'Dinamarca',
+    'Dominica',
+    'Ecuador',
+    'Egipto',
+    'El Salvador',
+    'Emiratos Árabes Unidos',
+    'Eritrea',
+    'Eslovaquia',
+    'Eslovenia',
+    'España',
+    'Estados Unidos',
+    'Estonia',
+    'Esuatini',
+    'Etiopía',
+    'Filipinas',
+    'Finlandia',
+    'Fiyi',
+    'Francia',
+    'Gabón',
+    'Gambia',
+    'Georgia',
+    'Ghana',
+    'Granada',
+    'Grecia',
+    'Guatemala',
+    'Guinea',
+    'Guinea Ecuatorial',
+    'Guinea-Bisáu',
+    'Guyana',
+    'Haití',
+    'Honduras',
+    'Hungría',
+    'India',
+    'Indonesia',
+    'Irak',
+    'Irán',
+    'Irlanda',
+    'Islandia',
+    'Islas Marshall',
+    'Islas Salomón',
+    'Israel',
+    'Italia',
+    'Jamaica',
+    'Japón',
+    'Jordania',
+    'Kazajistán',
+    'Kenia',
+    'Kirguistán',
+    'Kiribati',
+    'Kuwait',
+    'Laos',
+    'Lesoto',
+    'Letonia',
+    'Líbano',
+    'Liberia',
+    'Libia',
+    'Liechtenstein',
+    'Lituania',
+    'Luxemburgo',
+    'Madagascar',
+    'Malasia',
+    'Malaui',
+    'Maldivas',
+    'Malí',
+    'Malta',
+    'Marruecos',
+    'Mauricio',
+    'Mauritania',
+    'México',
+    'Micronesia',
+    'Moldavia',
+    'Mónaco',
+    'Mongolia',
+    'Montenegro',
+    'Mozambique',
+    'Namibia',
+    'Nauru',
+    'Nepal',
+    'Nicaragua',
+    'Níger',
+    'Nigeria',
+    'Noruega',
+    'Nueva Zelanda',
+    'Omán',
+    'Países Bajos',
+    'Pakistán',
+    'Palaos',
+    'Panamá',
+    'Papúa Nueva Guinea',
+    'Paraguay',
+    'Perú',
+    'Polonia',
+    'Portugal',
+    'Reino Unido',
+    'República Centroafricana',
+    'República Checa',
+    'República Democrática del Congo',
+    'República Dominicana',
+    'Ruanda',
+    'Rumanía',
+    'Rusia',
+    'Samoa',
+    'San Cristóbal y Nieves',
+    'San Marino',
+    'San Vicente y las Granadinas',
+    'Santa Lucía',
+    'Santo Tomé y Príncipe',
+    'Senegal',
+    'Serbia',
+    'Seychelles',
+    'Sierra Leona',
+    'Singapur',
+    'Siria',
+    'Somalia',
+    'Sri Lanka',
+    'Sudáfrica',
+    'Sudán',
+    'Sudán del Sur',
+    'Suecia',
+    'Suiza',
+    'Surinam',
+    'Tailandia',
+    'Tanzania',
+    'Tayikistán',
+    'Timor Oriental',
+    'Togo',
+    'Tonga',
+    'Trinidad y Tobago',
+    'Túnez',
+    'Turkmenistán',
+    'Turquía',
+    'Tuvalu',
+    'Ucrania',
+    'Uganda',
+    'Uruguay',
+    'Uzbekistán',
+    'Vanuatu',
+    'Vaticano',
+    'Venezuela',
+    'Vietnam',
+    'Yemen',
+    'Yibuti',
+    'Zambia',
+    'Zimbabue',
+  ].sort();
+
   isCountryOpen = false;
 
-  toggleCountryDropdown(): void {
+  toggleCountryDropdown(event?: MouseEvent): void {
+    if (event) event.stopPropagation();
     this.isCountryOpen = !this.isCountryOpen;
     this.isCalendarOpen = false;
     this.isMonthOpen = false;
     this.isYearOpen = false;
+    this.isStadiumFocused.set(false);
+    this.isChampionshipsFocused.set(false);
 
     if (!this.isCountryOpen) {
       this.formulario.controls['country'].markAsTouched();
@@ -210,6 +437,9 @@ export class TeamForm {
     }
     this.isCalendarOpen = !this.isCalendarOpen;
     this.isCountryOpen = false;
+    this.isStadiumFocused.set(false);
+    this.isChampionshipsFocused.set(false);
+
     if (!this.isCalendarOpen) {
       this.isMonthOpen = false;
       this.isYearOpen = false;
@@ -217,22 +447,26 @@ export class TeamForm {
     }
   }
 
-  toggleMonthDropdown(): void {
+  toggleMonthDropdown(event?: MouseEvent): void {
+    if (event) event.stopPropagation();
     this.isMonthOpen = !this.isMonthOpen;
     this.isYearOpen = false;
   }
 
-  selectMonth(index: number): void {
+  selectMonth(index: number, event?: MouseEvent): void {
+    if (event) event.stopPropagation();
     this.currentMonth = index;
     this.isMonthOpen = false;
   }
 
-  toggleYearDropdown(): void {
+  toggleYearDropdown(event?: MouseEvent): void {
+    if (event) event.stopPropagation();
     this.isYearOpen = !this.isYearOpen;
     this.isMonthOpen = false;
   }
 
-  selectYear(year: number): void {
+  selectYear(year: number, event?: MouseEvent): void {
+    if (event) event.stopPropagation();
     this.currentYear = year;
     this.isYearOpen = false;
   }
@@ -269,7 +503,8 @@ export class TeamForm {
     return days;
   }
 
-  prevMonth(): void {
+  prevMonth(event?: MouseEvent): void {
+    if (event) event.stopPropagation();
     if (this.currentMonth === 0) {
       this.currentMonth = 11;
       this.currentYear--;
@@ -278,7 +513,8 @@ export class TeamForm {
     }
   }
 
-  nextMonth(): void {
+  nextMonth(event?: MouseEvent): void {
+    if (event) event.stopPropagation();
     if (this.currentMonth === 11) {
       this.currentMonth = 0;
       this.currentYear++;
@@ -287,7 +523,8 @@ export class TeamForm {
     }
   }
 
-  selectDate(date: Date): void {
+  selectDate(date: Date, event?: MouseEvent): void {
+    if (event) event.stopPropagation();
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');

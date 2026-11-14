@@ -187,7 +187,7 @@
                 <select
                   class="header-select"
                   [value]="currentDate.getMonth()"
-                  (change)="onMonthChange($any($event.target).value)"
+                  (change)="onMonthChange(+$any($event.target).value)"
                 >
                   @for (m of monthsNames; track $index) {
                     <option [value]="$index">{{ m }}</option>
@@ -196,7 +196,7 @@
                 <select
                   class="header-select"
                   [value]="currentDate.getFullYear()"
-                  (change)="onYearChange($any($event.target).value)"
+                  (change)="onYearChange(+$any($event.target).value)"
                 >
                   @for (y of yearsList; track y) {
                     <option [value]="y">{{ y }}</option>

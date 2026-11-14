@@ -14,10 +14,8 @@ import { AuthService } from '../../services/auth-service';
 export class PlayerDetail {
   private authService = inject(AuthService) as AuthService;
 
-  // Recibe el objeto jugador desde la página padre
   player = input<Player | null>(null);
 
-  // Sistema de pestañas activo
   activeTab = signal<'general' | 'stats' | 'clubs' | 'matches'>('general');
 
   setTab(tab: 'general' | 'stats' | 'clubs' | 'matches'): void {
@@ -39,13 +37,11 @@ export class PlayerDetail {
     }).format(date);
   }
 
-  // Usuario actual obtenido del servicio de autenticación
   currentUser = computed(() => {
     const userFn = this.authService.currentUser as any;
     return typeof userFn === 'function' ? userFn() : userFn;
   });
 
-  // Comprueba si el jugador actual está en la lista de favoritos del usuario
   isFollowing = computed(() => {
     const user = this.currentUser();
     const currentPlayer = this.player();
@@ -53,7 +49,6 @@ export class PlayerDetail {
     return user.favoritePlayers.some((id: any) => String(id) === String(currentPlayer.id));
   });
 
-  // Alterna entre seguir y dejar de seguir al jugador
   toggleFollowPlayer() {
     const user = this.currentUser();
     const currentPlayer = this.player();

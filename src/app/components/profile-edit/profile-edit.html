@@ -25,24 +25,92 @@
     <form [formGroup]="profileForm" (ngSubmit)="onSave()" class="edit-form-grid">
       <!-- Nombre de usuario -->
       <div class="form-group">
-        <label>Nombre de usuario <span class="required">*</span></label>
-        <input type="text" formControlName="username" placeholder="Ej. Sebastian" />
+        <label for="username">Nombre de usuario <span class="required">*</span></label>
+        <input
+          id="username"
+          type="text"
+          formControlName="username"
+          placeholder="Ej. Sebastian"
+          [class.input-error]="
+            profileForm.controls['username'].touched && profileForm.controls['username'].invalid
+          "
+        />
+
+        @if (profileForm.controls['username'].touched && profileForm.controls['username'].invalid) {
+          <div class="error-feedback">
+            <svg
+              class="error-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="8" x2="12" y2="12"></line>
+              <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+            <span class="error-text">
+              @if (profileForm.controls['username'].hasError('required')) {
+                El nombre de usuario es obligatorio.
+              }
+              @if (profileForm.controls['username'].hasError('minlength')) {
+                Mínimo 3 caracteres.
+              }
+            </span>
+          </div>
+        }
       </div>
 
       <!-- Correo electrónico -->
       <div class="form-group">
-        <label>Correo electrónico <span class="required">*</span></label>
-        <input type="email" formControlName="email" placeholder="Ej. correo@ejemplo.com" />
+        <label for="email">Correo electrónico <span class="required">*</span></label>
+        <input
+          id="email"
+          type="email"
+          formControlName="email"
+          placeholder="Ej. correo@ejemplo.com"
+          [class.input-error]="
+            profileForm.controls['email'].touched && profileForm.controls['email'].invalid
+          "
+        />
+
+        @if (profileForm.controls['email'].touched && profileForm.controls['email'].invalid) {
+          <div class="error-feedback">
+            <svg
+              class="error-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="8" x2="12" y2="12"></line>
+              <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+            <span class="error-text">
+              @if (profileForm.controls['email'].hasError('required')) {
+                El correo es obligatorio.
+              }
+              @if (profileForm.controls['email'].hasError('email')) {
+                Ingresa un correo válido.
+              }
+            </span>
+          </div>
+        }
       </div>
 
       <!-- Contraseña -->
-      <div class="form-group" style="grid-column: span 2">
-        <label>Nueva contraseña (opcional)</label>
+      <div class="form-group password-group-full">
+        <label for="password">Nueva contraseña (opcional)</label>
         <div class="password-input-wrapper">
           <input
+            id="password"
             [type]="showPassword ? 'text' : 'password'"
             formControlName="password"
             placeholder="••••••••"
+            [class.input-error]="
+              profileForm.controls['password'].touched && profileForm.controls['password'].invalid
+            "
           />
           <button
             type="button"
@@ -77,9 +145,26 @@
             }
           </button>
         </div>
+
+        @if (profileForm.controls['password'].touched && profileForm.controls['password'].invalid) {
+          <div class="error-feedback">
+            <svg
+              class="error-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="8" x2="12" y2="12"></line>
+              <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+            <span class="error-text">La contraseña debe tener al menos 4 caracteres.</span>
+          </div>
+        }
       </div>
 
-      <!-- Zona de Foto de Perfil (Drag & Drop con el mismo efecto hover) -->
+      <!-- Zona de Foto de Perfil -->
       <div class="form-group upload-section-full">
         <label>Foto de Perfil</label>
         <div class="shield-container">

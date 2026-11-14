@@ -1,4 +1,12 @@
-import { Component, Input, OnInit, Output, EventEmitter, inject } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnInit,
+  Output,
+  EventEmitter,
+  inject,
+  HostListener,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ChampionshipService } from '../../services/championship-service';
@@ -19,7 +27,6 @@ export class ChampionshipEdit implements OnInit {
 
   champForm!: FormGroup;
 
-  // Listas desplegables
   types = ['LIGA', 'COPA'];
 
   countries = [
@@ -55,6 +62,13 @@ export class ChampionshipEdit implements OnInit {
     }
   }
 
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent): void {
+    const target = event.target as HTMLElement;
+    if (!target.closest('.country-group')) this.isCountryOpen = false;
+    if (!target.closest('.type-group')) this.isTypeOpen = false;
+  }
+
   initForm() {
     this.champForm = this.fb.group({
       name: ['', Validators.required],
@@ -70,11 +84,11 @@ export class ChampionshipEdit implements OnInit {
       next: (champ: any) => {
         if (champ) {
           this.champForm.patchValue({
-            name: champ.name,
-            season: champ.season,
-            country: champ.country,
-            type: champ.type,
-            logo: '', // 👈 Forzamos a que aparezca siempre vacío al cargar
+            name: champ.name || '',
+            season: champ.season || '',
+            country: champ.country || '',
+            type: champ.type || '',
+            logo: champ.logo || champ.imagen || '', // 👈 Corregido para cargar el logo correctamente
           });
         }
       },
@@ -82,7 +96,8 @@ export class ChampionshipEdit implements OnInit {
     });
   }
 
-  toggleTypeDropdown() {
+  toggleTypeDropdown(event?: MouseEvent) {
+    if (event) event.stopPropagation();
     this.isTypeOpen = !this.isTypeOpen;
     this.isCountryOpen = false;
   }
@@ -92,7 +107,8 @@ export class ChampionshipEdit implements OnInit {
     this.isTypeOpen = false;
   }
 
-  toggleCountryDropdown() {
+  toggleCountryDropdown(event?: MouseEvent) {
+    if (event) event.stopPropagation();
     this.isCountryOpen = !this.isCountryOpen;
     this.isTypeOpen = false;
   }

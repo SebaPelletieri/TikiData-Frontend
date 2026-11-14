@@ -4,6 +4,7 @@ import { MatchCard } from '../match-card/match-card';
 import { CommonModule } from '@angular/common';
 
 @Component({
+  standalone: true,
   imports: [CommonModule, MatchCard],
   selector: 'app-match-list',
   styleUrl: './match-list.css',

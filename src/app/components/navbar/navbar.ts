@@ -3,9 +3,12 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth-service';
-import { TeamService } from '../../services/team-service'; // Verificá que la ruta coincida con tus archivos
+import { TeamService } from '../../services/team-service';
 import { PlayerService } from '../../services/player-service';
 import { ChampionshipService } from '../../services/championship-service';
+import { Championship } from '../../models/Championship';
+import { Team } from '../../models/Team';
+import { Player } from '../../models/Player';
 
 interface SearchResult {
   id: number | string;
@@ -32,30 +35,30 @@ export class Navbar implements OnInit {
   isLightMode = signal(false);
   isProfileMenuOpen = signal(false);
 
-  // Estado del Buscador Global
   searchText = signal<string>('');
   isSearchFocused = signal<boolean>(false);
 
-  // Construimos dinámicamente todos los elementos desde los Signals de los servicios
   private allElements = computed<SearchResult[]>(() => {
-    const championships: SearchResult[] = this.championshipService.championships().map((c: any) => ({
-      id: c.id,
-      name: c.name,
-      type: 'campeonato',
-      route: `/championships/${c.id}`,
-      subtitle: [c.type, c.country].filter(Boolean).join(' • ') || 'Campeonato',
-    }));
+    const championships: SearchResult[] = this.championshipService
+      .championships()
+      .map((c: Championship) => ({
+        id: c.id!,
+        name: c.name,
+        type: 'campeonato',
+        route: `/championships/${c.id}`,
+        subtitle: [c.type, c.country].filter(Boolean).join(' • ') || 'Campeonato',
+      }));
 
-    const teams: SearchResult[] = this.teamService.teams().map((t: any) => ({
-      id: t.id,
+    const teams: SearchResult[] = this.teamService.teams().map((t: Team) => ({
+      id: t.id!,
       name: t.name,
       type: 'equipo',
       route: `/teams/${t.id}`,
       subtitle: t.country || 'Equipo',
     }));
 
-    const players: SearchResult[] = this.playerService.players().map((p: any) => ({
-      id: p.id,
+    const players: SearchResult[] = this.playerService.players().map((p: Player) => ({
+      id: p.id!,
       name: p.name,
       type: 'jugador',
       route: `/players/${p.id}`,
@@ -65,7 +68,6 @@ export class Navbar implements OnInit {
     return [...championships, ...teams, ...players];
   });
 
-  // Filtrado reactivo ignorando tildes y mayúsculas
   searchResults = computed(() => {
     const query = this.normalizeText(this.searchText());
     if (!query) return [];
@@ -75,9 +77,9 @@ export class Navbar implements OnInit {
         (item) =>
           this.normalizeText(item.name).includes(query) ||
           this.normalizeText(item.type).includes(query) ||
-          (item.subtitle && this.normalizeText(item.subtitle).includes(query))
+          (item.subtitle && this.normalizeText(item.subtitle).includes(query)),
       )
-      .slice(0, 12); // Limita a 12 resultados visibles para no desbordar el dropdown
+      .slice(0, 12);
   });
 
   isAdmin = computed(() => {
@@ -97,7 +99,6 @@ export class Navbar implements OnInit {
   });
 
   ngOnInit() {
-    // Aseguramos que los datos estén cargados en los servicios al iniciar el Navbar
     if (this.championshipService.championships().length === 0) {
       this.championshipService.getAll();
     }

@@ -57,7 +57,8 @@
               </svg>
               <input
                 type="text"
-                [(ngModel)]="searchQuery"
+                [ngModel]="searchQuery()"
+                (ngModelChange)="searchQuery.set($event)"
                 placeholder="Escribe el nombre del jugador..."
                 [disabled]="!!selectedPlayer()"
               />

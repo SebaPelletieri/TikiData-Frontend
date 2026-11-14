@@ -16,8 +16,14 @@
       </svg>
     </div>
     <div>
-      <h3>Nuevo Administrador</h3>
-      <p>Completa los campos para registrar un nuevo administrador.</p>
+      <h3>{{ isEditMode() ? 'Editar Administrador' : 'Nuevo Administrador' }}</h3>
+      <p>
+        {{
+          isEditMode()
+            ? 'Modifica los datos del administrador.'
+            : 'Completa los campos para registrar un nuevo administrador.'
+        }}
+      </p>
     </div>
   </div>
 
@@ -86,7 +92,7 @@
       }
     </div>
 
-    <!-- Contraseña (Solo requerido si no está en modo edición) con botón de ver/ocultar -->
+    <!-- Contraseña (Solo requerida si no está en modo edición) -->
     @if (!isEditMode()) {
       <div class="form-group">
         <label for="password">Contraseña <span class="required">*</span></label>
@@ -108,7 +114,6 @@
             [attr.aria-label]="showPassword ? 'Ocultar contraseña' : 'Ver contraseña'"
           >
             @if (showPassword) {
-              <!-- Icono Ojo Tachado (Ocultar) -->
               <svg
                 width="20"
                 height="20"
@@ -125,7 +130,6 @@
                 <line x1="1" y1="1" x2="23" y2="23"></line>
               </svg>
             } @else {
-              <!-- Icono Ojo Abierto (Ver) -->
               <svg
                 width="20"
                 height="20"
@@ -162,7 +166,7 @@
       </div>
     }
 
-    <!-- Foto de Perfil (Avatar con Dropzone idéntica a Jugadores) -->
+    <!-- Foto de Perfil (Avatar con Dropzone) -->
     <div class="form-group">
       <label>Foto de perfil <span class="required">*</span></label>
       <div class="shield-container">

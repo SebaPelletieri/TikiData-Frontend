@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal, HostListener } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { TeamService } from '../../services/team-service';
@@ -44,14 +44,12 @@ export class TeamList implements OnInit {
 
   championships = signal<Championship[]>([]);
 
-  // 🌍 Generamos dinámicamente la lista de países únicos a partir de los equipos cargados
   countries = computed(() => {
     const teams = this.teamService.teams ? this.teamService.teams() : [];
     const countrySet = new Set(teams.map((t) => t.country).filter(Boolean));
     return Array.from(countrySet).sort();
   });
 
-  // Diccionario genérico o puedes usar una API externa de banderas si lo deseas
   countryFlags: Record<string, string> = {
     Argentina: 'https://flagcdn.com/w40/ar.png',
     Brasil: 'https://flagcdn.com/w40/br.png',
@@ -61,7 +59,6 @@ export class TeamList implements OnInit {
     Italia: 'https://flagcdn.com/w40/it.png',
   };
 
-  // Control de apertura dinámico (inicia vacío; todo país nuevo arranca cerrado por defecto)
   openCountries = signal<Record<string, boolean>>({});
 
   ngOnInit(): void {
@@ -73,7 +70,16 @@ export class TeamList implements OnInit {
     });
   }
 
-  toggleCountryDropdown(): void {
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent): void {
+    const target = event.target as HTMLElement;
+    if (!target.closest('.select-filters')) {
+      this.isCountryDropdownOpen.set(false);
+    }
+  }
+
+  toggleCountryDropdown(event: MouseEvent): void {
+    event.stopPropagation();
     this.isCountryDropdownOpen.update((open) => !open);
   }
 
@@ -145,14 +151,13 @@ export class TeamList implements OnInit {
       }
 
       if (leaguesMap.length > 0) {
-        // Genera una bandera por defecto con FlagCDN basada en las iniciales si el país no está en el diccionario
         const defaultFlag = `https://flagcdn.com/w40/${country.substring(0, 2).toLowerCase()}.png`;
 
         result.push({
           countryName: country,
           countryFlag: this.countryFlags[country] || defaultFlag,
           leagues: leaguesMap,
-          isOpen: false, // Inicia cerrado por defecto de forma dinámica
+          isOpen: false,
         });
       }
     }

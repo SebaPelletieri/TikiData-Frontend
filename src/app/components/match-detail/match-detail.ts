@@ -42,13 +42,11 @@ export class MatchDetail implements OnInit {
   activeTab = signal<string>('Resumen');
   errorLoading = signal<boolean>(false);
 
-  // Acceso tipado al historial cara a cara (h2h) del JSON
   h2hData = computed<H2HSummary | null>(() => {
     const m = this.match() as any;
     return m?.h2h ?? null;
   });
 
-  // Cálculo automático y blindado de la tabla de posiciones del campeonato
   standings = computed<StandingRow[]>(() => {
     const currentMatch = this.match();
     if (!currentMatch) return [];
@@ -56,15 +54,11 @@ export class MatchDetail implements OnInit {
     const champId = Number(currentMatch.championshipID);
     const matchesInChamp = this.championshipMatches();
 
-    // 1. Buscamos equipos inscritos en ese championshipID
     let teamsInChamp = this.allTeams().filter(
       (t: any) =>
-        Array.isArray(t.championshipsActive) &&
-        t.championshipsActive.map(Number).includes(champId)
+        Array.isArray(t.championshipsActive) && t.championshipsActive.map(Number).includes(champId),
     );
 
-    // 2. Respaldo: si ningún equipo tiene ese ID en championshipsActive,
-    // tomamos los equipos que disputan partidos en ese campeonato
     if (teamsInChamp.length === 0) {
       const teamIdsFromMatches = new Set<number>();
       matchesInChamp.forEach((m) => {
@@ -92,7 +86,6 @@ export class MatchDetail implements OnInit {
       });
     });
 
-    // Procesamos partidos Finalizados o En Vivo de este campeonato
     matchesInChamp
       .filter((m) => m.status === 'Finalizado' || m.status === 'En Vivo')
       .forEach((m) => {
@@ -130,34 +123,35 @@ export class MatchDetail implements OnInit {
       });
 
     return Array.from(tableMap.values()).sort(
-      (a, b) => b.pts - a.pts || b.dg - a.dg || b.gf - a.gf || a.teamName.localeCompare(b.teamName)
+      (a, b) => b.pts - a.pts || b.dg - a.dg || b.gf - a.gf || a.teamName.localeCompare(b.teamName),
     );
   });
 
   ngOnInit(): void {
-  this.route.paramMap.subscribe((params) => {
-    const matchId = params.get('id');
-    if (matchId) {
-      this.http.get<Match>(`http://localhost:3000/partidos/${matchId}?_expand=championship`).subscribe({
-        next: (data) => {
-          this.match.set(data);
-          this.loadTeamDetails(data.localTeamID, data.awayTeamID);
-          this.loadTeamPlayers(data);
-          
-          // Validación segura del ID del campeonato antes de invocar los métodos
-          if (data.championshipID) {
-            this.loadChampionshipDetails(data.championshipID);
-            this.loadStandingsData(data.championshipID);
-          }
-        },
-        error: (err) => {
-          console.error('Error al cargar el partido:', err);
-          this.errorLoading.set(true);
-        },
-      });
-    }
-  });
-}
+    this.route.paramMap.subscribe((params) => {
+      const matchId = params.get('id');
+      if (matchId) {
+        this.http
+          .get<Match>(`http://localhost:3000/partidos/${matchId}?_expand=championship`)
+          .subscribe({
+            next: (data) => {
+              this.match.set(data);
+              this.loadTeamDetails(data.localTeamID, data.awayTeamID);
+              this.loadTeamPlayers(data);
+
+              if (data.championshipID) {
+                this.loadChampionshipDetails(data.championshipID);
+                this.loadStandingsData(data.championshipID);
+              }
+            },
+            error: (err: any) => {
+              console.error('Error al cargar el partido:', err);
+              this.errorLoading.set(true);
+            },
+          });
+      }
+    });
+  }
 
   setTab(tab: string): void {
     this.activeTab.set(tab);
@@ -183,12 +177,12 @@ export class MatchDetail implements OnInit {
   private loadStandingsData(champId: number): void {
     this.http.get<Team[]>('http://localhost:3000/equipos').subscribe({
       next: (teams) => this.allTeams.set(teams),
-      error: (err) => console.error('Error al cargar equipos para la tabla:', err),
+      error: (err: any) => console.error('Error al cargar equipos para la tabla:', err),
     });
 
     this.http.get<Match[]>(`http://localhost:3000/partidos?championshipID=${champId}`).subscribe({
       next: (matches) => this.championshipMatches.set(matches),
-      error: (err) => console.error('Error al cargar partidos para la tabla:', err),
+      error: (err: any) => console.error('Error al cargar partidos para la tabla:', err),
     });
   }
 
@@ -198,49 +192,53 @@ export class MatchDetail implements OnInit {
 
     this.http.get<Player[]>(`http://localhost:3000/jugadores?currentTeamID=${localId}`).subscribe({
       next: (localPlayers) => {
-        this.http.get<Player[]>(`http://localhost:3000/jugadores?currentTeamID=${awayId}`).subscribe({
-          next: (awayPlayers) => {
-            if (localPlayers.length > 0 || awayPlayers.length > 0) {
-              const mapPlayer = (p: Player, idx: number): LineupPlayer => ({
-                number: p.dorsals?.[localId] ?? p.dorsals?.[awayId] ?? idx + 1,
-                name: p.name,
-                position: p.position,
-              });
+        this.http
+          .get<Player[]>(`http://localhost:3000/jugadores?currentTeamID=${awayId}`)
+          .subscribe({
+            next: (awayPlayers) => {
+              if (localPlayers.length > 0 || awayPlayers.length > 0) {
+                const mapPlayer = (p: Player, idx: number): LineupPlayer => ({
+                  number: p.dorsals?.[localId] ?? p.dorsals?.[awayId] ?? idx + 1,
+                  name: p.name,
+                  position: p.position,
+                });
 
-              const mappedLocal = localPlayers.map((p, i) => mapPlayer(p, i));
-              const mappedAway = awayPlayers.map((p, i) => mapPlayer(p, i));
+                const mappedLocal = localPlayers.map((p, i) => mapPlayer(p, i));
+                const mappedAway = awayPlayers.map((p, i) => mapPlayer(p, i));
 
-              this.dynamicLineups.set({
-                local: mappedLocal.slice(0, 11),
-                localSubstitutes: mappedLocal.slice(11),
-                away: mappedAway.slice(0, 11),
-                awaySubstitutes: mappedAway.slice(11),
-              });
-            } else {
-              this.dynamicLineups.set(matchData.lineups ?? null);
-            }
-          },
-        });
+                this.dynamicLineups.set({
+                  local: mappedLocal.slice(0, 11),
+                  localSubstitutes: mappedLocal.slice(11),
+                  away: mappedAway.slice(0, 11),
+                  awaySubstitutes: mappedAway.slice(11),
+                });
+              } else {
+                this.dynamicLineups.set(matchData.lineups ?? null);
+              }
+            },
+            error: (err: any) => console.error('Error al cargar jugadores visitantes:', err),
+          });
       },
+      error: (err: any) => console.error('Error al cargar jugadores locales:', err),
     });
   }
 
   private loadTeamDetails(localId: number, awayId: number): void {
     this.http.get<Team>(`http://localhost:3000/equipos/${localId}`).subscribe({
       next: (t) => this.localTeam.set(t),
-      error: (err) => console.error('Error al cargar equipo local:', err),
+      error: (err: any) => console.error('Error al cargar equipo local:', err),
     });
 
     this.http.get<Team>(`http://localhost:3000/equipos/${awayId}`).subscribe({
       next: (t) => this.awayTeam.set(t),
-      error: (err) => console.error('Error al cargar equipo visitante:', err),
+      error: (err: any) => console.error('Error al cargar equipo visitante:', err),
     });
   }
 
   private loadChampionshipDetails(champId: number): void {
     this.http.get<Championship>(`http://localhost:3000/campeonatos/${champId}`).subscribe({
       next: (c) => this.championship.set(c),
-      error: (err) => console.error('Error al cargar campeonato:', err),
+      error: (err: any) => console.error('Error al cargar campeonato:', err),
     });
   }
 }

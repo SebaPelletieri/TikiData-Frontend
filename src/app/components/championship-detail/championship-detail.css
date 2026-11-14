@@ -5,7 +5,7 @@
   color: #f8fafc;
 }
 
-/* ================= BANNER SUPERIOR ================= */
+/* BANNER SUPERIOR */
 .champ-header-banner {
   display: flex;
   justify-content: space-between;
@@ -59,6 +59,10 @@
   color: #94a3b8;
 }
 
+.meta-item {
+  color: #94a3b8;
+}
+
 .separator {
   color: #475569;
 }
@@ -75,7 +79,9 @@
   font-size: 0.92rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s ease, transform 0.15s ease;
+  transition:
+    background 0.2s ease,
+    transform 0.15s ease;
 }
 
 .btn-follow-champ:hover {
@@ -88,7 +94,11 @@
   border: 1px solid rgba(16, 185, 129, 0.4);
 }
 
-/* ================= NAVEGACIÓN DE PESTAÑAS ================= */
+.follow-icon {
+  font-weight: 700;
+}
+
+/* NAVEGACIÓN DE PESTAÑAS */
 .champ-tabs-nav {
   display: flex;
   align-items: center;
@@ -107,7 +117,9 @@
   font-size: 0.95rem;
   font-weight: 600;
   cursor: pointer;
-  transition: color 0.2s ease, border-color 0.2s ease;
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease;
   white-space: nowrap;
 }
 
@@ -123,7 +135,7 @@
   border-top-right-radius: 8px;
 }
 
-/* ================= TARJETAS Y GRID ================= */
+/* TARJETAS Y GRID */
 .champ-content-grid {
   display: flex;
   flex-direction: column;
@@ -141,6 +153,14 @@
   border: 1px solid rgba(56, 189, 248, 0.15);
   border-radius: 14px;
   padding: 1.5rem;
+}
+
+.half-card {
+  width: 100%;
+}
+
+.full-width-card {
+  grid-column: 1 / -1;
 }
 
 .card-header-row {
@@ -180,7 +200,7 @@
   color: #fb923c;
 }
 
-/* ================= TABLAS DE DATOS ================= */
+/* TABLAS DE DATOS */
 .table-responsive {
   width: 100%;
   overflow-x: auto;
@@ -211,6 +231,11 @@
 
 .custom-data-table tbody tr:hover {
   background: rgba(255, 255, 255, 0.025);
+}
+
+
+.custom-data-table.scorers-table {
+  width: 100%;
 }
 
 .team-cell,
@@ -264,7 +289,7 @@
   margin: 0;
 }
 
-/* ================= ACORDEÓN DE FECHAS ================= */
+/* ACORDEÓN DE FECHAS */
 .rounds-accordion-list {
   display: flex;
   flex-direction: column;
@@ -278,7 +303,9 @@
   border: 1px solid rgba(56, 189, 248, 0.16);
   border-radius: 10px;
   overflow: hidden;
-  transition: border-color 0.2s ease, background 0.2s ease;
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease;
 }
 
 .round-accordion-item:hover {
@@ -343,7 +370,7 @@
   background: rgba(8, 16, 30, 0.65);
 }
 
-/* ================= LISTA DE PARTIDOS ================= */
+/* LISTA DE PARTIDOS */
 .matches-mini-list {
   display: flex;
   flex-direction: column;
@@ -422,29 +449,7 @@
   border: 1px solid rgba(249, 115, 22, 0.35);
 }
 
-/* ================= RESPONSIVE ================= */
-@media (max-width: 768px) {
-  .champ-header-banner {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .lower-grid-row {
-    grid-template-columns: 1fr;
-  }
-
-  .match-mini-row {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 0.4rem;
-  }
-
-  .match-date-badge {
-    text-align: center;
-  }
-}
-
-/* ================= FILTRO DE ZONAS / GRUPOS ================= */
+/* FILTRO DE ZONAS / GRUPOS */
 .zone-filter-bar {
   display: flex;
   flex-wrap: wrap;
@@ -472,4 +477,26 @@
   background: rgba(249, 115, 22, 0.16);
   border-color: #f97316;
   color: #ffffff;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .champ-header-banner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .lower-grid-row {
+    grid-template-columns: 1fr;
+  }
+
+  .match-mini-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.4rem;
+  }
+
+  .match-date-badge {
+    text-align: center;
+  }
 }

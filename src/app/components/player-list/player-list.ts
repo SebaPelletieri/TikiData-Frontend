@@ -21,25 +21,22 @@ export class PlayerList implements OnInit {
 
   searchText = signal('');
 
-  // Estados de los filtros seleccionados
   selectedPosition = signal<string>('ALL');
   selectedNationality = signal<string>('ALL');
 
-  // Estados visuales de los paneles desplegables
   isFilterPanelOpen = signal(false);
   isPositionDropdownOpen = false;
   isNationalityDropdownOpen = false;
 
-  // --- Paginación ---
   currentPage = signal(1);
   pageSize = 10;
 
   positions: FilterOption[] = [
     { value: 'ALL', label: 'Todas las posiciones' },
-    { value: 'Arquero', label: 'Arquero' },
-    { value: 'Defensor', label: 'Defensor' },
-    { value: 'Mediocampista', label: 'Mediocampista' },
-    { value: 'Delantero', label: 'Delantero' },
+    { value: 'ARQ', label: 'Arquero' },
+    { value: 'DEF', label: 'Defensor' },
+    { value: 'MED', label: 'Mediocampista' },
+    { value: 'DEL', label: 'Delantero' },
   ];
 
   nationalityOptions: FilterOption[] = [
@@ -54,7 +51,6 @@ export class PlayerList implements OnInit {
     this.playerService.getAll();
   }
 
-  // Cierra los paneles si se hace clic fuera
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent): void {
     const target = event.target as HTMLElement;
@@ -96,16 +92,15 @@ export class PlayerList implements OnInit {
   selectPosition(pos: string | number): void {
     this.selectedPosition.set(String(pos));
     this.isPositionDropdownOpen = false;
-    this.currentPage.set(1); // Reiniciar a la página 1 al filtrar
+    this.currentPage.set(1);
   }
 
   selectNationality(nat: string | number): void {
     this.selectedNationality.set(String(nat));
     this.isNationalityDropdownOpen = false;
-    this.currentPage.set(1); // Reiniciar a la página 1 al filtrar
+    this.currentPage.set(1);
   }
 
-  // Reiniciar a la página 1 cuando cambia la búsqueda
   onSearchChange(value: string): void {
     this.searchText.set(value);
     this.currentPage.set(1);
@@ -126,10 +121,9 @@ export class PlayerList implements OnInit {
   getTeamName(player: any): string {
     const teamId = player.teamID ?? player.currentTeamID;
     if (!teamId) return 'Agente libre';
-    return player.teamName || 'Boca Juniors';
+    return player.teamName || 'Equipo TikiData';
   }
 
-  // --- Filtro reactivo ---
   filteredPlayersList = computed(() => {
     const list = this.playerService.players ? this.playerService.players() : [];
     const search = this.searchText().toLowerCase().trim();
@@ -149,7 +143,6 @@ export class PlayerList implements OnInit {
     });
   });
 
-  // --- Propiedades computadas de Paginación ---
   totalPages = computed(() => {
     const total = this.filteredPlayersList().length;
     return Math.max(1, Math.ceil(total / this.pageSize));
@@ -172,7 +165,6 @@ export class PlayerList implements OnInit {
     return `Mostrando ${start} - ${end} de ${total} jugadores`;
   });
 
-  // Métodos de cambio de página
   goToPage(page: number): void {
     if (page >= 1 && page <= this.totalPages()) {
       this.currentPage.set(page);
@@ -200,8 +192,8 @@ export class PlayerList implements OnInit {
     return name
       .toLowerCase()
       .trim()
-      .normalize('NFD') // Remueve tildes (opcional pero recomendado)
+      .normalize('NFD')
       .replace(/[\u0300-\u036f]/g, '')
-      .replace(/\s+/g, '-'); // Reemplaza espacios por guiones
+      .replace(/\s+/g, '-');
   }
 }

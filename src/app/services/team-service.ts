@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable, signal, computed } from '@angular/core'; // 👈 Añade computed
+import { inject, Injectable, signal, computed } from '@angular/core';
 import { Team } from '../models/Team';
 import { map, Observable } from 'rxjs';
 
@@ -7,21 +7,21 @@ import { map, Observable } from 'rxjs';
 export class TeamService {
   private http = inject(HttpClient);
   private apiUrl = 'http://localhost:3000/equipos';
+
   error = signal<string | null>(null);
   teams = signal<Team[]>([]);
   teamActual = signal<Team | null>(null);
 
-  // 👇 Lista ordenada alfabéticamente de forma automática y reactiva
   sortedTeams = computed(() => {
-    return [...this.teams()].sort((a, b) => a.name.localeCompare(b.name));
+    return [...this.teams()].sort((a, b) =>
+      a.name.localeCompare(b.name, 'es', { sensitivity: 'accent' }),
+    );
   });
 
-  // Método para obtener todos los equipos como Observable (nuevo)
   getAllTeams(): Observable<Team[]> {
     return this.http.get<Team[]>(this.apiUrl);
   }
 
-  // Métodos del HTTP
   getAll() {
     this.http.get<Team[]>(this.apiUrl).subscribe({
       next: (data) => {
@@ -64,7 +64,7 @@ export class TeamService {
         this.getAll();
       },
       error: () => {
-        this.error.set('No se puedo eliminar el equipo del sistema');
+        this.error.set('No se pudo eliminar el equipo del sistema');
       },
     });
   }
@@ -76,6 +76,6 @@ export class TeamService {
   getTeamsSortedByPoints(): Observable<Team[]> {
     return this.http
       .get<Team[]>(this.apiUrl)
-      .pipe(map((teams) => teams.sort((a: any, b: any) => (b.points || 0) - (a.points || 0))));
+      .pipe(map((teams) => teams.sort((a, b) => (b.points || 0) - (a.points || 0))));
   }
 }

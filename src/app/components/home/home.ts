@@ -7,6 +7,7 @@ import { PlayerService } from '../../services/player-service';
 import { TeamService } from '../../services/team-service';
 import { Team } from '../../models/Team';
 import { Match } from '../../models/Match';
+import { Player } from '../../models/Player';
 
 @Component({
   imports: [RouterLink, DatePipe],
@@ -29,18 +30,14 @@ export class Home implements OnInit {
 
   fechaActual: string = '';
 
-  // Filtra la Champions League y toma las ligas principales para el carrusel superior
   featuredLeagues = computed(() =>
     this.campeonatos()
       .filter((c) => !c.name.toLowerCase().includes('champions'))
-      .slice(0, 4)
+      .slice(0, 4),
   );
 
-  // Busca el nombre de la Liga Profesional para enlazar "Ver tabla completa"
   ligaProfesionalName = computed(() => {
-    const liga = this.campeonatos().find((c) =>
-      c.name.toLowerCase().includes('liga profesional')
-    );
+    const liga = this.campeonatos().find((c) => c.name.toLowerCase().includes('liga profesional'));
     return liga ? liga.name : 'Liga Profesional';
   });
 
@@ -89,13 +86,13 @@ export class Home implements OnInit {
     return '⚽';
   }
 
-  getPlayerGoals(player: any): number {
-    return player.goals ?? player.statistics?.goals ?? 0;
+  getPlayerGoals(player: Player): number {
+    return player.goals ?? 0;
   }
 
-  getPlayerAvatar(player: any): string {
-    if (player.photo || player.image || player.avatar) {
-      return player.photo || player.image || player.avatar;
+  getPlayerAvatar(player: Player): string {
+    if (player.photo) {
+      return player.photo;
     }
     const encodedName = encodeURIComponent(player.name || 'Jugador');
     return `https://ui-avatars.com/api/?name=${encodedName}&background=06182e&color=fff&size=128`;

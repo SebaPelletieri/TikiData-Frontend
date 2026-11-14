@@ -34,7 +34,12 @@
 
       <div class="header-actions">
         <!-- Botón Seguir con el estado de favoritos -->
-        <button class="btn-follow" [class.following]="isFollowing()" (click)="toggleFollowPlayer()">
+        <button
+          type="button"
+          class="btn-follow"
+          [class.following]="isFollowing()"
+          (click)="toggleFollowPlayer()"
+        >
           <span class="follow-icon">
             {{ isFollowing() ? '✓' : '+' }}
           </span>
@@ -49,19 +54,31 @@
     <!-- 2. Pestañas de Navegación -->
     <div class="player-tabs">
       <button
+        type="button"
         class="tab-btn"
         [class.active]="activeTab() === 'general'"
         (click)="setTab('general')"
       >
         Vista general
       </button>
-      <button class="tab-btn" [class.active]="activeTab() === 'stats'" (click)="setTab('stats')">
+      <button
+        type="button"
+        class="tab-btn"
+        [class.active]="activeTab() === 'stats'"
+        (click)="setTab('stats')"
+      >
         Estadísticas
       </button>
-      <button class="tab-btn" [class.active]="activeTab() === 'clubs'" (click)="setTab('clubs')">
+      <button
+        type="button"
+        class="tab-btn"
+        [class.active]="activeTab() === 'clubs'"
+        (click)="setTab('clubs')"
+      >
         Historial de clubes
       </button>
       <button
+        type="button"
         class="tab-btn"
         [class.active]="activeTab() === 'matches'"
         (click)="setTab('matches')"
@@ -111,7 +128,7 @@
         </div>
       </div>
 
-      <!-- Estadísticas Generales (Con contenedores separados para alinear perfectamente) -->
+      <!-- Estadísticas Generales -->
       <div class="stats-overview-card">
         <h3>Estadísticas generales (temporada actual)</h3>
         <div class="stats-row-grid">
@@ -160,7 +177,7 @@
 
     <!-- Botón de Retorno -->
     <div class="actions-footer" style="margin-top: 2rem">
-      <button class="btn-back" routerLink="/players">Volver al listado</button>
+      <button type="button" class="btn-back" routerLink="/players">Volver al listado</button>
     </div>
   </div>
 }

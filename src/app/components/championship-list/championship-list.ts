@@ -30,11 +30,9 @@ export class ChampionshipList implements OnInit {
 
   searchText = signal('');
 
-  // Estados de los filtros seleccionados
   selectedType = signal<string>('ALL');
   selectedCountry = signal<string>('ALL');
 
-  // Estados visuales de los desplegables
   isFilterPanelOpen = signal(false);
   isTypeDropdownOpen = false;
   isCountryDropdownOpen = false;
@@ -45,7 +43,6 @@ export class ChampionshipList implements OnInit {
     { value: 'COPA', label: 'Copa' },
   ];
 
-  // 🌍 Opciones de país generadas de forma dinámica en base a los datos reales
   countryOptions = computed<FilterOption[]>(() => {
     const list = this.championshipService.championships
       ? this.championshipService.championships()
@@ -73,7 +70,6 @@ export class ChampionshipList implements OnInit {
     return options;
   });
 
-  // Diccionario de banderas por país
   countryFlags: Record<string, string> = {
     Argentina: 'https://flagcdn.com/w40/ar.png',
     Brasil: 'https://flagcdn.com/w40/br.png',
@@ -83,7 +79,6 @@ export class ChampionshipList implements OnInit {
     Italia: 'https://flagcdn.com/w40/it.png',
   };
 
-  // Control de apertura dinámico (inicia vacío; todo grupo arranca cerrado por defecto)
   openGroups = signal<Record<string, boolean>>({});
 
   ngOnInit(): void {
@@ -168,7 +163,6 @@ export class ChampionshipList implements OnInit {
     }
   }
 
-  // --- Agrupación Jerárquica: Internacionales y por País (Ligas y Copas) ---
   groupedChampionships = computed(() => {
     const list = this.championshipService.championships
       ? this.championshipService.championships()
@@ -177,7 +171,6 @@ export class ChampionshipList implements OnInit {
     const typeFilter = this.selectedType();
     const countryFilter = this.selectedCountry();
 
-    // 1. Filtrar por buscador y filtros de menú superior
     const filtered = list.filter((champ: Championship) => {
       const matchesSearch = !search || champ.name.toLowerCase().includes(search);
       const matchesType = typeFilter === 'ALL' || champ.type === typeFilter;
@@ -200,7 +193,6 @@ export class ChampionshipList implements OnInit {
 
     const result: ChampionshipGroup[] = [];
 
-    // 2. Separar Internacionales
     const internationalChamps = filtered.filter(
       (c) =>
         !c.country ||
@@ -219,7 +211,6 @@ export class ChampionshipList implements OnInit {
       });
     }
 
-    // 3. Separar por País
     const nationalChamps = filtered.filter(
       (c) =>
         c.country &&

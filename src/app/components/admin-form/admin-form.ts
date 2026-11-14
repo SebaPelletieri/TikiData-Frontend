@@ -24,10 +24,7 @@ export class AdminForm implements OnInit {
   errorMessage = signal('');
   successMessage = signal('');
 
-  // Variable de estado para mostrar u ocultar la contraseña
-  showPassword: boolean = false;
-
-  // Vista previa de la foto de perfil (avatar)
+  showPassword = false;
   avatarPreview: string | null = null;
 
   ngOnInit(): void {
@@ -39,7 +36,6 @@ export class AdminForm implements OnInit {
     }
   }
 
-  // Función para alternar la visibilidad de la contraseña
   togglePasswordVisibility(): void {
     this.showPassword = !this.showPassword;
   }
@@ -55,18 +51,20 @@ export class AdminForm implements OnInit {
 
   private loadUserData(id: number): void {
     this.isLoading.set(true);
-    this.authService.getAllUsers().subscribe({
-      next: (users) => {
-        const user = users.find((u) => u.id === id);
+    this.authService.getUserById(id).subscribe({
+      next: (user) => {
         if (user) {
           this.adminForm.patchValue({
             username: user.username,
             email: user.email,
             avatar: user.avatar || '',
           });
+
           if (user.avatar) {
             this.avatarPreview = user.avatar;
           }
+
+          // En modo edición la contraseña deja de ser obligatoria
           this.adminForm.get('password')?.clearValidators();
           this.adminForm.get('password')?.updateValueAndValidity();
         }

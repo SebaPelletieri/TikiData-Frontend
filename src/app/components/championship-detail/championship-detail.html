@@ -1,6 +1,6 @@
 <div class="champ-detail-container">
   @if (championship(); as champ) {
-    <!-- ================= BANNER SUPERIOR ================= -->
+    <!-- BANNER SUPERIOR -->
     <div class="champ-header-banner">
       <div class="champ-main-info">
         <div class="champ-logo-wrapper">
@@ -35,18 +35,30 @@
       </button>
     </div>
 
-    <!-- ================= NAVEGACIÓN DE PESTAÑAS (TABS) ================= -->
+    <!-- NAVEGACIÓN DE PESTAÑAS (TABS) -->
     <div class="champ-tabs-nav">
-      <button class="tab-btn" [class.active]="activeTab() === 'general'" (click)="setTab('general')">
+      <button
+        class="tab-btn"
+        [class.active]="activeTab() === 'general'"
+        (click)="setTab('general')"
+      >
         Vista general
       </button>
       <button class="tab-btn" [class.active]="activeTab() === 'table'" (click)="setTab('table')">
         Tabla
       </button>
-      <button class="tab-btn" [class.active]="activeTab() === 'matches'" (click)="setTab('matches')">
+      <button
+        class="tab-btn"
+        [class.active]="activeTab() === 'matches'"
+        (click)="setTab('matches')"
+      >
         Partidos
       </button>
-      <button class="tab-btn" [class.active]="activeTab() === 'scorers'" (click)="setTab('scorers')">
+      <button
+        class="tab-btn"
+        [class.active]="activeTab() === 'scorers'"
+        (click)="setTab('scorers')"
+      >
         Goleadores
       </button>
       <button class="tab-btn" [class.active]="activeTab() === 'cards'" (click)="setTab('cards')">
@@ -54,10 +66,9 @@
       </button>
     </div>
 
-    <!-- ================= CONTENIDO DE LA VISTA GENERAL ================= -->
+    <!-- VISTA GENERAL -->
     @if (activeTab() === 'general') {
       <div class="champ-content-grid">
-        <!-- TABLA DE POSICIONES (CON ZONAS/GRUPOS O TABLA ÚNICA) -->
         @if (hasZones()) {
           <div class="lower-grid-row">
             @for (zone of zoneTables(); track zone.zoneName) {
@@ -170,9 +181,8 @@
           </div>
         }
 
-        <!-- SECCIÓN INFERIOR EN DOS COLUMNAS -->
+        <!-- SECCIÓN INFERIOR -->
         <div class="lower-grid-row">
-          <!-- PRÓXIMOS PARTIDOS -->
           <div class="card-box half-card">
             <div class="card-header-row">
               <h3>Próximos partidos</h3>
@@ -187,11 +197,13 @@
                   <span class="match-date-badge">{{ match.date }}</span>
                   <div class="match-teams-info">
                     <span class="team-right-side">
-                      {{ match.homeName }} <img [src]="match.homeShield" class="tiny-shield" alt="" />
+                      {{ match.homeName }}
+                      <img [src]="match.homeShield" class="tiny-shield" alt="" />
                     </span>
                     <span class="vs-text">vs</span>
                     <span class="team-left-side">
-                      <img [src]="match.awayShield" class="tiny-shield" alt="" /> {{ match.awayName }}
+                      <img [src]="match.awayShield" class="tiny-shield" alt="" />
+                      {{ match.awayName }}
                     </span>
                   </div>
                 </div>
@@ -201,7 +213,6 @@
             </div>
           </div>
 
-          <!-- GOLEADORES -->
           <div class="card-box half-card">
             <div class="card-header-row">
               <h3>Goleadores</h3>
@@ -246,11 +257,10 @@
       </div>
     }
 
-    <!-- ================= PESTAÑA: TABLA COMPLETA (ZONAS O ÚNICA) ================= -->
+    <!-- TABLA COMPLETA -->
     @if (activeTab() === 'table') {
       @if (hasZones()) {
         <div class="champ-content-grid">
-          <!-- BARRA DE FILTRO POR ZONA / GRUPO -->
           <div class="zone-filter-bar">
             <button
               type="button"
@@ -381,7 +391,7 @@
       }
     }
 
-    <!-- ================= PESTAÑA: PARTIDOS POR FECHA (ACORDEÓN) ================= -->
+    <!-- PARTIDOS -->
     @if (activeTab() === 'matches') {
       <div class="card-box">
         <div class="card-header-row">
@@ -444,7 +454,7 @@
       </div>
     }
 
-    <!-- ================= PESTAÑA: GOLEADORES ================= -->
+    <!-- GOLEADORES -->
     @if (activeTab() === 'scorers') {
       <div class="card-box">
         <div class="card-header-row">
@@ -487,7 +497,7 @@
       </div>
     }
 
-    <!-- ================= PESTAÑA: TARJETAS ================= -->
+    <!-- TARJETAS -->
     @if (activeTab() === 'cards') {
       <div class="card-box">
         <div class="card-header-row">
@@ -512,7 +522,9 @@
                   <td>
                     <div class="player-cell">
                       <img [src]="item.photo" [alt]="item.name" class="player-avatar" />
-                      <span>{{ item.name }}</span>
+                      <span
+                        ><span>{{ item.name }}</span></span
+                      >
                     </div>
                   </td>
                   <td class="text-muted">{{ item.teamName }}</td>

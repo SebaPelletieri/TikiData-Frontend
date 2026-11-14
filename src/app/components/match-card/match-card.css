@@ -1,6 +1,10 @@
+* {
+  box-sizing: border-box;
+}
+
 .match-card {
   background: linear-gradient(145deg, #06182e 0%, #092343 100%);
-  border: 1px solid #143560; /* Borde azul sutil por defecto */
+  border: 1px solid #143560;
   border-radius: 14px;
   padding: 1.2rem;
   cursor: pointer;
@@ -10,7 +14,6 @@
   box-sizing: border-box;
 }
 
-/* Al pasar el mouse, cambiamos SÓLO el color del borde y agregamos la sombra naranja sin duplicar nada */
 .match-card:hover {
   transform: translateY(-4px);
   border-color: #ff6b00;

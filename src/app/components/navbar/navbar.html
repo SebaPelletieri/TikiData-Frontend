@@ -42,7 +42,7 @@
     </li>
   </ul>
 
-  <!-- Utilidades (Buscador Global, Switch y Perfil) -->
+  <!-- Utilidades -->
   <div class="navbar__utils">
     <!-- Buscador Global -->
     <div class="navbar__search">
@@ -56,7 +56,6 @@
         placeholder="Buscar equipos, ligas o jugadores..."
       />
 
-      <!-- Resultados desplegables del buscador -->
       @if (isSearchFocused() && searchText().trim() !== '') {
         <ul class="navbar__search-dropdown" (mousedown)="$event.preventDefault()">
           @for (item of searchResults(); track item.type + '-' + item.id) {
@@ -76,7 +75,7 @@
       }
     </div>
 
-    <!-- Switch de Tema (Luna / Sol) -->
+    <!-- Switch de Tema -->
     <div class="navbar__theme">
       <label class="toggle-switch">
         <input

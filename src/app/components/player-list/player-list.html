@@ -122,7 +122,12 @@
           <tr [routerLink]="['/player', formatPlayerSlug(player.name)]" class="player-row">
             <td class="col-photo">
               <div class="avatar-wrapper">
-                <img [src]="player.photo" [alt]="player.name" />
+                <img
+                  [src]="player.photo || 'https://via.placeholder.com/80?text=Jugador'"
+                  (error)="$any($event.target).src = 'https://via.placeholder.com/80?text=Jugador'"
+                  [alt]="player.name"
+                  referrerpolicy="no-referrer"
+                />
               </div>
             </td>
             <td class="player-name-cell">

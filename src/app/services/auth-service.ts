@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
-import { User } from '../models/User';
+import { User, Role } from '../models/User';
 import { map, Observable, switchMap, tap, throwError } from 'rxjs';
-import { LoginRequest } from '../models/Login Request';
-import { RegisterRequest } from '../models/Register Request';
+import { LoginRequest } from '../models/LoginRequest';
+import { RegisterRequest } from '../models/RegisterRequest';
 
 @Injectable({
   providedIn: 'root',
@@ -18,7 +18,7 @@ export class AuthService {
     if (storedUser) {
       try {
         this.currentUser.set(JSON.parse(storedUser));
-      } catch (e) {
+      } catch {
         localStorage.removeItem('tiki_user');
       }
     }
@@ -26,7 +26,7 @@ export class AuthService {
 
   checkUsernameExists(userName: string): Observable<boolean> {
     return this.http
-      .get<any[]>(`${this.apiUrl}/usuarios`)
+      .get<User[]>(`${this.apiUrl}/usuarios`)
       .pipe(
         map((users) =>
           users.some((u) => u.username && u.username.toLowerCase() === userName.toLowerCase()),
@@ -36,7 +36,7 @@ export class AuthService {
 
   checkEmailExists(email: string): Observable<boolean> {
     return this.http
-      .get<any[]>(`${this.apiUrl}/usuarios`)
+      .get<User[]>(`${this.apiUrl}/usuarios`)
       .pipe(
         map((users) => users.some((u) => u.email && u.email.toLowerCase() === email.toLowerCase())),
       );
@@ -53,7 +53,6 @@ export class AuthService {
             throw new Error('Credenciales inválidas');
           }
           const u = users[0];
-          // 🌟 Mapeamos 'name' a 'username' si el registro viejo no lo tiene
           const normalizedUser: User = {
             ...u,
             username: u.username || u.name || 'Usuario',
@@ -68,7 +67,7 @@ export class AuthService {
       );
   }
 
-  register(userData: RegisterRequest | any): Observable<User> {
+  register(userData: RegisterRequest): Observable<User> {
     return this.checkUsernameExists(userData.username).pipe(
       switchMap((usernameExists) => {
         if (usernameExists) {
@@ -83,7 +82,7 @@ export class AuthService {
 
         const dataWithRole = {
           ...userData,
-          role: userData.role || 'Usuario',
+          role: 'Usuario' as Role,
           favoriteTeams: [],
           favoritePlayers: [],
           favoriteChampionships: [],
@@ -105,36 +104,17 @@ export class AuthService {
     return this.currentUser() !== null;
   }
 
-  updateUser(id: number, updatedData: Partial<User>): Observable<User> {
+  updateUser(id: number | string, updatedData: Partial<User>): Observable<User> {
     return this.http.patch<User>(`${this.apiUrl}/usuarios/${id}`, updatedData).pipe(
       tap((user) => {
-        const fullUser = { ...this.currentUser(), ...user };
-        localStorage.setItem('tiki_user', JSON.stringify(fullUser));
-        this.currentUser.set(fullUser as User);
+        const fullUser = { ...this.currentUser(), ...user } as User;
+        // Si el usuario logueado es el mismo que se actualizó, actualizamos localStorage y la señal
+        if (this.currentUser()?.id === Number(id)) {
+          localStorage.setItem('tiki_user', JSON.stringify(fullUser));
+          this.currentUser.set(fullUser);
+        }
       }),
     );
-  }
-
-  getAllUsers(): Observable<User[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/usuarios`).pipe(
-      map(
-        (users) =>
-          users
-            .map((u) => ({
-              ...u,
-              username: u.username || u.name || 'Usuario',
-            }))
-            .sort((a, b) => (a.username || '').localeCompare(b.username || '')), // 👈 Ordenados alfabéticamente aquí
-      ),
-    );
-  }
-
-  updateUserRole(id: number, role: 'Administrador' | 'Usuario'): Observable<User> {
-    return this.http.patch<User>(`${this.apiUrl}/usuarios/${id}`, { role });
-  }
-
-  deleteUser(id: number): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/usuarios/${id}`);
   }
 
   getUserById(id: number | string): Observable<User> {
@@ -144,5 +124,31 @@ export class AuthService {
         username: u.username || u.name || 'Usuario',
       })),
     );
+  }
+
+  // ==========================================
+  // MÉTODOS ADMINISTRATIVOS AGREGADOS
+  // ==========================================
+
+  // Obtener todos los usuarios normalizados para el dashboard
+  getAllUsers(): Observable<User[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/usuarios`).pipe(
+      map((users) =>
+        users.map((u) => ({
+          ...u,
+          username: u.username || u.name || 'Usuario',
+        })),
+      ),
+    );
+  }
+
+  // Actualizar específicamente el rol de un usuario
+  updateUserRole(id: number | string, role: 'Administrador' | 'Usuario'): Observable<User> {
+    return this.http.patch<User>(`${this.apiUrl}/usuarios/${id}`, { role });
+  }
+
+  // Eliminar un usuario del sistema por su ID
+  deleteUser(id: number | string): Observable<any> {
+    return this.http.delete<any>(`${this.apiUrl}/usuarios/${id}`);
   }
 }

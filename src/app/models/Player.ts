@@ -1,4 +1,5 @@
 export type Position = 'ARQ' | 'DEF' | 'MED' | 'DEL';
+
 export interface Player {
   id?: number;
   name: string;

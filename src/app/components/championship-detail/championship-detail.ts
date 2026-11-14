@@ -22,22 +22,21 @@ export class ChampionshipDetail implements OnInit {
   championship = signal<any | null>(null);
   activeTab = signal<'general' | 'table' | 'matches' | 'scorers' | 'cards'>('general');
 
-  // Datos completos del torneo
   fullStandings = signal<any[]>([]);
   allTournamentMatches = signal<any[]>([]);
   allScorers = signal<any[]>([]);
   allCards = signal<any[]>([]);
 
-  // Vistas resumidas para la pestaña "Vista general"
   standings = computed(() => this.fullStandings().slice(0, 5));
+
   upcomingMatches = computed(() =>
     this.allTournamentMatches()
       .filter((m) => m.status !== 'Finalizado')
       .slice(0, 5),
   );
+
   topScorers = computed(() => this.allScorers().slice(0, 5));
 
-  // Soporte para torneos con Zonas / Grupos (Copa de la Liga, Copa Libertadores, etc.)
   hasZones = computed(() => {
     const zones = this.championship()?.zones;
     return Array.isArray(zones) && zones.length > 0;
@@ -66,7 +65,6 @@ export class ChampionshipDetail implements OnInit {
     });
   });
 
-  // Filtro de zona en la pestaña "Tabla" ('ALL' muestra todas las zonas/grupos)
   selectedZone = signal<string>('ALL');
 
   filteredZoneTables = computed(() => {
@@ -76,8 +74,6 @@ export class ChampionshipDetail implements OnInit {
     return tables.filter((z) => z.zoneName === selected);
   });
 
-  // Partidos agrupados por fecha/jornada (jugados y por jugar)
-  // Partidos agrupados por fecha/jornada (jugados y por jugar)
   matchesByRound = computed(() => {
     const allMatches = this.allTournamentMatches();
     const groupsMap = new Map<string, { roundNum: number; matches: any[] }>();
@@ -86,7 +82,6 @@ export class ChampionshipDetail implements OnInit {
       let roundLabel = 'Sin fecha asignada';
       let roundNum = 999;
 
-      // Intentamos obtener el número de fecha de múltiples propiedades posibles
       const rawRound = m.round ?? m.matchday ?? m.jornada ?? m.fecha;
       if (rawRound !== undefined && rawRound !== null && String(rawRound).trim() !== '') {
         const parsed = parseInt(String(rawRound).replace(/\D/g, ''), 10);
@@ -97,7 +92,6 @@ export class ChampionshipDetail implements OnInit {
           roundLabel = String(rawRound);
         }
       } else if (m.championshipName) {
-        // Buscar patrón tipo "Fecha X" o "Jornada X" en el nombre del campeonato o del partido
         const matchText = m.championshipName.match(/(?:fecha|jornada)\s*(\d+)/i);
         if (matchText && matchText[1]) {
           roundNum = parseInt(matchText[1], 10);
@@ -120,9 +114,7 @@ export class ChampionshipDetail implements OnInit {
       .sort((a, b) => a.roundNum - b.roundNum || a.roundTitle.localeCompare(b.roundTitle));
   });
 
-  // Control del acordeón de fechas desplegadas
   expandedRounds = signal<Set<string>>(new Set());
-
   isFollowing = signal<boolean>(false);
 
   ngOnInit() {
@@ -170,9 +162,7 @@ export class ChampionshipDetail implements OnInit {
       next: (champs) => {
         const targetSlug = this.toSlug(decodeURIComponent(searchName));
         const found = champs.find(
-          (c) =>
-            this.toSlug(c.name) === targetSlug ||
-            this.toSlug(c.name).includes(targetSlug),
+          (c) => this.toSlug(c.name) === targetSlug || this.toSlug(c.name).includes(targetSlug),
         );
 
         const champData = found || {
@@ -210,25 +200,15 @@ export class ChampionshipDetail implements OnInit {
         const champIdStr = String(champ.id);
         const champNameClean = (champ.name || '').trim().toLowerCase();
 
-        // 1. Filtrar partidos que pertenecen a este campeonato
         const champMatches = matches.filter((m) => {
-          const byId =
-            m.championshipID !== undefined &&
-            String(m.championshipID) === champIdStr;
+          const byId = m.championshipID !== undefined && String(m.championshipID) === champIdStr;
           const byName =
-            m.championshipName &&
-            m.championshipName.trim().toLowerCase() === champNameClean;
+            m.championshipName && m.championshipName.trim().toLowerCase() === champNameClean;
           return byId || byName;
         });
 
-        // 2. Juntar todos los IDs explícitos (teamsIDs + los teamIDs adentro de cada zona/grupo)
-        const zoneTeamIds = (champ.zones || []).flatMap((z: any) =>
-          (z.teamIDs || []).map(String),
-        );
-        const explicitTeamIds = new Set([
-          ...(champ.teamsIDs || []).map(String),
-          ...zoneTeamIds,
-        ]);
+        const zoneTeamIds = (champ.zones || []).flatMap((z: any) => (z.teamIDs || []).map(String));
+        const explicitTeamIds = new Set([...(champ.teamsIDs || []).map(String), ...zoneTeamIds]);
 
         const matchTeamIds = new Set<string>();
         champMatches.forEach((m) => {
@@ -238,17 +218,10 @@ export class ChampionshipDetail implements OnInit {
 
         const participatingTeams = teams.filter((t) => {
           const tId = String(t.id);
-          const inActiveArray = (t.championshipsActive || [])
-            .map(String)
-            .includes(champIdStr);
-          return (
-            inActiveArray ||
-            explicitTeamIds.has(tId) ||
-            matchTeamIds.has(tId)
-          );
+          const inActiveArray = (t.championshipsActive || []).map(String).includes(champIdStr);
+          return inActiveArray || explicitTeamIds.has(tId) || matchTeamIds.has(tId);
         });
 
-        // 3. Filtrar partidos que suman para tabla (excluye cruces de eliminación directa si existen)
         const knockoutStages = ['octavos', 'cuartos', 'semifinal', 'final', 'playoff'];
         const tableMatches = champMatches.filter((m) => {
           if (!m.stage) return true;
@@ -256,13 +229,9 @@ export class ChampionshipDetail implements OnInit {
           return !knockoutStages.some((k) => stageLower.includes(k));
         });
 
-        // 4. Calcular Tabla de Posiciones
         this.buildStandingsTable(participatingTeams, tableMatches);
-
-        // 5. Formatear lista completa de partidos del torneo
         this.buildMatchesList(champMatches, teams);
 
-        // 6. Calcular Goleadores y Tarjetas aislados para ESTE campeonato
         const participatingIdsSet = new Set(participatingTeams.map((t) => String(t.id)));
         this.buildPlayerStats(players, participatingIdsSet, teams, champMatches, champ);
       },
@@ -387,19 +356,24 @@ export class ChampionshipDetail implements OnInit {
     this.allCards.set([]);
 
     const champIdStr = String(champ.id);
-    const leaguePlayers = players.filter((p) =>
-      participatingIdsSet.has(String(p.currentTeamID)),
-    );
+    const leaguePlayers = players.filter((p) => participatingIdsSet.has(String(p.currentTeamID)));
 
-    const scorersMap = new Map<string, { name: string; teamName: string; photo?: string; goals: number }>();
-    const cardsMap = new Map<string, { name: string; teamName: string; photo?: string; yellowCards: number; redCards: number }>();
+    const scorersMap = new Map<
+      string,
+      { name: string; teamName: string; photo?: string; goals: number }
+    >();
+    const cardsMap = new Map<
+      string,
+      { name: string; teamName: string; photo?: string; yellowCards: number; redCards: number }
+    >();
 
     const findPlayerPhoto = (playerName: string, teamId: string): string | undefined => {
       const clean = playerName.trim().toLowerCase();
       const found = leaguePlayers.find(
         (p) =>
           String(p.currentTeamID) === teamId &&
-          (p.name.toLowerCase() === clean || p.name.toLowerCase().includes(clean.split(' ').pop() || '')),
+          (p.name.toLowerCase() === clean ||
+            p.name.toLowerCase().includes(clean.split(' ').pop() || '')),
       );
       return found?.photo;
     };
@@ -443,18 +417,15 @@ export class ChampionshipDetail implements OnInit {
       const localId = String(m.localTeamID);
       const awayId = String(m.awayTeamID);
 
-      // 1. Goles desde localGoalsDetail y awayGoalsDetail
       (m.localGoalsDetail || []).forEach((g: any) => addGoal(g.player, localId));
       (m.awayGoalsDetail || []).forEach((g: any) => addGoal(g.player, awayId));
 
-      // 2. Tarjetas desde incidences (ej: "Tarjeta Amarilla a G. Cano" o "Tarjeta Roja a M. Rojo")
       (m.incidences || []).forEach((inc: any) => {
         if (inc.type === 'YELLOW_CARD' || inc.type === 'RED_CARD') {
           const text: string = inc.text || '';
           const matchPlayer = text.match(/(?:a|para)\s+([^(]+)/i);
           if (matchPlayer && matchPlayer[1]) {
             const playerName = matchPlayer[1].trim();
-            // Determinamos el equipo buscando en alineaciones o asignando al local por defecto
             const inAway = (m.lineups?.away || []).some((p: any) =>
               p.name.toLowerCase().includes(playerName.toLowerCase()),
             );
@@ -465,7 +436,6 @@ export class ChampionshipDetail implements OnInit {
       });
     });
 
-    // Respaldo para Liga Profesional (id "1") si aún no tiene goles cargados en partidos
     if (scorersMap.size === 0 && champIdStr === '1') {
       leaguePlayers
         .filter((p) => (p.goals || 0) > 0)
@@ -542,9 +512,7 @@ export class ChampionshipDetail implements OnInit {
     this.isFollowing.set(!this.isFollowing());
 
     this.authService.updateUser(user.id, { favoriteChampionships: updatedFavorites }).subscribe({
-      next: () => {
-        console.log('Campeonatos favoritos actualizados en el servidor correctamente.');
-      },
+      next: () => {},
       error: (err) => {
         console.error('Error al actualizar campeonatos favoritos:', err);
         this.isFollowing.set(!this.isFollowing());

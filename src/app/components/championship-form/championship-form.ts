@@ -1,4 +1,5 @@
-import { Component, inject, signal, computed, OnInit } from '@angular/core';
+import { Component, inject, signal, computed, OnInit, HostListener } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormsModule, FormBuilder, Validators } from '@angular/forms';
 import { Championship, ChampionshipType } from '../../models/Championship';
 import { ChampionshipService } from '../../services/championship-service';
@@ -10,8 +11,9 @@ interface CountryOption {
 }
 
 @Component({
-  imports: [ReactiveFormsModule, FormsModule],
   selector: 'app-championship-form',
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule, FormsModule],
   styleUrl: './championship-form.css',
   templateUrl: './championship-form.html',
 })
@@ -24,14 +26,11 @@ export class ChampionshipForm implements OnInit {
   isTypeOpen = false;
   isCountryOpen = false;
 
-  // Búsqueda
   teamSearchQuery = signal<string>('');
   isTeamSearchOpen = signal<boolean>(false);
 
-  // Señal pura para los IDs seleccionados
   selectedTeamIds = signal<number[]>([]);
 
-  // Equipos cargados desde db.json
   teams = this.teamService.teams;
 
   types: ChampionshipType[] = ['LIGA', 'COPA'];
@@ -61,7 +60,6 @@ export class ChampionshipForm implements OnInit {
     teamsIDs: [<number[]>[], [Validators.required, Validators.minLength(1)]],
   });
 
-  // Equipos que coinciden con el texto y que NO están seleccionados todavía
   filteredAvailableTeams = computed(() => {
     const query = this.teamSearchQuery().trim().toLowerCase();
     const selected = this.selectedTeamIds();
@@ -76,7 +74,6 @@ export class ChampionshipForm implements OnInit {
     });
   });
 
-  // Lista de objetos Team para renderizar los chips
   selectedTeamsList = computed(() => {
     const selected = this.selectedTeamIds();
     return this.teams().filter(
@@ -88,6 +85,14 @@ export class ChampionshipForm implements OnInit {
     if (this.teams().length === 0) {
       this.teamService.getAll();
     }
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent): void {
+    const target = event.target as HTMLElement;
+    if (!target.closest('.country-group')) this.isCountryOpen = false;
+    if (!target.closest('.type-group')) this.isTypeOpen = false;
+    if (!target.closest('.team-multisearch-group')) this.isTeamSearchOpen.set(false);
   }
 
   getCountryCode(countryName?: string): string {
@@ -166,7 +171,8 @@ export class ChampionshipForm implements OnInit {
     this.isCountryOpen = false;
   }
 
-  toggleTypeDropdown(): void {
+  toggleTypeDropdown(event?: MouseEvent): void {
+    if (event) event.stopPropagation();
     this.isTypeOpen = !this.isTypeOpen;
     this.isCountryOpen = false;
     this.isTeamSearchOpen.set(false);
@@ -181,7 +187,8 @@ export class ChampionshipForm implements OnInit {
     this.isTypeOpen = false;
   }
 
-  toggleCountryDropdown(): void {
+  toggleCountryDropdown(event?: MouseEvent): void {
+    if (event) event.stopPropagation();
     this.isCountryOpen = !this.isCountryOpen;
     this.isTypeOpen = false;
     this.isTeamSearchOpen.set(false);
@@ -240,7 +247,6 @@ export class ChampionshipForm implements OnInit {
     this.formulario.controls.teamsIDs.markAsTouched();
   }
 
-  // 👇 Nuevo método para manejar la URL del logo de forma limpia y directa
   onLogoUrlInput(event: Event): void {
     const input = event.target as HTMLInputElement;
     const url = input.value.trim();

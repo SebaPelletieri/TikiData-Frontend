@@ -28,7 +28,7 @@
   display: flex;
   align-items: center;
   gap: 14px;
-  margin-bottom: 2.2rem; /* Aumentado para dar más respiro arriba */
+  margin-bottom: 2.2rem;
 }
 
 .form-icon-box {
@@ -64,20 +64,20 @@
 .team-form {
   display: flex;
   flex-direction: column;
-  gap: 1.4rem; /* Mayor espacio entre elementos internos */
+  gap: 1.4rem;
 }
 
 .form-group {
   display: flex;
   flex-direction: column;
-  margin-bottom: 1.6rem; /* Aumentado para extenderse hacia abajo */
+  margin-bottom: 1.6rem;
 }
 
 .form-group label {
   font-family: inherit;
   font-size: 0.85rem;
   font-weight: 600;
-  margin-bottom: 0.6rem; /* Separación más cómoda entre etiqueta e input */
+  margin-bottom: 0.6rem;
   color: #ffffff;
 }
 
@@ -91,7 +91,7 @@
    ========================================= */
 .form-group input {
   width: 100%;
-  height: 46px; /* Ligeramente más alto */
+  height: 46px;
   padding: 0 14px;
   background: linear-gradient(180deg, #071a33 0%, #051428 100%);
   color: #ffffff;
@@ -166,7 +166,7 @@
 }
 
 /* =========================================
-   Zona de Foto (Estilo idéntico a Jugadores)
+   Zona de Foto (Dropzone)
    ========================================= */
 .shield-container {
   display: grid;
@@ -185,7 +185,7 @@
   align-items: center;
   justify-content: center;
   border-radius: 12px;
-  padding: 1.8rem 0.5rem; /* Más padding vertical para ganar altura */
+  padding: 1.8rem 0.5rem;
   cursor: pointer;
   text-align: center;
   position: relative;
@@ -241,7 +241,7 @@
   padding: 1rem;
   position: relative;
   height: 100%;
-  min-height: 105px; /* Altura mínima mayor para equilibrar con el dropzone */
+  min-height: 105px;
 }
 
 .shield-icon {
@@ -350,12 +350,12 @@
 .form-actions {
   display: flex;
   gap: 1rem;
-  margin-top: 2.8rem; /* Mayor margen superior para separar los botones de los campos */
+  margin-top: 2.8rem;
 }
 
 .btn-cancel {
   flex: 1;
-  height: 50px; /* Ligeramente más altos y cómodos */
+  height: 50px;
   background-color: transparent;
   border: 1px solid #4a280c;
   color: #ffffff;

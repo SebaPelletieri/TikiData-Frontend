@@ -2,7 +2,7 @@ import { Component, input, signal, inject, computed, OnInit } from '@angular/cor
 import { CommonModule, DatePipe } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { Team } from '../../models/Team';
-import { Stadium } from '../../models/stadium';
+import { Stadium } from '../../models/Stadium';
 import { Player } from '../../models/Player';
 import { TeamRoster } from '../team-roster/team-roster';
 import { AuthService } from '../../services/auth-service';
@@ -18,9 +18,8 @@ import { TeamService } from '../../services/team-service';
 export class TeamDetail implements OnInit {
   private authService = inject(AuthService) as AuthService;
   private route = inject(ActivatedRoute);
-  public teamService = inject(TeamService); // Público para usarlo en el HTML si lo necesitas
+  public teamService = inject(TeamService);
 
-  // Usamos un computed que prioriza el teamActual del servicio (que la página ya cargó)
   team = computed(() => {
     return this.teamService.teamActual() || this.localTeam();
   });
@@ -35,7 +34,6 @@ export class TeamDetail implements OnInit {
   activeTab = signal<'general' | 'squad' | 'matches'>('general');
 
   ngOnInit(): void {
-    // Si por alguna razón el servicio no tiene el equipo cargado, lo buscamos de forma segura por ID o Slug
     if (!this.teamService.teamActual()) {
       this.route.paramMap.subscribe((params) => {
         const paramValue = params.get('id') || params.get('name');
@@ -58,7 +56,7 @@ export class TeamDetail implements OnInit {
 
       if (found) {
         this.localTeam.set(found);
-        this.teamService.teamActual.set(found); // Sincronizamos con el servicio
+        this.teamService.teamActual.set(found);
       }
     });
   }

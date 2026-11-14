@@ -1,23 +1,33 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
 import {
   FormBuilder,
+  FormControl,
   FormGroup,
   ReactiveFormsModule,
   Validators,
-  FormControl,
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { forkJoin } from 'rxjs';
 import { TeamService } from '../../services/team-service';
-import { PlayerService } from '../../services/player-service'; // 👈 Importamos el PlayerService
+import { PlayerService } from '../../services/player-service';
 import { Player } from '../../models/Player';
+import { Team } from '../../models/Team';
 
 export interface PlayerItem {
-  id?: number;
+  id: number;
   name: string;
   position: string;
   number?: number;
 }
+
+interface StadiumOption {
+  id: number;
+  name: string;
+}
+
+const STADIUMS_URL = 'http://localhost:3000/estadios';
 
 @Component({
   selector: 'app-team-edit',
@@ -30,13 +40,24 @@ export class TeamEdit implements OnInit {
   private fb = inject(FormBuilder);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
+  private http = inject(HttpClient);
   private teamService = inject(TeamService);
-  private playerService = inject(PlayerService); // 👈 Inyectamos PlayerService
+  private playerService = inject(PlayerService);
 
-  teamForm!: FormGroup;
-  teamId: number | null = null;
+  teamId: number | string | null = null;
+  private originalTeam: Team | null = null;
 
-  // 1. Lista amplia de países del mundo
+  isLoading = true;
+  loadError: string | null = null;
+  errorMessage: string | null = null;
+
+  teamForm: FormGroup = this.fb.group({
+    name: ['', [Validators.required]],
+    country: ['', [Validators.required]],
+    shield: ['', [Validators.required]],
+  });
+
+  // --- Países ---
   countries = [
     'Argentina',
     'Brasil',
@@ -58,127 +79,108 @@ export class TeamEdit implements OnInit {
     'Portugal',
     'Países Bajos',
   ].sort();
-  filteredCountries: string[] = [...this.countries];
+  isCountryOpen = false;
 
   positions = ['Arquero', 'Defensor', 'Mediocampista', 'Delantero'];
-
-  isCountryOpen = false;
   isPositionOpen = false;
 
-  // 2. Control para el autocompletado del Estadio
+  stadiums: StadiumOption[] = [];
   stadiumSearchCtrl = new FormControl('');
+  selectedStadiumId: number | null = null;
   isStadiumDropdownOpen = false;
-  // Puedes alimentar esto con estadios conocidos o dejar sugerencias dinámicas
-  stadiumsList = [
-    'Maracaná',
-    'La Bombonera',
-    'Monumental de Núñez',
-    'Estadio Nacional del Perú',
-    'Centenario',
-    'Metropolitano de Barranquilla',
-    'Atanasio Girardot',
-    'Santiago Bernabéu',
-    'Camp Nou',
-    'Wembley',
-    'Alberto J. Armando',
-    'El Cilindro',
-    'Libertadores de América',
-  ];
-  filteredStadiums: string[] = [];
+  filteredStadiums: StadiumOption[] = [];
+  stadiumError = false;
 
   playersList: PlayerItem[] = [];
-
-  // Controles para jugadores
+  allSystemPlayers: Player[] = [];
+  filteredPlayers: PlayerItem[] = [];
   playerSearchCtrl = new FormControl('');
   selectedPositionCtrl = new FormControl('Mediocampista');
   playerNumberCtrl = new FormControl<number | null>(null);
 
-  // 3. Lista general de jugadores de la BD para el buscador
-  allSystemPlayers: Player[] = [];
-  filteredPlayers: PlayerItem[] = [];
-
   ngOnInit(): void {
-    this.initForm();
-
-    // Cargamos todos los jugadores del sistema para que el buscador encuentre resultados reales
-    this.playerService.getAllPlayers().subscribe({
-      next: (players) => {
-        this.allSystemPlayers = players;
-      },
-    });
+    this.setupSearchFilters();
 
     this.route.paramMap.subscribe((params) => {
-      const idParam = params.get('id');
-      if (idParam) {
-        this.teamId = Number(idParam);
-        this.loadTeamData(this.teamId);
-      }
+      const raw = params.get('id');
+      if (!raw) return;
+      this.teamId = raw !== '' && !isNaN(Number(raw)) ? Number(raw) : raw;
+      this.loadAll(this.teamId);
     });
+  }
 
-    // Filtro reactivo para el buscador de Países
-    // (Opcional si quieres que el usuario escriba para filtrar el desplegable de países)
+  private loadAll(id: number | string) {
+    this.isLoading = true;
+    this.loadError = null;
 
-    // Filtro reactivo para el Estadio
+    forkJoin({
+      team: this.teamService.getById(id as any),
+      stadiums: this.http.get<StadiumOption[]>(STADIUMS_URL),
+      players: this.playerService.getAllPlayers(),
+    }).subscribe({
+      next: ({ team, stadiums, players }) => {
+        this.originalTeam = team;
+        this.stadiums = stadiums;
+        this.allSystemPlayers = players;
+
+        this.teamForm.patchValue({
+          name: team.name,
+          country: team.country,
+          shield: team.shield,
+        });
+
+        const stadium = stadiums.find((s) => String(s.id) === String(team.stadiumID));
+        this.selectedStadiumId = stadium ? stadium.id : null;
+        this.stadiumSearchCtrl.setValue(stadium?.name ?? '', { emitEvent: false });
+
+        const ids = (team.playerIDs ?? []).map(String);
+        this.playersList = players
+          .filter((p) => p.id !== undefined && ids.includes(String(p.id)))
+          .map((p) => this.toPlayerItem(p, team));
+
+        this.isLoading = false;
+      },
+      error: (err) => {
+        console.error('Error al cargar los datos del equipo:', err);
+        this.loadError = 'No se pudieron cargar los datos del equipo.';
+        this.isLoading = false;
+      },
+    });
+  }
+
+  private toPlayerItem(p: Player, team?: Team): PlayerItem {
+    const teamKey = team?.id ?? this.teamId;
+    return {
+      id: p.id as number,
+      name: p.name,
+      position: p.position,
+      number: teamKey !== null && teamKey !== undefined ? p.dorsals?.[Number(teamKey)] : undefined,
+    };
+  }
+
+  private setupSearchFilters() {
     this.stadiumSearchCtrl.valueChanges.subscribe((query) => {
       const q = (query || '').toLowerCase().trim();
-      if (!q) {
-        this.filteredStadiums = [];
-        this.isStadiumDropdownOpen = false;
-      } else {
-        this.filteredStadiums = this.stadiumsList.filter((s) => s.toLowerCase().includes(q));
-        this.isStadiumDropdownOpen = this.filteredStadiums.length > 0;
-      }
+      this.selectedStadiumId = null;
+      this.stadiumError = false;
+      this.filteredStadiums = q
+        ? this.stadiums.filter((s) => s.name.toLowerCase().includes(q))
+        : [];
+      this.isStadiumDropdownOpen = this.filteredStadiums.length > 0;
     });
 
-    // Filtro reactivo de jugadores (¡Ahora busca en todos los jugadores de la BD!)
     this.playerSearchCtrl.valueChanges.subscribe((query) => {
       const q = (query || '').toLowerCase().trim();
-      if (!q) {
-        this.filteredPlayers = [];
-      } else {
-        this.filteredPlayers = this.allSystemPlayers
-          .filter(
-            (p) =>
-              p.name.toLowerCase().includes(q) &&
-              !this.playersList.some(
-                (existing) => existing.name.toLowerCase() === p.name.toLowerCase(),
-              ),
-          )
-          .map((p) => ({
-            id: p.id,
-            name: p.name,
-            position: p.position || 'Mediocampista',
-          }));
-      }
-    });
-  }
-
-  initForm() {
-    this.teamForm = this.fb.group({
-      name: ['', [Validators.required]],
-      country: ['', [Validators.required]],
-      shield: ['', [Validators.required]],
-      stadium: [''],
-    });
-  }
-
-  loadTeamData(id: number) {
-    this.teamService.getById(id).subscribe({
-      next: (team: any) => {
-        if (team) {
-          this.teamForm.patchValue({
-            name: team.name,
-            country: team.country,
-            shield: team.shield || team.shieldUrl,
-            stadium: team.stadium,
-          });
-          this.stadiumSearchCtrl.setValue(team.stadium || '');
-          if (team.players && Array.isArray(team.players)) {
-            this.playersList = [...team.players];
-          }
-        }
-      },
-      error: (err) => console.error('Error al cargar equipo:', err),
+      this.filteredPlayers = !q
+        ? []
+        : this.allSystemPlayers
+            .filter(
+              (p) =>
+                p.id !== undefined &&
+                p.name.toLowerCase().includes(q) &&
+                !this.playersList.some((x) => String(x.id) === String(p.id)),
+            )
+            .map((p) => this.toPlayerItem(p));
     });
   }
 
@@ -193,12 +195,6 @@ export class TeamEdit implements OnInit {
     this.isCountryOpen = false;
   }
 
-  selectStadium(stadiumName: string) {
-    this.stadiumSearchCtrl.setValue(stadiumName);
-    this.teamForm.get('stadium')?.setValue(stadiumName);
-    this.isStadiumDropdownOpen = false;
-  }
-
   togglePositionDropdown() {
     this.isPositionOpen = !this.isPositionOpen;
     this.isCountryOpen = false;
@@ -210,19 +206,31 @@ export class TeamEdit implements OnInit {
     this.isPositionOpen = false;
   }
 
+  selectStadium(stadium: StadiumOption) {
+    this.stadiumSearchCtrl.setValue(stadium.name, { emitEvent: false });
+    this.selectedStadiumId = stadium.id;
+    this.stadiumError = false;
+    this.isStadiumDropdownOpen = false;
+  }
+
   addPlayer(playerObj?: PlayerItem) {
-    const name = playerObj ? playerObj.name : this.playerSearchCtrl.value?.trim();
-    if (!name) return;
+    let toAdd = playerObj;
 
-    const newPlayer: PlayerItem = {
-      id: playerObj?.id,
-      name: name,
-      position: playerObj ? playerObj.position : this.selectedPositionCtrl.value || 'Mediocampista',
-      number: playerObj ? playerObj.number : this.playerNumberCtrl.value || undefined,
-    };
+    if (!toAdd) {
+      const name = (this.playerSearchCtrl.value || '').trim().toLowerCase();
+      const found = this.allSystemPlayers.find((p) => p.name.toLowerCase() === name);
+      if (!found) {
+        this.errorMessage = 'Ese jugador no existe en el sistema. Elígelo de la lista de sugerencias.';
+        return;
+      }
+      toAdd = this.toPlayerItem(found);
+    }
 
-    this.playersList.push(newPlayer);
-    this.playerSearchCtrl.setValue('');
+    if (this.playersList.some((p) => String(p.id) === String(toAdd!.id))) return;
+
+    this.errorMessage = null;
+    this.playersList.push(toAdd);
+    this.playerSearchCtrl.setValue('', { emitEvent: false });
     this.playerNumberCtrl.setValue(null);
     this.filteredPlayers = [];
   }
@@ -232,24 +240,35 @@ export class TeamEdit implements OnInit {
   }
 
   onSubmit() {
-    // Sincronizamos el valor del estadio del input de búsqueda con el form group
-    this.teamForm.get('stadium')?.setValue(this.stadiumSearchCtrl.value);
-
-    if (this.teamForm.valid && this.teamId !== null) {
-      const updatedTeam = {
-        ...this.teamForm.value,
-        players: this.playersList,
-      };
-
-      this.teamService.updateTeam(this.teamId, updatedTeam).subscribe({
-        next: () => {
-          this.router.navigate(['/admin']);
-        },
-        error: (err: any) => console.error('Error al actualizar:', err),
-      });
-    } else {
+    if (this.teamForm.invalid || this.teamId === null || !this.originalTeam) {
       this.teamForm.markAllAsTouched();
+      return;
     }
+
+    if (this.selectedStadiumId === null) {
+      const typed = (this.stadiumSearchCtrl.value || '').trim().toLowerCase();
+      const match = this.stadiums.find((s) => s.name.toLowerCase() === typed);
+      this.selectedStadiumId = match ? match.id : null;
+    }
+    if (this.selectedStadiumId === null) {
+      this.stadiumError = true;
+      return;
+    }
+
+    const updatedTeam: Team = {
+      ...this.originalTeam,
+      ...this.teamForm.getRawValue(),
+      stadiumID: this.selectedStadiumId,
+      playerIDs: this.playersList.map((p) => p.id),
+    };
+
+    this.teamService.updateTeam(this.teamId as any, updatedTeam).subscribe({
+      next: () => this.router.navigate(['/admin']),
+      error: (err: any) => {
+        console.error('Error al actualizar:', err);
+        this.errorMessage = 'No se pudieron guardar los cambios.';
+      },
+    });
   }
 
   onCancel() {

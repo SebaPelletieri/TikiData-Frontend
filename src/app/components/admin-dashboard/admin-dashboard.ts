@@ -143,10 +143,10 @@ export class AdminDashboard implements OnInit {
     }
   }
 
-  getTeamName(teamId: number): string {
-    const team = this.teamService.teams().find((t) => t.id === teamId);
-    return team ? team.name : `Equipo #${teamId}`;
-  }
+  getTeamName(teamId: number | string): string {
+  const team = this.teamService.teams().find((t) => String(t.id) === String(teamId));
+  return team ? team.name : `Equipo #${teamId}`;
+}
 
   confirmToggleRole(user: any): void {
     const newRole = user.role === 'Administrador' ? 'Usuario' : 'Administrador';

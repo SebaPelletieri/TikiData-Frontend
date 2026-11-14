@@ -8,6 +8,7 @@ import {
   signal,
   computed,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
@@ -21,7 +22,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MatchService } from '../../services/match-service';
 import { TeamService } from '../../services/team-service';
 import { ChampionshipService } from '../../services/championship-service';
-import { Match, Status } from '../../models/Match';
 
 interface CalendarDay {
   day: number;
@@ -44,12 +44,15 @@ export class MatchForm implements OnInit {
   public championshipService = inject(ChampionshipService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
+  private cdr = inject(ChangeDetectorRef);
 
   @Output() closePanel = new EventEmitter<void>();
   matchIdInput = input<string | number>();
 
   isEditing = false;
   errorMessage = '';
+  // Id del partido que se está editando (número o string según el backend)
+  private matchId: number | string | null = null;
 
   matchForm: FormGroup = this.fb.group({
     championshipID: [null, [Validators.required]],
@@ -151,23 +154,23 @@ export class MatchForm implements OnInit {
 
   get selectedChampionshipObject() {
     const id = this.matchForm.controls['championshipID'].value;
-    if (!id) return null;
-    return this.championshipService.championships().find((c) => c.id === id);
+    if (id === null || id === undefined || id === '') return null;
+    return this.championshipService.championships().find((c) => String(c.id) === String(id));
   }
 
   get selectedLocalObject() {
     const id = this.matchForm.controls['localTeamID'].value;
-    if (!id) return null;
-    return this.teamService.teams().find((t) => t.id === id);
+    if (id === null || id === undefined || id === '') return null;
+    return this.teamService.teams().find((t) => String(t.id) === String(id));
   }
 
   get selectedAwayObject() {
     const id = this.matchForm.controls['awayTeamID'].value;
-    if (!id) return null;
-    return this.teamService.teams().find((t) => t.id === id);
+    if (id === null || id === undefined || id === '') return null;
+    return this.teamService.teams().find((t) => String(t.id) === String(id));
   }
 
-  // Se reemplazaron las señales estáticas por computed para filtrar en tiempo real
+  // Filtrado en tiempo real
   filteredChampionships = computed(() => {
     const search = this.championshipSearchText().toLowerCase().trim();
     const champs = this.championshipService.championships();
@@ -179,9 +182,8 @@ export class MatchForm implements OnInit {
     const search = this.localTeamSearchText().toLowerCase().trim();
     const teams = this.teamService.teams();
     const awayId = this.matchForm.controls['awayTeamID'].value;
-    // Excluimos el equipo que ya esté seleccionado como visitante
     return teams.filter(
-      (t) => t.id !== awayId && (!search || t.name.toLowerCase().includes(search)),
+      (t) => String(t.id) !== String(awayId) && (!search || t.name.toLowerCase().includes(search))
     );
   });
 
@@ -189,10 +191,8 @@ export class MatchForm implements OnInit {
     const search = this.awayTeamSearchText().toLowerCase().trim();
     const teams = this.teamService.teams();
     const localId = this.matchForm.controls['localTeamID'].value;
-    // Excluimos el equipo que ya esté seleccionado como local
     return teams.filter(
-      (t) => t.id !== localId && (!search || t.name.toLowerCase().includes(search)),
-    );
+      (t) => String(t.id) !== String(localId) && (!search || t.name.toLowerCase().includes(search)));
   });
 
   filteredStadiums = computed(() => {
@@ -209,9 +209,10 @@ export class MatchForm implements OnInit {
     const idFromRoute = this.route.snapshot.paramMap.get('id') || this.matchIdInput();
     if (idFromRoute) {
       this.isEditing = true;
-      const numericId = Number(idFromRoute);
+      this.matchId = idFromRoute;
 
-      this.matchService.getById(numericId).subscribe({
+      // No convertimos a Number: si el id es string (json-server 1.x) la consulta fallaría
+      this.matchService.getById(idFromRoute as any).subscribe({
         next: (match) => {
           if (match) {
             this.matchForm.patchValue({
@@ -235,6 +236,8 @@ export class MatchForm implements OnInit {
                 this.selectedMinute = String(d.getMinutes()).padStart(2, '0');
               }
             }
+            // Con OnPush hay que avisar que cambió algo de forma asíncrona
+            this.cdr.markForCheck();
           }
         },
         error: (err) => console.error('Error al cargar partido:', err),
@@ -379,7 +382,7 @@ export class MatchForm implements OnInit {
     this.matchForm.controls['date'].markAsTouched();
   }
 
-  // --- SELECCIONES Y BÚSQUEDAS CORREGIDAS ---
+  // --- SELECCIONES Y BÚSQUEDAS ---
   selectChampionship(champ: any) {
     this.matchForm.controls['championshipID'].setValue(champ.id);
     this.matchForm.controls['championshipID'].markAsTouched();
@@ -422,7 +425,7 @@ export class MatchForm implements OnInit {
   onStadiumInputChange(value: string) {
     this.stadiumSearchText.set(value);
     this.isStadiumFocused.set(true);
-    // 💡 IMPORTANTE: Ya no seteamos el valor en el form al escribir cada letra,
+    // No seteamos el valor en el form al escribir cada letra,
     // solo actualizamos la señal de búsqueda para que la lista siga abierta.
   }
 
@@ -439,6 +442,7 @@ export class MatchForm implements OnInit {
     this.stadiumSearchText.set('');
   }
 
+  // --- GUARDAR / CANCELAR ---
   saveMatch(): void {
     if (this.matchForm.invalid) {
       this.matchForm.markAllAsTouched();
@@ -448,17 +452,20 @@ export class MatchForm implements OnInit {
 
     const formValues = this.matchForm.value;
 
-    if (formValues.localTeamID === formValues.awayTeamID) {
+    if (String(formValues.localTeamID) === String(formValues.awayTeamID)) {
       this.errorMessage = 'El equipo local y visitante no pueden ser el mismo.';
       return;
     }
 
-    if (this.isEditing && formValues.id) {
-      this.matchService.updateMatch(Number(formValues.id), formValues).subscribe({
+    this.errorMessage = '';
+
+    if (this.isEditing && this.matchId !== null) {
+      this.matchService.updateMatch(this.matchId as any, formValues).subscribe({
         next: () => this.handleSuccess(),
         error: (err) => {
           console.error('Error al actualizar:', err);
           this.errorMessage = 'Error al actualizar el partido.';
+          this.cdr.markForCheck();
         },
       });
     } else {
@@ -467,19 +474,32 @@ export class MatchForm implements OnInit {
         error: (err) => {
           console.error('Error al crear:', err);
           this.errorMessage = 'Error al registrar el partido.';
+          this.cdr.markForCheck();
         },
       });
     }
   }
 
   handleSuccess(): void {
+    const wasEditingFromRoute = this.isEditing && !!this.route.snapshot.paramMap.get('id');
+    this.resetForm();
     this.closePanel.emit();
-    if (this.isEditing && this.route.snapshot.paramMap.get('id')) {
+    if (wasEditingFromRoute) {
+      this.router.navigate(['/admin']);
+    }
+    this.cdr.markForCheck();
+  }
+
+  onCancel(): void {
+    const wasEditingFromRoute = this.isEditing && !!this.route.snapshot.paramMap.get('id');
+    this.resetForm();
+    this.closePanel.emit();
+    if (wasEditingFromRoute) {
       this.router.navigate(['/admin']);
     }
   }
 
-  onCancel(): void {
+  private resetForm(): void {
     this.matchForm.reset({
       championshipID: null,
       localTeamID: null,
@@ -508,11 +528,5 @@ export class MatchForm implements OnInit {
     this.selectedMinute = '00';
     this.isCalendarOpen = false;
     this.errorMessage = '';
-
-    this.closePanel.emit();
-
-    if (this.isEditing && this.route.snapshot.paramMap.get('id')) {
-      this.router.navigate(['/admin']);
-    }
   }
 }

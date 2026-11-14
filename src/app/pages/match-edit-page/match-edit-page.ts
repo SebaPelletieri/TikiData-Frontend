@@ -14,13 +14,14 @@ export class MatchEditPage implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
 
-  matchId = signal<number | null>(null);
+  // El id es un string (ej: "UmIrmEemXVk"), no se puede convertir a número
+  matchId = signal<string | null>(null);
 
   ngOnInit() {
     this.route.paramMap.subscribe((params) => {
       const id = params.get('id');
       if (id) {
-        this.matchId.set(Number(id));
+        this.matchId.set(id);
       }
     });
   }

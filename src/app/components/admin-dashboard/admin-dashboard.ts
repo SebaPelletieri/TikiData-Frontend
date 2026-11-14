@@ -36,7 +36,7 @@ function getVisiblePages(total: number, current: number, size = MAX_VISIBLE_PAGE
     AdminForm,
     MatchForm,
     ChampionshipEdit,
-    MatchEdit, // 👈 Añadido aquí
+    MatchEdit,
   ],
   templateUrl: './admin-dashboard.html',
   styleUrl: './admin-dashboard.css',
@@ -92,7 +92,8 @@ export class AdminDashboard implements OnInit {
   itemsPerPageMatches = 10;
   isMatchStatusDropdownOpen = false;
   selectedMatchStatusLabel = 'Todos los estados';
-  matchToDeleteId = signal<number | null>(null);
+  matchToDeleteId = signal<number | string | null>(null);
+
 
   // Jugadores
   playerSearchText = signal('');
@@ -557,27 +558,27 @@ export class AdminDashboard implements OnInit {
     this.championshipToDeleteId.set(null);
   }
 
-  confirmDeleteMatch(id: number): void {
-    this.matchToDeleteId.set(id);
+  confirmDeleteMatch(id: number | string): void {
+  this.matchToDeleteId.set(id);
+}
+cancelDeleteMatch(): void {
+  this.matchToDeleteId.set(null);
+}
+executeDeleteMatch(): void {
+  const id = this.matchToDeleteId();
+  if (id !== null && this.matchService.delete) {
+    this.matchService.delete(id).subscribe({
+      next: () => {
+        this.loadAdminData();
+        this.matchToDeleteId.set(null);
+      },
+      error: (err: any) => {
+        console.error('Error al eliminar partido:', err);
+        this.matchToDeleteId.set(null);
+      },
+    });
   }
-  cancelDeleteMatch(): void {
-    this.matchToDeleteId.set(null);
-  }
-  executeDeleteMatch(): void {
-    const id = this.matchToDeleteId();
-    if (id !== null && this.matchService.delete) {
-      this.matchService.delete(id).subscribe({
-        next: () => {
-          this.loadAdminData();
-          this.matchToDeleteId.set(null);
-        },
-        error: (err: any) => {
-          console.error('Error al eliminar partido:', err);
-          this.matchToDeleteId.set(null);
-        },
-      });
-    }
-  }
+}
 
   confirmDeletePlayer(id: number): void {
     this.playerToDeleteId.set(id);

@@ -22,6 +22,11 @@
     </div>
   </div>
 
+  <!-- Error de carga -->
+  <div class="error-feedback" *ngIf="loadError">
+    <span class="error-text">{{ loadError }}</span>
+  </div>
+
   <form [formGroup]="teamForm" (ngSubmit)="onSubmit()" class="team-form">
     <!-- Nombre y País -->
     <div class="form-row">
@@ -54,7 +59,19 @@
       </div>
     </div>
 
-    <!-- Estadio y Escudo URL -->
+    <!-- Escudo (URL) -->
+    <div class="form-group">
+      <label>Escudo (URL) <span class="required">*</span></label>
+      <input type="url" formControlName="shield" placeholder="https://ejemplo.com/escudo.png" />
+      <div
+        class="error-feedback"
+        *ngIf="teamForm.get('shield')?.invalid && teamForm.get('shield')?.touched"
+      >
+        <span class="error-text">La URL del escudo es obligatoria.</span>
+      </div>
+    </div>
+
+    <!-- Estadio -->
     <div class="form-group">
       <label>Estadio Principal</label>
       <div class="direct-search-input-box" style="position: relative">
@@ -73,10 +90,13 @@
             *ngFor="let std of filteredStadiums"
             (click)="selectStadium(std)"
           >
-            <span>{{ std }}</span>
+            <span>{{ std.name }}</span>
             <span class="add-action-text">Seleccionar</span>
           </li>
         </ul>
+      </div>
+      <div class="error-feedback" *ngIf="stadiumError">
+        <span class="error-text">Elige un estadio de la lista.</span>
       </div>
     </div>
 
@@ -159,10 +179,15 @@
       </div>
     </div>
 
+    <!-- Mensajes de error generales -->
+    <div class="error-feedback" *ngIf="errorMessage">
+      <span class="error-text">{{ errorMessage }}</span>
+    </div>
+
     <!-- Botones de Acción -->
     <div class="form-actions">
       <button type="button" class="btn-cancel" (click)="onCancel()">Cancelar</button>
-      <button type="submit" class="btn-submit" [disabled]="teamForm.invalid">
+      <button type="submit" class="btn-submit" [disabled]="teamForm.invalid || isLoading">
         Guardar Cambios
       </button>
     </div>

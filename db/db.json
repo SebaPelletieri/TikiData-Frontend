@@ -37312,6 +37312,50 @@
       "summary": {
         "text": "Partido programado correspondiente a la última fecha de la fase regular de la Copa de la Liga."
       }
+    },
+    {
+      "championshipID": "3",
+      "localTeamID": "2",
+      "awayTeamID": "28",
+      "date": "2026-11-30T12:00",
+      "stadium": "La Bombonera",
+      "localGoals": 0,
+      "awayGoals": 0,
+      "status": "Programado",
+      "id": "UmIrmEemXVk"
+    },
+    {
+      "championshipID": "3",
+      "localTeamID": "2",
+      "awayTeamID": "28",
+      "date": "2026-11-30T12:00",
+      "stadium": "La Bombonera",
+      "localGoals": 0,
+      "awayGoals": 0,
+      "status": "Programado",
+      "id": "YzEx9nm5OgE"
+    },
+    {
+      "championshipID": "3",
+      "localTeamID": "2",
+      "awayTeamID": "28",
+      "date": "2026-11-30T12:00",
+      "stadium": "La Bombonera",
+      "localGoals": 0,
+      "awayGoals": 0,
+      "status": "Programado",
+      "id": "1PXzxZjNmi4"
+    },
+    {
+      "championshipID": "3",
+      "localTeamID": "2",
+      "awayTeamID": "28",
+      "date": "2026-11-23T12:00",
+      "stadium": "La Bombonera",
+      "localGoals": 0,
+      "awayGoals": 0,
+      "status": "Programado",
+      "id": "QCQ4v-2aOT8"
     }
   ],
   "jugadores": [

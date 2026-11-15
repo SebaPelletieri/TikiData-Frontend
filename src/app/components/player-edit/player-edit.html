@@ -32,6 +32,13 @@
           <span class="error-text">El nombre es obligatorio.</span>
         </div>
       }
+      @if (playerForm.hasError('duplicate')) {
+        <div class="error-feedback">
+          <span class="error-text">
+            Ya existe otro jugador con ese nombre y fecha de nacimiento.
+          </span>
+        </div>
+      }
     </div>
 
     <!-- Nacionalidad y Posición -->

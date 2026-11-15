@@ -1,8 +1,8 @@
 import { Component, input, signal, inject, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterLink } from '@angular/router';
-import { goToLogin } from '../../utils/auth-redirect';
+import { RouterLink } from '@angular/router';
 import { Player } from '../../models/Player';
+import { Team } from '../../models/Team';
 import { AuthService } from '../../services/auth-service';
 
 @Component({
@@ -14,20 +14,28 @@ import { AuthService } from '../../services/auth-service';
 })
 export class PlayerDetail {
   private authService = inject(AuthService) as AuthService;
-  private router = inject(Router);
-
-  /** Para el botón Seguir: sin sesión manda al login en lugar de seguir. */
-  isLoggedIn(): boolean {
-    return this.authService.isLoggedIn();
-  }
 
   player = input<Player | null>(null);
+  team = input<Team | null>(null);
+  matches = input<any[]>([]);
 
   activeTab = signal<'general' | 'stats' | 'clubs' | 'matches'>('general');
 
   setTab(tab: 'general' | 'stats' | 'clubs' | 'matches'): void {
     this.activeTab.set(tab);
   }
+
+  goalsPerMatch = computed(() => {
+    const p = this.player();
+    if (!p || !p.matchesPlayed) return '0.00';
+    return ((p.goals || 0) / p.matchesPlayed).toFixed(2);
+  });
+
+  assistsPerMatch = computed(() => {
+    const p = this.player();
+    if (!p || !p.matchesPlayed) return '0.00';
+    return ((p.assists || 0) / p.matchesPlayed).toFixed(2);
+  });
 
   formatSpanishDate(dateStr: string | undefined): string {
     if (!dateStr) return '-';
@@ -59,12 +67,6 @@ export class PlayerDetail {
   toggleFollowPlayer() {
     const user = this.currentUser();
     const currentPlayer = this.player();
-
-    // Sin sesión no se puede seguir: se manda al login y después se vuelve a esta página
-    if (!user || !user.id) {
-      goToLogin(this.router);
-      return;
-    }
     if (!user || !user.id || !currentPlayer || !currentPlayer.id) return;
 
     let favoritePlayers: any[] = [...(user.favoritePlayers || [])];

@@ -153,7 +153,11 @@
           "
         >
           <button type="button" class="dropdown-trigger" (click)="togglePositionDropdown()">
-            <span [style.color]="formulario.controls['position'].value ? 'var(--text-strong)' : 'var(--text-faint)'">
+            <span
+              [style.color]="
+                formulario.controls['position'].value ? 'var(--text-strong)' : 'var(--text-faint)'
+              "
+            >
               {{ selectedPositionLabel || 'Selecciona posición' }}
             </span>
             <span class="triangle-icon"></span>
@@ -307,6 +311,13 @@
             <span class="error-text">Fecha obligatoria.</span>
           </div>
         }
+        @if (formulario.hasError('duplicate') && formulario.controls['birthDate'].touched) {
+          <div class="error-feedback">
+            <span class="error-text"
+              >Ya existe un jugador con ese nombre y fecha de nacimiento.</span
+            >
+          </div>
+        }
       </div>
 
       <div class="form-group">
@@ -334,7 +345,13 @@
         "
       >
         <button type="button" class="dropdown-trigger" (click)="toggleFootDropdown()">
-          <span [style.color]="formulario.controls['preferredFoot'].value ? 'var(--text-strong)' : 'var(--text-faint)'">
+          <span
+            [style.color]="
+              formulario.controls['preferredFoot'].value
+                ? 'var(--text-strong)'
+                : 'var(--text-faint)'
+            "
+          >
             {{ formulario.controls['preferredFoot'].value || 'Selecciona pie hábil' }}
           </span>
           <span class="triangle-icon"></span>
@@ -454,7 +471,9 @@
       <div class="form-group">
         <label for="matchesPlayed"
           >Partidos jugados
-          <span style="color: var(--text-muted); font-weight: normal; font-size: 0.78rem">(Opcional)</span></label
+          <span style="color: var(--text-muted); font-weight: normal; font-size: 0.78rem"
+            >(Opcional)</span
+          ></label
         >
         <input
           id="matchesPlayed"
@@ -469,7 +488,9 @@
       <div class="form-group">
         <label for="goals"
           >Goles
-          <span style="color: var(--text-muted); font-weight: normal; font-size: 0.78rem">(Opcional)</span></label
+          <span style="color: var(--text-muted); font-weight: normal; font-size: 0.78rem"
+            >(Opcional)</span
+          ></label
         >
         <input
           id="goals"
@@ -487,7 +508,9 @@
       <div class="form-group">
         <label for="assists"
           >Asistencias
-          <span style="color: var(--text-muted); font-weight: normal; font-size: 0.78rem">(Opcional)</span></label
+          <span style="color: var(--text-muted); font-weight: normal; font-size: 0.78rem"
+            >(Opcional)</span
+          ></label
         >
         <input
           id="assists"
@@ -502,7 +525,9 @@
       <div class="form-group">
         <label for="yellowCards"
           >Tarjetas amarillas
-          <span style="color: var(--text-muted); font-weight: normal; font-size: 0.78rem">(Opcional)</span></label
+          <span style="color: var(--text-muted); font-weight: normal; font-size: 0.78rem"
+            >(Opcional)</span
+          ></label
         >
         <input
           id="yellowCards"
@@ -520,7 +545,9 @@
       <div class="form-group">
         <label for="redCards"
           >Tarjetas rojas
-          <span style="color: var(--text-muted); font-weight: normal; font-size: 0.78rem">(Opcional)</span></label
+          <span style="color: var(--text-muted); font-weight: normal; font-size: 0.78rem"
+            >(Opcional)</span
+          ></label
         >
         <input
           id="redCards"

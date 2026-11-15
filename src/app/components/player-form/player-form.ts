@@ -9,6 +9,7 @@ import {
   filterCountries,
   getCountryFlag as countryFlagUrl,
 } from '../../utils/countries';
+import { uniqueCombinationValidator } from '../../validators/duplicate-validator';
 
 interface CalendarDay {
   day: number;
@@ -43,7 +44,6 @@ export class PlayerForm implements OnInit {
   isPositionOpen: boolean = false;
   isFootOpen: boolean = false;
 
-  // Nacionalidad: lista de países del mundo con bandera y buscador
   isNationalityOpen = false;
   nationalitySearch = '';
   getCountryFlag = countryFlagUrl;
@@ -110,29 +110,38 @@ export class PlayerForm implements OnInit {
   ];
 
   ngOnInit(): void {
+        if (this.playerService.players().length === 0) {
+      this.playerService.getAll();
+    }
     this.initForm();
     this.generateYearsList();
     this.generateCalendar();
   }
 
   initForm(): void {
-    this.formulario = this.fb.group({
-      name: ['', [Validators.required, Validators.minLength(3)]],
-      photo: ['', [Validators.required]],
-      age: [{ value: '', disabled: true }, [Validators.required, Validators.min(10)]],
-      position: ['', [Validators.required]],
-      currentTeamID: [null],
-      birthDate: ['', [Validators.required]],
-      nationality: ['', [Validators.required]],
-      preferredFoot: ['', [Validators.required]],
+    this.formulario = this.fb.group(
+      {
+        name: ['', [Validators.required, Validators.minLength(3)]],
+        photo: ['', [Validators.required]],
+        age: [{ value: '', disabled: true }, [Validators.required, Validators.min(10)]],
+        position: ['', [Validators.required]],
+        currentTeamID: [null],
+        birthDate: ['', [Validators.required]],
+        nationality: ['', [Validators.required]],
+        preferredFoot: ['', [Validators.required]],
 
-      // Estadísticas iniciales opcionales vacías por defecto (null)
-      matchesPlayed: [null, [Validators.min(0)]],
-      goals: [null, [Validators.min(0)]],
-      assists: [null, [Validators.min(0)]],
-      yellowCards: [null, [Validators.min(0)]],
-      redCards: [null, [Validators.min(0)]],
-    });
+        matchesPlayed: [null, [Validators.min(0)]],
+        goals: [null, [Validators.min(0)]],
+        assists: [null, [Validators.min(0)]],
+        yellowCards: [null, [Validators.min(0)]],
+        redCards: [null, [Validators.min(0)]],
+      },
+      {
+        validators: [
+          uniqueCombinationValidator(['name', 'birthDate'], () => this.playerService.players()),
+        ],
+      },
+    );
   }
 
   cancel(): void {

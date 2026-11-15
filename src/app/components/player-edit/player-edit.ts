@@ -18,6 +18,7 @@ import {
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PlayerService } from '../../services/player-service';
+import { uniqueCombinationValidator } from '../../validators/duplicate-validator';
 import { Position } from '../../models/Player';
 
 interface CalendarDay {
@@ -97,6 +98,9 @@ export class PlayerEdit implements OnInit {
   ];
 
   ngOnInit(): void {
+    if (this.playerService.players().length === 0) {
+      this.playerService.getAll();
+    }
     this.initForm();
     this.generateYearsList();
     this.generateCalendar();
@@ -133,15 +137,26 @@ export class PlayerEdit implements OnInit {
   }
 
   initForm() {
-    this.playerForm = this.fb.group({
-      name: ['', Validators.required],
-      nationality: ['', Validators.required],
-      position: ['', Validators.required],
-      birthDate: ['', Validators.required],
-      age: [{ value: '', disabled: true }],
-      preferredFoot: [''],
-      photo: [''],
-    });
+    this.playerForm = this.fb.group(
+      {
+        name: ['', Validators.required],
+        nationality: ['', Validators.required],
+        position: ['', Validators.required],
+        birthDate: ['', Validators.required],
+        age: [{ value: '', disabled: true }],
+        preferredFoot: [''],
+        photo: [''],
+      },
+      {
+        validators: [
+          uniqueCombinationValidator(
+            ['name', 'birthDate'],
+            () => this.playerService.players(),
+            () => this.playerId,
+          ),
+        ],
+      },
+    );
   }
 
   generateYearsList(): void {

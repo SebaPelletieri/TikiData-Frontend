@@ -36,7 +36,13 @@
       <input type="text" id="team-name" formControlName="name" placeholder="Ej. Fluminense" />
       @if (teamForm.get('name')?.invalid && teamForm.get('name')?.touched) {
         <div class="error-feedback">
-          <span class="error-text">El nombre del equipo es obligatorio.</span>
+          <span class="error-text">
+            @if (teamForm.get('name')?.hasError('duplicate')) {
+              Ya existe otro equipo con ese nombre.
+            } @else {
+              El nombre del equipo es obligatorio.
+            }
+          </span>
         </div>
       }
     </div>
@@ -332,11 +338,19 @@
         @if (isChampionshipsFocused() && championshipSearchText().trim() !== '') {
           <ul class="direct-suggestions-list" (mousedown)="$event.preventDefault()">
             @for (item of filteredChampionships(); track item.id) {
+              @let chosenLeague = blockingLeagueFor(item);
               <li
                 class="suggestion-item"
+                [class.is-blocked]="!!chosenLeague"
+                [attr.aria-disabled]="!!chosenLeague"
                 (click)="addChampionship(item.id); isChampionshipsFocused.set(false)"
               >
                 <span>{{ item.name }}</span>
+                @if (chosenLeague) {
+                  <span class="blocked-badge">Ya juega {{ chosenLeague }}</span>
+                } @else if (item.type === 'LIGA') {
+                  <span class="type-badge">Liga</span>
+                }
               </li>
             } @empty {
               <li class="suggestion-empty">No se encontraron campeonatos disponibles</li>

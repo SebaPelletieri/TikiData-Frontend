@@ -2,14 +2,15 @@
   "usuarios": [
     {
       "id": "1",
-      "username": "Tobías",
+      "username": "Toto",
       "email": "toto@test.com",
       "password": "password123",
       "role": "Usuario",
       "favoriteTeams": [
         "4"
       ],
-      "favoriteChampionships": []
+      "favoriteChampionships": [],
+      "avatar": ""
     },
     {
       "id": "2",

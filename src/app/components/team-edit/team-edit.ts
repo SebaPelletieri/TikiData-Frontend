@@ -36,6 +36,14 @@ interface CalendarDay {
 }
 
 const STADIUMS_URL = 'http://localhost:3000/estadios';
+const CHAMPIONSHIPS_URL = 'http://localhost:3000/campeonatos';
+
+interface ChampionshipLite {
+  id: number | string;
+  name: string;
+  type?: string;
+  teamsIDs?: (number | string)[];
+}
 
 @Component({
   selector: 'app-team-edit',
@@ -61,11 +69,21 @@ export class TeamEdit implements OnInit {
   errorMessage = signal<string | null>(null);
 
   teamForm: FormGroup = this.fb.group({
-    name: ['', [Validators.required]],
+    name: [
+      '',
+      [
+        Validators.required,
+        uniqueFieldValidator(
+          () => this.teamService.teams(),
+          'name',
+          () => this.teamId,
+        ),
+      ],
+    ],
     country: ['', [Validators.required]],
     shield: ['', [Validators.required]],
     yearOfFoundation: ['', [Validators.required]],
-    championshipsActive: [<number[]>[], [Validators.required]],
+    championshipsActive: [<(number | string)[]>[], [Validators.required]],
   });
 
   @HostListener('document:click', ['$event'])
@@ -518,44 +536,89 @@ export class TeamEdit implements OnInit {
   filteredStadiums: StadiumOption[] = [];
   stadiumError = signal(false);
 
-  // --- Campeonatos ---
-  championships = [
-    { id: 1, name: 'Liga Profesional' },
-    { id: 2, name: 'Copa Libertadores' },
-    { id: 3, name: 'Copa Argentina' },
-  ];
+
+  championships: ChampionshipLite[] = [];
   championshipSearchText = signal<string>('');
   isChampionshipsFocused = signal<boolean>(false);
 
+  private selectedIds(): (number | string)[] {
+    return this.teamForm.get('championshipsActive')?.value || [];
+  }
+
+  private isSelected(id: number | string | undefined): boolean {
+    return this.selectedIds().some((x) => String(x) === String(id));
+  }
+
   filteredChampionships = computed(() => {
     const search = this.championshipSearchText().toLowerCase().trim();
-    const selectedIds = this.teamForm.get('championshipsActive')?.value || [];
     if (!search) return [];
     return this.championships.filter(
-      (c) => c.name.toLowerCase().includes(search) && !selectedIds.includes(c.id),
+      (c) => c.name.toLowerCase().includes(search) && !this.isSelected(c.id),
     );
   });
 
   get selectedChampionshipsList() {
-    const selectedIds = this.teamForm.get('championshipsActive')?.value || [];
-    return this.championships.filter((c) => selectedIds.includes(c.id));
+    return this.championships.filter((c) => this.isSelected(c.id));
   }
 
-  addChampionship(championshipId: number) {
-    const current: number[] = [...(this.teamForm.get('championshipsActive')?.value || [])];
-    if (!current.includes(championshipId)) {
-      current.push(championshipId);
-      this.teamForm.get('championshipsActive')?.setValue(current);
+  
+  blockingLeagueFor(champ: { type?: string; id?: number | string }): string | null {
+    if (champ.type !== 'LIGA') return null;
+    const chosen = this.selectedChampionshipsList.find(
+      (c) => c.type === 'LIGA' && String(c.id) !== String(champ.id),
+    );
+    return chosen ? chosen.name : null;
+  }
+
+  addChampionship(championshipId: number | string) {
+    const champ = this.championships.find((c) => String(c.id) === String(championshipId));
+    if (champ && this.blockingLeagueFor(champ)) return;
+
+    if (!this.isSelected(championshipId)) {
+      this.teamForm.get('championshipsActive')?.setValue([...this.selectedIds(), championshipId]);
       this.teamForm.get('championshipsActive')?.markAsTouched();
     }
     this.championshipSearchText.set('');
   }
 
-  removeChampionship(championshipId: number) {
-    const current: number[] = [...(this.teamForm.get('championshipsActive')?.value || [])];
-    const updated = current.filter((id) => id !== championshipId);
+  removeChampionship(championshipId: number | string) {
+    const updated = this.selectedIds().filter((id) => String(id) !== String(championshipId));
     this.teamForm.get('championshipsActive')?.setValue(updated);
     this.teamForm.get('championshipsActive')?.markAsTouched();
+  }
+
+  
+  private initialChampionshipIds(team: Team): (number | string)[] {
+    const teamId = String(team.id);
+    const ids: (number | string)[] = [];
+    for (const c of this.championships) {
+      const inTeam = (team.championshipsActive || []).some((x) => String(x) === String(c.id));
+      const inChamp = (c.teamsIDs || []).some((x) => String(x) === teamId);
+      if (inTeam || inChamp) ids.push(c.id);
+    }
+    let leagueKept = false;
+    return ids.filter((id) => {
+      const c = this.championships.find((x) => String(x.id) === String(id));
+      if (c?.type !== 'LIGA') return true;
+      if (leagueKept) return false;
+      leagueKept = true;
+      return true;
+    });
+  }
+
+
+  private championshipSyncRequests(teamId: number | string, selected: (number | string)[]) {
+    const id = String(teamId);
+    return this.championships.flatMap((c) => {
+      const list = c.teamsIDs || [];
+      const has = list.some((x) => String(x) === id);
+      const shouldHave = selected.some((x) => String(x) === String(c.id));
+      if (has === shouldHave) return [];
+      const teamsIDs = shouldHave
+        ? [...list, isNaN(Number(teamId)) ? teamId : Number(teamId)]
+        : list.filter((x) => String(x) !== id);
+      return [this.http.patch(`${CHAMPIONSHIPS_URL}/${c.id}`, { teamsIDs })];
+    });
   }
 
   playersList: PlayerItem[] = [];
@@ -623,6 +686,9 @@ export class TeamEdit implements OnInit {
 
   ngOnInit(): void {
     window.scrollTo({ top: 0, behavior: 'instant' });
+    if (this.teamService.teams().length === 0) {
+      this.teamService.getAll();
+    }
     this.setupSearchFilters();
 
     this.playerNumberCtrl.valueChanges.subscribe((val) => {
@@ -653,8 +719,10 @@ export class TeamEdit implements OnInit {
       team: this.teamService.getById(id as any),
       stadiums: this.http.get<StadiumOption[]>(STADIUMS_URL),
       players: this.playerService.getAllPlayers(),
+      championships: this.http.get<ChampionshipLite[]>(CHAMPIONSHIPS_URL),
     }).subscribe({
-      next: ({ team, stadiums, players }) => {
+      next: ({ team, stadiums, players, championships }) => {
+        this.championships = championships || [];
         this.originalTeam = team;
         this.stadiums = stadiums;
         this.allSystemPlayers = players;
@@ -675,7 +743,7 @@ export class TeamEdit implements OnInit {
           country: team.country,
           shield: team.shield,
           yearOfFoundation: foundationStr,
-          championshipsActive: team.championshipsActive || [],
+          championshipsActive: this.initialChampionshipIds(team),
         });
 
         const stadium = stadiums.find((s) => String(s.id) === String(team.stadiumID));
@@ -989,6 +1057,7 @@ export class TeamEdit implements OnInit {
     forkJoin([
       this.teamService.updateTeam(this.teamId as any, updatedTeam),
       ...(playerUpdates.length > 0 ? playerUpdates : [of(null)]),
+      ...this.championshipSyncRequests(this.teamId as number | string, updatedTeam.championshipsActive),
     ]).subscribe({
       next: () => goBackOr(this.location, this.router),
       error: (err: any) => {
@@ -998,8 +1067,11 @@ export class TeamEdit implements OnInit {
     });
   }
 
-  // Vuelve a donde estaba el usuario (misma página y posición del scroll)
   onCancel() {
     goBackOr(this.location, this.router);
   }
+}
+
+function uniqueFieldValidator(arg0: () => Team[], arg1: string, arg2: () => string | number | null): any | string {
+  throw new Error('Function not implemented.');
 }

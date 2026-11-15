@@ -22,6 +22,7 @@ import { ChampionshipService } from '../../services/championship-service';
 import { PlayerService } from '../../services/player-service';
 import { Team } from '../../models/Team';
 import { Player } from '../../models/Player';
+import { uniqueValueValidator } from '../../validators/duplicate-validator';
 
 export interface PlayerItem {
   id: number;
@@ -53,7 +54,15 @@ export class TeamForm implements OnInit {
   @Output() closePanel = new EventEmitter<void>();
 
   formulario = this.fb.nonNullable.group({
-    name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
+    name: [
+      '',
+      [
+        Validators.required,
+        Validators.minLength(3),
+        Validators.maxLength(50),
+        uniqueValueValidator(() => this.teamService.teams().map((t) => t.name)),
+      ],
+    ],
     shield: ['', [Validators.required]],
     country: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(30)]],
     yearOfFoundation: ['', [Validators.required]],
@@ -61,7 +70,6 @@ export class TeamForm implements OnInit {
     stadiumID: ['', [Validators.required]],
   });
 
-  // Controles para la gestión de jugadores
   playersList: PlayerItem[] = [];
   allSystemPlayers: Player[] = [];
   filteredPlayers: PlayerItem[] = [];
@@ -71,6 +79,9 @@ export class TeamForm implements OnInit {
   errorMessage = signal<string | null>(null);
 
   ngOnInit(): void {
+    if (this.teamService.teams().length === 0) {
+      this.teamService.getAll();
+    }
     if (this.championshipService.championships().length === 0) {
       this.championshipService.getAll();
     }

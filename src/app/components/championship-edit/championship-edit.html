@@ -38,6 +38,11 @@
       <div class="form-group">
         <label>Temporada</label>
         <input type="text" formControlName="season" placeholder="Ej. 2026 o 2026/2027" />
+        @if (champForm.hasError('duplicate')) {
+          <div class="error-feedback">
+            <span class="error-text">Ya existe un campeonato con ese nombre y temporada.</span>
+          </div>
+        }
       </div>
     </div>
 

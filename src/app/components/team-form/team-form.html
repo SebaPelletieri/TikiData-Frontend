@@ -43,6 +43,8 @@
           <span class="error-text">
             @if (formulario.controls['name'].hasError('required')) {
               El nombre es obligatorio.
+            }@else if (formulario.controls['name'].hasError('duplicate')) {
+              Ya existe un equipo con ese nombre.
             }
             @if (formulario.controls['name'].hasError('minlength')) {
               Mínimo 3 caracteres.

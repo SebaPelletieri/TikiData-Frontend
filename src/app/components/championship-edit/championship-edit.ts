@@ -10,6 +10,7 @@ import {
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ChampionshipService } from '../../services/championship-service';
+import { uniqueCombinationValidator } from '../../validators/duplicate-validator';
 import {
   COUNTRY_OPTIONS,
   CountryOption,
@@ -46,7 +47,6 @@ export class ChampionshipEdit implements OnInit {
     return this.countryOptions.some((c) => c.value === this.selectedCountry);
   }
 
-  // Si el campeonato tiene un país que no está en la lista se muestra su nombre tal cual
   get selectedCountryLabel(): string {
     const value = this.selectedCountry;
     return this.countryOptions.find((c) => c.value === value)?.label || value;
@@ -56,6 +56,9 @@ export class ChampionshipEdit implements OnInit {
   isCountryOpen = false;
 
   ngOnInit() {
+    if (this.championshipService.championships().length === 0) {
+      this.championshipService.getAll();
+    }
     this.initForm();
     if (this.championshipIdInput) {
       this.loadData(Number(this.championshipIdInput));
@@ -70,13 +73,24 @@ export class ChampionshipEdit implements OnInit {
   }
 
   initForm() {
-    this.champForm = this.fb.group({
-      name: ['', Validators.required],
-      season: [''],
-      country: ['', Validators.required],
-      type: ['', Validators.required],
-      logo: ['', Validators.required],
-    });
+    this.champForm = this.fb.group(
+      {
+        name: ['', Validators.required],
+        season: [''],
+        country: ['', Validators.required],
+        type: ['', Validators.required],
+        logo: ['', Validators.required],
+      },
+      {
+        validators: [
+          uniqueCombinationValidator(
+            ['name', 'season'],
+            () => this.championshipService.championships(),
+            () => this.championshipIdInput,
+          ),
+        ],
+      },
+    );
   }
 
   loadData(id: number) {
@@ -88,7 +102,7 @@ export class ChampionshipEdit implements OnInit {
             season: champ.season || '',
             country: champ.country || '',
             type: champ.type || '',
-            logo: champ.logo || champ.imagen || '', // 👈 Corregido para cargar el logo correctamente
+            logo: champ.logo || champ.imagen || '', 
           });
         }
       },

@@ -47,8 +47,15 @@
             <line x1="12" y1="16" x2="12.01" y2="16"></line>
           </svg>
           <span class="error-text">
+            @if (formulario.hasError('duplicate') && formulario.controls.season.touched) {
+              <div class="error-feedback">
+                <span class="error-text">Ya existe un campeonato con ese nombre y temporada.</span>
+              </div>
+            }
             @if (formulario.controls.name.hasError('required')) {
               Nombre obligatorio.
+            } @else if (formulario.controls['name'].hasError('duplicate')) {
+              Ya existe un equipo con ese nombre.
             } @else if (formulario.controls.name.hasError('minlength')) {
               Mínimo 3 caracteres.
             } @else if (formulario.controls.name.hasError('pattern')) {

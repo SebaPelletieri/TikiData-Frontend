@@ -4,9 +4,9 @@
     <div class="player-header-card">
       <div class="player-avatar-wrapper">
         <img
-          [src]="p.photo || 'https://placehold.co/150?text=Player'"
+          [src]="p.photo || 'https://via.placeholder.com/150?text=Player'"
           [alt]="p.name"
-          (error)="$any($event.target).src = 'https://placehold.co/150?text=Player'"
+          (error)="$any($event.target).src = 'https://via.placeholder.com/150?text=Player'"
           class="player-avatar"
           referrerpolicy="no-referrer"
         />
@@ -17,7 +17,7 @@
         <div class="player-sub-badges">
           <span class="sub-badge">
             <span class="icon">⚽</span>
-            {{ p.currentTeamID ? 'Equipo #' + p.currentTeamID : 'Agente libre' }}
+            {{ p.currentTeamID ? team()?.name || 'Equipo #' + p.currentTeamID : 'Agente libre' }}
           </span>
           <span class="dot">•</span>
           <span class="sub-badge position-text">{{ p.position }}</span>
@@ -39,7 +39,6 @@
           class="btn-follow"
           [class.following]="isFollowing()"
           (click)="toggleFollowPlayer()"
-          [title]="isLoggedIn() ? '' : 'Iniciá sesión para seguir'"
         >
           <span class="follow-icon">
             {{ isFollowing() ? '✓' : '+' }}
@@ -120,10 +119,30 @@
         <div class="info-card club-card">
           <h3>Club actual</h3>
           <div class="club-content-box">
-            <div class="club-shield-placeholder">⚽</div>
+            @if (team(); as t) {
+              <img
+                [src]="t.shield"
+                [alt]="t.name"
+                style="width: 50px; height: 50px; object-fit: contain"
+              />
+            } @else {
+              <div class="club-shield-placeholder">⚽</div>
+            }
             <div class="club-details">
-              <h4>{{ p.currentTeamID ? 'Equipo ID: ' + p.currentTeamID : 'Sin equipo' }}</h4>
-              <p class="club-country">{{ p.nationality || '-' }}</p>
+              @if (p.currentTeamID) {
+                @if (team(); as t) {
+                  <h4>
+                    <a [routerLink]="['/team', t.id]" style="color: inherit; text-decoration: none">
+                      {{ t.name }}
+                    </a>
+                  </h4>
+                  <p class="club-country">{{ t.country || '-' }}</p>
+                } @else {
+                  <h4>Equipo ID: {{ p.currentTeamID }}</h4>
+                }
+              } @else {
+                <h4>Sin equipo</h4>
+              }
             </div>
           </div>
         </div>
@@ -170,9 +189,114 @@
           </div>
         </div>
       </div>
-    } @else {
-      <div class="info-card" style="text-align: center; padding: 3rem">
-        <p style="color: var(--text-muted-2)">Contenido de la pestaña {{ activeTab() }} en desarrollo.</p>
+    } @else if (activeTab() === 'stats') {
+      <!-- Pestaña Estadísticas -->
+      <div class="stats-overview-card">
+        <h3>Estadísticas de la temporada</h3>
+        <div class="stats-row-grid">
+          <div class="stat-item">
+            <span class="stat-icon">🏟️</span>
+            <div class="stat-info">
+              <span class="num">{{ p.matchesPlayed || 0 }}</span>
+              <span class="lbl">Partidos</span>
+            </div>
+          </div>
+          <div class="stat-item">
+            <span class="stat-icon">⚽</span>
+            <div class="stat-info">
+              <span class="num">{{ p.goals || 0 }}</span>
+              <span class="lbl">Goles</span>
+            </div>
+          </div>
+          <div class="stat-item">
+            <span class="stat-icon">🎯</span>
+            <div class="stat-info">
+              <span class="num">{{ p.assists || 0 }}</span>
+              <span class="lbl">Asistencias</span>
+            </div>
+          </div>
+          <div class="stat-item">
+            <span class="card-box-yellow"></span>
+            <div class="stat-info">
+              <span class="num">{{ p.yellowCards || 0 }}</span>
+              <span class="lbl">Amarillas</span>
+            </div>
+          </div>
+          <div class="stat-item">
+            <span class="card-box-red"></span>
+            <div class="stat-info">
+              <span class="num">{{ p.redCards || 0 }}</span>
+              <span class="lbl">Rojas</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-card" style="margin-top: 1.5rem">
+        <h3>Promedios</h3>
+        <ul class="info-list">
+          <li>
+            <span>Goles por partido</span> <strong>{{ goalsPerMatch() }}</strong>
+          </li>
+          <li>
+            <span>Asistencias por partido</span> <strong>{{ assistsPerMatch() }}</strong>
+          </li>
+          <li>
+            <span>Participaciones en gol</span>
+            <strong>{{ (p.goals || 0) + (p.assists || 0) }}</strong>
+          </li>
+        </ul>
+      </div>
+    } @else if (activeTab() === 'clubs') {
+      <!-- Pestaña Historial de clubes -->
+      <div class="info-card">
+        <h3>Historial de clubes</h3>
+        @if (team(); as t) {
+          <ul class="info-list">
+            <li>
+              <span>
+                <img
+                  [src]="t.shield"
+                  [alt]="t.name"
+                  style="width: 24px; height: 24px; object-fit: contain; vertical-align: middle; margin-right: 8px"
+                />
+                {{ t.name }}
+              </span>
+              <strong>Club actual</strong>
+            </li>
+          </ul>
+        } @else if (p.currentTeamID) {
+          <p style="color: #94a3b8">Equipo ID: {{ p.currentTeamID }}</p>
+        } @else {
+          <p style="color: #94a3b8">El jugador no tiene club actual.</p>
+        }
+        <p style="color: #7d96b3; font-size: 0.85rem; margin-top: 1rem">
+          Todavía no hay registros de clubes anteriores para este jugador.
+        </p>
+      </div>
+    } @else if (activeTab() === 'matches') {
+      <!-- Pestaña Partidos -->
+      <div class="info-card">
+        <h3>Partidos de {{ team()?.name || 'su equipo' }} ({{ matches().length }})</h3>
+        <ul class="info-list">
+          @for (m of matches(); track m.id) {
+            <li>
+              <span>
+                {{ m.date | date: 'dd/MM/yyyy' }} · {{ m.homeName }} vs {{ m.awayName }}
+                <small style="color: #7d96b3"> · {{ m.tournament }}</small>
+              </span>
+              <strong>
+                <a [routerLink]="['/match', m.id]" style="color: inherit; text-decoration: none">
+                  {{ m.score }}
+                </a>
+              </strong>
+            </li>
+          } @empty {
+            <li>
+              <span style="color: #94a3b8">No hay partidos registrados para este equipo.</span>
+            </li>
+          }
+        </ul>
       </div>
     }
 

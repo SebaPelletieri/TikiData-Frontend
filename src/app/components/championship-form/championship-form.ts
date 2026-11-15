@@ -4,7 +4,15 @@ import { ReactiveFormsModule, FormsModule, FormBuilder, Validators } from '@angu
 import { Championship, ChampionshipType } from '../../models/Championship';
 import { ChampionshipService } from '../../services/championship-service';
 import { TeamService } from '../../services/team-service';
-import { COUNTRY_OPTIONS, CountryOption, getCountryFlag as countryFlagUrl } from '../../utils/countries';
+import {
+  COUNTRY_OPTIONS,
+  CountryOption,
+  getCountryFlag as countryFlagUrl,
+} from '../../utils/countries';
+import {
+  uniqueCombinationValidator,
+  uniqueValueValidator,
+} from '../../validators/duplicate-validator';
 
 @Component({
   selector: 'app-championship-form',
@@ -33,22 +41,31 @@ export class ChampionshipForm implements OnInit {
 
   countryOptions: CountryOption[] = COUNTRY_OPTIONS;
 
-  formulario = this.fb.nonNullable.group({
-    name: [
-      '',
-      [
-        Validators.required,
-        Validators.minLength(3),
-        Validators.maxLength(50),
-        Validators.pattern(/^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑüÜ\s\-\.]+$/),
+  formulario = this.fb.nonNullable.group(
+    {
+      name: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(3),
+          Validators.maxLength(50),
+          uniqueValueValidator(() => this.teamService.teams().map((t) => t.name)),
+        ],
       ],
-    ],
-    logo: ['', [Validators.required]],
-    type: ['', [Validators.required]],
-    country: ['', [Validators.required]],
-    season: ['', [Validators.required, Validators.pattern(/^\d{4}(\/\d{4})?$/)]],
-    teamsIDs: [<number[]>[], [Validators.required, Validators.minLength(1)]],
-  });
+      logo: ['', [Validators.required]],
+      type: ['', [Validators.required]],
+      country: ['', [Validators.required]],
+      season: ['', [Validators.required, Validators.pattern(/^\d{4}(\/\d{4})?$/)]],
+      teamsIDs: [<number[]>[], [Validators.required, Validators.minLength(1)]],
+    },
+    {
+      validators: [
+        uniqueCombinationValidator(['name', 'season'], () =>
+          this.championshipService.championships(),
+        ),
+      ],
+    },
+  );
 
   filteredAvailableTeams = computed(() => {
     const query = this.teamSearchQuery().trim().toLowerCase();
@@ -72,6 +89,9 @@ export class ChampionshipForm implements OnInit {
   });
 
   ngOnInit(): void {
+    if (this.championshipService.championships().length === 0) {
+      this.championshipService.getAll();
+    }
     if (this.teams().length === 0) {
       this.teamService.getAll();
     }

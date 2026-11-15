@@ -7,7 +7,7 @@ import { Player } from '../../models/Player';
 import { TeamRoster } from '../team-roster/team-roster';
 import { AuthService } from '../../services/auth-service';
 import { TeamService } from '../../services/team-service';
-import { Stadium } from '../../models/Stadium';
+import { Stadium } from '../../models/stadium';
 
 @Component({
   selector: 'app-team-detail',
@@ -20,7 +20,6 @@ export class TeamDetail implements OnInit {
   private authService = inject(AuthService) as AuthService;
   private router = inject(Router);
 
-  /** Para el botón Seguir: sin sesión manda al login en lugar de seguir. */
   isLoggedIn(): boolean {
     return this.authService.isLoggedIn();
   }

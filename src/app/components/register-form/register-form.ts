@@ -3,6 +3,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { RegisterRequest } from '../../models/RegisterRequest';
 import { AuthService } from '../../services/auth-service';
+import { emailValidator } from '../../validators/email-validator';
 
 @Component({
   selector: 'app-register-form',
@@ -23,7 +24,7 @@ export class RegisterForm {
 
   registerForm = this.fb.nonNullable.group({
     userName: ['', [Validators.required, Validators.minLength(3)]],
-    email: ['', [Validators.required, Validators.pattern(this.emailPattern)]],
+        email: ['', [Validators.required, emailValidator]],
     password: ['', [Validators.required, Validators.minLength(6)]],
   });
 
@@ -32,7 +33,6 @@ export class RegisterForm {
       this.serverError.set(null);
       const formValue = this.registerForm.getRawValue();
 
-      // Mapeamos userName a username para que coincida con RegisterRequest
       const data: RegisterRequest = {
         username: formValue.userName,
         email: formValue.email,

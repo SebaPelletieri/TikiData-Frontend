@@ -7,11 +7,12 @@ import { TeamService } from '../../services/team-service';
 import { Team } from '../../models/Team';
 
 interface Championship {
-  id: number;
+  id: number | string;
   name: string;
   country: string;
   type: 'LIGA' | 'COPA';
   logo?: string;
+  teamsIDs?: (number | string)[];
 }
 
 interface FilterOption {
@@ -189,6 +190,31 @@ export class TeamList implements OnInit {
     return !!this.openCountries()[countryName];
   }
 
+  /**
+   * El equipo pertenece a la liga si figura en la lista de equipos del campeonato
+   * (teamsIDs, que se completa al crear/editar el campeonato). Como respaldo se
+   * mira también la lista de campeonatos del equipo. Los ids se comparan como
+   * texto porque en la base conviven números ("2" vs 2) y ids alfanuméricos.
+   */
+  private isTeamInLeague(team: Team, league: Championship): boolean {
+    const teamId = String(team.id);
+    const leagueId = String(league.id);
+    const inChampionship = (league.teamsIDs || []).some((id) => String(id) === teamId);
+    const inTeam = (team.championshipsActive || []).some((id) => String(id) === leagueId);
+    return inChampionship || inTeam;
+  }
+
+  /** Compara países sin importar mayúsculas ni tildes ("Perú" = "peru"). */
+  private sameCountry(a: string | undefined, b: string | undefined): boolean {
+    const norm = (s?: string) =>
+      (s || '')
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[̀-ͯ]/g, '')
+        .trim();
+    return norm(a) === norm(b);
+  }
+
   groupedTeams = computed(() => {
     const teams = this.teamService.teams ? this.teamService.teams() : [];
     const champs = this.championships();
@@ -206,14 +232,18 @@ export class TeamList implements OnInit {
 
     for (const country of uniqueCountries) {
       const countryTeams = filtered.filter((t) => t.country === country);
-      const countryLeagues = champs.filter((c) => c.country === country && c.type === 'LIGA');
+      // Solo los campeonatos de tipo LIGA de ese país subdividen (las copas no)
+      const countryLeagues = champs.filter(
+        (c) => c.type === 'LIGA' && this.sameCountry(c.country, country),
+      );
 
       const leaguesMap: LeagueGroup[] = [];
-      const assignedTeamIds = new Set<number>();
+      // Un equipo juega una sola liga: si por error figura en dos, queda en la primera
+      const assignedTeamIds = new Set<string>();
 
       for (const league of countryLeagues) {
         const teamsInLeague = countryTeams.filter(
-          (t) => t.championshipsActive && t.championshipsActive.includes(league.id),
+          (t) => !assignedTeamIds.has(String(t.id)) && this.isTeamInLeague(t, league),
         );
 
         if (teamsInLeague.length > 0) {
@@ -222,19 +252,16 @@ export class TeamList implements OnInit {
             leagueLogo: league.logo,
             teams: teamsInLeague,
           });
-          teamsInLeague.forEach((t) => {
-            if (t.id !== undefined) assignedTeamIds.add(t.id);
-          });
+          teamsInLeague.forEach((t) => assignedTeamIds.add(String(t.id)));
         }
       }
 
-      const unassignedTeams = countryTeams.filter(
-        (t) => t.id === undefined || !assignedTeamIds.has(t.id),
-      );
+      const unassignedTeams = countryTeams.filter((t) => !assignedTeamIds.has(String(t.id)));
 
       if (unassignedTeams.length > 0) {
         leaguesMap.push({
-          leagueName: 'Otros equipos / Sin liga asignada',
+          // Si el país no tiene ninguna liga cargada, no tiene sentido decir "sin liga"
+          leagueName: leaguesMap.length ? 'Sin liga asignada' : 'Equipos',
           leagueLogo: undefined,
           teams: unassignedTeams,
         });

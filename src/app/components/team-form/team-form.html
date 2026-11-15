@@ -456,8 +456,19 @@
         @if (isChampionshipsFocused() && championshipSearchText().trim() !== '') {
           <ul class="direct-suggestions-list">
             @for (item of filteredChampionships(); track item.id) {
-              <li class="suggestion-item" (mousedown)="addChampionship(item.id, $event)">
+              @let chosenLeague = blockingLeagueFor(item);
+              <li
+                class="suggestion-item"
+                [class.is-blocked]="!!chosenLeague"
+                [attr.aria-disabled]="!!chosenLeague"
+                (mousedown)="addChampionship(item.id, $event)"
+              >
                 <span>{{ item.name }}</span>
+                @if (chosenLeague) {
+                  <span class="blocked-badge">Ya juega {{ chosenLeague }}</span>
+                } @else if (item.type === 'LIGA') {
+                  <span class="type-badge">Liga</span>
+                }
               </li>
             } @empty {
               <li class="suggestion-empty">No se encontraron campeonatos disponibles</li>

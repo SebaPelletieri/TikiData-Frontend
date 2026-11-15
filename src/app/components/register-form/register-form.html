@@ -5,17 +5,6 @@
     <p class="auth-subtitle">Crea tu cuenta para acceder a todas las funciones</p>
   </div>
 
-  @if (serverError()) {
-    <div class="server-error-banner">
-      <svg class="error-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <circle cx="12" cy="12" r="10"></circle>
-        <line x1="12" y1="8" x2="12" y2="12"></line>
-        <line x1="12" y1="16" x2="12.01" y2="16"></line>
-      </svg>
-      <span>{{ serverError() }}</span>
-    </div>
-  }
-
   <!-- Nombre de Usuario -->
   <div class="form-group">
     <label for="userName">Nombre de Usuario</label>
@@ -41,7 +30,15 @@
           <line x1="12" y1="8" x2="12" y2="12"></line>
           <line x1="12" y1="16" x2="12.01" y2="16"></line>
         </svg>
-        <span class="error-text">El nombre de usuario debe tener al menos 3 caracteres.</span>
+        <span class="error-text">
+          @if (registerForm.get('userName')?.errors?.['taken']) {
+            Ese nombre de usuario ya está en uso. Probá con otro.
+          } @else if (registerForm.get('userName')?.errors?.['required']) {
+            El nombre de usuario es obligatorio.
+          } @else {
+            El nombre de usuario debe tener al menos 3 caracteres.
+          }
+        </span>
       </div>
     }
   </div>
@@ -74,6 +71,18 @@
             <line x1="12" y1="16" x2="12.01" y2="16"></line>
           </svg>
           <span class="error-text">Ingresá un correo válido (ej: usuario@gmail.com).</span>
+        </div>
+      } @else if (registerForm.get('email')?.errors?.['taken']) {
+        <div class="error-feedback">
+          <svg class="error-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+          <span class="error-text">
+            Ya existe una cuenta con este correo.
+            <a routerLink="/login" class="error-link">Iniciá sesión</a>
+          </span>
         </div>
       }
     }
@@ -144,7 +153,21 @@
   </div>
 
   <!-- Botón Crear Cuenta -->
-  <button type="submit" class="btn-primary" [disabled]="registerForm.invalid">Crear Cuenta</button>
+  <!-- Error general (ej. sin conexión con el servidor) -->
+  @if (serverError()) {
+    <div class="form-alert" role="alert">
+      <svg class="form-alert-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="8" x2="12" y2="12"></line>
+        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+      </svg>
+      <span>{{ serverError() }}</span>
+    </div>
+  }
+
+  <button type="submit" class="btn-primary" [disabled]="registerForm.invalid || isSubmitting()">
+    {{ isSubmitting() ? 'Creando cuenta...' : 'Crear Cuenta' }}
+  </button>
 
   <p class="auth-footer">¿Ya tienes una cuenta? <a routerLink="/login">Inicia sesión aquí</a></p>
 </form>

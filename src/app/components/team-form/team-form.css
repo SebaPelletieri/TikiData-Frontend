@@ -923,3 +923,38 @@ input.no-spinners {
     grid-column: 1 / -1;
   }
 }
+
+/* =====================================================================
+   CAMPEONATOS ACTIVOS: una sola liga por equipo
+   ===================================================================== */
+.suggestion-item.is-blocked {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.suggestion-item.is-blocked:hover {
+  background-color: transparent;
+}
+
+.blocked-badge,
+.type-badge {
+  margin-left: auto;
+  flex-shrink: 0;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.blocked-badge {
+  color: var(--text-muted);
+  background: var(--surface-3);
+  border: 1px solid var(--border);
+}
+
+.type-badge {
+  color: var(--brand-orange-text);
+  background: rgba(255, 107, 0, 0.12);
+  border: 1px solid rgba(255, 107, 0, 0.25);
+}

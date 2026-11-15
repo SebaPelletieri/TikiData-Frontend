@@ -172,6 +172,29 @@
   color: var(--danger-text);
 }
 
+/* ================= ERROR DEL SERVIDOR (cuenta no encontrada, sin conexión) ================= */
+.form-alert {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 0.75rem 0.9rem;
+  border-radius: 10px;
+  background-color: var(--danger-bg);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  color: var(--danger-text);
+  font-size: 0.85rem;
+  font-weight: 500;
+  line-height: 1.4;
+  animation: fadeInError 0.2s ease-out forwards;
+}
+
+.form-alert-icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
 /* ================= BOTÓN INICIAR SESIÓN (NARANJA TIKIDATA) ================= */
 .btn-primary {
   font-family: inherit;

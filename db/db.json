@@ -755,6 +755,41 @@
       "type": "COPA",
       "logo": "https://assets.footylogos.com/logos/copa-libertadores/copa-libertadores-logo-footylogos.svg",
       "id": "3"
+    },
+    {
+      "name": "Liga Profesional de Futbol",
+      "logo": "https://assets.footylogos.com/logos/liga-profesional-argentina/liga-profesional-argentina-logo-footylogos.svg",
+      "type": "LIGA",
+      "season": "2026",
+      "teamsIDs": [
+        2,
+        5,
+        11,
+        25,
+        4,
+        6,
+        7,
+        8,
+        9,
+        10,
+        1,
+        3,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        22,
+        26,
+        24,
+        27,
+        28
+      ],
+      "country": "Argentina",
+      "id": "37Ug3LyjWg8"
     }
   ],
   "estadios": [

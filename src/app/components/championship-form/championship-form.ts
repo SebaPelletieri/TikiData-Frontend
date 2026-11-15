@@ -71,10 +71,60 @@ export class ChampionshipForm implements OnInit {
     );
   });
 
+  // ---------------------------------------------------------------------
+  // Un equipo juega una sola liga: si el campeonato es de tipo LIGA, no se
+  // pueden agregar equipos que ya están en otra liga (ej. Boca en la Liga
+  // Profesional no puede sumarse a la Primera B). Las copas no tienen límite.
+  // ---------------------------------------------------------------------
+  /** Tipo elegido (señal, para que la lista de equipos se actualice al cambiarlo). */
+  selectedType = signal<string>('');
+  /** Aviso cuando se quitan equipos al pasar el campeonato a tipo Liga. */
+  leagueConflictNotice = signal<string | null>(null);
+
+  /** Equipo (id como texto) → nombre de la liga que ya juega. */
+  private teamLeague = computed(() => {
+    const map = new Map<string, string>();
+    for (const champ of this.championshipService.championships()) {
+      if (champ.type !== 'LIGA') continue;
+      for (const id of champ.teamsIDs || []) {
+        if (!map.has(String(id))) map.set(String(id), champ.name);
+      }
+    }
+    return map;
+  });
+
+  /** Si el campeonato es Liga y el equipo ya juega otra liga, devuelve el nombre de esa liga. */
+  blockingLeague(team: { id?: number | string }): string | null {
+    if (this.selectedType() !== 'LIGA') return null;
+    return this.teamLeague().get(String(team.id)) ?? null;
+  }
+
   ngOnInit(): void {
     if (this.teams().length === 0) {
       this.teamService.getAll();
     }
+    if (this.championshipService.championships().length === 0) {
+      this.championshipService.getAll();
+    }
+  }
+
+  /** Quita de la selección los equipos que ya juegan otra liga y avisa cuáles fueron. */
+  private removeTeamsInOtherLeagues(): boolean {
+    const conflicts = this.selectedTeamsList().filter((t) => this.blockingLeague(t));
+    if (!conflicts.length) return false;
+
+    const remaining = this.selectedTeamIds().filter(
+      (id) => !conflicts.some((t) => Number(t.id) === id),
+    );
+    this.selectedTeamIds.set(remaining);
+    this.formulario.controls.teamsIDs.setValue(remaining);
+    this.formulario.controls.teamsIDs.markAsTouched();
+
+    const names = conflicts.map((t) => `${t.name} (${this.blockingLeague(t)})`).join(', ');
+    this.leagueConflictNotice.set(
+      `Se ${conflicts.length === 1 ? 'quitó' : 'quitaron'} ${conflicts.length === 1 ? 'un equipo que ya juega' : 'equipos que ya juegan'} otra liga: ${names}.`,
+    );
+    return true;
   }
 
   @HostListener('document:click', ['$event'])
@@ -88,6 +138,9 @@ export class ChampionshipForm implements OnInit {
   getCountryFlag = countryFlagUrl;
 
   saveChampionship(): void {
+    // Última verificación por si los datos cambiaron mientras se completaba el formulario
+    if (this.removeTeamsInOtherLeagues()) return;
+
     if (this.formulario.invalid) {
       this.formulario.markAllAsTouched();
       return;
@@ -116,6 +169,8 @@ export class ChampionshipForm implements OnInit {
     this.isTeamSearchOpen.set(false);
     this.isTypeOpen = false;
     this.isCountryOpen = false;
+    this.selectedType.set('');
+    this.leagueConflictNotice.set(null);
   }
 
   toggleTypeDropdown(event?: MouseEvent): void {
@@ -132,6 +187,10 @@ export class ChampionshipForm implements OnInit {
     this.formulario.controls.type.setValue(type);
     this.formulario.controls.type.markAsTouched();
     this.isTypeOpen = false;
+    this.selectedType.set(type);
+    this.leagueConflictNotice.set(null);
+    // Si pasa a ser Liga, se quitan los equipos ya elegidos que juegan otra liga
+    this.removeTeamsInOtherLeagues();
   }
 
   toggleCountryDropdown(event?: MouseEvent): void {
@@ -168,9 +227,12 @@ export class ChampionshipForm implements OnInit {
     event.preventDefault();
     event.stopPropagation();
     if (teamId === undefined || teamId === null) return;
+    // Un equipo que ya juega otra liga no se puede agregar a una Liga
+    if (this.blockingLeague({ id: teamId })) return;
 
     const numericId = Number(teamId);
     const current = this.selectedTeamIds();
+    this.leagueConflictNotice.set(null);
 
     if (!current.includes(numericId)) {
       const updated = [...current, numericId];

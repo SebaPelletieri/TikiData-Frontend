@@ -324,8 +324,13 @@
       @if (isTeamSearchOpen() && teamSearchQuery().trim().length > 0) {
         <div class="search-results-list" (mousedown)="$event.preventDefault()">
           @for (team of filteredAvailableTeams(); track team.id) {
+            @let otherLeague = blockingLeague(team);
             <div
-              class="search-result-item clickable"
+              class="search-result-item"
+              [class.clickable]="!otherLeague"
+              [class.is-blocked]="!!otherLeague"
+              [attr.aria-disabled]="!!otherLeague"
+              [title]="otherLeague ? 'Un equipo solo puede jugar una liga' : ''"
               (mousedown)="selectTeamFromSearch(team.id, $event)"
             >
               <img
@@ -347,6 +352,9 @@
                   <span>{{ team.country || 'Argentina' }}</span>
                 </span>
               </div>
+              @if (otherLeague) {
+                <span class="blocked-badge">Ya juega en {{ otherLeague }}</span>
+              }
             </div>
           } @empty {
             <div class="no-results-msg">
@@ -373,6 +381,25 @@
             </div>
           }
         </div>
+      }
+
+      <!-- Aviso: se quitaron equipos porque ya juegan otra liga -->
+      @if (leagueConflictNotice()) {
+        <div class="league-conflict-notice" role="status">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+          <span>{{ leagueConflictNotice() }} Un equipo solo puede jugar una liga.</span>
+        </div>
+      }
+
+      <!-- Ayuda: explica por qué algunos equipos aparecen deshabilitados -->
+      @if (selectedType() === 'LIGA') {
+        <span class="dropzone-hint">
+          Los equipos que ya juegan otra liga aparecen deshabilitados.
+        </span>
       }
     </div>
 

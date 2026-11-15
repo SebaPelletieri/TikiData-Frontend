@@ -14,6 +14,11 @@ interface Championship {
   logo?: string;
 }
 
+interface FilterOption {
+  value: string;
+  label: string;
+}
+
 interface LeagueGroup {
   leagueName: string;
   leagueLogo?: string;
@@ -40,24 +45,91 @@ export class TeamList implements OnInit {
 
   searchText = signal('');
   selectedCountry = signal('ALL');
-  isCountryDropdownOpen = signal(false);
+
+  // Estados para los paneles flotantes con la misma fluidez
+  isFilterPanelOpen = signal(false);
+  isCountryDropdownOpen = false;
 
   championships = signal<Championship[]>([]);
 
-  countries = computed(() => {
+  // Países dinámicos extraídos de todos los equipos registrados en el sistema
+  countries = computed<FilterOption[]>(() => {
     const teams = this.teamService.teams ? this.teamService.teams() : [];
-    const countrySet = new Set(teams.map((t) => t.country).filter(Boolean));
-    return Array.from(countrySet).sort();
+    const countrySet = new Set<string>();
+
+    teams.forEach((team) => {
+      const c = (team.country || '').trim();
+      if (c) {
+        countrySet.add(c);
+      }
+    });
+
+    const options: FilterOption[] = [{ value: 'ALL', label: 'Todos los países' }];
+
+    Array.from(countrySet)
+      .sort()
+      .forEach((country) => {
+        options.push({ value: country, label: country });
+      });
+
+    return options;
   });
 
-  countryFlags: Record<string, string> = {
-    Argentina: 'https://flagcdn.com/w40/ar.png',
-    Brasil: 'https://flagcdn.com/w40/br.png',
-    España: 'https://flagcdn.com/w40/es.png',
-    Inglaterra: 'https://flagcdn.com/w40/gb-eng.png',
-    Alemania: 'https://flagcdn.com/w40/de.png',
-    Italia: 'https://flagcdn.com/w40/it.png',
-  };
+  // Función 100% dinámica y universal para obtener la bandera de CUALQUIER país del mundo (con excepciones robustas)
+  getCountryFlag(countryName: string | number): string {
+    if (!countryName) return 'https://flagcdn.com/w40/xx.png';
+
+    const strCountry = String(countryName);
+
+    // Diccionario completo con códigos ISO oficiales (incluyendo Angola, Haití, etc.)
+    const universalIsoExceptions: Record<string, string> = {
+      argentina: 'ar',
+      brasil: 'br',
+      brazil: 'br',
+      espana: 'es',
+      spain: 'es',
+      inglaterra: 'gb-eng',
+      england: 'gb-eng',
+      alemania: 'de',
+      germany: 'de',
+      italia: 'it',
+      italy: 'it',
+      uruguay: 'uy',
+      colombia: 'co',
+      chile: 'cl',
+      ecuador: 'ec',
+      paraguay: 'py',
+      bolivia: 'bo',
+      peru: 'pe',
+      venezuela: 've',
+      mexico: 'mx',
+      francia: 'fr',
+      portugal: 'pt',
+      japon: 'jp',
+      estadosunidos: 'us',
+      reinounido: 'gb',
+      suiza: 'ch',
+      republicacheca: 'cz',
+      angola: 'ao',
+      haiti: 'ht',
+      costarica: 'cr',
+      panama: 'pa',
+      eslovenia: 'si',
+      siria: 'sy',
+    };
+
+    const normalized = strCountry
+      .toLowerCase()
+      .trim()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/\s+/g, '');
+
+    // Si está en las excepciones usa su ISO exacto; si no, toma las primeras 2 letras de respaldo
+    const isoCode = universalIsoExceptions[normalized] || normalized.substring(0, 2);
+
+    return `https://flagcdn.com/w40/${isoCode}.png`;
+  }
 
   openCountries = signal<Record<string, boolean>>({});
 
@@ -73,19 +145,37 @@ export class TeamList implements OnInit {
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent): void {
     const target = event.target as HTMLElement;
-    if (!target.closest('.select-filters')) {
-      this.isCountryDropdownOpen.set(false);
+    if (!target.closest('.filter-dropdown-container')) {
+      this.closeFilterPanel();
     }
+  }
+
+  toggleFilterPanel(event: MouseEvent): void {
+    event.stopPropagation();
+    this.isFilterPanelOpen.update((open) => !open);
+    if (!this.isFilterPanelOpen()) {
+      this.isCountryDropdownOpen = false;
+    }
+  }
+
+  closeFilterPanel(): void {
+    this.isFilterPanelOpen.set(false);
+    this.isCountryDropdownOpen = false;
   }
 
   toggleCountryDropdown(event: MouseEvent): void {
     event.stopPropagation();
-    this.isCountryDropdownOpen.update((open) => !open);
+    this.isCountryDropdownOpen = !this.isCountryDropdownOpen;
   }
 
   selectCountry(country: string): void {
     this.selectedCountry.set(country);
-    this.isCountryDropdownOpen.set(false);
+    this.isCountryDropdownOpen = false;
+  }
+
+  get selectedCountryLabel(): string {
+    const current = this.selectedCountry();
+    return this.countries().find((c) => c.value === current)?.label || 'Todos los países';
   }
 
   toggleCountrySection(countryName: string): void {
@@ -151,11 +241,9 @@ export class TeamList implements OnInit {
       }
 
       if (leaguesMap.length > 0) {
-        const defaultFlag = `https://flagcdn.com/w40/${country.substring(0, 2).toLowerCase()}.png`;
-
         result.push({
           countryName: country,
-          countryFlag: this.countryFlags[country] || defaultFlag,
+          countryFlag: this.getCountryFlag(country), // Generado de forma dinámica y robusta
           leagues: leaguesMap,
           isOpen: false,
         });

@@ -18,9 +18,8 @@
 /* ================= ENCABEZADO ================= */
 .header-title-section {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
 }
 
 .header-title-section h2 {
@@ -146,6 +145,7 @@
   color: #ff6b00;
 }
 
+/* Triángulo indicador unificado con hover */
 .triangle-icon {
   width: 10px;
   height: 6px;
@@ -160,7 +160,7 @@
 
 .filter-main-btn:hover .triangle-icon,
 .sub-dropdown-trigger:hover .triangle-icon,
-.filter-dropdown-container.open .triangle-icon {
+.sub-dropdown.open .triangle-icon {
   background-color: #ff6b00 !important;
 }
 
@@ -169,7 +169,7 @@
   background-color: #ff6b00 !important;
 }
 
-/* Panel flotante de filtros */
+/* Panel flotante principal de filtros (Suave y fluido) */
 .filter-panel {
   position: absolute;
   top: calc(100% + 8px);
@@ -184,10 +184,26 @@
     0 12px 30px rgba(0, 0, 0, 0.65),
     0 0 1px rgba(255, 255, 255, 0.1);
   z-index: 100;
+  backdrop-filter: blur(8px);
+
   display: flex;
   flex-direction: column;
   gap: 12px;
-  backdrop-filter: blur(8px);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-8px) scale(0.98);
+  pointer-events: none;
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease,
+    visibility 0.25s ease;
+}
+
+.filter-dropdown-container.open .filter-panel {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
 }
 
 .filter-panel-section {
@@ -205,7 +221,7 @@
   padding: 0 4px;
 }
 
-/* ================= SUB-DROPDOWNS INTERNOS ================= */
+/* ================= SUB-DROPDOWNS INTERNOS (Con animación fluida mejorada) ================= */
 .sub-dropdown {
   position: relative;
   width: 100%;
@@ -239,25 +255,51 @@
   top: calc(100% + 4px);
   left: 0;
   width: 100%;
-  max-height: 200px;
-  overflow-y: auto;
   background-color: #06182e;
   border: 1px solid rgba(49, 93, 148, 0.45);
   border-radius: 10px;
-  padding: 4px;
   margin: 0;
   list-style: none;
-  z-index: 105;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+  z-index: 110;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+
+  /* Estado inicial (oculto y contraído con ligera escala) */
+  max-height: 0;
+  overflow: hidden;
+  padding: 0 4px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-4px) scale(0.98);
+
+  /* Transición suave y fluida */
+  transition:
+    max-height 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.25s ease,
+    transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+    padding 0.3s ease,
+    visibility 0.3s ease;
+}
+
+.sub-dropdown.open .sub-dropdown-menu {
+  max-height: 220px;
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+  padding: 4px;
+}
+
+.sub-dropdown-menu-inner {
+  overflow-y: auto;
+  max-height: 180px;
   display: flex;
   flex-direction: column;
   gap: 2px;
 }
 
-.sub-dropdown-menu::-webkit-scrollbar {
+.sub-dropdown-menu-inner::-webkit-scrollbar {
   width: 4px;
 }
-.sub-dropdown-menu::-webkit-scrollbar-thumb {
+.sub-dropdown-menu-inner::-webkit-scrollbar-thumb {
   background: #143560;
   border-radius: 4px;
 }
@@ -288,9 +330,44 @@
   font-weight: 600;
 }
 
+/* Alineación y tamaño compacto para las banderas en el dropdown */
+.dropdown-item-content {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.dropdown-flag-wrapper {
+  width: 22px;
+  height: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 3px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  flex-shrink: 0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.dropdown-flag-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.all-countries-icon {
+  font-size: 0.95rem;
+  width: 22px;
+  text-align: center;
+}
+
 .check-icon {
-  font-size: 0.75rem;
+  width: 16px !important;
+  height: 16px !important;
+  stroke: #ff6b00 !important;
   color: #ff6b00 !important;
+  flex-shrink: 0;
 }
 
 /* ================= TABLE CARD ================= */

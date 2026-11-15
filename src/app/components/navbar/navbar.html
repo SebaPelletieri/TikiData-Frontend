@@ -62,9 +62,28 @@
             <li class="search-dropdown-item" (click)="selectSearchResult(item)">
               <div class="search-item-info">
                 <span class="search-item-name">{{ item.name }}</span>
-                @if (item.subtitle) {
-                  <span class="search-item-sub">{{ item.subtitle }}</span>
-                }
+                <div class="search-item-sub">
+                  @if (item.type === 'campeonato') {
+                    <span class="search-sub-type">{{ item.meta }}</span>
+                    @if (item.meta && item.country) {
+                      <span class="search-separator">•</span>
+                    }
+                  }
+                  @if (item.flag) {
+                    <div class="search-flag-wrapper">
+                      <img [src]="item.flag" [alt]="item.country" />
+                    </div>
+                  } @else if (item.country) {
+                    <span>🌎</span>
+                  }
+                  @if (item.country) {
+                    <span>{{ item.country }}</span>
+                  }
+                  @if (item.type === 'jugador' && item.meta) {
+                    <span class="search-separator">•</span>
+                    <span class="search-sub-position">{{ item.meta }}</span>
+                  }
+                </div>
               </div>
               <span class="search-badge" [class]="item.type">{{ item.type }}</span>
             </li>

@@ -15,7 +15,9 @@ interface SearchResult {
   name: string;
   type: 'equipo' | 'campeonato' | 'jugador';
   route: string;
-  subtitle?: string;
+  country?: string;
+  flag?: string;
+  meta?: string;
 }
 
 @Component({
@@ -38,6 +40,68 @@ export class Navbar implements OnInit {
   searchText = signal<string>('');
   isSearchFocused = signal<boolean>(false);
 
+  // Función 100% dinámica y universal para obtener la bandera de CUALQUIER país
+  getCountryFlag(countryName: string | number): string {
+    if (!countryName) return 'https://flagcdn.com/w40/xx.png';
+
+    const strCountry = String(countryName);
+
+    if (
+      strCountry.toLowerCase() === 'internacional' ||
+      strCountry.toLowerCase() === 'global' ||
+      strCountry.toLowerCase() === 'sudamérica'
+    ) {
+      return '';
+    }
+
+    const universalIsoExceptions: Record<string, string> = {
+      argentina: 'ar',
+      brasil: 'br',
+      brazil: 'br',
+      espana: 'es',
+      spain: 'es',
+      inglaterra: 'gb-eng',
+      england: 'gb-eng',
+      alemania: 'de',
+      germany: 'de',
+      italia: 'it',
+      italy: 'it',
+      uruguay: 'uy',
+      colombia: 'co',
+      chile: 'cl',
+      ecuador: 'ec',
+      paraguay: 'py',
+      bolivia: 'bo',
+      peru: 'pe',
+      venezuela: 've',
+      mexico: 'mx',
+      francia: 'fr',
+      portugal: 'pt',
+      japon: 'jp',
+      estadosunidos: 'us',
+      reinounido: 'gb',
+      suiza: 'ch',
+      republicacheca: 'cz',
+      angola: 'ao',
+      haiti: 'ht',
+      costarica: 'cr',
+      panama: 'pa',
+      eslovenia: 'si',
+      siria: 'sy',
+    };
+
+    const normalized = strCountry
+      .toLowerCase()
+      .trim()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/\s+/g, '');
+
+    const isoCode = universalIsoExceptions[normalized] || normalized.substring(0, 2);
+
+    return `https://flagcdn.com/w40/${isoCode}.png`;
+  }
+
   private allElements = computed<SearchResult[]>(() => {
     const championships: SearchResult[] = this.championshipService
       .championships()
@@ -46,7 +110,9 @@ export class Navbar implements OnInit {
         name: c.name,
         type: 'campeonato',
         route: `/championships/${c.id}`,
-        subtitle: [c.type, c.country].filter(Boolean).join(' • ') || 'Campeonato',
+        country: c.country || '',
+        flag: this.getCountryFlag(c.country || ''),
+        meta: c.type ? c.type.toUpperCase() : '',
       }));
 
     const teams: SearchResult[] = this.teamService.teams().map((t: Team) => ({
@@ -54,7 +120,8 @@ export class Navbar implements OnInit {
       name: t.name,
       type: 'equipo',
       route: `/teams/${t.id}`,
-      subtitle: t.country || 'Equipo',
+      country: t.country || '',
+      flag: this.getCountryFlag(t.country || ''),
     }));
 
     const players: SearchResult[] = this.playerService.players().map((p: Player) => ({
@@ -62,24 +129,26 @@ export class Navbar implements OnInit {
       name: p.name,
       type: 'jugador',
       route: `/players/${p.id}`,
-      subtitle: [p.position].filter(Boolean).join(' • ') || 'Jugador',
+      country: p.nationality || p.nationality || '',
+      flag: this.getCountryFlag(p.nationality || p.nationality || ''),
+      meta: p.position || '',
     }));
 
     return [...championships, ...teams, ...players];
   });
 
+  // Sin límite (.slice()), devolviendo todos los coincidentes con scroll vertical fijo
   searchResults = computed(() => {
     const query = this.normalizeText(this.searchText());
     if (!query) return [];
 
-    return this.allElements()
-      .filter(
-        (item) =>
-          this.normalizeText(item.name).includes(query) ||
-          this.normalizeText(item.type).includes(query) ||
-          (item.subtitle && this.normalizeText(item.subtitle).includes(query)),
-      )
-      .slice(0, 12);
+    return this.allElements().filter(
+      (item) =>
+        this.normalizeText(item.name).includes(query) ||
+        this.normalizeText(item.type).includes(query) ||
+        (item.country && this.normalizeText(item.country).includes(query)) ||
+        (item.meta && this.normalizeText(item.meta).includes(query)),
+    );
   });
 
   isAdmin = computed(() => {
@@ -141,7 +210,7 @@ export class Navbar implements OnInit {
   onLogout(): void {
     this.closeProfileMenu();
     this.authService.logout();
-    this.router.navigate(['/']); // Redirige a la página de inicio en lugar de login
+    this.router.navigate(['/']);
   }
 
   toggleTheme() {

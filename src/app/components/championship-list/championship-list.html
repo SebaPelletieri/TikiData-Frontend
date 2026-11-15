@@ -68,7 +68,7 @@
             </div>
           </div>
 
-          <!-- Sección 2: País (Opciones dinámicas desde countryOptions()) -->
+          <!-- Sección 2: País -->
           <div class="filter-panel-section">
             <span class="filter-panel-title">País</span>
             <div class="sub-dropdown" [class.open]="isCountryDropdownOpen">
@@ -89,7 +89,18 @@
                       [class.active]="selectedCountry() === opt.value"
                       (click)="selectCountry(opt.value)"
                     >
-                      <span>{{ opt.label }}</span>
+                      <div class="dropdown-item-content">
+                        @if (opt.value === 'ALL') {
+                          <span class="all-countries-icon">🌐</span>
+                        } @else if (opt.value === 'Internacional') {
+                          <span class="all-countries-icon">🌎</span>
+                        } @else {
+                          <div class="dropdown-flag-wrapper">
+                            <img [src]="getCountryFlag(opt.value)" [alt]="opt.label" />
+                          </div>
+                        }
+                        <span>{{ opt.label }}</span>
+                      </div>
                       @if (selectedCountry() === opt.value) {
                         <i class="fas fa-check check-icon"></i>
                       }

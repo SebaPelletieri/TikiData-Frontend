@@ -104,7 +104,6 @@
     background-color 0.2s ease;
 }
 
-/* Hover en las pestañas */
 .navbar__link:hover {
   color: #ff6b00 !important;
 }
@@ -113,7 +112,6 @@
   color: #ff6b00 !important;
 }
 
-/* Estado Activo Uniforme */
 .navbar__item.navbar__item--active,
 .navbar__item--active {
   background-color: var(--bg-active-tab) !important;
@@ -190,7 +188,7 @@
   color: var(--text-primary);
   outline: none;
   font-size: 0.85rem;
-  width: 240px;
+  width: 290px;
   transition: width 0.2s ease;
 }
 
@@ -199,15 +197,15 @@
   font-family: inherit;
 }
 
-/* ================= Desplegable del Buscador Global ================= */
+/* ================= Desplegable del Buscador Global (Con tamaño fijo y Scroll estético) ================= */
 .navbar__search-dropdown {
   position: absolute;
   top: calc(100% + 8px);
   left: 0;
   width: 100%;
-  min-width: 280px;
-  max-height: 260px;
-  overflow-y: auto;
+  min-width: 320px;
+  max-height: 310px; /* Tamaño máximo fijo para el box */
+  overflow-y: auto; /* Barra de scroll vertical activada */
   background-color: #06182e;
   border: 1px solid #3d220a;
   border-radius: 12px;
@@ -217,6 +215,18 @@
   z-index: 10000;
   box-shadow: 0 14px 32px rgba(0, 0, 0, 0.7);
   backdrop-filter: blur(8px);
+}
+
+/* Scrollbar personalizado fluido */
+.navbar__search-dropdown::-webkit-scrollbar {
+  width: 5px;
+}
+.navbar__search-dropdown::-webkit-scrollbar-thumb {
+  background: #143560;
+  border-radius: 4px;
+}
+.navbar__search-dropdown::-webkit-scrollbar-thumb:hover {
+  background: #ff6b00;
 }
 
 .search-dropdown-item {
@@ -250,8 +260,41 @@
 }
 
 .search-item-sub {
-  font-size: 0.73rem;
+  font-size: 0.75rem;
   color: #7d96b3;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 2px;
+}
+
+.search-sub-type,
+.search-sub-position {
+  font-weight: 600;
+  color: #93c5fd;
+}
+
+.search-separator {
+  opacity: 0.6;
+}
+
+.search-flag-wrapper {
+  width: 18px;
+  height: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 2px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  flex-shrink: 0;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.search-flag-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .search-badge {

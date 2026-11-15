@@ -9,6 +9,14 @@ interface FilterOption {
   label: string;
 }
 
+const MAX_VISIBLE_PAGES = 20; // 20 páginas visibles como máximo
+
+function getVisiblePages(total: number, current: number, size = MAX_VISIBLE_PAGES): number[] {
+  const end = Math.min(total, Math.max(current, size));
+  const start = Math.max(1, end - size + 1);
+  return Array.from({ length: end - start + 1 }, (_, i) => start + i);
+}
+
 @Component({
   standalone: true,
   imports: [CommonModule, FormsModule, RouterModule],
@@ -29,7 +37,7 @@ export class PlayerList implements OnInit {
   isNationalityDropdownOpen = false;
 
   currentPage = signal(1);
-  pageSize = 10;
+  pageSize = 20; // 20 registros fijos por página
 
   positions: FilterOption[] = [
     { value: 'ALL', label: 'Todas las posiciones' },
@@ -39,13 +47,84 @@ export class PlayerList implements OnInit {
     { value: 'DEL', label: 'Delantero' },
   ];
 
-  nationalityOptions: FilterOption[] = [
-    { value: 'ALL', label: 'Todas las nacionalidades' },
-    { value: 'Argentina', label: 'Argentina' },
-    { value: 'Chile', label: 'Chile' },
-    { value: 'Colombia', label: 'Colombia' },
-    { value: 'Uruguay', label: 'Uruguay' },
-  ];
+  // Nacionalidades dinámicas extraídas de todos los jugadores registrados
+  nationalityOptions = computed<FilterOption[]>(() => {
+    const list = this.playerService.players ? this.playerService.players() : [];
+    const nationalitiesSet = new Set<string>();
+
+    list.forEach((player: any) => {
+      const nat = (player.nationality || player.nacionality || '').trim();
+      if (nat) {
+        nationalitiesSet.add(nat);
+      }
+    });
+
+    const options: FilterOption[] = [{ value: 'ALL', label: 'Todas las nacionalidades' }];
+
+    Array.from(nationalitiesSet)
+      .sort()
+      .forEach((nationality) => {
+        options.push({ value: nationality, label: nationality });
+      });
+
+    return options;
+  });
+
+  // Función mejorada con mapeo robusto para códigos ISO de países de todo el mundo
+  getCountryFlag(countryName: string | number): string {
+    if (!countryName) return 'https://flagcdn.com/w40/xx.png';
+
+    const strCountry = String(countryName);
+
+    // Diccionario completo de códigos ISO oficiales (incluyendo Angola, Haití y otros)
+    const universalIsoExceptions: Record<string, string> = {
+      argentina: 'ar',
+      brasil: 'br',
+      brazil: 'br',
+      espana: 'es',
+      spain: 'es',
+      inglaterra: 'gb-eng',
+      england: 'gb-eng',
+      alemania: 'de',
+      germany: 'de',
+      italia: 'it',
+      italy: 'it',
+      uruguay: 'uy',
+      colombia: 'co',
+      chile: 'cl',
+      ecuador: 'ec',
+      paraguay: 'py',
+      bolivia: 'bo',
+      peru: 'pe',
+      venezuela: 've',
+      mexico: 'mx',
+      francia: 'fr',
+      portugal: 'pt',
+      japon: 'jp',
+      estadosunidos: 'us',
+      reinounido: 'gb',
+      suiza: 'ch',
+      republicacheca: 'cz',
+      angola: 'ao',
+      haiti: 'ht',
+      costarica: 'cr',
+      panama: 'pa',
+      eslovenia: 'si',
+      siria: 'sy',
+    };
+
+    const normalized = strCountry
+      .toLowerCase()
+      .trim()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/\s+/g, '');
+
+    // Si está en el diccionario usa su ISO correcto; si no, intenta con las dos primeras letras como respaldo
+    const isoCode = universalIsoExceptions[normalized] || normalized.substring(0, 2);
+
+    return `https://flagcdn.com/w40/${isoCode}.png`;
+  }
 
   ngOnInit(): void {
     this.playerService.getAll();
@@ -114,7 +193,8 @@ export class PlayerList implements OnInit {
   get selectedNationalityLabel(): string {
     const current = this.selectedNationality();
     return (
-      this.nationalityOptions.find((n) => n.value === current)?.label || 'Todas las nacionalidades'
+      this.nationalityOptions().find((n) => n.value === current)?.label ||
+      'Todas las nacionalidades'
     );
   }
 
@@ -184,7 +264,7 @@ export class PlayerList implements OnInit {
   }
 
   pagesArray = computed(() => {
-    return Array.from({ length: this.totalPages() }, (_, i) => i + 1);
+    return getVisiblePages(this.totalPages(), this.currentPage());
   });
 
   formatPlayerSlug(name: string): string {

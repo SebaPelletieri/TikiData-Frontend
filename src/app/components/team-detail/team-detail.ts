@@ -2,11 +2,11 @@ import { Component, input, signal, inject, computed, OnInit } from '@angular/cor
 import { CommonModule, DatePipe } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { Team } from '../../models/Team';
-import { Stadium } from '../../models/Stadium';
 import { Player } from '../../models/Player';
 import { TeamRoster } from '../team-roster/team-roster';
 import { AuthService } from '../../services/auth-service';
 import { TeamService } from '../../services/team-service';
+import { Stadium } from '../../models/stadium';
 
 @Component({
   selector: 'app-team-detail',

@@ -102,14 +102,14 @@ export class Navbar implements OnInit {
     return `https://flagcdn.com/w40/${isoCode}.png`;
   }
 
-  private allElements = computed<SearchResult[]>(() => {
+    private allElements = computed<SearchResult[]>(() => {
     const championships: SearchResult[] = this.championshipService
       .championships()
       .map((c: Championship) => ({
         id: c.id!,
         name: c.name,
         type: 'campeonato',
-        route: `/championships/${c.id}`,
+        route: `/championship/${this.toSlug(c.name.split(/[-–—]|Fecha/)[0])}`,
         country: c.country || '',
         flag: this.getCountryFlag(c.country || ''),
         meta: c.type ? c.type.toUpperCase() : '',
@@ -119,26 +119,31 @@ export class Navbar implements OnInit {
       id: t.id!,
       name: t.name,
       type: 'equipo',
-      route: `/teams/${t.id}`,
+      route: `/team/${t.id}`,
       country: t.country || '',
       flag: this.getCountryFlag(t.country || ''),
     }));
+
+    
 
     const players: SearchResult[] = this.playerService.players().map((p: Player) => ({
       id: p.id!,
       name: p.name,
       type: 'jugador',
-      route: `/players/${p.id}`,
-      country: p.nationality || p.nationality || '',
-      flag: this.getCountryFlag(p.nationality || p.nationality || ''),
+      route: `/player/${this.toSlug(p.name)}`,
+      country: p.nationality || '',
+      flag: this.getCountryFlag(p.nationality || ''),
       meta: p.position || '',
     }));
 
     return [...championships, ...teams, ...players];
   });
+  isAdmin = computed(() => {
+    const user = this.authService.currentUser();
+    return user?.role === 'Administrador';
+  });
 
-  // Sin límite (.slice()), devolviendo todos los coincidentes con scroll vertical fijo
-  searchResults = computed(() => {
+    searchResults = computed(() => {
     const query = this.normalizeText(this.searchText());
     if (!query) return [];
 
@@ -149,11 +154,6 @@ export class Navbar implements OnInit {
         (item.country && this.normalizeText(item.country).includes(query)) ||
         (item.meta && this.normalizeText(item.meta).includes(query)),
     );
-  });
-
-  isAdmin = computed(() => {
-    const user = this.authService.currentUser();
-    return user?.role === 'Administrador';
   });
 
   userName = computed(() => {
@@ -177,6 +177,15 @@ export class Navbar implements OnInit {
     if (this.playerService.players().length === 0) {
       this.playerService.getAll();
     }
+  }
+
+    private toSlug(text: string): string {
+    return (text || '')
+      .toLowerCase()
+      .trim()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/\s+/g, '-');
   }
 
   private normalizeText(text: string): string {

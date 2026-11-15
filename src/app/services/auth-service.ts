@@ -108,9 +108,8 @@ export class AuthService {
     return this.http.patch<User>(`${this.apiUrl}/usuarios/${id}`, updatedData).pipe(
       tap((user) => {
         const fullUser = { ...this.currentUser(), ...user } as User;
-        // Si el usuario logueado es el mismo que se actualizó, actualizamos localStorage y la señal
-        if (this.currentUser()?.id === Number(id)) {
-          localStorage.setItem('tiki_user', JSON.stringify(fullUser));
+        if (String(this.currentUser()?.id) === String(id)) {       
+             localStorage.setItem('tiki_user', JSON.stringify(fullUser));
           this.currentUser.set(fullUser);
         }
       }),

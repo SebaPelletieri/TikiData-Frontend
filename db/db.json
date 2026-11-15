@@ -41786,7 +41786,10 @@
       "preferredFoot": "Derecho",
       "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/defensa-y-justicia.png",
       "id": "222",
-      "dorsals": {}
+      "dorsals": {
+        "2": 98
+      },
+      "currentTeamID": 2
     },
     {
       "id": "223",
@@ -45126,7 +45129,10 @@
       "preferredFoot": "Derecho",
       "photo": "",
       "id": "1066",
-      "dorsals": {}
+      "dorsals": {
+        "2": 99
+      },
+      "currentTeamID": 2
     },
     {
       "id": "1067",

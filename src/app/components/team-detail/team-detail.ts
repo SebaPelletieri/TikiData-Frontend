@@ -1,4 +1,4 @@
-import { Component, input, signal, inject, computed, OnInit } from '@angular/core';
+import { Component, input, output, signal, inject, computed, OnInit } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { Team } from '../../models/Team';
@@ -30,6 +30,12 @@ export class TeamDetail implements OnInit {
   championships = input<any[]>([]);
   matches = input<any[]>([]);
   players = input<Player[]>([]);
+
+  playerAdded = output<Player>();
+
+  onPlayerAdded(player: Player): void {
+    this.playerAdded.emit(player);
+  }
 
   activeTab = signal<'general' | 'squad' | 'matches'>('general');
 
@@ -74,7 +80,7 @@ export class TeamDetail implements OnInit {
     const user = this.currentUser();
     const currentTeam = this.team();
     if (!user || !user.favoriteTeams || !currentTeam || !currentTeam.id) return false;
-    return user.favoriteTeams.includes(Number(currentTeam.id));
+    return user.favoriteTeams.some((id: any) => String(id) === String(currentTeam.id));
   });
 
   toggleFollowTeam() {
@@ -86,7 +92,7 @@ export class TeamDetail implements OnInit {
     const teamIdNum = Number(currentTeam.id);
 
     if (this.isFollowing()) {
-      favoriteTeams = favoriteTeams.filter((id: number) => id !== teamIdNum);
+      favoriteTeams = favoriteTeams.filter((id: any) => String(id) !== String(teamIdNum));
     } else {
       favoriteTeams.push(teamIdNum);
     }

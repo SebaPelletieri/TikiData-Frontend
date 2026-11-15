@@ -162,7 +162,11 @@
 
     <!-- PESTAÑA: PLANTEL -->
     @if (activeTab() === 'squad') {
-      <app-team-roster [players]="players()" [teamId]="t.id!" />
+      <app-team-roster
+        [players]="players()"
+        [teamId]="t.id!"
+        (playerAdded)="onPlayerAdded($event)"
+      />
     }
 
     <!-- PESTAÑA: PARTIDOS -->

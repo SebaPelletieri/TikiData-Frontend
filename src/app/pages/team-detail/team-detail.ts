@@ -120,6 +120,16 @@ export class TeamDetailPage implements OnInit {
     });
   }
 
+  // Se ejecuta cuando se ficha un jugador desde la pestaña Plantel
+  onPlayerAdded() {
+    const team = this.teamService.teamActual();
+    if (team) {
+      this.loadPlayers(team);
+    }
+    // refresca también el buscador y la lista global de jugadores
+    this.playerService.getAll();
+  }
+
   loadMatches(teamId: any, allTeams: Team[]) {
     this.matchService.getAllMatches().subscribe({
       next: (matches: Match[]) => {

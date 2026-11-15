@@ -8,6 +8,7 @@ import { Championship, ChampionshipType } from '../../models/Championship';
 interface FilterOption {
   value: string;
   label: string;
+  flag?: string; // Bandera opcional para los filtros
 }
 
 interface ChampionshipGroup {
@@ -30,11 +31,9 @@ export class ChampionshipList implements OnInit {
 
   searchText = signal('');
 
-  // Estados de los filtros seleccionados
   selectedType = signal<string>('ALL');
   selectedCountry = signal<string>('ALL');
 
-  // Estados visuales de los desplegables
   isFilterPanelOpen = signal(false);
   isTypeDropdownOpen = false;
   isCountryDropdownOpen = false;
@@ -45,7 +44,64 @@ export class ChampionshipList implements OnInit {
     { value: 'COPA', label: 'Copa' },
   ];
 
-  // 🌍 Opciones de país generadas de forma dinámica en base a los datos reales
+  // Función 100% dinámica y universal para obtener la bandera de CUALQUIER país
+  getCountryFlag(countryName: string | number): string {
+    if (!countryName) return 'https://flagcdn.com/w40/xx.png';
+
+    const strCountry = String(countryName);
+
+    if (strCountry.toLowerCase() === 'internacional' || strCountry.toLowerCase() === 'global') {
+      return '';
+    }
+
+    const universalIsoExceptions: Record<string, string> = {
+      argentina: 'ar',
+      brasil: 'br',
+      brazil: 'br',
+      espana: 'es',
+      spain: 'es',
+      inglaterra: 'gb-eng',
+      england: 'gb-eng',
+      alemania: 'de',
+      germany: 'de',
+      italia: 'it',
+      italy: 'it',
+      uruguay: 'uy',
+      colombia: 'co',
+      chile: 'cl',
+      ecuador: 'ec',
+      paraguay: 'py',
+      bolivia: 'bo',
+      peru: 'pe',
+      venezuela: 've',
+      mexico: 'mx',
+      francia: 'fr',
+      portugal: 'pt',
+      japon: 'jp',
+      estadosunidos: 'us',
+      reinounido: 'gb',
+      suiza: 'ch',
+      republicacheca: 'cz',
+      angola: 'ao',
+      haiti: 'ht',
+      costarica: 'cr',
+      panama: 'pa',
+      eslovenia: 'si',
+      siria: 'sy',
+    };
+
+    const normalized = strCountry
+      .toLowerCase()
+      .trim()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/\s+/g, '');
+
+    const isoCode = universalIsoExceptions[normalized] || normalized.substring(0, 2);
+
+    return `https://flagcdn.com/w40/${isoCode}.png`;
+  }
+
   countryOptions = computed<FilterOption[]>(() => {
     const list = this.championshipService.championships
       ? this.championshipService.championships()
@@ -67,23 +123,16 @@ export class ChampionshipList implements OnInit {
     Array.from(countriesSet)
       .sort()
       .forEach((country) => {
-        options.push({ value: country, label: country });
+        options.push({
+          value: country,
+          label: country,
+          flag: this.getCountryFlag(country),
+        });
       });
 
     return options;
   });
 
-  // Diccionario de banderas por país
-  countryFlags: Record<string, string> = {
-    Argentina: 'https://flagcdn.com/w40/ar.png',
-    Brasil: 'https://flagcdn.com/w40/br.png',
-    España: 'https://flagcdn.com/w40/es.png',
-    Inglaterra: 'https://flagcdn.com/w40/gb-eng.png',
-    Alemania: 'https://flagcdn.com/w40/de.png',
-    Italia: 'https://flagcdn.com/w40/it.png',
-  };
-
-  // Control de apertura dinámico (inicia vacío; todo grupo arranca cerrado por defecto)
   openGroups = signal<Record<string, boolean>>({});
 
   ngOnInit(): void {
@@ -168,7 +217,6 @@ export class ChampionshipList implements OnInit {
     }
   }
 
-  // --- Agrupación Jerárquica: Internacionales y por País (Ligas y Copas) ---
   groupedChampionships = computed(() => {
     const list = this.championshipService.championships
       ? this.championshipService.championships()
@@ -177,7 +225,6 @@ export class ChampionshipList implements OnInit {
     const typeFilter = this.selectedType();
     const countryFilter = this.selectedCountry();
 
-    // 1. Filtrar por buscador y filtros de menú superior
     const filtered = list.filter((champ: Championship) => {
       const matchesSearch = !search || champ.name.toLowerCase().includes(search);
       const matchesType = typeFilter === 'ALL' || champ.type === typeFilter;
@@ -200,7 +247,6 @@ export class ChampionshipList implements OnInit {
 
     const result: ChampionshipGroup[] = [];
 
-    // 2. Separar Internacionales
     const internationalChamps = filtered.filter(
       (c) =>
         !c.country ||
@@ -219,7 +265,6 @@ export class ChampionshipList implements OnInit {
       });
     }
 
-    // 3. Separar por País
     const nationalChamps = filtered.filter(
       (c) =>
         c.country &&
@@ -234,10 +279,9 @@ export class ChampionshipList implements OnInit {
       const champsInCountry = nationalChamps.filter((c) => c.country === country);
 
       if (champsInCountry.length > 0) {
-        const defaultFlag = `https://flagcdn.com/w40/${country.substring(0, 2).toLowerCase()}.png`;
         result.push({
           groupName: country,
-          groupFlag: this.countryFlags[country] || defaultFlag,
+          groupFlag: this.getCountryFlag(country), // Bandera generada de forma robusta
           isInternational: false,
           championships: champsInCountry,
           isOpen: false,

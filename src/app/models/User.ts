@@ -7,7 +7,7 @@ export interface User {
   role: Role;
   favoriteTeams: number[];
   favoritePlayers: number[];
-  favoriteChampionships: number[]; 
+  favoriteChampionships: number[];
   avatar?: string;
   createdAt?: string;
 }

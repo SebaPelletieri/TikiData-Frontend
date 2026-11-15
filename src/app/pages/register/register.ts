@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { RegisterForm } from '../../components/register-form/register-form';
 import { Router } from '@angular/router';
-import { RegisterRequest } from '../../models/Register Request';
+import { RegisterRequest } from '../../models/RegisterRequest';
 import { AuthService } from '../../services/auth-service';
 
 @Component({
@@ -24,7 +24,7 @@ export class Register {
       error: (err) => {
         console.error('Error al registrar usuario', err);
         alert('Hubo un problema al crear la cuenta.');
-      }
+      },
     });
   }
 }

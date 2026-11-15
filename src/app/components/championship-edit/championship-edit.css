@@ -9,7 +9,7 @@
   margin: 2.5rem auto !important;
   padding: 2.5rem;
   background: linear-gradient(180deg, #071528 0%, #040e1d 100%);
-  border: 1px solid #1a2f4c;
+  border: 1px solid #4a290c;
   border-radius: 20px;
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
   color: #fff;
@@ -28,7 +28,7 @@
   gap: 16px;
   margin-bottom: 2rem;
   padding-bottom: 1.2rem;
-  border-bottom: 1px solid #132742;
+  border-bottom: 1px solid #2b1d14;
 }
 
 .form-icon-box {
@@ -39,7 +39,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #041326;
+  color: #ffffff;
   flex-shrink: 0;
   box-shadow: 0 4px 12px rgba(255, 107, 0, 0.3);
 }
@@ -94,10 +94,10 @@
   width: 100%;
   height: 46px;
   padding: 0 16px;
-  background: #040c18;
+  background: linear-gradient(180deg, #071a33 0%, #051428 100%);
   color: #ffffff;
-  border: 1px solid #1a3154;
-  border-radius: 12px;
+  border: 1px solid #4a290c;
+  border-radius: 10px;
   font-size: 0.95rem;
   font-family: inherit;
   outline: none;
@@ -108,15 +108,18 @@
 .form-group input:hover,
 .dropdown-trigger:hover {
   border-color: #ff6b00;
-  background: #051022;
+  background: linear-gradient(180deg, #1c1511 0%, #0e121a 100%);
+  box-shadow: 0 0 12px rgba(255, 107, 0, 0.2);
+  transform: translateY(-1px);
 }
 
 .form-group input:focus,
 .dropdown-trigger:focus,
 .custom-dropdown.open .dropdown-trigger {
   border-color: #ff6b00;
-  background: #051022;
-  box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.2);
+  background: linear-gradient(180deg, #1c1511 0%, #0e121a 100%);
+  box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.25);
+  transform: translateY(-1px);
 }
 
 /* Dropdowns personalizados (País y Tipo) */
@@ -148,6 +151,7 @@
 
 .custom-dropdown.open .triangle-icon {
   transform: rotate(180deg);
+  background-color: #ff6b00;
 }
 
 .dropdown-menu {
@@ -157,14 +161,28 @@
   width: 100%;
   max-height: 200px;
   overflow-y: auto;
-  background-color: #040e1d;
-  border: 1px solid #1a3154;
+  background-color: #06182e;
+  border: 1px solid #4a290c;
   border-radius: 12px;
   padding: 4px;
   margin: 0;
   list-style: none;
   z-index: 100;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.65);
+  box-shadow:
+    0 12px 30px rgba(0, 0, 0, 0.65),
+    0 0 1px rgba(255, 107, 0, 0.15);
+  backdrop-filter: blur(8px);
+}
+
+.dropdown-menu::-webkit-scrollbar {
+  width: 4px;
+}
+.dropdown-menu::-webkit-scrollbar-thumb {
+  background: #3a2009;
+  border-radius: 4px;
+}
+.dropdown-menu::-webkit-scrollbar-thumb:hover {
+  background: #ff6b00;
 }
 
 .dropdown-item {
@@ -179,8 +197,18 @@
 }
 
 .dropdown-item:hover {
-  background-color: #ff6b00;
+  background-color: #381a05;
   color: #ffffff;
+}
+
+/* Mensaje de error */
+.error-feedback {
+  margin-top: 4px;
+}
+
+.error-text {
+  color: #fca5a5;
+  font-size: 0.78rem;
 }
 
 /* Botones de Acción del Formulario */
@@ -203,13 +231,15 @@
 
 .btn-cancel {
   background-color: transparent;
-  border: 1px solid #1a3154;
+  border: 1px solid #4a280c;
   color: #ffffff;
 }
 
 .btn-cancel:hover {
   border-color: #ff6b00;
-  background-color: rgba(255, 107, 0, 0.05);
+  background-color: #1f1207;
+  box-shadow: 0 0 14px rgba(255, 107, 0, 0.25);
+  transform: translateY(-1px);
 }
 
 .btn-submit {
@@ -222,11 +252,12 @@
 .btn-submit:hover:not(:disabled) {
   background: linear-gradient(180deg, #ff8124 0%, #ff6b00 100%);
   box-shadow: 0 6px 20px rgba(255, 107, 0, 0.6);
+  transform: translateY(-1px);
 }
 
 .btn-submit:disabled {
-  background: #15253d;
-  color: #536d93;
+  background: #2b1d14;
+  color: #735745;
   box-shadow: none;
   cursor: not-allowed;
 }

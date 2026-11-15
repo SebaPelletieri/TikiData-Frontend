@@ -86,6 +86,10 @@
   gap: 0.45rem;
 }
 
+.password-group-full {
+  grid-column: span 2;
+}
+
 .form-group label {
   font-family: inherit;
   font-size: 0.88rem;
@@ -120,15 +124,21 @@
 }
 
 .form-group input:hover {
-  border-color: #f97316; /* Naranja TikiData */
+  border-color: #f97316;
   background: linear-gradient(180deg, #1f1007 0%, #0c0805 100%);
   box-shadow: 0 0 12px rgba(249, 115, 22, 0.15);
 }
 
 .form-group input:focus {
-  border-color: #f97316; /* Naranja TikiData */
+  border-color: #f97316;
   background: linear-gradient(180deg, #1f1007 0%, #0c0805 100%);
   box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.22);
+}
+
+.form-group input.input-error {
+  border-color: #ef4444 !important;
+  background-color: #0b1a2f !important;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15) !important;
 }
 
 /* =========================================
@@ -207,7 +217,7 @@
 }
 
 .dropzone:hover {
-  border-color: #f97316; /* Naranja TikiData */
+  border-color: #f97316;
   color: #f97316;
   background: linear-gradient(180deg, #1f1007 0%, #0c0805 100%);
   transform: translateY(-1px);
@@ -224,7 +234,7 @@
 }
 
 .dropzone:hover .upload-icon {
-  color: #f97316; /* Naranja TikiData */
+  color: #f97316;
   transform: translateY(-2px);
 }
 
@@ -273,7 +283,7 @@
   height: 70px;
   object-fit: cover;
   border-radius: 50%;
-  border: 2px solid #f97316; /* Naranja TikiData */
+  border: 2px solid #f97316;
 }
 
 .btn-remove-shield {
@@ -298,6 +308,41 @@
 .btn-remove-shield:hover {
   background: #ef4444;
   color: #fff;
+}
+
+/* =========================================
+   Validación y Errores
+   ========================================= */
+.error-feedback {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 4px;
+  animation: errorSlideIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes errorSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.error-icon {
+  width: 14px;
+  height: 14px;
+  stroke: #f87171;
+  flex-shrink: 0;
+}
+
+.error-text {
+  color: #fca5a5;
+  font-size: 0.78rem;
+  font-weight: 500;
 }
 
 /* =========================================
@@ -329,7 +374,7 @@
 .btn-cancel:hover {
   background: rgba(255, 255, 255, 0.05);
   color: #ffffff;
-  border-color: #f97316; /* Naranja TikiData */
+  border-color: #f97316;
 }
 
 .btn-save-championship {
@@ -397,7 +442,8 @@
   .form-actions-full,
   .upload-section-full,
   .alert-success,
-  .alert-error {
+  .alert-error,
+  .password-group-full {
     grid-column: span 1;
   }
   .shield-container {

@@ -25,7 +25,7 @@
     </div>
 
     <!-- Botón de Filtrar con Panel Desplegable -->
-    <div class="filter-dropdown-container">
+    <div class="filter-dropdown-container" [class.open]="isFilterPanelOpen()">
       <button type="button" class="filter-main-btn" (click)="toggleFilterPanel($event)">
         <div class="trigger-content">
           <i class="fas fa-filter"></i>
@@ -34,23 +34,23 @@
         <span class="triangle-icon" [class.rotate]="isFilterPanelOpen()"></span>
       </button>
 
-      @if (isFilterPanelOpen()) {
-        <div class="filter-panel" (click)="$event.stopPropagation()">
-          <!-- Sección 1: Posición -->
-          <div class="filter-panel-section">
-            <span class="filter-panel-title">Posición</span>
-            <div class="sub-dropdown" [class.open]="isPositionDropdownOpen">
-              <button
-                type="button"
-                class="sub-dropdown-trigger"
-                (click)="togglePositionDropdown($event)"
-              >
-                <span>{{ selectedPositionLabel }}</span>
-                <span class="triangle-icon"></span>
-              </button>
+      <div class="filter-panel" (click)="$event.stopPropagation()">
+        <!-- Sección 1: Posición -->
+        <div class="filter-panel-section">
+          <span class="filter-panel-title">Posición</span>
+          <div class="sub-dropdown" [class.open]="isPositionDropdownOpen">
+            <button
+              type="button"
+              class="sub-dropdown-trigger"
+              (click)="togglePositionDropdown($event)"
+            >
+              <span>{{ selectedPositionLabel }}</span>
+              <span class="triangle-icon" [class.rotate]="isPositionDropdownOpen"></span>
+            </button>
 
-              @if (isPositionDropdownOpen) {
-                <ul class="sub-dropdown-menu">
+            @if (isPositionDropdownOpen) {
+              <ul class="sub-dropdown-menu">
+                <div class="sub-dropdown-menu-inner">
                   @for (pos of positions; track pos.value) {
                     <li
                       class="sub-dropdown-item"
@@ -63,44 +63,55 @@
                       }
                     </li>
                   }
-                </ul>
-              }
-            </div>
+                </div>
+              </ul>
+            }
           </div>
+        </div>
 
-          <!-- Sección 2: Nacionalidad -->
-          <div class="filter-panel-section">
-            <span class="filter-panel-title">Nacionalidad</span>
-            <div class="sub-dropdown" [class.open]="isNationalityDropdownOpen">
-              <button
-                type="button"
-                class="sub-dropdown-trigger"
-                (click)="toggleNationalityDropdown($event)"
-              >
-                <span>{{ selectedNationalityLabel }}</span>
-                <span class="triangle-icon"></span>
-              </button>
+        <!-- Sección 2: Nacionalidad -->
+        <div class="filter-panel-section">
+          <span class="filter-panel-title">Nacionalidad</span>
+          <div class="sub-dropdown" [class.open]="isNationalityDropdownOpen">
+            <button
+              type="button"
+              class="sub-dropdown-trigger"
+              (click)="toggleNationalityDropdown($event)"
+            >
+              <span>{{ selectedNationalityLabel }}</span>
+              <span class="triangle-icon" [class.rotate]="isNationalityDropdownOpen"></span>
+            </button>
 
-              @if (isNationalityDropdownOpen) {
-                <ul class="sub-dropdown-menu">
-                  @for (nat of nationalityOptions; track nat.value) {
+            @if (isNationalityDropdownOpen) {
+              <ul class="sub-dropdown-menu">
+                <div class="sub-dropdown-menu-inner">
+                  @for (nat of nationalityOptions(); track nat.value) {
                     <li
                       class="sub-dropdown-item"
                       [class.active]="selectedNationality() === nat.value"
                       (click)="selectNationality(nat.value)"
                     >
-                      <span>{{ nat.label }}</span>
+                      <div class="dropdown-item-content">
+                        @if (nat.value !== 'ALL') {
+                          <div class="dropdown-flag-wrapper">
+                            <img [src]="getCountryFlag(nat.value)" [alt]="nat.label" />
+                          </div>
+                        } @else {
+                          <span class="all-countries-icon">🌐</span>
+                        }
+                        <span>{{ nat.label }}</span>
+                      </div>
                       @if (selectedNationality() === nat.value) {
                         <i class="fas fa-check check-icon"></i>
                       }
                     </li>
                   }
-                </ul>
-              }
-            </div>
+                </div>
+              </ul>
+            }
           </div>
         </div>
-      }
+      </div>
     </div>
   </div>
 
@@ -122,7 +133,12 @@
           <tr [routerLink]="['/player', formatPlayerSlug(player.name)]" class="player-row">
             <td class="col-photo">
               <div class="avatar-wrapper">
-                <img [src]="player.photo" [alt]="player.name" />
+                <img
+                  [src]="player.photo || 'https://via.placeholder.com/80?text=Jugador'"
+                  (error)="$any($event.target).src = 'https://via.placeholder.com/80?text=Jugador'"
+                  [alt]="player.name"
+                  referrerpolicy="no-referrer"
+                />
               </div>
             </td>
             <td class="player-name-cell">
@@ -151,7 +167,7 @@
       </tbody>
     </table>
 
-    <!-- Paginación Inferior Dinámica -->
+    <!-- Paginación Inferior Dinámica (Máximo 20 pestañas visibles) -->
     <div class="pagination-container">
       <span class="pagination-info">{{ paginationInfoText() }}</span>
       <div class="pagination-controls">

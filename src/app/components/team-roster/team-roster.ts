@@ -11,7 +11,6 @@ import { Player } from '../../models/Player';
   templateUrl: './team-roster.html',
   styleUrl: './team-roster.css',
 })
-
 export class TeamRoster implements OnInit {
   private http = inject(HttpClient);
 
@@ -20,14 +19,13 @@ export class TeamRoster implements OnInit {
   playerAdded = output<Player>();
 
   dorsalInput = signal<string>('');
-  dorsalTouched = signal<boolean>(false); 
+  dorsalTouched = signal<boolean>(false);
   isModalOpen = signal(false);
 
   allRegisteredPlayers = signal<Player[]>([]);
   searchQuery = signal<string>('');
   selectedPlayer = signal<Player | null>(null);
 
-  // Validación de dorsal
   dorsalError = computed(() => {
     const val = this.dorsalInput().trim();
     if (!val) {
@@ -71,7 +69,7 @@ export class TeamRoster implements OnInit {
     this.searchQuery.set('');
     this.selectedPlayer.set(null);
     this.dorsalInput.set('');
-    this.dorsalTouched.set(false); // 👈 Reiniciar estado
+    this.dorsalTouched.set(false);
     this.isModalOpen.set(true);
   }
 

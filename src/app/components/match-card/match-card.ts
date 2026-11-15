@@ -5,8 +5,9 @@ import { Match } from '../../models/Match';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
-  imports: [CommonModule, RouterLink, DatePipe],
   selector: 'app-match-card',
+  standalone: true,
+  imports: [CommonModule, RouterLink, DatePipe],
   styleUrl: './match-card.css',
   templateUrl: './match-card.html',
 })
@@ -21,13 +22,19 @@ export class MatchCard implements OnInit {
     if (this.match?.localTeamID) {
       this.http.get<any>(`http://localhost:3000/equipos/${this.match.localTeamID}`).subscribe({
         next: (t) => this.localTeam.set(t),
-        error: () => this.localTeam.set({ name: `Equipo ${this.match.localTeamID}` })
+        error: (err: any) => {
+          console.error('Error al cargar equipo local:', err);
+          this.localTeam.set({ name: `Equipo ${this.match.localTeamID}` });
+        },
       });
     }
     if (this.match?.awayTeamID) {
       this.http.get<any>(`http://localhost:3000/equipos/${this.match.awayTeamID}`).subscribe({
         next: (t) => this.awayTeam.set(t),
-        error: () => this.awayTeam.set({ name: `Equipo ${this.match.awayTeamID}` })
+        error: (err: any) => {
+          console.error('Error al cargar equipo visitante:', err);
+          this.awayTeam.set({ name: `Equipo ${this.match.awayTeamID}` });
+        },
       });
     }
   }

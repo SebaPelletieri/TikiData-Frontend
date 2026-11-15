@@ -1,25 +1,32 @@
 <div class="match-list-container">
-  
   <!-- Barra de Filtros -->
   <div class="filter-bar">
-    <button 
-      [class.active]="selectedFilter() === 'TODOS'" 
-      (click)="setFilter('TODOS')">
+    <button
+      type="button"
+      [class.active]="selectedFilter() === 'TODOS'"
+      (click)="setFilter('TODOS')"
+    >
       Todos
     </button>
-    <button 
-      [class.active]="selectedFilter() === 'En Vivo'" 
-      (click)="setFilter('En Vivo')">
+    <button
+      type="button"
+      [class.active]="selectedFilter() === 'En Vivo'"
+      (click)="setFilter('En Vivo')"
+    >
       🔴 En Vivo
     </button>
-    <button 
-      [class.active]="selectedFilter() === 'Programado'" 
-      (click)="setFilter('Programado')">
+    <button
+      type="button"
+      [class.active]="selectedFilter() === 'Programado'"
+      (click)="setFilter('Programado')"
+    >
       Programados
     </button>
-    <button 
-      [class.active]="selectedFilter() === 'Finalizado'" 
-      (click)="setFilter('Finalizado')">
+    <button
+      type="button"
+      [class.active]="selectedFilter() === 'Finalizado'"
+      (click)="setFilter('Finalizado')"
+    >
       Finalizados
     </button>
   </div>
@@ -49,5 +56,4 @@
       }
     </div>
   }
-
 </div>

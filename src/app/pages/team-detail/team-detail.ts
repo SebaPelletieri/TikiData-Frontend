@@ -111,10 +111,7 @@ export class TeamDetailPage implements OnInit {
             p.id !== null &&
             teamPlayerIds.includes(String(p.id).trim());
 
-          const matchByName =
-            p.teamName && p.teamName.trim().toLowerCase() === teamNameClean;
-
-          return matchByTeamId || matchByArray || matchByName;
+          return matchByTeamId || matchByArray;
         });
 
         this.squadPlayers.set(filtered);

@@ -3,16 +3,21 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth-service';
-import { TeamService } from '../../services/team-service'; // Verificá que la ruta coincida con tus archivos
+import { TeamService } from '../../services/team-service';
 import { PlayerService } from '../../services/player-service';
 import { ChampionshipService } from '../../services/championship-service';
+import { Championship } from '../../models/Championship';
+import { Team } from '../../models/Team';
+import { Player } from '../../models/Player';
 
 interface SearchResult {
   id: number | string;
   name: string;
   type: 'equipo' | 'campeonato' | 'jugador';
   route: string;
-  subtitle?: string;
+  country?: string;
+  flag?: string;
+  meta?: string;
 }
 
 @Component({
@@ -32,52 +37,118 @@ export class Navbar implements OnInit {
   isLightMode = signal(false);
   isProfileMenuOpen = signal(false);
 
-  // Estado del Buscador Global
   searchText = signal<string>('');
   isSearchFocused = signal<boolean>(false);
 
-  // Construimos dinámicamente todos los elementos desde los Signals de los servicios
-  private allElements = computed<SearchResult[]>(() => {
-    const championships: SearchResult[] = this.championshipService.championships().map((c: any) => ({
-      id: c.id,
-      name: c.name,
-      type: 'campeonato',
-      route: `/championships/${c.id}`,
-      subtitle: [c.type, c.country].filter(Boolean).join(' • ') || 'Campeonato',
-    }));
+  // Función 100% dinámica y universal para obtener la bandera de CUALQUIER país
+  getCountryFlag(countryName: string | number): string {
+    if (!countryName) return 'https://flagcdn.com/w40/xx.png';
 
-    const teams: SearchResult[] = this.teamService.teams().map((t: any) => ({
-      id: t.id,
+    const strCountry = String(countryName);
+
+    if (
+      strCountry.toLowerCase() === 'internacional' ||
+      strCountry.toLowerCase() === 'global' ||
+      strCountry.toLowerCase() === 'sudamérica'
+    ) {
+      return '';
+    }
+
+    const universalIsoExceptions: Record<string, string> = {
+      argentina: 'ar',
+      brasil: 'br',
+      brazil: 'br',
+      espana: 'es',
+      spain: 'es',
+      inglaterra: 'gb-eng',
+      england: 'gb-eng',
+      alemania: 'de',
+      germany: 'de',
+      italia: 'it',
+      italy: 'it',
+      uruguay: 'uy',
+      colombia: 'co',
+      chile: 'cl',
+      ecuador: 'ec',
+      paraguay: 'py',
+      bolivia: 'bo',
+      peru: 'pe',
+      venezuela: 've',
+      mexico: 'mx',
+      francia: 'fr',
+      portugal: 'pt',
+      japon: 'jp',
+      estadosunidos: 'us',
+      reinounido: 'gb',
+      suiza: 'ch',
+      republicacheca: 'cz',
+      angola: 'ao',
+      haiti: 'ht',
+      costarica: 'cr',
+      panama: 'pa',
+      eslovenia: 'si',
+      siria: 'sy',
+    };
+
+    const normalized = strCountry
+      .toLowerCase()
+      .trim()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/\s+/g, '');
+
+    const isoCode = universalIsoExceptions[normalized] || normalized.substring(0, 2);
+
+    return `https://flagcdn.com/w40/${isoCode}.png`;
+  }
+
+  private allElements = computed<SearchResult[]>(() => {
+    const championships: SearchResult[] = this.championshipService
+      .championships()
+      .map((c: Championship) => ({
+        id: c.id!,
+        name: c.name,
+        type: 'campeonato',
+        route: `/championships/${c.id}`,
+        country: c.country || '',
+        flag: this.getCountryFlag(c.country || ''),
+        meta: c.type ? c.type.toUpperCase() : '',
+      }));
+
+    const teams: SearchResult[] = this.teamService.teams().map((t: Team) => ({
+      id: t.id!,
       name: t.name,
       type: 'equipo',
       route: `/teams/${t.id}`,
-      subtitle: t.country || 'Equipo',
+      country: t.country || '',
+      flag: this.getCountryFlag(t.country || ''),
     }));
 
-    const players: SearchResult[] = this.playerService.players().map((p: any) => ({
-      id: p.id,
+    const players: SearchResult[] = this.playerService.players().map((p: Player) => ({
+      id: p.id!,
       name: p.name,
       type: 'jugador',
       route: `/players/${p.id}`,
-      subtitle: [p.position, p.teamName].filter(Boolean).join(' • ') || 'Jugador',
+      country: p.nationality || p.nationality || '',
+      flag: this.getCountryFlag(p.nationality || p.nationality || ''),
+      meta: p.position || '',
     }));
 
     return [...championships, ...teams, ...players];
   });
 
-  // Filtrado reactivo ignorando tildes y mayúsculas
+  // Sin límite (.slice()), devolviendo todos los coincidentes con scroll vertical fijo
   searchResults = computed(() => {
     const query = this.normalizeText(this.searchText());
     if (!query) return [];
 
-    return this.allElements()
-      .filter(
-        (item) =>
-          this.normalizeText(item.name).includes(query) ||
-          this.normalizeText(item.type).includes(query) ||
-          (item.subtitle && this.normalizeText(item.subtitle).includes(query))
-      )
-      .slice(0, 12); // Limita a 12 resultados visibles para no desbordar el dropdown
+    return this.allElements().filter(
+      (item) =>
+        this.normalizeText(item.name).includes(query) ||
+        this.normalizeText(item.type).includes(query) ||
+        (item.country && this.normalizeText(item.country).includes(query)) ||
+        (item.meta && this.normalizeText(item.meta).includes(query)),
+    );
   });
 
   isAdmin = computed(() => {
@@ -97,7 +168,6 @@ export class Navbar implements OnInit {
   });
 
   ngOnInit() {
-    // Aseguramos que los datos estén cargados en los servicios al iniciar el Navbar
     if (this.championshipService.championships().length === 0) {
       this.championshipService.getAll();
     }
@@ -140,7 +210,7 @@ export class Navbar implements OnInit {
   onLogout(): void {
     this.closeProfileMenu();
     this.authService.logout();
-    this.router.navigate(['/login']);
+    this.router.navigate(['/']);
   }
 
   toggleTheme() {

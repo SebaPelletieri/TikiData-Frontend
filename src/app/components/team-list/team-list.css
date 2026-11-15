@@ -62,7 +62,7 @@
   width: 100%;
   height: 44px;
   background: linear-gradient(180deg, #071a33 0%, #051428 100%);
-  border: 1px solid #1e497e;
+  border: 1px solid rgba(49, 93, 148, 0.45);
   border-radius: 12px;
   padding: 0 14px 0 42px;
   color: #ffffff;
@@ -98,20 +98,15 @@
   color: #ff6b00;
 }
 
-/* ================= DROPDOWN DE PAÍS ================= */
-.select-filters {
+/* ================= BOTÓN PRINCIPAL DE FILTRAR Y PANEL ================= */
+.filter-dropdown-container {
   position: relative;
   flex: 1.2;
   min-width: 220px;
   max-width: 260px;
 }
 
-.custom-dropdown {
-  position: relative;
-  width: 100%;
-}
-
-.dropdown-trigger {
+.filter-main-btn {
   width: 100%;
   height: 44px;
   background-color: #06182e;
@@ -130,12 +125,28 @@
   transition: all 0.25s ease;
 }
 
-.dropdown-trigger:hover {
+.trigger-content {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.trigger-content i {
+  color: #7d96b3;
+  transition: color 0.2s ease;
+}
+
+.filter-main-btn:hover {
   border-color: #ff6b00;
-  background-color: rgba(255, 107, 0, 0.12);
+  background-color: rgba(255, 107, 0, 0.08);
   box-shadow: 0 0 14px rgba(255, 107, 0, 0.22);
 }
 
+.filter-main-btn:hover .trigger-content i {
+  color: #ff6b00;
+}
+
+/* Triángulo indicador unificado */
 .triangle-icon {
   width: 10px;
   height: 6px;
@@ -148,8 +159,9 @@
   flex-shrink: 0;
 }
 
-.dropdown-trigger:hover .triangle-icon,
-.custom-dropdown.open .triangle-icon,
+.filter-main-btn:hover .triangle-icon,
+.sub-dropdown-trigger:hover .triangle-icon,
+.filter-dropdown-container.open .triangle-icon,
 .country-header:hover .triangle-icon {
   background-color: #ff6b00 !important;
 }
@@ -159,26 +171,136 @@
   background-color: #ff6b00 !important;
 }
 
-/* ================= MENÚ DESPLEGABLE DE PAÍS ================= */
-.dropdown-menu {
+/* Panel flotante principal de filtros */
+.filter-panel {
   position: absolute;
   top: calc(100% + 8px);
-  left: 0;
+  right: 0;
+  left: auto;
   width: 100%;
   background-color: #06182e;
   border: 1px solid rgba(49, 93, 148, 0.45);
   border-radius: 14px;
-  margin: 0;
-  list-style: none;
-  z-index: 100;
+  padding: 12px;
   box-shadow:
     0 12px 30px rgba(0, 0, 0, 0.65),
     0 0 1px rgba(255, 255, 255, 0.1);
+  z-index: 100;
   backdrop-filter: blur(8px);
-  padding: 6px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-8px) scale(0.98);
+  pointer-events: none;
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease,
+    visibility 0.25s ease;
 }
 
-.dropdown-item {
+.filter-dropdown-container.open .filter-panel {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.filter-panel-section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.filter-panel-title {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #7d96b3;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 0 4px;
+}
+
+/* ================= SUB-DROPDOWNS INTERNOS ================= */
+.sub-dropdown {
+  position: relative;
+  width: 100%;
+}
+
+.sub-dropdown-trigger {
+  width: 100%;
+  height: 40px;
+  background-color: #041326;
+  color: #ffffff;
+  border: 1px solid rgba(49, 93, 148, 0.4);
+  border-radius: 10px;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.88rem;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.sub-dropdown-trigger:hover {
+  border-color: #ff6b00;
+}
+
+.sub-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  width: 100%;
+  background-color: #06182e;
+  border: 1px solid rgba(49, 93, 148, 0.45);
+  border-radius: 10px;
+  margin: 0;
+  list-style: none;
+  z-index: 110;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+
+  max-height: 0;
+  overflow: hidden;
+  padding: 0 4px;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    max-height 0.3s ease,
+    opacity 0.2s ease,
+    padding 0.3s ease,
+    visibility 0.3s ease;
+}
+
+.sub-dropdown.open .sub-dropdown-menu {
+  max-height: 220px;
+  opacity: 1;
+  visibility: visible;
+  padding: 4px;
+}
+
+.sub-dropdown-menu-inner {
+  overflow-y: auto;
+  max-height: 180px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.sub-dropdown-menu-inner::-webkit-scrollbar {
+  width: 4px;
+}
+.sub-dropdown-menu-inner::-webkit-scrollbar-thumb {
+  background: #143560;
+  border-radius: 4px;
+}
+
+.sub-dropdown-item {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -193,25 +315,58 @@
     color 0.15s ease;
 }
 
-.dropdown-item:hover {
+.sub-dropdown-item:hover {
   background-color: rgba(255, 107, 0, 0.12) !important;
   color: #ffffff !important;
 }
 
-.dropdown-item.active {
+.sub-dropdown-item.active {
   background-color: rgba(255, 107, 0, 0.22) !important;
   color: #ffffff !important;
   font-weight: 600;
+}
+
+.dropdown-item-content {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Contenedor específico y compacto para la bandera en el menú desplegable */
+.dropdown-flag-wrapper {
+  width: 22px;
+  height: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 3px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  flex-shrink: 0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.dropdown-flag-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.all-countries-icon {
+  font-size: 0.95rem;
+  width: 22px;
+  text-align: center;
 }
 
 .check-icon {
   width: 16px !important;
   height: 16px !important;
   stroke: #ff6b00 !important;
+  color: #ff6b00 !important;
   flex-shrink: 0;
 }
 
-/* ================= BLOQUES JERÁRQUICOS (PAÍS -> LIGA) ================= */
+/* ================= BLOQUES JERÁRQUICOS Y DEMÁS ================= */
 .hierarchy-container {
   display: flex;
   flex-direction: column;
@@ -241,9 +396,7 @@
   justify-content: space-between;
   cursor: pointer;
   user-select: none;
-  transition:
-    background-color 0.2s ease,
-    color 0.2s ease;
+  transition: background-color 0.2s ease;
 }
 
 .country-header:hover {
@@ -283,7 +436,6 @@
   }
 }
 
-/* Sub-bloque de Liga */
 .league-subblock {
   display: flex;
   flex-direction: column;
@@ -307,10 +459,8 @@
   font-size: 1.05rem;
   font-weight: 600;
   color: #ff6b00;
-  letter-spacing: -0.01em;
 }
 
-/* Logos de la Liga */
 .league-logo-wrapper {
   width: 26px;
   height: 26px;
@@ -331,7 +481,6 @@
   object-fit: contain;
 }
 
-/* ================= GRID DE EQUIPOS ================= */
 .team-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -420,7 +569,6 @@
   border-radius: 14px;
 }
 
-/* ================= RESPONSIVE ================= */
 @media (max-width: 768px) {
   .team-list-container {
     width: 96%;
@@ -429,12 +577,11 @@
   .filters-bar {
     flex-direction: column;
   }
-  .select-filters {
+  .filter-dropdown-container {
     max-width: 100%;
   }
 }
 
-/* ================= BANDERA DE PAÍS ================= */
 .country-flag-wrapper {
   width: 28px;
   height: 20px;

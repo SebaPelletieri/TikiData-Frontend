@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { LoginForm } from '../../components/login-form/login-form';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth-service';
-import { LoginRequest } from '../../models/Login Request';
+import { LoginRequest } from '../../models/LoginRequest';
 
 @Component({
   imports: [LoginForm],
@@ -18,12 +18,12 @@ export class Login {
     this.authService.login(credentials).subscribe({
       next: (response) => {
         console.log('Login exitoso');
-        this.router.navigate(['/']); 
+        this.router.navigate(['/']);
       },
       error: (err) => {
         console.error('Error al iniciar sesión', err);
         alert('Credenciales incorrectas o error en el servidor');
-      }
+      },
     });
   }
 }

@@ -9,6 +9,14 @@ interface FilterOption {
   label: string;
 }
 
+const MAX_VISIBLE_PAGES = 20; // 20 páginas visibles como máximo
+
+function getVisiblePages(total: number, current: number, size = MAX_VISIBLE_PAGES): number[] {
+  const end = Math.min(total, Math.max(current, size));
+  const start = Math.max(1, end - size + 1);
+  return Array.from({ length: end - start + 1 }, (_, i) => start + i);
+}
+
 @Component({
   standalone: true,
   imports: [CommonModule, FormsModule, RouterModule],
@@ -21,40 +29,107 @@ export class PlayerList implements OnInit {
 
   searchText = signal('');
 
-  // Estados de los filtros seleccionados
   selectedPosition = signal<string>('ALL');
   selectedNationality = signal<string>('ALL');
 
-  // Estados visuales de los paneles desplegables
   isFilterPanelOpen = signal(false);
   isPositionDropdownOpen = false;
   isNationalityDropdownOpen = false;
 
-  // --- Paginación ---
   currentPage = signal(1);
-  pageSize = 10;
+  pageSize = 20; // 20 registros fijos por página
 
   positions: FilterOption[] = [
     { value: 'ALL', label: 'Todas las posiciones' },
-    { value: 'Arquero', label: 'Arquero' },
-    { value: 'Defensor', label: 'Defensor' },
-    { value: 'Mediocampista', label: 'Mediocampista' },
-    { value: 'Delantero', label: 'Delantero' },
+    { value: 'ARQ', label: 'Arquero' },
+    { value: 'DEF', label: 'Defensor' },
+    { value: 'MED', label: 'Mediocampista' },
+    { value: 'DEL', label: 'Delantero' },
   ];
 
-  nationalityOptions: FilterOption[] = [
-    { value: 'ALL', label: 'Todas las nacionalidades' },
-    { value: 'Argentina', label: 'Argentina' },
-    { value: 'Chile', label: 'Chile' },
-    { value: 'Colombia', label: 'Colombia' },
-    { value: 'Uruguay', label: 'Uruguay' },
-  ];
+  // Nacionalidades dinámicas extraídas de todos los jugadores registrados
+  nationalityOptions = computed<FilterOption[]>(() => {
+    const list = this.playerService.players ? this.playerService.players() : [];
+    const nationalitiesSet = new Set<string>();
+
+    list.forEach((player: any) => {
+      const nat = (player.nationality || player.nacionality || '').trim();
+      if (nat) {
+        nationalitiesSet.add(nat);
+      }
+    });
+
+    const options: FilterOption[] = [{ value: 'ALL', label: 'Todas las nacionalidades' }];
+
+    Array.from(nationalitiesSet)
+      .sort()
+      .forEach((nationality) => {
+        options.push({ value: nationality, label: nationality });
+      });
+
+    return options;
+  });
+
+  // Función mejorada con mapeo robusto para códigos ISO de países de todo el mundo
+  getCountryFlag(countryName: string | number): string {
+    if (!countryName) return 'https://flagcdn.com/w40/xx.png';
+
+    const strCountry = String(countryName);
+
+    // Diccionario completo de códigos ISO oficiales (incluyendo Angola, Haití y otros)
+    const universalIsoExceptions: Record<string, string> = {
+      argentina: 'ar',
+      brasil: 'br',
+      brazil: 'br',
+      espana: 'es',
+      spain: 'es',
+      inglaterra: 'gb-eng',
+      england: 'gb-eng',
+      alemania: 'de',
+      germany: 'de',
+      italia: 'it',
+      italy: 'it',
+      uruguay: 'uy',
+      colombia: 'co',
+      chile: 'cl',
+      ecuador: 'ec',
+      paraguay: 'py',
+      bolivia: 'bo',
+      peru: 'pe',
+      venezuela: 've',
+      mexico: 'mx',
+      francia: 'fr',
+      portugal: 'pt',
+      japon: 'jp',
+      estadosunidos: 'us',
+      reinounido: 'gb',
+      suiza: 'ch',
+      republicacheca: 'cz',
+      angola: 'ao',
+      haiti: 'ht',
+      costarica: 'cr',
+      panama: 'pa',
+      eslovenia: 'si',
+      siria: 'sy',
+    };
+
+    const normalized = strCountry
+      .toLowerCase()
+      .trim()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/\s+/g, '');
+
+    // Si está en el diccionario usa su ISO correcto; si no, intenta con las dos primeras letras como respaldo
+    const isoCode = universalIsoExceptions[normalized] || normalized.substring(0, 2);
+
+    return `https://flagcdn.com/w40/${isoCode}.png`;
+  }
 
   ngOnInit(): void {
     this.playerService.getAll();
   }
 
-  // Cierra los paneles si se hace clic fuera
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent): void {
     const target = event.target as HTMLElement;
@@ -96,16 +171,15 @@ export class PlayerList implements OnInit {
   selectPosition(pos: string | number): void {
     this.selectedPosition.set(String(pos));
     this.isPositionDropdownOpen = false;
-    this.currentPage.set(1); // Reiniciar a la página 1 al filtrar
+    this.currentPage.set(1);
   }
 
   selectNationality(nat: string | number): void {
     this.selectedNationality.set(String(nat));
     this.isNationalityDropdownOpen = false;
-    this.currentPage.set(1); // Reiniciar a la página 1 al filtrar
+    this.currentPage.set(1);
   }
 
-  // Reiniciar a la página 1 cuando cambia la búsqueda
   onSearchChange(value: string): void {
     this.searchText.set(value);
     this.currentPage.set(1);
@@ -119,17 +193,17 @@ export class PlayerList implements OnInit {
   get selectedNationalityLabel(): string {
     const current = this.selectedNationality();
     return (
-      this.nationalityOptions.find((n) => n.value === current)?.label || 'Todas las nacionalidades'
+      this.nationalityOptions().find((n) => n.value === current)?.label ||
+      'Todas las nacionalidades'
     );
   }
 
   getTeamName(player: any): string {
     const teamId = player.teamID ?? player.currentTeamID;
     if (!teamId) return 'Agente libre';
-    return player.teamName || 'Boca Juniors';
+    return player.teamName || 'Equipo TikiData';
   }
 
-  // --- Filtro reactivo ---
   filteredPlayersList = computed(() => {
     const list = this.playerService.players ? this.playerService.players() : [];
     const search = this.searchText().toLowerCase().trim();
@@ -149,7 +223,6 @@ export class PlayerList implements OnInit {
     });
   });
 
-  // --- Propiedades computadas de Paginación ---
   totalPages = computed(() => {
     const total = this.filteredPlayersList().length;
     return Math.max(1, Math.ceil(total / this.pageSize));
@@ -172,7 +245,6 @@ export class PlayerList implements OnInit {
     return `Mostrando ${start} - ${end} de ${total} jugadores`;
   });
 
-  // Métodos de cambio de página
   goToPage(page: number): void {
     if (page >= 1 && page <= this.totalPages()) {
       this.currentPage.set(page);
@@ -192,7 +264,7 @@ export class PlayerList implements OnInit {
   }
 
   pagesArray = computed(() => {
-    return Array.from({ length: this.totalPages() }, (_, i) => i + 1);
+    return getVisiblePages(this.totalPages(), this.currentPage());
   });
 
   formatPlayerSlug(name: string): string {
@@ -200,8 +272,8 @@ export class PlayerList implements OnInit {
     return name
       .toLowerCase()
       .trim()
-      .normalize('NFD') // Remueve tildes (opcional pero recomendado)
+      .normalize('NFD')
       .replace(/[\u0300-\u036f]/g, '')
-      .replace(/\s+/g, '-'); // Reemplaza espacios por guiones
+      .replace(/\s+/g, '-');
   }
 }

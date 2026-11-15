@@ -154,12 +154,14 @@
       "name": "Argentinos Juniors",
       "shield": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/argentinos-juniors.png",
       "country": "Argentina",
-      "yearOfFoundation": "1904-08-15T00:00:00Z",
-      "stadiumID": 11,
+      "yearOfFoundation": "1904-08-10T00:00:00.000Z",
+      "stadiumID": "1",
       "championshipsActive": [
         1
       ],
-      "playerIDs": []
+      "playerIDs": [
+        "4"
+      ]
     },
     {
       "id": "12",
@@ -227,12 +229,14 @@
       "name": "Banfield",
       "shield": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/banfield.png",
       "country": "Argentina",
-      "yearOfFoundation": "1896-01-21T00:00:00Z",
-      "stadiumID": 17,
+      "yearOfFoundation": "1896-01-19T00:00:00.000Z",
+      "stadiumID": "10",
       "championshipsActive": [
         1
       ],
-      "playerIDs": []
+      "playerIDs": [
+        "1203"
+      ]
     },
     {
       "id": "18",
@@ -396,7 +400,15 @@
       "shield": "https://upload.wikimedia.org/wikipedia/commons/1/14/Escudo_Alianza_Lima.png",
       "stadium": "Maracaná",
       "players": [],
-      "id": "31"
+      "id": "31",
+      "yearOfFoundation": "2026-11-03T00:00:00.000Z",
+      "championshipsActive": [
+        1
+      ],
+      "stadiumID": "1",
+      "playerIDs": [
+        "300"
+      ]
     },
     {
       "id": "32",
@@ -37436,6 +37448,7 @@
       "yellowCards": 3,
       "redCards": 0,
       "dorsals": {
+        "11": 11,
         "36": 36
       }
     },
@@ -37596,6 +37609,7 @@
       "yellowCards": 0,
       "redCards": 0,
       "dorsals": {
+        "11": 11,
         "16": 16
       }
     },
@@ -37695,9 +37709,7 @@
       "assists": 1,
       "yellowCards": 2,
       "redCards": 0,
-      "dorsals": {
-        "11": 11
-      }
+      "dorsals": {}
     },
     {
       "id": "18",
@@ -38055,9 +38067,7 @@
       "assists": 5,
       "yellowCards": 2,
       "redCards": 0,
-      "dorsals": {
-        "11": 11
-      }
+      "dorsals": {}
     },
     {
       "id": "36",
@@ -38955,9 +38965,7 @@
       "assists": 5,
       "yellowCards": 3,
       "redCards": 0,
-      "dorsals": {
-        "11": 11
-      }
+      "dorsals": {}
     },
     {
       "id": "81",
@@ -39175,9 +39183,7 @@
       "assists": 3,
       "yellowCards": 1,
       "redCards": 0,
-      "dorsals": {
-        "11": 11
-      }
+      "dorsals": {}
     },
     {
       "id": "92",
@@ -39635,9 +39641,7 @@
       "assists": 4,
       "yellowCards": 3,
       "redCards": 0,
-      "dorsals": {
-        "11": 11
-      }
+      "dorsals": {}
     },
     {
       "id": "115",
@@ -40295,9 +40299,7 @@
       "assists": 2,
       "yellowCards": 4,
       "redCards": 0,
-      "dorsals": {
-        "11": 11
-      }
+      "dorsals": {}
     },
     {
       "id": "148",
@@ -40495,9 +40497,7 @@
       "assists": 3,
       "yellowCards": 1,
       "redCards": 0,
-      "dorsals": {
-        "11": 11
-      }
+      "dorsals": {}
     },
     {
       "id": "158",
@@ -41375,9 +41375,7 @@
       "assists": 4,
       "yellowCards": 1,
       "redCards": 0,
-      "dorsals": {
-        "11": 11
-      }
+      "dorsals": {}
     },
     {
       "id": "202",
@@ -41780,24 +41778,15 @@
       }
     },
     {
-      "id": "222",
       "name": "Aaron Molinas",
-      "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/defensa-y-justicia.png",
-      "age": 26,
-      "position": "MED",
-      "currentTeamID": 19,
-      "teamName": "Defensa y Justicia",
-      "birthDate": "2000-08-02",
       "nationality": "Argentina",
+      "position": "DEF",
+      "birthDate": "2000-08-02",
+      "age": 26,
       "preferredFoot": "Derecho",
-      "matchesPlayed": 26,
-      "goals": 4,
-      "assists": 6,
-      "yellowCards": 2,
-      "redCards": 0,
-      "dorsals": {
-        "10": 10
-      }
+      "photo": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/defensa-y-justicia.png",
+      "id": "222",
+      "dorsals": {}
     },
     {
       "id": "223",
@@ -41815,9 +41804,7 @@
       "assists": 4,
       "yellowCards": 1,
       "redCards": 0,
-      "dorsals": {
-        "11": 11
-      }
+      "dorsals": {}
     },
     {
       "id": "224",
@@ -42275,9 +42262,7 @@
       "assists": 2,
       "yellowCards": 1,
       "redCards": 0,
-      "dorsals": {
-        "11": 11
-      }
+      "dorsals": {}
     },
     {
       "id": "247",
@@ -42915,9 +42900,7 @@
       "assists": 3,
       "yellowCards": 2,
       "redCards": 0,
-      "dorsals": {
-        "11": 11
-      }
+      "dorsals": {}
     },
     {
       "id": "279",
@@ -43356,7 +43339,7 @@
       "yellowCards": 1,
       "redCards": 0,
       "dorsals": {
-        "11": 11
+        "31": 10
       }
     },
     {
@@ -43575,9 +43558,7 @@
       "assists": 1,
       "yellowCards": 2,
       "redCards": 0,
-      "dorsals": {
-        "11": 11
-      }
+      "dorsals": {}
     },
     {
       "id": "312",
@@ -43835,9 +43816,7 @@
       "assists": 6,
       "yellowCards": 1,
       "redCards": 0,
-      "dorsals": {
-        "11": 11
-      }
+      "dorsals": {}
     },
     {
       "id": "1001",
@@ -45146,7 +45125,8 @@
       "birthDate": "1997-03-23",
       "preferredFoot": "Derecho",
       "photo": "",
-      "id": "1066"
+      "id": "1066",
+      "dorsals": {}
     },
     {
       "id": "1067",

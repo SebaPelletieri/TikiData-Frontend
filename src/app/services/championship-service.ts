@@ -7,6 +7,7 @@ import { map, Observable } from 'rxjs';
 export class ChampionshipService {
   private http = inject(HttpClient);
   private apiUrl = 'http://localhost:3000/campeonatos';
+
   championships = signal<Championship[]>([]);
   championshipActual = signal<Championship | null>(null);
   error = signal<string | null>(null);
@@ -14,14 +15,14 @@ export class ChampionshipService {
   getAll() {
     this.http.get<Championship[]>(this.apiUrl).subscribe({
       next: (data) => {
-        // Orden alfabético automático por nombre
+        // Orden alfabético por nombre
         const sortedData = data.sort((a, b) =>
           a.name.localeCompare(b.name, 'es', { sensitivity: 'accent' }),
         );
         this.championships.set(sortedData);
         this.error.set(null);
       },
-      error: (error) => {
+      error: () => {
         this.error.set('No se pudieron obtener los campeonatos de la base de datos');
       },
     });
@@ -37,7 +38,7 @@ export class ChampionshipService {
         this.getAll();
         this.error.set(null);
       },
-      error: (error) => {
+      error: () => {
         this.error.set('No se pudo guardar el campeonato en la base de datos');
       },
     });
@@ -49,7 +50,7 @@ export class ChampionshipService {
         this.getAll();
         this.error.set(null);
       },
-      error: (error) => {
+      error: () => {
         this.error.set('No se pudo eliminar el campeonato de la base de datos');
       },
     });

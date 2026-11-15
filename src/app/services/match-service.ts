@@ -59,7 +59,6 @@ export class MatchService {
   }
 
   create(matchData: Partial<Match>): Observable<Match> {
-    
     return this.http.post<Match>(this.apiUrl, matchData).pipe(
       tap((newMatch: Match) => {
         this.matches.update((current) => [newMatch, ...current]);
@@ -69,10 +68,6 @@ export class MatchService {
         throw err;
       }),
     );
-  }
-
-  createMatch(matchData: Partial<Match>): Observable<Match> {
-    return this.create(matchData);
   }
 
   update(id: number, matchData: Partial<Match>): Observable<Match> {
@@ -88,21 +83,13 @@ export class MatchService {
     );
   }
 
-  updateMatch(id: number, matchData: Partial<Match>): Observable<Match> {
-    return this.update(id, matchData);
-  }
-
   delete(id: number | string): Observable<any> {
-  return this.http.delete(`${this.apiUrl}/${id}`).pipe(
-    tap(() => {
-      this.matches.update((current) => current.filter((m) => String(m.id) !== String(id)));
-    }),
-  );
-}
-
-deleteMatch(id: number | string): Observable<any> {
-  return this.delete(id);
-}
+    return this.http.delete(`${this.apiUrl}/${id}`).pipe(
+      tap(() => {
+        this.matches.update((current) => current.filter((m) => String(m.id) !== String(id)));
+      }),
+    );
+  }
 
   getByTeam(teamId: number): Observable<Match[]> {
     return this.http

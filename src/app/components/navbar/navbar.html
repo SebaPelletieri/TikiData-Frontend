@@ -42,7 +42,7 @@
     </li>
   </ul>
 
-  <!-- Utilidades (Buscador Global, Switch y Perfil) -->
+  <!-- Utilidades -->
   <div class="navbar__utils">
     <!-- Buscador Global -->
     <div class="navbar__search">
@@ -56,16 +56,34 @@
         placeholder="Buscar equipos, ligas o jugadores..."
       />
 
-      <!-- Resultados desplegables del buscador -->
       @if (isSearchFocused() && searchText().trim() !== '') {
         <ul class="navbar__search-dropdown" (mousedown)="$event.preventDefault()">
           @for (item of searchResults(); track item.type + '-' + item.id) {
             <li class="search-dropdown-item" (click)="selectSearchResult(item)">
               <div class="search-item-info">
                 <span class="search-item-name">{{ item.name }}</span>
-                @if (item.subtitle) {
-                  <span class="search-item-sub">{{ item.subtitle }}</span>
-                }
+                <div class="search-item-sub">
+                  @if (item.type === 'campeonato') {
+                    <span class="search-sub-type">{{ item.meta }}</span>
+                    @if (item.meta && item.country) {
+                      <span class="search-separator">•</span>
+                    }
+                  }
+                  @if (item.flag) {
+                    <div class="search-flag-wrapper">
+                      <img [src]="item.flag" [alt]="item.country" />
+                    </div>
+                  } @else if (item.country) {
+                    <span>🌎</span>
+                  }
+                  @if (item.country) {
+                    <span>{{ item.country }}</span>
+                  }
+                  @if (item.type === 'jugador' && item.meta) {
+                    <span class="search-separator">•</span>
+                    <span class="search-sub-position">{{ item.meta }}</span>
+                  }
+                </div>
               </div>
               <span class="search-badge" [class]="item.type">{{ item.type }}</span>
             </li>
@@ -76,7 +94,7 @@
       }
     </div>
 
-    <!-- Switch de Tema (Luna / Sol) -->
+    <!-- Switch de Tema -->
     <div class="navbar__theme">
       <label class="toggle-switch">
         <input
@@ -94,58 +112,84 @@
       </label>
     </div>
 
-    <!-- Menú de Perfil de Usuario -->
-    <div class="navbar__user-dropdown">
-      <button
-        type="button"
-        class="navbar__profile navbar__profile--avatar"
-        [class.navbar__profile--active]="isProfileMenuOpen()"
-        (click)="toggleProfileMenu($event)"
-        aria-label="Menú de usuario"
-      >
-        <span class="navbar__avatar-initial">{{ userInitial() }}</span>
-      </button>
-
-      @if (isProfileMenuOpen()) {
-        <div class="navbar__dropdown-menu">
-          <div class="navbar__dropdown-user">
-            <div class="navbar__dropdown-avatar">
-              <span>{{ userInitial() }}</span>
-            </div>
-            <div class="navbar__dropdown-user-info">
-              <span class="navbar__dropdown-name">{{ userName() }}</span>
-              <span class="navbar__dropdown-email">{{
-                authService.currentUser()?.email || 'Usuario'
-              }}</span>
-            </div>
-          </div>
-
-          <hr class="navbar__dropdown-divider" />
-
-          <a routerLink="/profile" class="navbar__dropdown-link" (click)="closeProfileMenu()">
-            <i class="fas fa-user-circle"></i>
-            Mi Perfil
-          </a>
-
-          @if (isAdmin()) {
-            <a routerLink="/admin" class="navbar__dropdown-link" (click)="closeProfileMenu()">
-              <i class="fas fa-cog"></i>
-              Panel de Administración
-            </a>
+    <!-- Menú de Perfil de Usuario o Botones de Autenticación -->
+    @if (authService.isLoggedIn()) {
+      <div class="navbar__user-dropdown">
+        <button
+          type="button"
+          class="navbar__profile navbar__profile--avatar"
+          [class.navbar__profile--active]="isProfileMenuOpen()"
+          (click)="toggleProfileMenu($event)"
+          aria-label="Menú de usuario"
+        >
+          @if (authService.currentUser()?.avatar) {
+            <img [src]="authService.currentUser()?.avatar" alt="Avatar" class="navbar-avatar-img" />
+          } @else {
+            <span class="navbar__avatar-initial">{{ userInitial() }}</span>
           }
+        </button>
 
-          <hr class="navbar__dropdown-divider navbar__dropdown-divider--sub" />
+        @if (isProfileMenuOpen()) {
+          <div class="navbar__dropdown-menu">
+            <div class="navbar__dropdown-user">
+              <div class="navbar__dropdown-avatar">
+                @if (authService.currentUser()?.avatar) {
+                  <img
+                    [src]="authService.currentUser()?.avatar"
+                    alt="Avatar"
+                    class="navbar__dropdown-avatar-img"
+                  />
+                } @else {
+                  <span>{{ userInitial() }}</span>
+                }
+              </div>
+              <div class="navbar__dropdown-user-info">
+                <span class="navbar__dropdown-name">{{ userName() }}</span>
+                <span class="navbar__dropdown-email">{{
+                  authService.currentUser()?.email || 'Usuario'
+                }}</span>
+              </div>
+            </div>
 
-          <button
-            type="button"
-            class="navbar__dropdown-link navbar__dropdown-link--logout"
-            (click)="onLogout()"
-          >
-            <i class="fas fa-sign-out-alt"></i>
-            Cerrar Sesión
-          </button>
-        </div>
-      }
-    </div>
+            <hr class="navbar__dropdown-divider" />
+
+            <a routerLink="/profile" class="navbar__dropdown-link" (click)="closeProfileMenu()">
+              <i class="fas fa-user-circle"></i>
+              Mi Perfil
+            </a>
+
+            @if (isAdmin()) {
+              <a routerLink="/admin" class="navbar__dropdown-link" (click)="closeProfileMenu()">
+                <i class="fas fa-cog"></i>
+                Panel de Administración
+              </a>
+            }
+
+            <hr class="navbar__dropdown-divider navbar__dropdown-divider--sub" />
+
+            <button
+              type="button"
+              class="navbar__dropdown-link navbar__dropdown-link--logout"
+              (click)="onLogout()"
+            >
+              <i class="fas fa-sign-out-alt"></i>
+              Cerrar Sesión
+            </button>
+          </div>
+        }
+      </div>
+    } @else {
+      <!-- Contenedor para Iniciar Sesión y Registrarse con Estilos de Hover -->
+      <div class="navbar__auth-buttons">
+        <a routerLink="/login" class="navbar__auth-btn navbar__login-btn">
+          <i class="fas fa-sign-in-alt"></i>
+          <span>Iniciar Sesión</span>
+        </a>
+        <a routerLink="/register" class="navbar__auth-btn navbar__register-btn">
+          <i class="fas fa-user-plus"></i>
+          <span>Registrarse</span>
+        </a>
+      </div>
+    }
   </div>
 </nav>

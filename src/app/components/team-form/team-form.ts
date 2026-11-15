@@ -6,11 +6,29 @@ import {
   ChangeDetectionStrategy,
   Output,
   EventEmitter,
+  HostListener,
+  OnInit,
 } from '@angular/core';
-import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { TeamService } from '../../services/team-service';
+import { ChampionshipService } from '../../services/championship-service';
+import { PlayerService } from '../../services/player-service';
 import { Team } from '../../models/Team';
+import { Player } from '../../models/Player';
+
+export interface PlayerItem {
+  id: number;
+  name: string;
+  position: string;
+  number?: number;
+}
 
 interface CalendarDay {
   day: number;
@@ -26,8 +44,10 @@ interface CalendarDay {
   templateUrl: './team-form.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TeamForm {
+export class TeamForm implements OnInit {
   teamService = inject(TeamService);
+  championshipService = inject(ChampionshipService);
+  playerService = inject(PlayerService);
   fb = inject(FormBuilder);
 
   @Output() closePanel = new EventEmitter<void>();
@@ -41,6 +61,176 @@ export class TeamForm {
     stadiumID: ['', [Validators.required]],
   });
 
+  // Controles para la gestión de jugadores
+  playersList: PlayerItem[] = [];
+  allSystemPlayers: Player[] = [];
+  filteredPlayers: PlayerItem[] = [];
+  playerSearchCtrl = new FormControl('');
+  playerNumberCtrl = new FormControl<number | null>(null);
+  selectedPlayerCandidate: PlayerItem | null = null;
+  errorMessage = signal<string | null>(null);
+
+  ngOnInit(): void {
+    if (this.championshipService.championships().length === 0) {
+      this.championshipService.getAll();
+    }
+    this.playerService.getAll();
+
+    // Cargar jugadores del sistema para el buscador
+    this.playerService.getAllPlayers().subscribe({
+      next: (players) => {
+        this.allSystemPlayers = players;
+      },
+      error: (err) => console.error('Error al cargar jugadores:', err),
+    });
+
+    this.setupSearchFilters();
+
+    // Sanitizar dorsal en tiempo real (1 al 99)
+    this.playerNumberCtrl.valueChanges.subscribe((val) => {
+      if (val !== null && val !== undefined && val !== ('' as any)) {
+        const num = Number(val);
+        if (num < 1) {
+          this.playerNumberCtrl.setValue(1, { emitEvent: false });
+        } else if (num > 99) {
+          this.playerNumberCtrl.setValue(99, { emitEvent: false });
+        }
+      }
+    });
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent): void {
+    const target = event.target as HTMLElement;
+    if (
+      !target.closest('.custom-dropdown') &&
+      !target.closest('.calendar-field-container') &&
+      !target.closest('.search-tag-container') &&
+      !target.closest('.search-player-group')
+    ) {
+      this.closeAllDropdowns();
+    }
+  }
+
+  closeAllDropdowns(): void {
+    if (this.isCountryOpen) {
+      this.formulario.controls['country'].markAsTouched();
+    }
+    if (this.isCalendarOpen) {
+      this.formulario.controls['yearOfFoundation'].markAsTouched();
+    }
+
+    this.isCountryOpen = false;
+    this.isCalendarOpen = false;
+    this.isMonthOpen = false;
+    this.isYearOpen = false;
+    this.isStadiumFocused.set(false);
+    this.isChampionshipsFocused.set(false);
+    this.filteredPlayers = [];
+  }
+
+  private toPlayerItem(p: Player): PlayerItem {
+    return {
+      id: p.id as number,
+      name: p.name,
+      position: p.position,
+      number: undefined,
+    };
+  }
+
+  private setupSearchFilters() {
+    this.playerSearchCtrl.valueChanges.subscribe((query) => {
+      const q = (query || '').toLowerCase().trim();
+      if (this.selectedPlayerCandidate && this.selectedPlayerCandidate.name.toLowerCase() !== q) {
+        this.selectedPlayerCandidate = null;
+      }
+
+      // Filtramos únicamente jugadores libres (sin equipo/dorsales asignadas) y que no estén en la lista actual
+      this.filteredPlayers = !q
+        ? []
+        : this.allSystemPlayers
+            .filter((p) => {
+              if (p.id === undefined) return false;
+
+              const matchesQuery = p.name.toLowerCase().includes(q);
+              const notInCurrentPlantel = !this.playersList.some(
+                (x) => String(x.id) === String(p.id),
+              );
+              const hasNoTeamAssigned = !p.dorsals || Object.keys(p.dorsals).length === 0;
+
+              return matchesQuery && notInCurrentPlantel && hasNoTeamAssigned;
+            })
+            .map((p) => this.toPlayerItem(p));
+    });
+  }
+
+  isPlayerAdderValid(): boolean {
+    const query = (this.playerSearchCtrl.value || '').trim().toLowerCase();
+
+    // Validar si hay un jugador seleccionado de la sugerencia o escrito de forma exacta
+    const found =
+      this.selectedPlayerCandidate ||
+      this.allSystemPlayers.find(
+        (p) =>
+          p.name.toLowerCase() === query &&
+          !this.playersList.some((x) => String(x.id) === String(p.id)) &&
+          (!p.dorsals || Object.keys(p.dorsals).length === 0),
+      );
+
+    const dorsalVal = this.playerNumberCtrl.value;
+    const hasValidDorsal =
+      dorsalVal !== null &&
+      dorsalVal !== undefined &&
+      dorsalVal !== ('' as any) &&
+      !isNaN(Number(dorsalVal)) &&
+      Number(dorsalVal) >= 1 &&
+      Number(dorsalVal) <= 99;
+
+    return !!found && hasValidDorsal;
+  }
+
+  selectPlayerSuggestion(fp: PlayerItem) {
+    this.selectedPlayerCandidate = fp;
+    this.playerSearchCtrl.setValue(fp.name, { emitEvent: false });
+    this.filteredPlayers = [];
+  }
+
+  addPlayer() {
+    let toAdd: PlayerItem | undefined = this.selectedPlayerCandidate || undefined;
+
+    if (!toAdd) {
+      const query = (this.playerSearchCtrl.value || '').trim().toLowerCase();
+      const found = this.allSystemPlayers.find((p) => p.name.toLowerCase() === query);
+      if (!found) return;
+      toAdd = this.toPlayerItem(found);
+    }
+
+    if (!this.isPlayerAdderValid()) return;
+
+    toAdd = {
+      ...toAdd,
+      number: Number(this.playerNumberCtrl.value),
+    };
+
+    if (this.playersList.some((p) => String(p.id) === String(toAdd!.id))) {
+      this.errorMessage.set('Este jugador ya forma parte del plantel.');
+      return;
+    }
+
+    this.errorMessage.set(null);
+    this.playersList.push(toAdd);
+
+    // Limpiar campos de jugadores
+    this.selectedPlayerCandidate = null;
+    this.playerSearchCtrl.setValue('', { emitEvent: false });
+    this.playerNumberCtrl.setValue(null);
+    this.filteredPlayers = [];
+  }
+
+  removePlayer(index: number) {
+    this.playersList.splice(index, 1);
+  }
+
   saveTeam() {
     let teamActual: Team = {
       name: this.formulario.controls['name'].value,
@@ -49,34 +239,238 @@ export class TeamForm {
       yearOfFoundation: new Date(this.formulario.controls['yearOfFoundation'].value),
       championshipsActive: this.formulario.controls['championshipsActive'].value,
       stadiumID: Number(this.formulario.controls['stadiumID'].value),
-      playerIDs: [],
+      playerIDs: this.playersList.map((p) => p.id),
     };
 
+    // Actualizamos los dorsales en los jugadores que se están uniendo al nuevo equipo
+    // (Opcional según cómo maneje tu API los dorsales al crear)
     this.teamService.saveTeam(teamActual);
-    this.formulario.reset();
-    this.championshipSearchText.set('');
-    this.stadiumSearchText.set('');
-
+    this.resetFormState();
     this.closePanel.emit();
   }
 
   cancel() {
-    this.formulario.reset();
-    this.championshipSearchText.set('');
-    this.stadiumSearchText.set('');
-
+    this.resetFormState();
     this.closePanel.emit();
   }
 
+  private resetFormState(): void {
+    this.formulario.reset();
+    this.selectedChampionshipIds.set([]);
+    this.championshipSearchText.set('');
+    this.stadiumSearchText.set('');
+    this.playersList = [];
+    this.playerSearchCtrl.setValue('');
+    this.playerNumberCtrl.setValue(null);
+  }
+
   // --- Países ---
-  countries = ['Argentina', 'Brasil', 'Uruguay', 'Chile'];
+  countries = [
+    'Afganistán',
+    'Albania',
+    'Alemania',
+    'Andorra',
+    'Angola',
+    'Antigua y Barbuda',
+    'Arabia Saudita',
+    'Argelia',
+    'Argentina',
+    'Armenia',
+    'Australia',
+    'Austria',
+    'Azerbaiyán',
+    'Bahamas',
+    'Bangladés',
+    'Barbados',
+    'Baréin',
+    'Bélgica',
+    'Belice',
+    'Benín',
+    'Bielorrusia',
+    'Birmania',
+    'Bolivia',
+    'Bosnia y Herzegovina',
+    'Botsuana',
+    'Brasil',
+    'Brunéi',
+    'Bulgaria',
+    'Burkina Faso',
+    'Burundi',
+    'Bután',
+    'Cabo Verde',
+    'Camboya',
+    'Camerún',
+    'Canadá',
+    'Catar',
+    'Chad',
+    'Chile',
+    'China',
+    'Chipre',
+    'Colombia',
+    'Comoras',
+    'Congo',
+    'Corea del Norte',
+    'Corea del Sur',
+    'Costa de Marfil',
+    'Costa Rica',
+    'Croacia',
+    'Cuba',
+    'Dinamarca',
+    'Dominica',
+    'Ecuador',
+    'Egipto',
+    'El Salvador',
+    'Emiratos Árabes Unidos',
+    'Eritrea',
+    'Eslovaquia',
+    'Eslovenia',
+    'España',
+    'Estados Unidos',
+    'Estonia',
+    'Esuatini',
+    'Etiopía',
+    'Filipinas',
+    'Finlandia',
+    'Fiyi',
+    'Francia',
+    'Gabón',
+    'Gambia',
+    'Georgia',
+    'Ghana',
+    'Granada',
+    'Grecia',
+    'Guatemala',
+    'Guinea',
+    'Guinea Ecuatorial',
+    'Guinea-Bisáu',
+    'Guyana',
+    'Haití',
+    'Honduras',
+    'Hungría',
+    'India',
+    'Indonesia',
+    'Irak',
+    'Irán',
+    'Irlanda',
+    'Islandia',
+    'Islas Marshall',
+    'Islas Salomón',
+    'Israel',
+    'Italia',
+    'Jamaica',
+    'Japón',
+    'Jordania',
+    'Kazajistán',
+    'Kenia',
+    'Kirguistán',
+    'Kiribati',
+    'Kuwait',
+    'Laos',
+    'Lesoto',
+    'Letonia',
+    'Líbano',
+    'Liberia',
+    'Libia',
+    'Liechtenstein',
+    'Lituania',
+    'Luxemburgo',
+    'Madagascar',
+    'Malasia',
+    'Malaui',
+    'Maldivas',
+    'Malí',
+    'Malta',
+    'Marruecos',
+    'Mauricio',
+    'Mauritania',
+    'México',
+    'Micronesia',
+    'Moldavia',
+    'Mónaco',
+    'Mongolia',
+    'Montenegro',
+    'Mozambique',
+    'Namibia',
+    'Nauru',
+    'Nepal',
+    'Nicaragua',
+    'Níger',
+    'Nigeria',
+    'Noruega',
+    'Nueva Zelanda',
+    'Omán',
+    'Países Bajos',
+    'Pakistán',
+    'Palaos',
+    'Panamá',
+    'Papúa Nueva Guinea',
+    'Paraguay',
+    'Perú',
+    'Polonia',
+    'Portugal',
+    'Reino Unido',
+    'República Centroafricana',
+    'República Checa',
+    'República Democrática del Congo',
+    'República Dominicana',
+    'Ruanda',
+    'Rumanía',
+    'Rusia',
+    'Samoa',
+    'San Cristóbal y Nieves',
+    'San Marino',
+    'San Vicente y las Granadinas',
+    'Santa Lucía',
+    'Santo Tomé y Príncipe',
+    'Senegal',
+    'Serbia',
+    'Seychelles',
+    'Sierra Leona',
+    'Singapur',
+    'Siria',
+    'Somalia',
+    'Sri Lanka',
+    'Sudáfrica',
+    'Sudán',
+    'Sudán del Sur',
+    'Suecia',
+    'Suiza',
+    'Surinam',
+    'Tailandia',
+    'Tanzania',
+    'Tayikistán',
+    'Timor Oriental',
+    'Togo',
+    'Tonga',
+    'Trinidad y Tobago',
+    'Túnez',
+    'Turkmenistán',
+    'Turquía',
+    'Tuvalu',
+    'Ucrania',
+    'Uganda',
+    'Uruguay',
+    'Uzbekistán',
+    'Vanuatu',
+    'Vaticano',
+    'Venezuela',
+    'Vietnam',
+    'Yemen',
+    'Yibuti',
+    'Zambia',
+    'Zimbabue',
+  ].sort();
+
   isCountryOpen = false;
 
-  toggleCountryDropdown(): void {
+  toggleCountryDropdown(event?: MouseEvent): void {
+    if (event) event.stopPropagation();
     this.isCountryOpen = !this.isCountryOpen;
     this.isCalendarOpen = false;
     this.isMonthOpen = false;
     this.isYearOpen = false;
+    this.isStadiumFocused.set(false);
+    this.isChampionshipsFocused.set(false);
 
     if (!this.isCountryOpen) {
       this.formulario.controls['country'].markAsTouched();
@@ -89,7 +483,6 @@ export class TeamForm {
     this.isCountryOpen = false;
   }
 
-  // --- Escudo (URL) ---
   removeShield(event: Event) {
     event.stopPropagation();
     this.formulario.patchValue({ shield: '' });
@@ -117,7 +510,8 @@ export class TeamForm {
     return this.stadiums.find((s) => s.id.toString() === selectedId.toString()) || null;
   }
 
-  selectStadiumFromSearch(stadiumId: number) {
+  selectStadiumFromSearch(stadiumId: number, event?: Event) {
+    if (event) event.stopPropagation();
     this.formulario.controls['stadiumID'].setValue(stadiumId.toString());
     this.formulario.controls['stadiumID'].markAsTouched();
     this.stadiumSearchText.set('');
@@ -131,42 +525,53 @@ export class TeamForm {
   }
 
   // --- Campeonatos ---
-  championships = [
-    { id: 1, name: 'Liga Profesional' },
-    { id: 2, name: 'Copa Libertadores' },
-    { id: 3, name: 'Copa Argentina' },
-  ];
-
+  championships = this.championshipService.championships;
   championshipSearchText = signal<string>('');
   isChampionshipsFocused = signal<boolean>(false);
+  selectedChampionshipIds = signal<number[]>([]);
+
+  selectedChampionshipsCount = computed(() => this.selectedChampionshipIds().length);
+
+  selectedChampionshipsList = computed(() => {
+    const ids = this.selectedChampionshipIds();
+    return this.championships().filter((c) => c.id !== undefined && ids.includes(Number(c.id)));
+  });
 
   filteredChampionships = computed(() => {
     const search = this.championshipSearchText().toLowerCase().trim();
-    const selectedIds = this.formulario.controls['championshipsActive'].value || [];
+    const selectedIds = this.selectedChampionshipIds();
     if (!search) return [];
-    return this.championships.filter(
-      (c) => c.name.toLowerCase().includes(search) && !selectedIds.includes(c.id),
+    return this.championships().filter(
+      (c) =>
+        c.id !== undefined &&
+        c.name.toLowerCase().includes(search) &&
+        !selectedIds.includes(Number(c.id)),
     );
   });
 
-  get selectedChampionshipsList() {
-    const selectedIds = this.formulario.controls['championshipsActive'].value || [];
-    return this.championships.filter((c) => selectedIds.includes(c.id));
-  }
+  addChampionship(championshipId: number | string | undefined, event?: Event) {
+    if (event) event.stopPropagation();
+    if (championshipId === undefined) return;
 
-  addChampionship(championshipId: number) {
-    const current: number[] = [...(this.formulario.controls['championshipsActive'].value || [])];
-    if (!current.includes(championshipId)) {
-      current.push(championshipId);
-      this.formulario.controls['championshipsActive'].setValue(current);
+    const id = Number(championshipId);
+    const current = this.selectedChampionshipIds();
+
+    if (!current.includes(id)) {
+      const updated = [...current, id];
+      this.selectedChampionshipIds.set(updated);
+      this.formulario.controls['championshipsActive'].setValue(updated);
       this.formulario.controls['championshipsActive'].markAsTouched();
     }
     this.championshipSearchText.set('');
+    this.isChampionshipsFocused.set(false);
   }
 
-  removeChampionship(championshipId: number) {
-    const current: number[] = [...(this.formulario.controls['championshipsActive'].value || [])];
-    const updated = current.filter((id) => id !== championshipId);
+  removeChampionship(championshipId: number | string | undefined) {
+    if (championshipId === undefined) return;
+
+    const id = Number(championshipId);
+    const updated = this.selectedChampionshipIds().filter((x) => x !== id);
+    this.selectedChampionshipIds.set(updated);
     this.formulario.controls['championshipsActive'].setValue(updated);
     this.formulario.controls['championshipsActive'].markAsTouched();
   }
@@ -205,11 +610,12 @@ export class TeamForm {
   }
 
   toggleCalendar(event?: MouseEvent): void {
-    if (event) {
-      event.stopPropagation();
-    }
+    if (event) event.stopPropagation();
     this.isCalendarOpen = !this.isCalendarOpen;
     this.isCountryOpen = false;
+    this.isStadiumFocused.set(false);
+    this.isChampionshipsFocused.set(false);
+
     if (!this.isCalendarOpen) {
       this.isMonthOpen = false;
       this.isYearOpen = false;
@@ -217,22 +623,26 @@ export class TeamForm {
     }
   }
 
-  toggleMonthDropdown(): void {
+  toggleMonthDropdown(event?: MouseEvent): void {
+    if (event) event.stopPropagation();
     this.isMonthOpen = !this.isMonthOpen;
     this.isYearOpen = false;
   }
 
-  selectMonth(index: number): void {
+  selectMonth(index: number, event?: MouseEvent): void {
+    if (event) event.stopPropagation();
     this.currentMonth = index;
     this.isMonthOpen = false;
   }
 
-  toggleYearDropdown(): void {
+  toggleYearDropdown(event?: MouseEvent): void {
+    if (event) event.stopPropagation();
     this.isYearOpen = !this.isYearOpen;
     this.isMonthOpen = false;
   }
 
-  selectYear(year: number): void {
+  selectYear(year: number, event?: MouseEvent): void {
+    if (event) event.stopPropagation();
     this.currentYear = year;
     this.isYearOpen = false;
   }
@@ -269,7 +679,8 @@ export class TeamForm {
     return days;
   }
 
-  prevMonth(): void {
+  prevMonth(event?: MouseEvent): void {
+    if (event) event.stopPropagation();
     if (this.currentMonth === 0) {
       this.currentMonth = 11;
       this.currentYear--;
@@ -278,7 +689,8 @@ export class TeamForm {
     }
   }
 
-  nextMonth(): void {
+  nextMonth(event?: MouseEvent): void {
+    if (event) event.stopPropagation();
     if (this.currentMonth === 11) {
       this.currentMonth = 0;
       this.currentYear++;
@@ -287,7 +699,8 @@ export class TeamForm {
     }
   }
 
-  selectDate(date: Date): void {
+  selectDate(date: Date, event?: MouseEvent): void {
+    if (event) event.stopPropagation();
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');

@@ -1,6 +1,6 @@
 import { Component, OnInit, inject, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterModule, ActivatedRoute } from '@angular/router'; // 👈 Añadido ActivatedRoute
+import { Router, RouterModule, ActivatedRoute } from '@angular/router';
 import { User } from '../../models/User';
 import { AuthService } from '../../services/auth-service';
 import { Team } from '../../models/Team';
@@ -24,12 +24,11 @@ export class ProfileDetail implements OnInit {
   private championshipService = inject(ChampionshipService);
   private playerService = inject(PlayerService);
   private router = inject(Router);
-  private route = inject(ActivatedRoute); // 👈 Inyectamos la ruta activa
+  private route = inject(ActivatedRoute);
 
   successMessage: string | null = null;
   errorMessage: string | null = null;
 
-  // 👈 Señal para almacenar el usuario que se está visualizando (si es ajeno)
   profileUser = signal<User | null>(null);
 
   favoriteTeamsList = signal<Team[]>([]);
@@ -45,30 +44,26 @@ export class ProfileDetail implements OnInit {
   showAllChampionships = signal<boolean>(false);
 
   ngOnInit() {
-    // 👈 Verificamos si la ruta trae un ID (ej: /profile/1)
     this.route.paramMap.subscribe((params) => {
       const id = params.get('id');
       if (id) {
         this.authService.getUserById(id).subscribe({
           next: (user) => {
             this.profileUser.set(user);
-            this.loadFavoritesForUser(user); // Cargamos sus favoritos
+            this.loadFavoritesForUser(user);
           },
           error: (err) => console.error('Error al cargar el usuario:', err),
         });
       } else {
-        // Si no hay ID, es el perfil propio del usuario logueado
         this.profileUser.set(this.authService.currentUser());
         this.loadFavorites();
       }
     });
   }
 
-  // 👈 Método auxiliar para cargar favoritos de cualquier usuario
   loadFavoritesForUser(user: User) {
     if (!user) return;
 
-    // 1. Equipos
     if (user.favoriteTeams && user.favoriteTeams.length > 0) {
       const loadedTeams: Team[] = [];
       user.favoriteTeams.forEach((id: any) => {
@@ -86,7 +81,6 @@ export class ProfileDetail implements OnInit {
       });
     }
 
-    // 2. Campeonatos
     if (user.favoriteChampionships && user.favoriteChampionships.length > 0) {
       const loadedChamps: Championship[] = [];
       user.favoriteChampionships.forEach((id: any) => {
@@ -104,7 +98,6 @@ export class ProfileDetail implements OnInit {
       });
     }
 
-    // 3. Jugadores
     if (user.favoritePlayers && user.favoritePlayers.length > 0) {
       const loadedPlayers: Player[] = [];
       user.favoritePlayers.forEach((id: any) => {
@@ -124,11 +117,12 @@ export class ProfileDetail implements OnInit {
   }
 
   loadFavorites() {
-    this.loadFavoritesForUser(this.currentUser!);
+    if (this.currentUser) {
+      this.loadFavoritesForUser(this.currentUser);
+    }
   }
 
   get currentUser(): User | null {
-    // 👈 Si estamos viendo un perfil por ID, devolvemos ese, sino el logueado
     const targetUser = this.profileUser() || (this.authService.currentUser as any)();
     if (!targetUser || typeof targetUser !== 'object') return null;
 
@@ -148,7 +142,6 @@ export class ProfileDetail implements OnInit {
     const user = this.currentUser;
     if (!user || !user.id) return;
 
-    // Si es un perfil ajeno que está viendo el admin, idealmente no debería modificar sus favoritos o sí, pero respetamos la lógica actual:
     let updatedFields: any = {};
     const cleanId = Number(idToRemove);
 

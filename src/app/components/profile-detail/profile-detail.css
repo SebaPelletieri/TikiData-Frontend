@@ -76,7 +76,7 @@
       rgba(4, 18, 36, 0.3) 70%
     ),
     url('/estadio.png') 30% 60% / cover no-repeat;
-  border: 1px solid #45220c; /* Borde naranja muy discreto */
+  border: 1px solid #45220c;
   border-radius: 20px;
   padding: 2.5rem;
   margin-bottom: 2rem;
@@ -108,11 +108,7 @@
   justify-content: center;
   color: #ff6b00;
   flex-shrink: 0;
-}
-
-.avatar-circle svg {
-  width: 50px;
-  height: 50px;
+  font-size: 2.5rem;
 }
 
 .user-main-info h3 {
@@ -122,27 +118,10 @@
   color: #ffffff;
 }
 
-.user-meta-list {
-  display: flex;
-  flex-direction: column;
-  list-style: none;
-  padding: 0;
+.admin-banner-subtitle {
+  font-size: 0.95rem;
+  color: #7d96b3;
   margin: 0;
-  font-size: 0.88rem;
-  color: #c9d8eb;
-  gap: 6px;
-}
-
-.user-meta-list li {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.user-meta-list svg {
-  width: 16px;
-  height: 16px;
-  color: #f97316;
 }
 
 .stats-cards-grid {
@@ -155,7 +134,7 @@
 
 .stat-card {
   background: linear-gradient(180deg, #06182e 0%, #041224 100%);
-  border: 1px solid #45220c; /* Borde naranja muy discreto */
+  border: 1px solid #45220c;
   border-radius: 16px;
   padding: 1.5rem;
   display: flex;
@@ -206,7 +185,7 @@
 
 .admin-left-pane {
   background: linear-gradient(180deg, #06182e 0%, #041224 100%);
-  border: 1px solid #45220c; /* Borde naranja muy discreto */
+  border: 1px solid #45220c;
   border-radius: 18px;
   padding: 1.5rem;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
@@ -228,7 +207,7 @@
   width: 48px;
   height: 48px;
   background: #030d1a;
-  border: 1px solid #45220c; /* Borde naranja muy discreto */
+  border: 1px solid #45220c;
   border-radius: 12px;
   display: flex;
   align-items: center;
@@ -250,7 +229,7 @@
   margin: 0;
 }
 
-/* ================= GRILLA DE TARJETAS DE EQUIPOS FAVORITOS ================= */
+/* ================= GRILLA DE TARJETAS DE FAVORITOS ================= */
 .favorite-cards-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -260,7 +239,7 @@
 
 .favorite-team-card {
   background: linear-gradient(180deg, #030d1a 0%, #020813 100%);
-  border: 1px solid #45220c; /* Borde naranja muy discreto */
+  border: 1px solid #45220c;
   border-radius: 16px;
   padding: 1.5rem 1rem;
   display: flex;
@@ -273,25 +252,30 @@
 }
 
 .favorite-team-card:hover {
-  border-color: #ff6b00; /* Naranja encendido solo al pasar el mouse */
+  border-color: #ff6b00;
   transform: translateY(-3px);
   box-shadow: 0 12px 25px rgba(255, 107, 0, 0.25);
 }
 
 .favorite-team-shield {
-  width: 80px;
-  height: 80px;
+  width: 76px;
+  height: 76px;
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 1rem;
+  background-color: #030d1a;
+  border: 1px solid #143560;
+  border-radius: 50%;
+  padding: 8px;
+  overflow: hidden;
 }
 
 .favorite-team-shield img {
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
-  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4));
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.4));
 }
 
 .favorite-team-name {
@@ -299,10 +283,14 @@
   font-weight: 700;
   color: #ffffff;
   margin: 0 0 4px 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
 }
 
 .favorite-team-country {
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   color: #7d96b3;
   margin-bottom: 1.2rem;
 }
@@ -324,18 +312,6 @@
   transition: all 0.2s ease;
 }
 
-.btn-icon-action.view {
-  background-color: rgba(249, 115, 22, 0.15);
-  border: 1px solid #ea580c;
-  color: #fb923c;
-}
-
-.btn-icon-action.view:hover {
-  background-color: #ea580c;
-  color: #ffffff;
-  box-shadow: 0 0 10px rgba(234, 88, 12, 0.5);
-}
-
 .btn-icon-action.delete {
   background-color: rgba(239, 68, 68, 0.15);
   border: 1px solid #ef4444;
@@ -348,88 +324,12 @@
   box-shadow: 0 0 10px rgba(239, 68, 68, 0.5);
 }
 
-/* ================= TABLAS GENERALES (Campeonatos y Jugadores) ================= */
-.admin-table-wrapper {
-  overflow-x: auto;
-}
-
-.admin-table {
-  width: 100%;
-  border-collapse: collapse;
-  text-align: left;
-  font-size: 0.9rem;
-}
-
-.admin-table th {
-  color: #7d96b3;
-  font-weight: 600;
-  padding: 12px;
-  border-bottom: 1px solid #45220c; /* Borde naranja muy discreto */
-  text-transform: uppercase;
-  font-size: 0.75rem;
-  letter-spacing: 0.5px;
-}
-
-.admin-table td {
-  padding: 12px;
-  border-bottom: 1px solid rgba(69, 34, 12, 0.3);
-  color: #c9d8eb;
-}
-
-.table-actions {
-  display: flex;
-  gap: 10px;
-}
-
-.btn-action-view-custom {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  background-color: transparent;
-  color: #fb923c;
-  border: 1px solid #ea580c;
-  border-radius: 10px;
-  padding: 6px 14px;
-  font-weight: 600;
-  font-size: 0.84rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  text-decoration: none;
-}
-
-.btn-action-view-custom:hover {
-  background-color: rgba(234, 88, 12, 0.15);
-  border-color: #fb923c;
-  color: #fdba74;
-}
-
-.btn-action-delete-custom {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  background-color: transparent;
-  color: #f87171;
-  border: 1px solid #ef4444;
-  border-radius: 10px;
-  padding: 6px 14px;
-  font-weight: 600;
-  font-size: 0.84rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.btn-action-delete-custom:hover {
-  background-color: rgba(239, 68, 68, 0.15);
-  border-color: #f87171;
-}
-
 .empty-msg {
   font-size: 0.88rem;
   color: #7d96b3;
   margin: 1rem 0 0 0;
   font-style: italic;
+  grid-column: 1 / -1;
 }
 
 @media (max-width: 900px) {

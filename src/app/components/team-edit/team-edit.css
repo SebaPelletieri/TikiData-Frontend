@@ -2,85 +2,103 @@
   box-sizing: border-box;
 }
 
-/* Contenedor principal en formato de tarjeta flotante */
+/* =========================================
+   Contenedor Principal de la Tarjeta (Ancho y centrado)
+   ========================================= */
 .team-form-container {
-  max-width: 750px !important;
-  width: 100% !important;
-  margin: 2.5rem auto !important;
-  padding: 2.5rem;
-  background: linear-gradient(180deg, #071528 0%, #040e1d 100%);
-  border: 1px solid #1a2f4c;
-  border-radius: 20px;
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
-  color: #fff;
   font-family:
     'Plus Jakarta Sans',
     -apple-system,
     BlinkMacSystemFont,
     sans-serif;
+  max-width: 820px;
+  width: 100%;
+  margin: 2.5rem auto;
+  background: linear-gradient(180deg, #071528 0%, #040e1d 100%);
+  border: 1px solid #4a290c;
+  border-radius: 20px;
+  padding: 2.5rem;
+  color: #fff;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
   box-sizing: border-box;
 }
 
-/* Cabecera */
+.section-divider {
+  width: 100%;
+  height: 1px;
+  background-color: #2b1d14;
+  margin: 1.5rem 0 1rem;
+}
+
+/* =========================================
+   Cabecera del Formulario
+   ========================================= */
 .form-header {
   display: flex;
   align-items: center;
   gap: 16px;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
   padding-bottom: 1.2rem;
-  border-bottom: 1px solid #132742;
+  border-bottom: 1px solid #2b1d14;
 }
 
 .form-icon-box {
-  width: 48px;
-  height: 48px;
+  width: 44px;
+  height: 44px;
   background-color: #ff6b00;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #041326;
+  color: #ffffff;
   flex-shrink: 0;
-  box-shadow: 0 4px 12px rgba(255, 107, 0, 0.3);
+  box-shadow: 0 4px 14px rgba(255, 107, 0, 0.35);
 }
 
 .form-header h3 {
-  font-size: 1.5rem;
-  font-weight: 700;
+  font-family: inherit;
+  font-size: 1.45rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
   margin: 0;
   color: #ffffff;
 }
 
 .form-header p {
-  margin: 4px 0 0;
-  font-size: 0.9rem;
+  font-family: inherit;
+  margin: 3px 0 0;
+  font-size: 0.88rem;
+  font-weight: 500;
   color: #7d96b3;
 }
 
-.team-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1.2rem;
-}
-
+/* =========================================
+   Estructura de Filas y Columnas
+   ========================================= */
 .form-group {
   display: flex;
   flex-direction: column;
-  margin-bottom: 1rem;
-  position: relative;
+  gap: 0.45rem;
+  width: 100%;
+  margin-bottom: 1.25rem;
 }
 
 .form-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 1.2rem;
+  gap: 1rem;
 }
 
 .form-group label {
-  font-size: 0.85rem;
+  font-family: inherit;
+  font-size: 0.88rem;
   font-weight: 600;
-  margin-bottom: 0.5rem;
   color: #ffffff;
+  letter-spacing: -0.01em;
+  pointer-events: none;
 }
 
 .required {
@@ -88,51 +106,87 @@
   margin-left: 2px;
 }
 
-/* Inputs y Selectores */
-.form-group input,
-.dropdown-trigger,
-.direct-search-input-box input {
+/* =========================================
+   Inputs Genéricos y Específicos
+   ========================================= */
+.form-group input[type='text'],
+.form-group input[type='number'],
+.form-group input[type='url'] {
+  font-family: inherit;
   width: 100%;
   height: 46px;
+  background: linear-gradient(180deg, #071a33 0%, #051428 100%);
+  border: 1px solid #4a290c;
+  border-radius: 10px;
   padding: 0 16px;
-  background: #040c18;
   color: #ffffff;
-  border: 1px solid #1a3154;
-  border-radius: 12px;
-  font-size: 0.95rem;
-  font-family: inherit;
+  font-size: 0.92rem;
+  font-weight: 500;
   outline: none;
   transition: all 0.25s ease;
   box-sizing: border-box;
 }
 
-.form-group input:hover,
-.dropdown-trigger:hover,
-.direct-search-input-box input:hover {
-  border-color: #ff6b00;
-  background: #051022;
+.form-group input::placeholder {
+  color: #637d9d;
+  font-weight: 400;
+  font-family: inherit;
 }
 
-.form-group input:focus,
-.dropdown-trigger:focus,
-.direct-search-input-box input:focus,
-.custom-dropdown.open .dropdown-trigger {
+.form-group input:hover {
   border-color: #ff6b00;
-  background: #051022;
-  box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.2);
+  background: linear-gradient(180deg, #1c1511 0%, #0e121a 100%);
+  box-shadow: 0 0 12px rgba(255, 107, 0, 0.2);
+  transform: translateY(-1px);
 }
 
-/* Dropdowns personalizados */
+.form-group input:focus {
+  border-color: #ff6b00;
+  background: linear-gradient(180deg, #1c1511 0%, #0e121a 100%);
+  box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.25);
+  transform: translateY(-1px);
+}
+
+/* =========================================
+   Menús Desplegables (Dropdowns)
+   ========================================= */
 .custom-dropdown {
   position: relative;
   width: 100%;
 }
 
 .dropdown-trigger {
+  width: 100%;
+  height: 46px;
+  background: linear-gradient(180deg, #071a33 0%, #051428 100%);
+  color: #ffffff;
+  border: 1px solid #4a290c;
+  border-radius: 10px;
+  padding: 0 16px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  font-size: 0.92rem;
+  font-weight: 500;
+  font-family: inherit;
   cursor: pointer;
+  outline: none;
+  transition: all 0.25s ease;
+}
+
+.dropdown-trigger:hover {
+  border-color: #ff6b00;
+  background: linear-gradient(180deg, #1c1511 0%, #0e121a 100%);
+  box-shadow: 0 0 12px rgba(255, 107, 0, 0.2);
+  transform: translateY(-1px);
+}
+
+.custom-dropdown.open .dropdown-trigger,
+.dropdown-trigger:focus {
+  border-color: #ff6b00;
+  background: linear-gradient(180deg, #1c1511 0%, #0e121a 100%);
+  box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.25);
+  transform: translateY(-1px);
 }
 
 .dropdown-trigger .placeholder {
@@ -145,12 +199,15 @@
   background-color: #ff6b00;
   clip-path: polygon(0 0, 100% 0, 50% 100%);
   display: inline-block;
-  transition: transform 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    background-color 0.2s ease;
   flex-shrink: 0;
 }
 
 .custom-dropdown.open .triangle-icon {
   transform: rotate(180deg);
+  background-color: #ff6b00;
 }
 
 .dropdown-menu {
@@ -158,21 +215,361 @@
   top: calc(100% + 4px);
   left: 0;
   width: 100%;
-  max-height: 200px;
+  max-height: 220px;
   overflow-y: auto;
-  background-color: #040e1d;
-  border: 1px solid #1a3154;
+  background-color: #06182e;
+  border: 1px solid #4a290c;
   border-radius: 12px;
   padding: 4px;
   margin: 0;
   list-style: none;
   z-index: 100;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.65);
+  box-shadow:
+    0 12px 30px rgba(0, 0, 0, 0.65),
+    0 0 1px rgba(255, 107, 0, 0.15);
+  backdrop-filter: blur(8px);
+  animation: dropdownFadeIn 0.18s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes dropdownFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dropdown-menu::-webkit-scrollbar {
+  width: 5px;
+}
+.dropdown-menu::-webkit-scrollbar-track {
+  background: transparent;
+}
+.dropdown-menu::-webkit-scrollbar-thumb {
+  background: #3a2009;
+  border-radius: 4px;
+}
+.dropdown-menu::-webkit-scrollbar-thumb:hover {
+  background: #ff6b00;
 }
 
 .dropdown-item {
-  padding: 10px 14px;
-  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  font-size: 0.88rem;
+  color: #c9d8eb;
+  border-radius: 8px;
+  cursor: pointer;
+  user-select: none;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.dropdown-item:hover {
+  background-color: #381a05;
+  color: #ffffff;
+}
+
+.dropdown-item.active {
+  background-color: #572906;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.check-icon {
+  width: 16px;
+  height: 16px;
+  stroke: #ff6b00;
+  flex-shrink: 0;
+}
+
+/* =========================================
+   Calendario Desplegable
+   ========================================= */
+.calendar-field-container {
+  position: relative;
+  width: 100%;
+}
+
+.calendar-trigger {
+  width: 100%;
+  height: 46px;
+  background: linear-gradient(180deg, #071a33 0%, #051428 100%);
+  color: #ffffff;
+  border: 1px solid #4a290c;
+  border-radius: 10px;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.92rem;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.25s ease;
+  position: relative;
+  z-index: 5;
+}
+
+.calendar-trigger * {
+  pointer-events: none;
+}
+
+.calendar-trigger:hover {
+  border-color: #ff6b00;
+  background: linear-gradient(180deg, #1c1511 0%, #0e121a 100%);
+  box-shadow: 0 0 12px rgba(255, 107, 0, 0.2);
+  transform: translateY(-1px);
+}
+
+.calendar-trigger.open,
+.calendar-trigger:focus {
+  border-color: #ff6b00;
+  background: linear-gradient(180deg, #1c1511 0%, #0e121a 100%);
+  box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.25);
+  transform: translateY(-1px);
+}
+
+.calendar-trigger .placeholder {
+  color: #637d9d;
+}
+
+.calendar-trigger.input-error {
+  border-color: #ef4444 !important;
+  background-color: #0b1a2f;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15) !important;
+}
+
+.calendar-icon {
+  width: 18px;
+  height: 18px;
+  color: #ff6b00;
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.calendar-popover {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  width: 100%;
+  background-color: #06182e;
+  border: 1px solid #4a290c;
+  border-radius: 12px;
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
+  padding: 0.75rem 0.6rem;
+  z-index: 1000;
+  animation: dropdownFadeIn 0.18s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.6rem;
+  gap: 4px;
+}
+
+.calendar-selects {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  flex: 1;
+  justify-content: center;
+  min-width: 0;
+}
+
+.calendar-dropdown {
+  position: relative;
+  min-width: 0;
+}
+
+.calendar-dropdown.month-dropdown {
+  flex: 1.4;
+}
+.calendar-dropdown.year-dropdown {
+  flex: 0.8;
+}
+
+.header-trigger {
+  width: 100% !important;
+  height: 32px !important;
+  padding: 0 8px !important;
+  font-size: 0.76rem !important;
+  border-radius: 6px !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.calendar-nav-btn {
+  background: transparent;
+  border: 1px solid #4a290c;
+  color: #ffffff;
+  border-radius: 6px;
+  width: 26px;
+  height: 32px;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  padding: 0;
+  line-height: 1;
+  transition: all 0.2s ease;
+}
+
+.calendar-nav-btn:hover {
+  border-color: #ff6b00;
+  background-color: rgba(255, 107, 0, 0.15);
+  color: #ff6b00;
+}
+
+.calendar-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  margin-bottom: 0.3rem;
+}
+
+.calendar-weekday {
+  color: #94a3b8;
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+
+.calendar-day {
+  aspect-ratio: 1;
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  font-size: 0.8rem;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+
+.calendar-day:hover {
+  background-color: rgba(255, 107, 0, 0.18);
+  color: #ff6b00;
+}
+
+.calendar-day.other-month {
+  color: #3b506d;
+}
+
+.calendar-day.selected {
+  background-color: #ff6b00 !important;
+  color: #ffffff !important;
+  font-weight: 700;
+}
+
+/* =========================================
+   Buscadores & Efecto Hover Naranja en Lupas
+   ========================================= */
+.search-tag-container {
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(180deg, #071a33 0%, #051428 100%);
+  border: 1px solid #4a290c;
+  border-radius: 10px;
+  padding: 6px 10px;
+  gap: 6px;
+  position: relative;
+  transition: all 0.25s ease;
+}
+
+.search-tag-container:hover {
+  border-color: #ff6b00;
+  background: linear-gradient(180deg, #1c1511 0%, #0e121a 100%);
+  box-shadow: 0 0 12px rgba(255, 107, 0, 0.2);
+}
+
+.search-tag-container.is-invalid {
+  border-color: #ef4444 !important;
+  background-color: #0b1a2f;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15) !important;
+}
+
+.direct-search-input-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 36px;
+}
+
+.direct-search-input-box svg {
+  width: 16px;
+  height: 16px;
+  min-width: 16px;
+  min-height: 16px;
+  color: #637d9d;
+  flex-shrink: 0;
+  transition: color 0.2s ease;
+}
+
+.search-tag-container:hover svg,
+.direct-search-input-box:hover svg,
+.player-adder-box .direct-search-input-box:hover svg {
+  color: #ff6b00;
+}
+
+.direct-search-input-box input {
+  width: 100%;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  height: 100% !important;
+  padding: 0 !important;
+  color: #ffffff;
+  font-size: 0.92rem;
+  outline: none;
+}
+
+.direct-suggestions-list {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  background-color: #06182e;
+  border: 1px solid #4a290c;
+  border-radius: 12px;
+  list-style: none;
+  padding: 4px;
+  margin: 0;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 100;
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
+}
+
+.suggestion-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  font-size: 0.88rem;
   color: #c9d8eb;
   border-radius: 8px;
   cursor: pointer;
@@ -181,259 +578,331 @@
     color 0.15s ease;
 }
 
-.dropdown-item:hover {
-  background-color: #ff6b00;
+.suggestion-item:hover {
+  background-color: #381a05;
   color: #ffffff;
 }
 
-/* Separador y sección de jugadores */
+.suggestion-empty {
+  padding: 10px 14px;
+  font-size: 0.85rem;
+  color: #7d96b3;
+  text-align: center;
+}
+
+.add-action-text {
+  color: #ff6b00;
+  font-weight: 600;
+  font-size: 0.82rem;
+}
+
+.selected-tags-box {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding-top: 4px;
+}
+
+.championship-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #1a120b;
+  border: 1px solid #4a290c;
+  border-radius: 20px;
+  padding: 4px 12px;
+  color: #ffd8bd;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.tag-remove-btn {
+  background: transparent;
+  border: none;
+  color: #7d96b3;
+  cursor: pointer;
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px;
+  border-radius: 50%;
+  transition: all 0.15s ease;
+}
+
+.tag-remove-btn:hover {
+  color: #ef4444;
+  transform: scale(1.2);
+}
+
+/* =========================================
+   Sección Plantel de Futbolistas
+   ========================================= */
 .section-divider {
+  width: 100%;
   height: 1px;
-  background-color: #1a3154;
-  margin: 1.5rem 0 1.2rem;
+  background-color: #2b1d14;
+  margin: 1.8rem 0 1.2rem;
 }
 
 .section-title-box h4 {
-  font-size: 1.05rem;
+  margin: 0;
+  font-size: 1.1rem;
   font-weight: 700;
   color: #ffffff;
-  margin: 0 0 4px 0;
 }
 
 .section-title-box p {
-  font-size: 0.85rem;
+  margin: 3px 0 0;
+  font-size: 0.84rem;
   color: #7d96b3;
-  margin: 0 0 1.2rem 0;
 }
 
 .player-adder-box {
-  background: rgba(4, 18, 38, 0.6);
-  border: 1px solid #1a3154;
-  border-radius: 14px;
-  padding: 1.2rem;
-  margin-bottom: 1.2rem;
+  background: rgba(7, 26, 51, 0.4);
+  border: 1px solid #2b1d14;
+  border-radius: 12px;
+  padding: 1rem;
+  margin-top: 0.8rem;
 }
 
 .player-row-grid {
   display: grid;
-  grid-template-columns: 2fr 1.2fr 0.8fr 0.8fr;
-  gap: 10px;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 12px;
   align-items: flex-end;
 }
 
-.direct-search-input-box {
+.search-player-group {
   position: relative;
-  display: flex;
-  align-items: center;
+  background: linear-gradient(180deg, #071a33 0%, #051428 100%);
+  border: 1px solid #4a290c;
+  border-radius: 10px;
+  padding: 6px 10px;
+  transition: all 0.25s ease;
+  z-index: 50;
 }
 
-.direct-search-input-box svg {
-  position: absolute;
-  left: 14px;
-  width: 16px;
-  height: 16px;
-  color: #ff6b00;
-  z-index: 2;
-  pointer-events: none;
+.search-player-group:hover {
+  border-color: #ff6b00;
+  background: linear-gradient(180deg, #1c1511 0%, #0e121a 100%);
+  box-shadow: 0 0 12px rgba(255, 107, 0, 0.2);
 }
 
-.direct-search-input-box input {
-  padding-left: 38px !important;
-}
-
-.direct-suggestions-list {
+.search-player-group .direct-suggestions-list {
   position: absolute;
   top: calc(100% + 4px);
   left: 0;
-  width: 100%;
-  max-height: 150px;
-  overflow-y: auto;
-  background-color: #040e1d;
-  border: 1px solid #1a3154;
-  border-radius: 10px;
-  padding: 4px;
+  right: 0;
+  background-color: #06182e;
+  border: 1px solid #4a290c;
+  border-radius: 12px;
   list-style: none;
-  z-index: 200;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.65);
-}
-
-.suggestion-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 8px 12px;
-  font-size: 0.85rem;
-  color: #c9d8eb;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-.suggestion-item:hover {
-  background-color: #ff6b00;
-  color: #fff;
-}
-
-.add-action-text {
-  color: #ff8124;
-  font-weight: 600;
-  font-size: 0.8rem;
-}
-
-.suggestion-item:hover .add-action-text {
-  color: #fff;
+  padding: 4px;
+  margin: 0;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 1000;
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.7);
 }
 
 .btn-add-player {
   width: 100%;
   height: 46px;
-  background: rgba(255, 107, 0, 0.15);
-  border: 1px solid #ff6b00;
-  color: #ff8124;
-  border-radius: 12px;
-  font-weight: 700;
-  font-size: 0.9rem;
+  background: linear-gradient(180deg, #ff6b00 0%, #e05e00 100%);
+  border: none;
+  border-radius: 10px;
+  color: #ffffff;
+  font-weight: 600;
   cursor: pointer;
+  box-shadow: 0 4px 14px rgba(255, 107, 0, 0.4);
   transition: all 0.2s ease;
 }
 
-.btn-add-player:hover {
-  background: #ff6b00;
-  color: #fff;
-  box-shadow: 0 0 12px rgba(255, 107, 0, 0.4);
+.btn-add-player:hover:not(:disabled) {
+  background: linear-gradient(180deg, #ff8124 0%, #ff6b00 100%);
+  box-shadow: 0 6px 18px rgba(255, 107, 0, 0.55);
+  transform: translateY(-1px);
 }
 
-/* Chips de jugadores agregados */
+.btn-add-player:disabled {
+  background: #2b1d14 !important;
+  border-color: #2b1d14 !important;
+  color: #735745 !important;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
 .added-players-container {
-  margin-top: 1.2rem;
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .players-counter-badge {
-  font-size: 0.8rem;
+  font-size: 0.82rem;
+  font-weight: 600;
   color: #7d96b3;
-  background: rgba(255, 255, 255, 0.05);
-  padding: 4px 12px;
-  border-radius: 12px;
-  display: inline-block;
-  margin-bottom: 10px;
 }
 
 .players-chips-grid {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
-  max-height: 160px;
-  overflow-y: auto;
+  gap: 8px;
 }
 
 .player-chip-card {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   justify-content: space-between;
+  background: linear-gradient(180deg, #071a33 0%, #051428 100%);
+  border: 1px solid #4a290c;
+  border-radius: 10px;
+  padding: 6px 10px 6px 12px;
   gap: 12px;
-  background-color: #040c18;
-  border: 1px solid #1a3154;
-  border-radius: 20px;
-  padding: 8px 14px;
-  color: #ffd8bd;
-  font-size: 0.85rem;
 }
 
 .player-chip-info {
   display: flex;
   align-items: center;
   gap: 8px;
+  font-size: 0.85rem;
 }
 
 .p-num {
-  background: rgba(255, 107, 0, 0.2);
-  color: #ff8124;
-  padding: 2px 8px;
-  border-radius: 8px;
-  font-size: 0.78rem;
+  color: #ff6b00;
   font-weight: 700;
 }
 
 .p-name {
+  color: #ffffff;
   font-weight: 600;
-  color: #fff;
 }
 
 .p-pos {
   color: #7d96b3;
-  font-size: 0.78rem;
+  font-size: 0.75rem;
 }
 
 .btn-remove-chip {
-  background: transparent;
-  border: none;
-  color: #7d96b3;
-  font-size: 16px;
-  cursor: pointer;
+  background: rgba(239, 68, 68, 0.2);
+  border: 1px solid #ef4444;
+  color: #ef4444;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0;
-  line-height: 1;
-  transition: color 0.15s ease;
-}
-
-.btn-remove-chip:hover {
-  color: #ef4444;
-}
-
-/* Botones de Acción del Formulario */
-.form-actions {
-  display: flex;
-  gap: 1.2rem;
-  margin-top: 2.5rem;
-}
-
-.btn-cancel,
-.btn-submit {
-  flex: 1;
-  height: 50px;
-  border-radius: 12px;
-  font-size: 1rem;
-  font-weight: 600;
+  font-size: 10px;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
-.btn-cancel {
-  background-color: transparent;
-  border: 1px solid #1a3154;
+.btn-remove-chip:hover {
+  background: #ef4444;
   color: #ffffff;
+}
+
+/* =========================================
+   Botones de Acción
+   ========================================= */
+.form-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.8rem;
+}
+
+.btn-cancel {
+  flex: 1;
+  height: 46px;
+  background-color: transparent;
+  border: 1px solid #4a280c;
+  color: #ffffff;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
 .btn-cancel:hover {
   border-color: #ff6b00;
-  background-color: rgba(255, 107, 0, 0.05);
+  background-color: #1f1207;
+  box-shadow: 0 0 14px rgba(255, 107, 0, 0.25);
+  transform: translateY(-1px);
 }
 
 .btn-submit {
+  flex: 1;
+  height: 46px;
   background: linear-gradient(180deg, #ff6b00 0%, #e05e00 100%);
   border: none;
+  border-radius: 12px;
   color: #ffffff;
-  box-shadow: 0 4px 16px rgba(255, 107, 0, 0.4);
+  font-size: 0.95rem;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(255, 107, 0, 0.4);
+  transition: all 0.2s ease;
 }
 
 .btn-submit:hover:not(:disabled) {
   background: linear-gradient(180deg, #ff8124 0%, #ff6b00 100%);
-  box-shadow: 0 6px 20px rgba(255, 107, 0, 0.6);
+  box-shadow: 0 6px 18px rgba(255, 107, 0, 0.55);
+  transform: translateY(-1px);
 }
 
 .btn-submit:disabled {
-  background: #15253d;
-  color: #536d93;
-  box-shadow: none;
+  background: #2b1d14;
+  color: #735745;
   cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
 }
 
-@media (max-width: 900px) {
-  .team-form-container {
-    padding: 1.5rem;
+/* =========================================
+   Mensajes de Validación y Error
+   ========================================= */
+.error-feedback {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 0.3rem;
+  animation: fadeInError 0.2s ease-out forwards;
+}
+
+@keyframes fadeInError {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
   }
-  .player-row-grid {
-    grid-template-columns: 1fr 1fr;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
+}
+
+.error-text {
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: #fca5a5;
+}
+
+/* =========================================
+   Ocultar flechitas en inputs numéricos
+   ========================================= */
+input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type='number'] {
+  -moz-appearance: textfield;
+  appearance: textfield;
 }

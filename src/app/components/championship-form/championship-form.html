@@ -24,9 +24,7 @@
   <form [formGroup]="formulario" (ngSubmit)="saveChampionship()">
     <!-- 1. Nombre del campeonato -->
     <div class="form-group">
-      <label (click)="$event.preventDefault()" for="name"
-        >Nombre del campeonato <span class="required">*</span></label
-      >
+      <label for="name">Nombre del campeonato <span class="required">*</span></label>
       <input
         id="name"
         type="text"
@@ -98,7 +96,7 @@
     </div>
 
     <!-- 3. País -->
-    <div class="form-group">
+    <div class="form-group country-group">
       <label>País <span class="required">*</span></label>
       <div
         class="custom-dropdown"
@@ -107,7 +105,7 @@
           formulario.controls.country.invalid && formulario.controls.country.touched
         "
       >
-        <button type="button" class="dropdown-trigger" (click)="toggleCountryDropdown()">
+        <button type="button" class="dropdown-trigger" (click)="toggleCountryDropdown($event)">
           <span [class.placeholder]="!formulario.controls.country.value">
             {{ formulario.controls.country.value || 'Seleccionar país' }}
           </span>
@@ -163,14 +161,14 @@
     </div>
 
     <!-- 4. Formato -->
-    <div class="form-group">
+    <div class="form-group type-group">
       <label>Formato <span class="required">*</span></label>
       <div
         class="custom-dropdown"
         [class.open]="isTypeOpen"
         [class.is-invalid]="formulario.controls.type.invalid && formulario.controls.type.touched"
       >
-        <button type="button" class="dropdown-trigger" (click)="toggleTypeDropdown()">
+        <button type="button" class="dropdown-trigger" (click)="toggleTypeDropdown($event)">
           <span [class.placeholder]="!formulario.controls.type.value">
             {{
               formulario.controls.type.value === 'LIGA'
@@ -355,7 +353,7 @@
       }
     </div>
 
-    <!-- 6. Logo del Torneo (URL limpia y diseño original) -->
+    <!-- 6. Logo del Torneo -->
     <div class="form-group">
       <label>Logo del Torneo (URL) <span class="required">*</span></label>
       <div class="shield-container">

@@ -1,4 +1,4 @@
-import { Component, OnInit, signal, computed, inject } from '@angular/core';
+import { Component, OnInit, signal, computed, inject, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -12,8 +12,6 @@ import { ChampionshipForm } from '../../components/championship-form/championshi
 import { PlayerForm } from '../player-form/player-form';
 import { AdminForm } from '../admin-form/admin-form';
 import { MatchForm } from '../match-form/match-form';
-import { ChampionshipEdit } from '../championship-edit/championship-edit';
-import { MatchEdit } from '../match-edit/match-edit'; // 👈 Asegúrate de importar MatchEdit
 
 const MAX_VISIBLE_PAGES = 10;
 
@@ -35,8 +33,6 @@ function getVisiblePages(total: number, current: number, size = MAX_VISIBLE_PAGE
     PlayerForm,
     AdminForm,
     MatchForm,
-    ChampionshipEdit,
-    MatchEdit,
   ],
   templateUrl: './admin-dashboard.html',
   styleUrl: './admin-dashboard.css',
@@ -48,8 +44,6 @@ export class AdminDashboard implements OnInit {
   private playerService = inject(PlayerService);
   private matchService = inject(MatchService);
 
-  editingChampionshipId = signal<number | string | null>(null);
-  editingMatchId = signal<number | string | null>(null); // 👈 Señal para la edición de partidos
   successMessage = '';
   errorMessage = '';
 
@@ -94,7 +88,6 @@ export class AdminDashboard implements OnInit {
   selectedMatchStatusLabel = 'Todos los estados';
   matchToDeleteId = signal<number | string | null>(null);
 
-
   // Jugadores
   playerSearchText = signal('');
   selectedPlayerPosition = signal('ALL');
@@ -120,6 +113,19 @@ export class AdminDashboard implements OnInit {
 
   ngOnInit(): void {
     this.loadAdminData();
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent): void {
+    const target = event.target as HTMLElement;
+    if (!target.closest('.team-country-filter')) this.isCountryDropdownOpen = false;
+    if (!target.closest('.team-champ-filter')) this.isChampionshipDropdownOpen = false;
+    if (!target.closest('.champ-country-filter')) this.isChampCountryDropdownOpen = false;
+    if (!target.closest('.champ-type-filter')) this.isChampTypeDropdownOpen = false;
+    if (!target.closest('.match-status-filter')) this.isMatchStatusDropdownOpen = false;
+    if (!target.closest('.player-pos-filter')) this.isPlayerPositionDropdownOpen = false;
+    if (!target.closest('.player-nat-filter')) this.isPlayerNationalityDropdownOpen = false;
+    if (!target.closest('.user-role-filter')) this.isUserRoleDropdownOpen = false;
   }
 
   loadAdminData(): void {
@@ -181,24 +187,40 @@ export class AdminDashboard implements OnInit {
     }
   }
 
-  adminCountryOptions = computed(() => [
-    { value: 'ALL', label: 'Todos los países' },
-    { value: 'Argentina', label: 'Argentina' },
-    { value: 'Brasil', label: 'Brasil' },
-    { value: 'Inglaterra', label: 'Inglaterra' },
-  ]);
+  adminCountryOptions = computed(() => {
+    const teams = this.teamService.teams();
+    const uniqueCountries = Array.from(new Set(teams.map((t) => t.country).filter(Boolean))).sort();
+    const options = uniqueCountries.map((country) => ({
+      value: country,
+      label: country,
+    }));
+    return [{ value: 'ALL', label: 'Todos los países' }, ...options];
+  });
 
-  adminChampionshipOptions = computed(() => [
-    { value: 'ALL', label: 'Todos los campeonatos' },
-    { value: 'Liga Profesional', label: 'Liga Profesional' },
-    { value: 'Copa Libertadores', label: 'Copa Libertadores' },
-  ]);
+  adminChampionshipOptions = computed(() => {
+    const allChamps = this.championshipService.championships();
+    const leagueChamps = allChamps.filter((c) => (c.type || '').toUpperCase() === 'LIGA');
+    const options = leagueChamps.map((c) => ({
+      value: String(c.id),
+      label: c.name,
+    }));
+    return [{ value: 'ALL', label: 'Todos los campeonatos' }, ...options];
+  });
 
-  champCountryOptions = computed(() => [
-    { value: 'ALL', label: 'Todos los países' },
-    { value: 'Argentina', label: 'Argentina' },
-    { value: 'Internacional', label: 'Internacional' },
-  ]);
+  champCountryOptions = computed(() => {
+    // Obtenemos todos los campeonatos actuales desde el servicio
+    const championships = this.championshipService.championships();
+    // Extraemos los países únicos que existan, eliminando vacíos/nulos y ordenándolos
+    const uniqueCountries = Array.from(
+      new Set(championships.map((c) => c.country).filter(Boolean)),
+    ).sort();
+    // Mapeamos al formato de opciones de filtro
+    const options = uniqueCountries.map((country) => ({
+      value: country,
+      label: country,
+    }));
+    return [{ value: 'ALL', label: 'Todos los países' }, ...options];
+  });
 
   champTypeOptions = computed(() => [
     { value: 'ALL', label: 'Todos los tipos' },
@@ -505,12 +527,21 @@ export class AdminDashboard implements OnInit {
     const users = this.allUsersForAdmin();
     const search = this.userSearchText().toLowerCase().trim();
     const role = this.selectedUserRole();
+    const currentLoggedUser = this.authService.currentUser(); // Obtenemos el usuario actual del sistema
 
     return users.filter((u) => {
+      // Excluir al usuario actual del sistema (comparando por id o por email)
+      const isCurrentSystemUser =
+        currentLoggedUser && (u.id === currentLoggedUser.id || u.email === currentLoggedUser.email);
+      if (isCurrentSystemUser) {
+        return false;
+      }
+
       const username = (u.username || '').toLowerCase();
       const email = (u.email || '').toLowerCase();
       const matchesSearch = !search || username.includes(search) || email.includes(search);
       const matchesRole = role === 'ALL' || u.role === role;
+
       return matchesSearch && matchesRole;
     });
   });
@@ -559,26 +590,26 @@ export class AdminDashboard implements OnInit {
   }
 
   confirmDeleteMatch(id: number | string): void {
-  this.matchToDeleteId.set(id);
-}
-cancelDeleteMatch(): void {
-  this.matchToDeleteId.set(null);
-}
-executeDeleteMatch(): void {
-  const id = this.matchToDeleteId();
-  if (id !== null && this.matchService.delete) {
-    this.matchService.delete(id).subscribe({
-      next: () => {
-        this.loadAdminData();
-        this.matchToDeleteId.set(null);
-      },
-      error: (err: any) => {
-        console.error('Error al eliminar partido:', err);
-        this.matchToDeleteId.set(null);
-      },
-    });
+    this.matchToDeleteId.set(id);
   }
-}
+  cancelDeleteMatch(): void {
+    this.matchToDeleteId.set(null);
+  }
+  executeDeleteMatch(): void {
+    const id = this.matchToDeleteId();
+    if (id !== null && this.matchService.delete) {
+      this.matchService.delete(id).subscribe({
+        next: () => {
+          this.loadAdminData();
+          this.matchToDeleteId.set(null);
+        },
+        error: (err: any) => {
+          console.error('Error al eliminar partido:', err);
+          this.matchToDeleteId.set(null);
+        },
+      });
+    }
+  }
 
   confirmDeletePlayer(id: number): void {
     this.playerToDeleteId.set(id);
@@ -618,22 +649,6 @@ executeDeleteMatch(): void {
 
   convertToNumber(value: any): number {
     return Number(value);
-  }
-
-  selectChampionshipToEdit(id: number | string): void {
-    this.editingChampionshipId.set(Number(id));
-  }
-
-  cancelChampionshipEdit(): void {
-    this.editingChampionshipId.set(null);
-  }
-
-  selectMatchToEdit(id: number | string): void {
-    this.editingMatchId.set(Number(id));
-  }
-
-  cancelMatchEdit(): void {
-    this.editingMatchId.set(null);
   }
 
   formatPlayerSlug(name: string): string {

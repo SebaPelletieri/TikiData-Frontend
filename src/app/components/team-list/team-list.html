@@ -24,68 +24,61 @@
       />
     </div>
 
-    <!-- Dropdown Personalizado de País -->
-    <div class="select-filters">
-      <div class="custom-dropdown" [class.open]="isCountryDropdownOpen()">
-        <button type="button" class="dropdown-trigger" (click)="toggleCountryDropdown()">
-          <span [class.placeholder]="selectedCountry() === 'ALL'">
-            {{ selectedCountry() === 'ALL' ? 'Todos los paises' : selectedCountry() }}
-          </span>
-          <span class="triangle-icon" [class.rotate]="isCountryDropdownOpen()"></span>
-        </button>
+    <!-- Botón Principal de Filtrar con Panel Desplegable -->
+    <div class="filter-dropdown-container" [class.open]="isFilterPanelOpen()">
+      <button type="button" class="filter-main-btn" (click)="toggleFilterPanel($event)">
+        <div class="trigger-content">
+          <i class="fas fa-filter"></i>
+          <span>Filtrar</span>
+        </div>
+        <span class="triangle-icon" [class.rotate]="isFilterPanelOpen()"></span>
+      </button>
 
-        @if (isCountryDropdownOpen()) {
-          <ul class="dropdown-menu">
-            <li
-              class="dropdown-item"
-              [class.active]="selectedCountry() === 'ALL'"
-              (click)="selectCountry('ALL')"
+      <div class="filter-panel" (click)="$event.stopPropagation()">
+        <!-- Sección: País -->
+        <div class="filter-panel-section">
+          <span class="filter-panel-title">País</span>
+          <div class="sub-dropdown" [class.open]="isCountryDropdownOpen">
+            <button
+              type="button"
+              class="sub-dropdown-trigger"
+              (click)="toggleCountryDropdown($event)"
             >
-              <div class="item-content">
-                <span>Todos los paises</span>
-              </div>
-              @if (selectedCountry() === 'ALL') {
-                <svg
-                  class="check-icon"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <polyline points="20 6 9 17 4 12"></polyline>
-                </svg>
-              }
-            </li>
+              <span>{{
+                selectedCountry() === 'ALL' ? 'Todos los países' : selectedCountry()
+              }}</span>
+              <span class="triangle-icon" [class.rotate]="isCountryDropdownOpen"></span>
+            </button>
 
-            <!-- 👈 CORREGIDO: Se invoca como countries() por ser computed signal -->
-            @for (country of countries(); track country) {
-              <li
-                class="dropdown-item"
-                [class.active]="selectedCountry() === country"
-                (click)="selectCountry(country)"
-              >
-                <div class="item-content">
-                  <span>{{ country }}</span>
+            @if (isCountryDropdownOpen) {
+              <ul class="sub-dropdown-menu">
+                <div class="sub-dropdown-menu-inner">
+                  @for (opt of countries(); track opt.value) {
+                    <li
+                      class="sub-dropdown-item"
+                      [class.active]="selectedCountry() === opt.value"
+                      (click)="selectCountry(opt.value)"
+                    >
+                      <div class="dropdown-item-content">
+                        @if (opt.value !== 'ALL') {
+                          <div class="dropdown-flag-wrapper">
+                            <img [src]="getCountryFlag(opt.value)" [alt]="opt.label" />
+                          </div>
+                        } @else {
+                          <span class="all-countries-icon">🌐</span>
+                        }
+                        <span>{{ opt.label }}</span>
+                      </div>
+                      @if (selectedCountry() === opt.value) {
+                        <i class="fas fa-check check-icon"></i>
+                      }
+                    </li>
+                  }
                 </div>
-                @if (selectedCountry() === country) {
-                  <svg
-                    class="check-icon"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  >
-                    <polyline points="20 6 9 17 4 12"></polyline>
-                  </svg>
-                }
-              </li>
+              </ul>
             }
-          </ul>
-        }
+          </div>
+        </div>
       </div>
     </div>
   </div>

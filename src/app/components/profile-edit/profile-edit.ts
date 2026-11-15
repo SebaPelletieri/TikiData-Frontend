@@ -44,8 +44,9 @@ export class ProfileEdit implements OnInit {
     this.showPassword = !this.showPassword;
   }
 
-  onFileSelected(event: any) {
-    const file = event.target.files[0];
+  onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
     if (file) {
       const reader = new FileReader();
       reader.onload = () => {
@@ -63,9 +64,12 @@ export class ProfileEdit implements OnInit {
   }
 
   onSave() {
-    if (this.profileForm.invalid) return;
+    if (this.profileForm.invalid) {
+      this.profileForm.markAllAsTouched();
+      return;
+    }
 
-    const updatedData = this.profileForm.value;
+    const updatedData = { ...this.profileForm.value };
     if (!updatedData.password) {
       delete updatedData.password;
     }

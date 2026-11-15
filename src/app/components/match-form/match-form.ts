@@ -9,6 +9,7 @@ import {
   computed,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
+  HostListener,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
@@ -51,7 +52,6 @@ export class MatchForm implements OnInit {
 
   isEditing = false;
   errorMessage = '';
-  // Id del partido que se está editando (número o string según el backend)
   private matchId: number | string | null = null;
 
   matchForm: FormGroup = this.fb.group({
@@ -65,7 +65,6 @@ export class MatchForm implements OnInit {
     status: ['Programado'],
   });
 
-  // --- LÓGICA DEL CALENDARIO Y HORA ---
   isCalendarOpen = false;
   isMonthOpen = false;
   isYearOpen = false;
@@ -130,7 +129,6 @@ export class MatchForm implements OnInit {
     '23',
   ];
 
-  // --- BÚSQUEDAS DINÁMICAS (Señales reactivas con computed) ---
   championshipSearchText = signal<string>('');
   isChampionshipFocused = signal<boolean>(false);
 
@@ -170,7 +168,6 @@ export class MatchForm implements OnInit {
     return this.teamService.teams().find((t) => String(t.id) === String(id));
   }
 
-  // Filtrado en tiempo real
   filteredChampionships = computed(() => {
     const search = this.championshipSearchText().toLowerCase().trim();
     const champs = this.championshipService.championships();
@@ -183,7 +180,7 @@ export class MatchForm implements OnInit {
     const teams = this.teamService.teams();
     const awayId = this.matchForm.controls['awayTeamID'].value;
     return teams.filter(
-      (t) => String(t.id) !== String(awayId) && (!search || t.name.toLowerCase().includes(search))
+      (t) => String(t.id) !== String(awayId) && (!search || t.name.toLowerCase().includes(search)),
     );
   });
 
@@ -192,7 +189,8 @@ export class MatchForm implements OnInit {
     const teams = this.teamService.teams();
     const localId = this.matchForm.controls['localTeamID'].value;
     return teams.filter(
-      (t) => String(t.id) !== String(localId) && (!search || t.name.toLowerCase().includes(search)));
+      (t) => String(t.id) !== String(localId) && (!search || t.name.toLowerCase().includes(search)),
+    );
   });
 
   filteredStadiums = computed(() => {
@@ -211,7 +209,6 @@ export class MatchForm implements OnInit {
       this.isEditing = true;
       this.matchId = idFromRoute;
 
-      // No convertimos a Number: si el id es string (json-server 1.x) la consulta fallaría
       this.matchService.getById(idFromRoute as any).subscribe({
         next: (match) => {
           if (match) {
@@ -236,7 +233,6 @@ export class MatchForm implements OnInit {
                 this.selectedMinute = String(d.getMinutes()).padStart(2, '0');
               }
             }
-            // Con OnPush hay que avisar que cambió algo de forma asíncrona
             this.cdr.markForCheck();
           }
         },
@@ -245,7 +241,66 @@ export class MatchForm implements OnInit {
     }
   }
 
-  // --- CALENDARIO Y HORA ---
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent): void {
+    const target = event.target as HTMLElement;
+    if (!target.closest('.calendar-field-container')) {
+      if (this.isCalendarOpen || this.isMonthOpen || this.isYearOpen || this.isTimeOpen) {
+        this.isCalendarOpen = false;
+        this.isMonthOpen = false;
+        this.isYearOpen = false;
+        this.isTimeOpen = false;
+        this.matchForm.controls['date'].markAsTouched();
+        this.cdr.markForCheck();
+      }
+    }
+  }
+
+  getCountryCode(countryName?: string): string {
+    const norm = (countryName || '').trim().toLowerCase();
+    switch (norm) {
+      case 'argentina':
+        return 'ar';
+      case 'brasil':
+      case 'brazil':
+        return 'br';
+      case 'uruguay':
+        return 'uy';
+      case 'chile':
+        return 'cl';
+      case 'colombia':
+        return 'co';
+      case 'paraguay':
+        return 'py';
+      case 'peru':
+      case 'perú':
+        return 'pe';
+      case 'ecuador':
+        return 'ec';
+      case 'bolivia':
+        return 'bo';
+      case 'venezuela':
+        return 've';
+      case 'españa':
+      case 'spain':
+        return 'es';
+      case 'inglaterra':
+      case 'england':
+        return 'gb-eng';
+      case 'italia':
+      case 'italy':
+        return 'it';
+      case 'alemania':
+      case 'germany':
+        return 'de';
+      case 'francia':
+      case 'france':
+        return 'fr';
+      default:
+        return 'ar';
+    }
+  }
+
   get formattedSelectedDateTime(): string {
     if (!this.selectedDate) return '';
     const day = String(this.selectedDate.getDate()).padStart(2, '0');
@@ -263,6 +318,7 @@ export class MatchForm implements OnInit {
     if (!this.isCalendarOpen) {
       this.matchForm.controls['date'].markAsTouched();
     }
+    this.cdr.markForCheck();
   }
 
   toggleMonthDropdown() {
@@ -365,12 +421,13 @@ export class MatchForm implements OnInit {
     );
   }
 
-  selectDate(date: Date) {
+  selectDate(date: Date, event?: Event) {
+    if (event) event.stopPropagation(); // Opcional por si quieres prevenir propagación
     this.selectedDate = new Date(date);
     this.updateMatchDateTimeString();
     this.isCalendarOpen = false;
+    this.cdr.markForCheck();
   }
-
   updateMatchDateTimeString() {
     if (!this.selectedDate) return;
     const year = this.selectedDate.getFullYear();
@@ -382,7 +439,6 @@ export class MatchForm implements OnInit {
     this.matchForm.controls['date'].markAsTouched();
   }
 
-  // --- SELECCIONES Y BÚSQUEDAS ---
   selectChampionship(champ: any) {
     this.matchForm.controls['championshipID'].setValue(champ.id);
     this.matchForm.controls['championshipID'].markAsTouched();
@@ -425,8 +481,6 @@ export class MatchForm implements OnInit {
   onStadiumInputChange(value: string) {
     this.stadiumSearchText.set(value);
     this.isStadiumFocused.set(true);
-    // No seteamos el valor en el form al escribir cada letra,
-    // solo actualizamos la señal de búsqueda para que la lista siga abierta.
   }
 
   selectStadium(stadiumName: string) {
@@ -442,7 +496,6 @@ export class MatchForm implements OnInit {
     this.stadiumSearchText.set('');
   }
 
-  // --- GUARDAR / CANCELAR ---
   saveMatch(): void {
     if (this.matchForm.invalid) {
       this.matchForm.markAllAsTouched();
@@ -460,18 +513,18 @@ export class MatchForm implements OnInit {
     this.errorMessage = '';
 
     if (this.isEditing && this.matchId !== null) {
-      this.matchService.updateMatch(this.matchId as any, formValues).subscribe({
+      this.matchService.update(this.matchId as any, formValues).subscribe({
         next: () => this.handleSuccess(),
-        error: (err) => {
+        error: (err: any) => {
           console.error('Error al actualizar:', err);
           this.errorMessage = 'Error al actualizar el partido.';
           this.cdr.markForCheck();
         },
       });
     } else {
-      this.matchService.createMatch(formValues).subscribe({
+      this.matchService.create(formValues).subscribe({
         next: () => this.handleSuccess(),
-        error: (err) => {
+        error: (err: any) => {
           console.error('Error al crear:', err);
           this.errorMessage = 'Error al registrar el partido.';
           this.cdr.markForCheck();

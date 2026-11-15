@@ -1,9 +1,9 @@
 <div class="profile-container">
   @if (successMessage) {
-  <div class="alert-success">{{ successMessage }}</div>
+    <div class="alert-success">{{ successMessage }}</div>
   }
   @if (errorMessage) {
-  <div class="alert-error">{{ errorMessage }}</div>
+    <div class="alert-error">{{ errorMessage }}</div>
   }
 
   <div class="profile-top-bar">
@@ -109,7 +109,7 @@
   <!-- ======================================================== -->
   <!-- SECCIÓN EQUIPOS: Tabla a la izq. y Form a la der.        -->
   <!-- ======================================================== -->
-  <div class="admin-split-layout-container always-with-form">
+  <div class="admin-split-layout-container always-with-form team-section-container">
     <div class="admin-left-pane">
       <div class="teams-admin-header-row">
         <div class="teams-title-block">
@@ -128,55 +128,93 @@
             <circle cx="11" cy="11" r="8"></circle>
             <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
           </svg>
-          <input type="text" [ngModel]="adminSearchText()"
-            (ngModelChange)="adminSearchText.set($event); currentPage.set(1)" placeholder="Buscar equipo..." />
+          <input
+            type="text"
+            [ngModel]="adminSearchText()"
+            (ngModelChange)="adminSearchText.set($event); currentPage.set(1)"
+            placeholder="Buscar equipo..."
+          />
         </div>
 
         <!-- Filtro de País -->
-        <div class="filter-dropdown-container-admin custom-dropdown" [class.open]="isCountryDropdownOpen">
-          <div class="filter-dropdown-box dropdown-trigger" (click)="toggleCountryDropdown($event)">
+        <div
+          class="filter-dropdown-container-admin custom-dropdown team-country-filter"
+          [class.open]="isCountryDropdownOpen"
+        >
+          <button
+            type="button"
+            class="filter-dropdown-box dropdown-trigger"
+            (click)="toggleCountryDropdown($event)"
+          >
             <span>{{ selectedCountryLabel }}</span>
             <span class="triangle-icon"></span>
-          </div>
+          </button>
           @if (isCountryDropdownOpen) {
-          <ul class="admin-dropdown-menu">
-            @for (opt of adminCountryOptions(); track opt.value) {
-            <li class="admin-dropdown-item" [class.active]="selectedAdminCountry() === opt.value"
-              (click)="selectAdminCountry(opt.value)">
-              <span>{{ opt.label }}</span>
-              @if (selectedAdminCountry() === opt.value) {
-              <svg class="check-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor"
-                stroke-width="3">
-                <polyline points="20 6 9 17 4 12"></polyline>
-              </svg>
+            <ul class="admin-dropdown-menu">
+              @for (opt of adminCountryOptions(); track opt.value) {
+                <li
+                  class="admin-dropdown-item"
+                  [class.active]="selectedAdminCountry() === opt.value"
+                  (click)="selectAdminCountry(opt.value)"
+                >
+                  <span>{{ opt.label }}</span>
+                  @if (selectedAdminCountry() === opt.value) {
+                    <svg
+                      class="check-icon"
+                      viewBox="0 0 24 24"
+                      width="14"
+                      height="14"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="3"
+                    >
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                  }
+                </li>
               }
-            </li>
-            }
-          </ul>
+            </ul>
           }
         </div>
 
         <!-- Filtro de Campeonato -->
-        <div class="filter-dropdown-container-admin custom-dropdown" [class.open]="isChampionshipDropdownOpen">
-          <div class="filter-dropdown-box dropdown-trigger" (click)="toggleChampionshipDropdown($event)">
+        <div
+          class="filter-dropdown-container-admin custom-dropdown team-champ-filter"
+          [class.open]="isChampionshipDropdownOpen"
+        >
+          <button
+            type="button"
+            class="filter-dropdown-box dropdown-trigger"
+            (click)="toggleChampionshipDropdown($event)"
+          >
             <span>{{ selectedChampionshipLabel }}</span>
             <span class="triangle-icon"></span>
-          </div>
+          </button>
           @if (isChampionshipDropdownOpen) {
-          <ul class="admin-dropdown-menu">
-            @for (opt of adminChampionshipOptions(); track opt.value) {
-            <li class="admin-dropdown-item" [class.active]="selectedAdminChampionship() === opt.value"
-              (click)="selectAdminChampionship(opt.value)">
-              <span>{{ opt.label }}</span>
-              @if (selectedAdminChampionship() === opt.value) {
-              <svg class="check-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor"
-                stroke-width="3">
-                <polyline points="20 6 9 17 4 12"></polyline>
-              </svg>
+            <ul class="admin-dropdown-menu">
+              @for (opt of adminChampionshipOptions(); track opt.value) {
+                <li
+                  class="admin-dropdown-item"
+                  [class.active]="selectedAdminChampionship() === opt.value"
+                  (click)="selectAdminChampionship(opt.value)"
+                >
+                  <span>{{ opt.label }}</span>
+                  @if (selectedAdminChampionship() === opt.value) {
+                    <svg
+                      class="check-icon"
+                      viewBox="0 0 24 24"
+                      width="14"
+                      height="14"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="3"
+                    >
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                  }
+                </li>
               }
-            </li>
-            }
-          </ul>
+            </ul>
           }
         </div>
       </div>
@@ -184,66 +222,101 @@
       <!-- Tabla fija -->
       <div class="admin-table-fixed-container">
         @if (paginatedTeamsForAdmin().length === 0) {
-        <p class="empty-msg">No se encontraron equipos con los filtros seleccionados.</p>
+          <p class="empty-msg">No se encontraron equipos con los filtros seleccionados.</p>
         } @else {
-        <div class="admin-table-wrapper">
-          <table class="admin-table">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Escudo</th>
-                <th>Nombre</th>
-                <th>País</th>
-                <th>Fundación</th>
-                <th>Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              @for (team of paginatedTeamsForAdmin(); track team.id; let idx = $index) {
-              <tr>
-                <td>{{ (currentPage() - 1) * itemsPerPage + idx + 1 }}</td>
-                <td>
-                  <div class="table-logo"><img [src]="team.shield" [alt]="team.name" /></div>
-                </td>
-                <td>
-                  <strong>{{ team.name }}</strong>
-                </td>
-                <td>{{ team.country }}</td>
-                <td>{{ team.yearOfFoundation | date: 'yyyy' }}</td>
-                <td>
-                  <div class="table-actions">
-                    <button class="btn-action-view-custom"
-                      [routerLink]="['/team', team.name.toLowerCase().replace(/\s+/g, '-')]">
-                      <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor"
-                        stroke-width="2">
-                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                        <circle cx="12" cy="12" r="3"></circle>
-                      </svg>
-                      Ver
-                    </button>
-                    <button class="btn-action-edit-custom" [routerLink]="['/team/edit', team.id]">
-                      <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor"
-                        stroke-width="2">
-                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-                      </svg>
-                      Editar
-                    </button>
-                    <button class="btn-action-delete-custom" (click)="confirmDelete(team.id!)">
-                      <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor"
-                        stroke-width="2">
-                        <polyline points="3 6 5 6 21 6"></polyline>
-                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                      </svg>
-                      Eliminar
-                    </button>
-                  </div>
-                </td>
-              </tr>
-              }
-            </tbody>
-          </table>
-        </div>
+          <div class="admin-table-wrapper">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Escudo</th>
+                  <th>Nombre</th>
+                  <th>País</th>
+                  <th>Fundación</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (team of paginatedTeamsForAdmin(); track team.id; let idx = $index) {
+                  <tr>
+                    <td>{{ (currentPage() - 1) * itemsPerPage + idx + 1 }}</td>
+                    <td>
+                      <div class="table-logo"><img [src]="team.shield" [alt]="team.name" /></div>
+                    </td>
+                    <td>
+                      <strong>{{ team.name }}</strong>
+                    </td>
+                    <td>{{ team.country }}</td>
+                    <td>{{ team.yearOfFoundation | date: 'yyyy' }}</td>
+                    <td>
+                      <div class="table-actions">
+                        <button
+                          type="button"
+                          class="btn-action-view-custom"
+                          [routerLink]="['/team', team.name.toLowerCase().replace(/\s+/g, '-')]"
+                        >
+                          <svg
+                            viewBox="0 0 24 24"
+                            width="15"
+                            height="15"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                          >
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                          </svg>
+                          Ver
+                        </button>
+                        <button
+                          type="button"
+                          class="btn-action-edit-custom"
+                          [routerLink]="['/team/edit', team.id]"
+                        >
+                          <svg
+                            viewBox="0 0 24 24"
+                            width="15"
+                            height="15"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                          >
+                            <path
+                              d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"
+                            ></path>
+                            <path
+                              d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"
+                            ></path>
+                          </svg>
+                          Editar
+                        </button>
+                        <button
+                          type="button"
+                          class="btn-action-delete-custom"
+                          (click)="confirmDelete(team.id!)"
+                        >
+                          <svg
+                            viewBox="0 0 24 24"
+                            width="15"
+                            height="15"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                          >
+                            <polyline points="3 6 5 6 21 6"></polyline>
+                            <path
+                              d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
+                            ></path>
+                          </svg>
+                          Eliminar
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
         }
       </div>
 
@@ -251,18 +324,30 @@
       <div class="teams-pagination-bar">
         <span class="pagination-info-text">{{ paginationInfoText() }}</span>
         <div class="pagination-buttons-group">
-          <button type="button" class="pagination-arrow-btn" [disabled]="currentPage() === 1"
-            (click)="changePage(currentPage() - 1)">
+          <button
+            type="button"
+            class="pagination-arrow-btn"
+            [disabled]="currentPage() === 1"
+            (click)="changePage(currentPage() - 1)"
+          >
             ‹
           </button>
           @for (page of pagesArray(); track page) {
-          <button type="button" class="pagination-page-btn" [class.active]="currentPage() === page"
-            (click)="changePage(page)">
-            {{ page }}
-          </button>
+            <button
+              type="button"
+              class="pagination-page-btn"
+              [class.active]="currentPage() === page"
+              (click)="changePage(page)"
+            >
+              {{ page }}
+            </button>
           }
-          <button type="button" class="pagination-arrow-btn" [disabled]="currentPage() === totalPages()"
-            (click)="changePage(currentPage() + 1)">
+          <button
+            type="button"
+            class="pagination-arrow-btn"
+            [disabled]="currentPage() === totalPages()"
+            (click)="changePage(currentPage() + 1)"
+          >
             ›
           </button>
         </div>
@@ -278,7 +363,10 @@
   <!-- ======================================================== -->
   <!-- SECCIÓN CAMPEONATOS: Tabla a la izq. y Form a la der.    -->
   <!-- ======================================================== -->
-  <div class="admin-split-layout-container always-with-form" style="margin-top: 2.5rem">
+  <div
+    class="admin-split-layout-container always-with-form champ-section-container"
+    style="margin-top: 2.5rem"
+  >
     <div class="admin-left-pane">
       <div class="teams-admin-header-row">
         <div class="teams-title-block">
@@ -297,56 +385,93 @@
             <circle cx="11" cy="11" r="8"></circle>
             <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
           </svg>
-          <input type="text" [ngModel]="championshipSearchText()"
+          <input
+            type="text"
+            [ngModel]="championshipSearchText()"
             (ngModelChange)="championshipSearchText.set($event); currentChampPage.set(1)"
-            placeholder="Buscar campeonato..." />
+            placeholder="Buscar campeonato..."
+          />
         </div>
 
         <!-- Filtro de País con triángulo -->
-        <div class="filter-dropdown-container-admin custom-dropdown" [class.open]="isChampCountryDropdownOpen">
-          <div class="filter-dropdown-box dropdown-trigger" (click)="toggleChampCountryDropdown($event)">
+        <div
+          class="filter-dropdown-container-admin custom-dropdown champ-country-filter"
+          [class.open]="isChampCountryDropdownOpen"
+        >
+          <button
+            type="button"
+            class="filter-dropdown-box dropdown-trigger"
+            (click)="toggleChampCountryDropdown($event)"
+          >
             <span>{{ selectedChampCountryLabel }}</span>
             <span class="triangle-icon"></span>
-          </div>
+          </button>
           @if (isChampCountryDropdownOpen) {
-          <ul class="admin-dropdown-menu">
-            @for (opt of champCountryOptions(); track opt.value) {
-            <li class="admin-dropdown-item" [class.active]="selectedChampionshipCountry() === opt.value"
-              (click)="selectChampCountry(opt.value)">
-              <span>{{ opt.label }}</span>
-              @if (selectedChampionshipCountry() === opt.value) {
-              <svg class="check-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor"
-                stroke-width="3">
-                <polyline points="20 6 9 17 4 12"></polyline>
-              </svg>
+            <ul class="admin-dropdown-menu">
+              @for (opt of champCountryOptions(); track opt.value) {
+                <li
+                  class="admin-dropdown-item"
+                  [class.active]="selectedChampionshipCountry() === opt.value"
+                  (click)="selectChampCountry(opt.value)"
+                >
+                  <span>{{ opt.label }}</span>
+                  @if (selectedChampionshipCountry() === opt.value) {
+                    <svg
+                      class="check-icon"
+                      viewBox="0 0 24 24"
+                      width="14"
+                      height="14"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="3"
+                    >
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                  }
+                </li>
               }
-            </li>
-            }
-          </ul>
+            </ul>
           }
         </div>
 
         <!-- Filtro de Tipo con triángulo -->
-        <div class="filter-dropdown-container-admin custom-dropdown" [class.open]="isChampTypeDropdownOpen">
-          <div class="filter-dropdown-box dropdown-trigger" (click)="toggleChampTypeDropdown($event)">
+        <div
+          class="filter-dropdown-container-admin custom-dropdown champ-type-filter"
+          [class.open]="isChampTypeDropdownOpen"
+        >
+          <button
+            type="button"
+            class="filter-dropdown-box dropdown-trigger"
+            (click)="toggleChampTypeDropdown($event)"
+          >
             <span>{{ selectedChampTypeLabel }}</span>
             <span class="triangle-icon"></span>
-          </div>
+          </button>
           @if (isChampTypeDropdownOpen) {
-          <ul class="admin-dropdown-menu">
-            @for (opt of champTypeOptions(); track opt.value) {
-            <li class="admin-dropdown-item" [class.active]="selectedChampionshipType() === opt.value"
-              (click)="selectChampType(opt.value)">
-              <span>{{ opt.label }}</span>
-              @if (selectedChampionshipType() === opt.value) {
-              <svg class="check-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor"
-                stroke-width="3">
-                <polyline points="20 6 9 17 4 12"></polyline>
-              </svg>
+            <ul class="admin-dropdown-menu">
+              @for (opt of champTypeOptions(); track opt.value) {
+                <li
+                  class="admin-dropdown-item"
+                  [class.active]="selectedChampionshipType() === opt.value"
+                  (click)="selectChampType(opt.value)"
+                >
+                  <span>{{ opt.label }}</span>
+                  @if (selectedChampionshipType() === opt.value) {
+                    <svg
+                      class="check-icon"
+                      viewBox="0 0 24 24"
+                      width="14"
+                      height="14"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="3"
+                    >
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                  }
+                </li>
               }
-            </li>
-            }
-          </ul>
+            </ul>
           }
         </div>
       </div>
@@ -354,72 +479,108 @@
       <!-- Tabla fija de campeonatos paginada -->
       <div class="admin-table-fixed-container">
         @if (paginatedChampionshipsForAdmin().length === 0) {
-        <p class="empty-msg">No se encontraron campeonatos con los filtros seleccionados.</p>
+          <p class="empty-msg">No se encontraron campeonatos con los filtros seleccionados.</p>
         } @else {
-        <div class="admin-table-wrapper">
-          <table class="admin-table">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Logo</th>
-                <th>Nombre</th>
-                <th>Tipo</th>
-                <th>País</th>
-                <th>Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              @for (champ of paginatedChampionshipsForAdmin(); track champ.id; let idx = $index) {
-              <tr>
-                <td>{{ (currentChampPage() - 1) * itemsPerPageChamps + idx + 1 }}</td>
-                <td>
-                  <div class="table-logo"><img [src]="champ.logo" [alt]="champ.name" /></div>
-                </td>
-                <td>
-                  <strong>{{ champ.name }}</strong>
-                </td>
-                <td>{{ champ.type }}</td>
-                <td>{{ champ.country }}</td>
-                <td>
-                  <div class="table-actions">
-                    <button class="btn-action-view-custom" [routerLink]="[
+          <div class="admin-table-wrapper">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Logo</th>
+                  <th>Nombre</th>
+                  <th>Tipo</th>
+                  <th>País</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (champ of paginatedChampionshipsForAdmin(); track champ.id; let idx = $index) {
+                  <tr>
+                    <td>{{ (currentChampPage() - 1) * itemsPerPageChamps + idx + 1 }}</td>
+                    <td>
+                      <div class="table-logo"><img [src]="champ.logo" [alt]="champ.name" /></div>
+                    </td>
+                    <td>
+                      <strong>{{ champ.name }}</strong>
+                    </td>
+                    <td>{{ champ.type }}</td>
+                    <td>{{ champ.country }}</td>
+                    <td>
+                      <div class="table-actions">
+                        <button
+                          type="button"
+                          class="btn-action-view-custom"
+                          [routerLink]="[
                             '/championship',
                             champ.name
                               .split(/[-–—]|Fecha/)[0]
                               .toLowerCase()
                               .trim()
                               .replace(/\s+/g, '-'),
-                          ]">
-                      <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor"
-                        stroke-width="2">
-                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                        <circle cx="12" cy="12" r="3"></circle>
-                      </svg>
-                      Ver
-                    </button>
-                    <button class="btn-action-edit-custom" (click)="selectChampionshipToEdit(champ.id!)">
-                      <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor"
-                        stroke-width="2">
-                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-                      </svg>
-                      Editar
-                    </button>
-                    <button class="btn-action-delete-custom" (click)="confirmDeleteChampionship(champ.id!)">
-                      <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor"
-                        stroke-width="2">
-                        <polyline points="3 6 5 6 21 6"></polyline>
-                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                      </svg>
-                      Eliminar
-                    </button>
-                  </div>
-                </td>
-              </tr>
-              }
-            </tbody>
-          </table>
-        </div>
+                          ]"
+                        >
+                          <svg
+                            viewBox="0 0 24 24"
+                            width="15"
+                            height="15"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                          >
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                          </svg>
+                          Ver
+                        </button>
+                        <button
+                          type="button"
+                          class="btn-action-edit-custom"
+                          [routerLink]="['/championship/edit', champ.id]"
+                        >
+                          <svg
+                            viewBox="0 0 24 24"
+                            width="15"
+                            height="15"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                          >
+                            <path
+                              d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"
+                            ></path>
+                            <path
+                              d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"
+                            ></path>
+                          </svg>
+                          Editar
+                        </button>
+                        <button
+                          type="button"
+                          class="btn-action-delete-custom"
+                          (click)="confirmDeleteChampionship(champ.id!)"
+                        >
+                          <svg
+                            viewBox="0 0 24 24"
+                            width="15"
+                            height="15"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                          >
+                            <polyline points="3 6 5 6 21 6"></polyline>
+                            <path
+                              d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
+                            ></path>
+                          </svg>
+                          Eliminar
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
         }
       </div>
 
@@ -427,39 +588,49 @@
       <div class="teams-pagination-bar">
         <span class="pagination-info-text">{{ champPaginationInfoText() }}</span>
         <div class="pagination-buttons-group">
-          <button type="button" class="pagination-arrow-btn" [disabled]="currentChampPage() === 1"
-            (click)="changeChampPage(currentChampPage() - 1)">
+          <button
+            type="button"
+            class="pagination-arrow-btn"
+            [disabled]="currentChampPage() === 1"
+            (click)="changeChampPage(currentChampPage() - 1)"
+          >
             ‹
           </button>
           @for (page of champPagesArray(); track page) {
-          <button type="button" class="pagination-page-btn" [class.active]="currentChampPage() === page"
-            (click)="changeChampPage(page)">
-            {{ page }}
-          </button>
+            <button
+              type="button"
+              class="pagination-page-btn"
+              [class.active]="currentChampPage() === page"
+              (click)="changeChampPage(page)"
+            >
+              {{ page }}
+            </button>
           }
-          <button type="button" class="pagination-arrow-btn" [disabled]="currentChampPage() === totalChampPages()"
-            (click)="changeChampPage(currentChampPage() + 1)">
+          <button
+            type="button"
+            class="pagination-arrow-btn"
+            [disabled]="currentChampPage() === totalChampPages()"
+            (click)="changeChampPage(currentChampPage() + 1)"
+          >
             ›
           </button>
         </div>
       </div>
     </div>
 
-    <!-- COLUMNA DERECHA: Formulario dinámico de Campeonatos -->
+    <!-- COLUMNA DERECHA: Formulario integrado de Campeonatos -->
     <div class="admin-right-pane">
-      @if (editingChampionshipId() === null) {
       <app-championship-form (closePanel)="loadAdminData()"></app-championship-form>
-      } @else {
-      <app-championship-edit [championshipIdInput]="editingChampionshipId()!"
-        (closePanel)="cancelChampionshipEdit(); loadAdminData()"></app-championship-edit>
-      }
     </div>
   </div>
 
   <!-- ======================================================== -->
   <!-- SECCIÓN PARTIDOS: Tabla a la izq. y Form a la der.       -->
   <!-- ======================================================== -->
-  <div class="admin-split-layout-container always-with-form" style="margin-top: 2.5rem">
+  <div
+    class="admin-split-layout-container always-with-form match-section-container"
+    style="margin-top: 2.5rem"
+  >
     <div class="admin-left-pane">
       <div class="teams-admin-header-row">
         <div class="teams-title-block">
@@ -478,32 +649,52 @@
             <circle cx="11" cy="11" r="8"></circle>
             <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
           </svg>
-          <input type="text" [ngModel]="matchSearchText()"
+          <input
+            type="text"
+            [ngModel]="matchSearchText()"
             (ngModelChange)="matchSearchText.set($event); currentMatchPage.set(1)"
-            placeholder="Buscar partido (equipos)..." />
+            placeholder="Buscar partido (equipos)..."
+          />
         </div>
 
         <!-- Filtro de Estado del Partido con triángulo -->
-        <div class="filter-dropdown-container-admin custom-dropdown" [class.open]="isMatchStatusDropdownOpen">
-          <div class="filter-dropdown-box dropdown-trigger" (click)="toggleMatchStatusDropdown($event)">
+        <div
+          class="filter-dropdown-container-admin custom-dropdown match-status-filter"
+          [class.open]="isMatchStatusDropdownOpen"
+        >
+          <button
+            type="button"
+            class="filter-dropdown-box dropdown-trigger"
+            (click)="toggleMatchStatusDropdown($event)"
+          >
             <span>{{ selectedMatchStatusLabel }}</span>
             <span class="triangle-icon"></span>
-          </div>
+          </button>
           @if (isMatchStatusDropdownOpen) {
-          <ul class="admin-dropdown-menu">
-            @for (opt of matchStatusOptions(); track opt.value) {
-            <li class="admin-dropdown-item" [class.active]="selectedMatchStatus() === opt.value"
-              (click)="selectMatchStatus(opt.value)">
-              <span>{{ opt.label }}</span>
-              @if (selectedMatchStatus() === opt.value) {
-              <svg class="check-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor"
-                stroke-width="3">
-                <polyline points="20 6 9 17 4 12"></polyline>
-              </svg>
+            <ul class="admin-dropdown-menu">
+              @for (opt of matchStatusOptions(); track opt.value) {
+                <li
+                  class="admin-dropdown-item"
+                  [class.active]="selectedMatchStatus() === opt.value"
+                  (click)="selectMatchStatus(opt.value)"
+                >
+                  <span>{{ opt.label }}</span>
+                  @if (selectedMatchStatus() === opt.value) {
+                    <svg
+                      class="check-icon"
+                      viewBox="0 0 24 24"
+                      width="14"
+                      height="14"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="3"
+                    >
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                  }
+                </li>
               }
-            </li>
-            }
-          </ul>
+            </ul>
           }
         </div>
       </div>
@@ -511,69 +702,110 @@
       <!-- Tabla fija de partidos paginada -->
       <div class="admin-table-fixed-container">
         @if (paginatedMatchesForAdmin().length === 0) {
-        <p class="empty-msg">No se encontraron partidos con los filtros seleccionados.</p>
+          <p class="empty-msg">No se encontraron partidos con los filtros seleccionados.</p>
         } @else {
-        <div class="admin-table-wrapper">
-          <table class="admin-table">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Fecha</th>
-                <th>Encuentro</th>
-                <th>Resultado</th>
-                <th>Estado</th>
-                <th>Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              @for (match of paginatedMatchesForAdmin(); track match.id; let idx = $index) {
-              <tr>
-                <td>{{ (currentMatchPage() - 1) * itemsPerPageMatches + idx + 1 }}</td>
-                <td>{{ match.date | date: 'dd/MM/yyyy HH:mm' }}</td>
-                <td>
-                  <strong>{{ getTeamName(match.localTeamID) }} vs
-                    {{ getTeamName(match.awayTeamID) }}</strong>
-                </td>
-                <td>{{ match.localGoals }} - {{ match.awayGoals }}</td>
-                <td>
-                  <span class="status-badge-admin" [class.live]="match.status === 'En Vivo'"
-                    [class.finished]="match.status === 'Finalizado'">
-                    {{ match.status || 'Programado' }}
-                  </span>
-                </td>
-                <td>
-                  <div class="table-actions">
-                    <button class="btn-action-view-custom" [routerLink]="['/match', match.id]">
-                      <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor"
-                        stroke-width="2">
-                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                        <circle cx="12" cy="12" r="3"></circle>
-                      </svg>
-                      Ver
-                    </button>
-                    <button class="btn-action-edit-custom" [routerLink]="['/match/edit', match.id]">
-                      <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor"
-                        stroke-width="2">
-                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-                      </svg>
-                      Editar
-                    </button>
-                    <button class="btn-action-delete-custom" (click)="confirmDeleteMatch(match.id!)">
-                      <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor"
-                        stroke-width="2">
-                        <polyline points="3 6 5 6 21 6"></polyline>
-                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                      </svg>
-                      Eliminar
-                    </button>
-                  </div>
-                </td>
-              </tr>
-              }
-            </tbody>
-          </table>
-        </div>
+          <div class="admin-table-wrapper">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Fecha</th>
+                  <th>Encuentro</th>
+                  <th>Resultado</th>
+                  <th>Estado</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (match of paginatedMatchesForAdmin(); track match.id; let idx = $index) {
+                  <tr>
+                    <td>{{ (currentMatchPage() - 1) * itemsPerPageMatches + idx + 1 }}</td>
+                    <td>{{ match.date | date: 'dd/MM/yyyy HH:mm' }}</td>
+                    <td>
+                      <strong
+                        >{{ getTeamName(match.localTeamID) }} vs
+                        {{ getTeamName(match.awayTeamID) }}</strong
+                      >
+                    </td>
+                    <td>{{ match.localGoals }} - {{ match.awayGoals }}</td>
+                    <td>
+                      <span
+                        class="status-badge-admin"
+                        [class.live]="match.status === 'En Vivo'"
+                        [class.finished]="match.status === 'Finalizado'"
+                      >
+                        {{ match.status || 'Programado' }}
+                      </span>
+                    </td>
+                    <td>
+                      <div class="table-actions">
+                        <button
+                          type="button"
+                          class="btn-action-view-custom"
+                          [routerLink]="['/match', match.id]"
+                        >
+                          <svg
+                            viewBox="0 0 24 24"
+                            width="15"
+                            height="15"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                          >
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                          </svg>
+                          Ver
+                        </button>
+                        <button
+                          type="button"
+                          class="btn-action-edit-custom"
+                          [routerLink]="['/match/edit', match.id]"
+                        >
+                          <svg
+                            viewBox="0 0 24 24"
+                            width="15"
+                            height="15"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                          >
+                            <path
+                              d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"
+                            ></path>
+                            <path
+                              d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"
+                            ></path>
+                          </svg>
+                          Editar
+                        </button>
+                        <button
+                          type="button"
+                          class="btn-action-delete-custom"
+                          (click)="confirmDeleteMatch(match.id!)"
+                        >
+                          <svg
+                            viewBox="0 0 24 24"
+                            width="15"
+                            height="15"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                          >
+                            <polyline points="3 6 5 6 21 6"></polyline>
+                            <path
+                              d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
+                            ></path>
+                          </svg>
+                          Eliminar
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
         }
       </div>
 
@@ -581,39 +813,49 @@
       <div class="teams-pagination-bar">
         <span class="pagination-info-text">{{ matchPaginationInfoText() }}</span>
         <div class="pagination-buttons-group">
-          <button type="button" class="pagination-arrow-btn" [disabled]="currentMatchPage() === 1"
-            (click)="changeMatchPage(currentMatchPage() - 1)">
+          <button
+            type="button"
+            class="pagination-arrow-btn"
+            [disabled]="currentMatchPage() === 1"
+            (click)="changeMatchPage(currentMatchPage() - 1)"
+          >
             ‹
           </button>
           @for (page of matchPagesArray(); track page) {
-          <button type="button" class="pagination-page-btn" [class.active]="currentMatchPage() === page"
-            (click)="changeMatchPage(page)">
-            {{ page }}
-          </button>
+            <button
+              type="button"
+              class="pagination-page-btn"
+              [class.active]="currentMatchPage() === page"
+              (click)="changeMatchPage(page)"
+            >
+              {{ page }}
+            </button>
           }
-          <button type="button" class="pagination-arrow-btn" [disabled]="currentMatchPage() === totalMatchPages()"
-            (click)="changeMatchPage(currentMatchPage() + 1)">
+          <button
+            type="button"
+            class="pagination-arrow-btn"
+            [disabled]="currentMatchPage() === totalMatchPages()"
+            (click)="changeMatchPage(currentMatchPage() + 1)"
+          >
             ›
           </button>
         </div>
       </div>
     </div>
 
-    <!-- COLUMNA DERECHA: Formulario dinámico de Partidos (crear / editar) -->
+    <!-- COLUMNA DERECHA: Formulario integrado de Partidos -->
     <div class="admin-right-pane">
-      @if (editingMatchId() === null) {
       <app-match-form (closePanel)="loadAdminData()"></app-match-form>
-      } @else {
-      <app-match-edit [matchIdInput]="editingMatchId()!"
-        (closePanel)="cancelMatchEdit(); loadAdminData()"></app-match-edit>
-      }
     </div>
   </div>
 
   <!-- ======================================================== -->
   <!-- SECCIÓN JUGADORES: Tabla a la izq. y Form a la der.      -->
   <!-- ======================================================== -->
-  <div class="admin-split-layout-container always-with-form players-section" style="margin-top: 2.5rem">
+  <div
+    class="admin-split-layout-container always-with-form players-section player-section-container"
+    style="margin-top: 2.5rem"
+  >
     <div class="admin-left-pane">
       <div class="teams-admin-header-row">
         <div class="teams-title-block">
@@ -632,55 +874,93 @@
             <circle cx="11" cy="11" r="8"></circle>
             <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
           </svg>
-          <input type="text" [ngModel]="playerSearchText()"
-            (ngModelChange)="playerSearchText.set($event); currentPlayerPage.set(1)" placeholder="Buscar jugador..." />
+          <input
+            type="text"
+            [ngModel]="playerSearchText()"
+            (ngModelChange)="playerSearchText.set($event); currentPlayerPage.set(1)"
+            placeholder="Buscar jugador..."
+          />
         </div>
 
         <!-- Filtro de Posición -->
-        <div class="filter-dropdown-container-admin custom-dropdown" [class.open]="isPlayerPositionDropdownOpen">
-          <div class="filter-dropdown-box dropdown-trigger" (click)="togglePlayerPositionDropdown($event)">
+        <div
+          class="filter-dropdown-container-admin custom-dropdown player-pos-filter"
+          [class.open]="isPlayerPositionDropdownOpen"
+        >
+          <button
+            type="button"
+            class="filter-dropdown-box dropdown-trigger"
+            (click)="togglePlayerPositionDropdown($event)"
+          >
             <span>{{ selectedPlayerPositionLabel }}</span>
             <span class="triangle-icon"></span>
-          </div>
+          </button>
           @if (isPlayerPositionDropdownOpen) {
-          <ul class="admin-dropdown-menu">
-            @for (opt of playerPositionOptions(); track opt.value) {
-            <li class="admin-dropdown-item" [class.active]="selectedPlayerPosition() === opt.value"
-              (click)="selectPlayerPosition(opt.value)">
-              <span>{{ opt.label }}</span>
-              @if (selectedPlayerPosition() === opt.value) {
-              <svg class="check-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor"
-                stroke-width="3">
-                <polyline points="20 6 9 17 4 12"></polyline>
-              </svg>
+            <ul class="admin-dropdown-menu">
+              @for (opt of playerPositionOptions(); track opt.value) {
+                <li
+                  class="admin-dropdown-item"
+                  [class.active]="selectedPlayerPosition() === opt.value"
+                  (click)="selectPlayerPosition(opt.value)"
+                >
+                  <span>{{ opt.label }}</span>
+                  @if (selectedPlayerPosition() === opt.value) {
+                    <svg
+                      class="check-icon"
+                      viewBox="0 0 24 24"
+                      width="14"
+                      height="14"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="3"
+                    >
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                  }
+                </li>
               }
-            </li>
-            }
-          </ul>
+            </ul>
           }
         </div>
 
         <!-- Filtro de Nacionalidad -->
-        <div class="filter-dropdown-container-admin custom-dropdown" [class.open]="isPlayerNationalityDropdownOpen">
-          <div class="filter-dropdown-box dropdown-trigger" (click)="togglePlayerNationalityDropdown($event)">
+        <div
+          class="filter-dropdown-container-admin custom-dropdown player-nat-filter"
+          [class.open]="isPlayerNationalityDropdownOpen"
+        >
+          <button
+            type="button"
+            class="filter-dropdown-box dropdown-trigger"
+            (click)="togglePlayerNationalityDropdown($event)"
+          >
             <span>{{ selectedPlayerNationalityLabel }}</span>
             <span class="triangle-icon"></span>
-          </div>
+          </button>
           @if (isPlayerNationalityDropdownOpen) {
-          <ul class="admin-dropdown-menu">
-            @for (opt of playerNationalityOptions(); track opt.value) {
-            <li class="admin-dropdown-item" [class.active]="selectedPlayerNationality() === opt.value"
-              (click)="selectPlayerNationality(opt.value)">
-              <span>{{ opt.label }}</span>
-              @if (selectedPlayerNationality() === opt.value) {
-              <svg class="check-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor"
-                stroke-width="3">
-                <polyline points="20 6 9 17 4 12"></polyline>
-              </svg>
+            <ul class="admin-dropdown-menu">
+              @for (opt of playerNationalityOptions(); track opt.value) {
+                <li
+                  class="admin-dropdown-item"
+                  [class.active]="selectedPlayerNationality() === opt.value"
+                  (click)="selectPlayerNationality(opt.value)"
+                >
+                  <span>{{ opt.label }}</span>
+                  @if (selectedPlayerNationality() === opt.value) {
+                    <svg
+                      class="check-icon"
+                      viewBox="0 0 24 24"
+                      width="14"
+                      height="14"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="3"
+                    >
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                  }
+                </li>
               }
-            </li>
-            }
-          </ul>
+            </ul>
           }
         </div>
       </div>
@@ -688,67 +968,103 @@
       <!-- Tabla fija de jugadores paginada -->
       <div class="admin-table-fixed-container">
         @if (paginatedPlayersForAdmin().length === 0) {
-        <p class="empty-msg">No se encontraron jugadores con los filtros seleccionados.</p>
+          <p class="empty-msg">No se encontraron jugadores con los filtros seleccionados.</p>
         } @else {
-        <div class="admin-table-wrapper">
-          <table class="admin-table">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Foto</th>
-                <th>Nombre</th>
-                <th>Posición</th>
-                <th>Nacionalidad</th>
-                <th>Edad</th>
-                <th>Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              @for (player of paginatedPlayersForAdmin(); track player.id; let idx = $index) {
-              <tr>
-                <td>{{ (currentPlayerPage() - 1) * itemsPerPagePlayers + idx + 1 }}</td>
-                <td>
-                  <div class="table-logo"><img [src]="player.photo" [alt]="player.name" /></div>
-                </td>
-                <td>
-                  <strong>{{ player.name }}</strong>
-                </td>
-                <td>{{ player.position }}</td>
-                <td>{{ player.nationality }}</td>
-                <td>{{ player.age }}</td>
-                <td>
-                  <div class="table-actions">
-                    <button class="btn-action-view-custom" [routerLink]="['/player', formatPlayerSlug(player.name)]">
-                      <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor"
-                        stroke-width="2">
-                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                        <circle cx="12" cy="12" r="3"></circle>
-                      </svg>
-                      Ver
-                    </button>
-                    <button class="btn-action-edit-custom" [routerLink]="['/player/edit', player.id]">
-                      <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor"
-                        stroke-width="2">
-                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-                      </svg>
-                      Editar
-                    </button>
-                    <button class="btn-action-delete-custom" (click)="confirmDeletePlayer(player.id!)">
-                      <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor"
-                        stroke-width="2">
-                        <polyline points="3 6 5 6 21 6"></polyline>
-                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                      </svg>
-                      Eliminar
-                    </button>
-                  </div>
-                </td>
-              </tr>
-              }
-            </tbody>
-          </table>
-        </div>
+          <div class="admin-table-wrapper">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Foto</th>
+                  <th>Nombre</th>
+                  <th>Posición</th>
+                  <th>Nacionalidad</th>
+                  <th>Edad</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (player of paginatedPlayersForAdmin(); track player.id; let idx = $index) {
+                  <tr>
+                    <td>{{ (currentPlayerPage() - 1) * itemsPerPagePlayers + idx + 1 }}</td>
+                    <td>
+                      <div class="table-logo"><img [src]="player.photo" [alt]="player.name" /></div>
+                    </td>
+                    <td>
+                      <strong>{{ player.name }}</strong>
+                    </td>
+                    <td>{{ player.position }}</td>
+                    <td>{{ player.nationality }}</td>
+                    <td>{{ player.age }}</td>
+                    <td>
+                      <div class="table-actions">
+                        <button
+                          type="button"
+                          class="btn-action-view-custom"
+                          [routerLink]="['/player', formatPlayerSlug(player.name)]"
+                        >
+                          <svg
+                            viewBox="0 0 24 24"
+                            width="15"
+                            height="15"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                          >
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                          </svg>
+                          Ver
+                        </button>
+                        <button
+                          type="button"
+                          class="btn-action-edit-custom"
+                          [routerLink]="['/player/edit', player.id]"
+                        >
+                          <svg
+                            viewBox="0 0 24 24"
+                            width="15"
+                            height="15"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                          >
+                            <path
+                              d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"
+                            ></path>
+                            <path
+                              d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"
+                            ></path>
+                          </svg>
+                          Editar
+                        </button>
+                        <button
+                          type="button"
+                          class="btn-action-delete-custom"
+                          (click)="confirmDeletePlayer(player.id!)"
+                        >
+                          <svg
+                            viewBox="0 0 24 24"
+                            width="15"
+                            height="15"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                          >
+                            <polyline points="3 6 5 6 21 6"></polyline>
+                            <path
+                              d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
+                            ></path>
+                          </svg>
+                          Eliminar
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
         }
       </div>
 
@@ -756,18 +1072,30 @@
       <div class="teams-pagination-bar">
         <span class="pagination-info-text">{{ playerPaginationInfoText() }}</span>
         <div class="pagination-buttons-group">
-          <button type="button" class="pagination-arrow-btn" [disabled]="currentPlayerPage() === 1"
-            (click)="changePlayerPage(currentPlayerPage() - 1)">
+          <button
+            type="button"
+            class="pagination-arrow-btn"
+            [disabled]="currentPlayerPage() === 1"
+            (click)="changePlayerPage(currentPlayerPage() - 1)"
+          >
             ‹
           </button>
           @for (page of playerPagesArray(); track page) {
-          <button type="button" class="pagination-page-btn" [class.active]="currentPlayerPage() === page"
-            (click)="changePlayerPage(page)">
-            {{ page }}
-          </button>
+            <button
+              type="button"
+              class="pagination-page-btn"
+              [class.active]="currentPlayerPage() === page"
+              (click)="changePlayerPage(page)"
+            >
+              {{ page }}
+            </button>
           }
-          <button type="button" class="pagination-arrow-btn" [disabled]="currentPlayerPage() === totalPlayerPages()"
-            (click)="changePlayerPage(currentPlayerPage() + 1)">
+          <button
+            type="button"
+            class="pagination-arrow-btn"
+            [disabled]="currentPlayerPage() === totalPlayerPages()"
+            (click)="changePlayerPage(currentPlayerPage() + 1)"
+          >
             ›
           </button>
         </div>
@@ -783,7 +1111,10 @@
   <!-- ======================================================== -->
   <!-- SECCIÓN USUARIOS: Tabla a la izq. y Form a la der.       -->
   <!-- ======================================================== -->
-  <div class="admin-split-layout-container always-with-form" style="margin-top: 2.5rem">
+  <div
+    class="admin-split-layout-container always-with-form user-section-container"
+    style="margin-top: 2.5rem"
+  >
     <div class="admin-left-pane">
       <div class="teams-admin-header-row">
         <div class="teams-title-block">
@@ -802,32 +1133,52 @@
             <circle cx="11" cy="11" r="8"></circle>
             <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
           </svg>
-          <input type="text" [ngModel]="userSearchText()"
+          <input
+            type="text"
+            [ngModel]="userSearchText()"
             (ngModelChange)="userSearchText.set($event); currentUserPage.set(1)"
-            placeholder="Buscar por nombre o email..." />
+            placeholder="Buscar por nombre o email..."
+          />
         </div>
 
         <!-- Filtro de Rol -->
-        <div class="filter-dropdown-container-admin custom-dropdown" [class.open]="isUserRoleDropdownOpen">
-          <div class="filter-dropdown-box dropdown-trigger" (click)="toggleUserRoleDropdown($event)">
+        <div
+          class="filter-dropdown-container-admin custom-dropdown user-role-filter"
+          [class.open]="isUserRoleDropdownOpen"
+        >
+          <button
+            type="button"
+            class="filter-dropdown-box dropdown-trigger"
+            (click)="toggleUserRoleDropdown($event)"
+          >
             <span>{{ selectedUserRoleLabel }}</span>
             <span class="triangle-icon"></span>
-          </div>
+          </button>
           @if (isUserRoleDropdownOpen) {
-          <ul class="admin-dropdown-menu">
-            @for (opt of userRoleOptions(); track opt.value) {
-            <li class="admin-dropdown-item" [class.active]="selectedUserRole() === opt.value"
-              (click)="selectUserRole(opt.value)">
-              <span>{{ opt.label }}</span>
-              @if (selectedUserRole() === opt.value) {
-              <svg class="check-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor"
-                stroke-width="3">
-                <polyline points="20 6 9 17 4 12"></polyline>
-              </svg>
+            <ul class="admin-dropdown-menu">
+              @for (opt of userRoleOptions(); track opt.value) {
+                <li
+                  class="admin-dropdown-item"
+                  [class.active]="selectedUserRole() === opt.value"
+                  (click)="selectUserRole(opt.value)"
+                >
+                  <span>{{ opt.label }}</span>
+                  @if (selectedUserRole() === opt.value) {
+                    <svg
+                      class="check-icon"
+                      viewBox="0 0 24 24"
+                      width="14"
+                      height="14"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="3"
+                    >
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                  }
+                </li>
               }
-            </li>
-            }
-          </ul>
+            </ul>
           }
         </div>
       </div>
@@ -835,67 +1186,94 @@
       <!-- Tabla fija de usuarios paginada -->
       <div class="admin-table-fixed-container">
         @if (paginatedUsersForAdmin().length === 0) {
-        <p class="empty-msg">No se encontraron usuarios con los filtros seleccionados.</p>
+          <p class="empty-msg">No se encontraron usuarios con los filtros seleccionados.</p>
         } @else {
-        <div class="admin-table-wrapper">
-          <table class="admin-table">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Usuario</th>
-                <th>Correo Electrónico</th>
-                <th>Rol</th>
-                <th>Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              @for (user of paginatedUsersForAdmin(); track user.id; let idx = $index) {
-              <tr>
-                <td>{{ (currentUserPage() - 1) * itemsPerPageUsers + idx + 1 }}</td>
-                <td>
-                  <strong>{{ user.username }}</strong>
-                </td>
-                <td>{{ user.email }}</td>
-                <td>
-                  <span [style.color]="user.role === 'Administrador' ? '#38bdf8' : '#c9d8eb'">
-                    {{ user.role }}
-                  </span>
-                </td>
-                <td>
-                  <div class="table-actions">
-                    <button class="btn-action-view-custom" [routerLink]="['/profile', user.id]">
-                      <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor"
-                        stroke-width="2">
-                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                        <circle cx="12" cy="12" r="3"></circle>
-                      </svg>
-                      Ver
-                    </button>
+          <div class="admin-table-wrapper">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Usuario</th>
+                  <th>Correo Electrónico</th>
+                  <th>Rol</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (user of paginatedUsersForAdmin(); track user.id; let idx = $index) {
+                  <tr>
+                    <td>{{ (currentUserPage() - 1) * itemsPerPageUsers + idx + 1 }}</td>
+                    <td>
+                      <strong>{{ user.username }}</strong>
+                    </td>
+                    <td>{{ user.email }}</td>
+                    <td>
+                      <span [style.color]="user.role === 'Administrador' ? '#38bdf8' : '#c9d8eb'">
+                        {{ user.role }}
+                      </span>
+                    </td>
+                    <td>
+                      <div class="table-actions">
+                        <button
+                          type="button"
+                          class="btn-action-view-custom"
+                          [routerLink]="['/profile', user.id]"
+                        >
+                          <svg
+                            viewBox="0 0 24 24"
+                            width="15"
+                            height="15"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                          >
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                          </svg>
+                          Ver
+                        </button>
 
-                    <button class="btn-action-role-custom" [class.make-admin]="user.role !== 'Administrador'"
-                      [class.make-user]="user.role === 'Administrador'" (click)="confirmToggleRole(user)">
-                      @if (user.role === 'Administrador') {
-                      <span>Convertir en Usuario</span>
-                      } @else {
-                      <span>Convertir en Admin</span>
-                      }
-                    </button>
+                        <button
+                          type="button"
+                          class="btn-action-role-custom"
+                          [class.make-admin]="user.role !== 'Administrador'"
+                          [class.make-user]="user.role === 'Administrador'"
+                          (click)="confirmToggleRole(user)"
+                        >
+                          @if (user.role === 'Administrador') {
+                            <span>Convertir en Usuario</span>
+                          } @else {
+                            <span>Convertir en Admin</span>
+                          }
+                        </button>
 
-                    <button class="btn-action-delete-custom" (click)="confirmDeleteUser(user.id)">
-                      <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor"
-                        stroke-width="2">
-                        <polyline points="3 6 5 6 21 6"></polyline>
-                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                      </svg>
-                      Eliminar
-                    </button>
-                  </div>
-                </td>
-              </tr>
-              }
-            </tbody>
-          </table>
-        </div>
+                        <button
+                          type="button"
+                          class="btn-action-delete-custom"
+                          (click)="confirmDeleteUser(user.id)"
+                        >
+                          <svg
+                            viewBox="0 0 24 24"
+                            width="15"
+                            height="15"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                          >
+                            <polyline points="3 6 5 6 21 6"></polyline>
+                            <path
+                              d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
+                            ></path>
+                          </svg>
+                          Eliminar
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
         }
       </div>
 
@@ -903,18 +1281,30 @@
       <div class="teams-pagination-bar">
         <span class="pagination-info-text">{{ userPaginationInfoText() }}</span>
         <div class="pagination-buttons-group">
-          <button type="button" class="pagination-arrow-btn" [disabled]="currentUserPage() === 1"
-            (click)="changeUserPage(currentUserPage() - 1)">
+          <button
+            type="button"
+            class="pagination-arrow-btn"
+            [disabled]="currentUserPage() === 1"
+            (click)="changeUserPage(currentUserPage() - 1)"
+          >
             ‹
           </button>
           @for (page of userPagesArray(); track page) {
-          <button type="button" class="pagination-page-btn" [class.active]="currentUserPage() === page"
-            (click)="changeUserPage(page)">
-            {{ page }}
-          </button>
+            <button
+              type="button"
+              class="pagination-page-btn"
+              [class.active]="currentUserPage() === page"
+              (click)="changeUserPage(page)"
+            >
+              {{ page }}
+            </button>
           }
-          <button type="button" class="pagination-arrow-btn" [disabled]="currentUserPage() === totalUserPages()"
-            (click)="changeUserPage(currentUserPage() + 1)">
+          <button
+            type="button"
+            class="pagination-arrow-btn"
+            [disabled]="currentUserPage() === totalUserPages()"
+            (click)="changeUserPage(currentUserPage() + 1)"
+          >
             ›
           </button>
         </div>
@@ -929,115 +1319,121 @@
 
   <!-- Modales de confirmación -->
   @if (userToChangeRole() !== null) {
-  <div class="custom-modal-backdrop">
-    <div class="custom-modal-box">
-      <div class="modal-icon-warning">🔄</div>
-      <h3>¿Estás seguro?</h3>
-      <p>
-        Estás a punto de cambiar el rol de
-        <strong>{{ userToChangeRole()?.user?.username }}</strong> a
-        <strong>{{ userToChangeRole()?.newRole }}</strong>.
-      </p>
-      <div class="modal-actions">
-        <button type="button" class="btn-modal-cancel" (click)="cancelToggleRole()">
-          Cancelar
-        </button>
-        <button type="button" class="btn-modal-confirm" style="
+    <div class="custom-modal-backdrop">
+      <div class="custom-modal-box">
+        <div class="modal-icon-warning">🔄</div>
+        <h3>¿Estás seguro?</h3>
+        <p>
+          Estás a punto de cambiar el rol de
+          <strong>{{ userToChangeRole()?.user?.username }}</strong> a
+          <strong>{{ userToChangeRole()?.newRole }}</strong
+          >.
+        </p>
+        <div class="modal-actions">
+          <button type="button" class="btn-modal-cancel" (click)="cancelToggleRole()">
+            Cancelar
+          </button>
+          <button
+            type="button"
+            class="btn-modal-confirm"
+            style="
               background: linear-gradient(180deg, #2563eb 0%, #1d4ed8 100%);
               border-color: #3b82f6;
-            " (click)="executeToggleRole()">
-          Sí, cambiar rol
-        </button>
+            "
+            (click)="executeToggleRole()"
+          >
+            Sí, cambiar rol
+          </button>
+        </div>
       </div>
     </div>
-  </div>
   }
 
   @if (teamToDeleteId() !== null) {
-  <div class="custom-modal-backdrop">
-    <div class="custom-modal-box">
-      <div class="modal-icon-warning">⚠️</div>
-      <h3>¿Estás seguro?</h3>
-      <p>Esta acción eliminará el equipo del sistema de forma permanente.</p>
-      <div class="modal-actions">
-        <button type="button" class="btn-modal-cancel" (click)="cancelDelete()">Cancelar</button>
-        <button type="button" class="btn-modal-confirm" (click)="executeDelete()">
-          Sí, eliminar
-        </button>
+    <div class="custom-modal-backdrop">
+      <div class="custom-modal-box">
+        <div class="modal-icon-warning">⚠️</div>
+        <h3>¿Estás seguro?</h3>
+        <p>Esta acción eliminará el equipo del sistema de forma permanente.</p>
+        <div class="modal-actions">
+          <button type="button" class="btn-modal-cancel" (click)="cancelDelete()">Cancelar</button>
+          <button type="button" class="btn-modal-confirm" (click)="executeDelete()">
+            Sí, eliminar
+          </button>
+        </div>
       </div>
     </div>
-  </div>
   }
 
   @if (championshipToDeleteId() !== null) {
-  <div class="custom-modal-backdrop">
-    <div class="custom-modal-box">
-      <div class="modal-icon-warning">⚠️</div>
-      <h3>¿Estás seguro?</h3>
-      <p>Esta acción eliminará el campeonato del sistema de forma permanente.</p>
-      <div class="modal-actions">
-        <button type="button" class="btn-modal-cancel" (click)="cancelDeleteChampionship()">
-          Cancelar
-        </button>
-        <button type="button" class="btn-modal-confirm" (click)="executeDeleteChampionship()">
-          Sí, eliminar
-        </button>
+    <div class="custom-modal-backdrop">
+      <div class="custom-modal-box">
+        <div class="modal-icon-warning">⚠️</div>
+        <h3>¿Estás seguro?</h3>
+        <p>Esta acción eliminará el campeonato del sistema de forma permanente.</p>
+        <div class="modal-actions">
+          <button type="button" class="btn-modal-cancel" (click)="cancelDeleteChampionship()">
+            Cancelar
+          </button>
+          <button type="button" class="btn-modal-confirm" (click)="executeDeleteChampionship()">
+            Sí, eliminar
+          </button>
+        </div>
       </div>
     </div>
-  </div>
   }
 
   @if (matchToDeleteId() !== null) {
-  <div class="custom-modal-backdrop">
-    <div class="custom-modal-box">
-      <div class="modal-icon-warning">⚠️</div>
-      <h3>¿Estás seguro?</h3>
-      <p>Esta acción eliminará el partido del sistema de forma permanente.</p>
-      <div class="modal-actions">
-        <button type="button" class="btn-modal-cancel" (click)="cancelDeleteMatch()">
-          Cancelar
-        </button>
-        <button type="button" class="btn-modal-confirm" (click)="executeDeleteMatch()">
-          Sí, eliminar
-        </button>
+    <div class="custom-modal-backdrop">
+      <div class="custom-modal-box">
+        <div class="modal-icon-warning">⚠️</div>
+        <h3>¿Estás seguro?</h3>
+        <p>Esta acción eliminará el partido del sistema de forma permanente.</p>
+        <div class="modal-actions">
+          <button type="button" class="btn-modal-cancel" (click)="cancelDeleteMatch()">
+            Cancelar
+          </button>
+          <button type="button" class="btn-modal-confirm" (click)="executeDeleteMatch()">
+            Sí, eliminar
+          </button>
+        </div>
       </div>
     </div>
-  </div>
   }
 
   @if (playerToDeleteId() !== null) {
-  <div class="custom-modal-backdrop">
-    <div class="custom-modal-box">
-      <div class="modal-icon-warning">⚠️</div>
-      <h3>¿Estás seguro?</h3>
-      <p>Esta acción eliminará al jugador del sistema de forma permanente.</p>
-      <div class="modal-actions">
-        <button type="button" class="btn-modal-cancel" (click)="cancelDeletePlayer()">
-          Cancelar
-        </button>
-        <button type="button" class="btn-modal-confirm" (click)="executeDeletePlayer()">
-          Sí, eliminar
-        </button>
+    <div class="custom-modal-backdrop">
+      <div class="custom-modal-box">
+        <div class="modal-icon-warning">⚠️</div>
+        <h3>¿Estás seguro?</h3>
+        <p>Esta acción eliminará al jugador del sistema de forma permanente.</p>
+        <div class="modal-actions">
+          <button type="button" class="btn-modal-cancel" (click)="cancelDeletePlayer()">
+            Cancelar
+          </button>
+          <button type="button" class="btn-modal-confirm" (click)="executeDeletePlayer()">
+            Sí, eliminar
+          </button>
+        </div>
       </div>
     </div>
-  </div>
   }
 
   @if (userToDeleteId() !== null) {
-  <div class="custom-modal-backdrop">
-    <div class="custom-modal-box">
-      <div class="modal-icon-warning">⚠️</div>
-      <h3>¿Estás seguro?</h3>
-      <p>Esta acción eliminará al usuario del sistema de forma permanente.</p>
-      <div class="modal-actions">
-        <button type="button" class="btn-modal-cancel" (click)="cancelDeleteUser()">
-          Cancelar
-        </button>
-        <button type="button" class="btn-modal-confirm" (click)="executeDeleteUser()">
-          Sí, eliminar
-        </button>
+    <div class="custom-modal-backdrop">
+      <div class="custom-modal-box">
+        <div class="modal-icon-warning">⚠️</div>
+        <h3>¿Estás seguro?</h3>
+        <p>Esta acción eliminará al usuario del sistema de forma permanente.</p>
+        <div class="modal-actions">
+          <button type="button" class="btn-modal-cancel" (click)="cancelDeleteUser()">
+            Cancelar
+          </button>
+          <button type="button" class="btn-modal-confirm" (click)="executeDeleteUser()">
+            Sí, eliminar
+          </button>
+        </div>
       </div>
     </div>
-  </div>
   }
 </div>

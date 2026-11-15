@@ -1,4 +1,5 @@
-import { Component, inject, signal, computed, OnInit } from '@angular/core';
+import { Component, inject, signal, computed, OnInit, HostListener } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormsModule, FormBuilder, Validators } from '@angular/forms';
 import { Championship, ChampionshipType } from '../../models/Championship';
 import { ChampionshipService } from '../../services/championship-service';
@@ -10,8 +11,9 @@ interface CountryOption {
 }
 
 @Component({
-  imports: [ReactiveFormsModule, FormsModule],
   selector: 'app-championship-form',
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule, FormsModule],
   styleUrl: './championship-form.css',
   templateUrl: './championship-form.html',
 })
@@ -24,24 +26,213 @@ export class ChampionshipForm implements OnInit {
   isTypeOpen = false;
   isCountryOpen = false;
 
-  // Búsqueda
   teamSearchQuery = signal<string>('');
   isTeamSearchOpen = signal<boolean>(false);
 
-  // Señal pura para los IDs seleccionados
   selectedTeamIds = signal<number[]>([]);
 
-  // Equipos cargados desde db.json
   teams = this.teamService.teams;
 
   types: ChampionshipType[] = ['LIGA', 'COPA'];
 
+  // Lista completa de países del mundo ordenada alfabéticamente + Internacional
   countryOptions: CountryOption[] = [
     { value: 'Internacional', label: 'Internacional / Global' },
-    { value: 'Argentina', label: 'Argentina' },
-    { value: 'Brasil', label: 'Brasil' },
-    { value: 'España', label: 'España' },
-    { value: 'Inglaterra', label: 'Inglaterra' },
+    ...[
+      'Afganistán',
+      'Albania',
+      'Alemania',
+      'Andorra',
+      'Angola',
+      'Antigua y Barbuda',
+      'Arabia Saudita',
+      'Argelia',
+      'Argentina',
+      'Armenia',
+      'Australia',
+      'Austria',
+      'Azerbaiyán',
+      'Bahamas',
+      'Bangladés',
+      'Barbados',
+      'Baréin',
+      'Bélgica',
+      'Belice',
+      'Benín',
+      'Bielorrusia',
+      'Birmania',
+      'Bolivia',
+      'Bosnia y Herzegovina',
+      'Botsuana',
+      'Brasil',
+      'Brunéi',
+      'Bulgaria',
+      'Burkina Faso',
+      'Burundi',
+      'Bután',
+      'Cabo Verde',
+      'Camboya',
+      'Camerún',
+      'Canadá',
+      'Catar',
+      'Chad',
+      'Chile',
+      'China',
+      'Chipre',
+      'Colombia',
+      'Comoras',
+      'Congo',
+      'Corea del Norte',
+      'Corea del Sur',
+      'Costa de Marfil',
+      'Costa Rica',
+      'Croacia',
+      'Cuba',
+      'Dinamarca',
+      'Dominica',
+      'Ecuador',
+      'Egipto',
+      'El Salvador',
+      'Emiratos Árabes Unidos',
+      'Eritrea',
+      'Eslovaquia',
+      'Eslovenia',
+      'España',
+      'Estados Unidos',
+      'Estonia',
+      'Esuatini',
+      'Etiopía',
+      'Filipinas',
+      'Finlandia',
+      'Fiyi',
+      'Francia',
+      'Gabón',
+      'Gambia',
+      'Georgia',
+      'Ghana',
+      'Granada',
+      'Grecia',
+      'Guatemala',
+      'Guinea',
+      'Guinea Ecuatorial',
+      'Guinea-Bisáu',
+      'Guyana',
+      'Haití',
+      'Honduras',
+      'Hungría',
+      'India',
+      'Indonesia',
+      'Irak',
+      'Irán',
+      'Irlanda',
+      'Islandia',
+      'Islas Marshall',
+      'Islas Salomón',
+      'Israel',
+      'Italia',
+      'Jamaica',
+      'Japón',
+      'Jordania',
+      'Kazajistán',
+      'Kenia',
+      'Kirguistán',
+      'Kiribati',
+      'Kuwait',
+      'Laos',
+      'Lesoto',
+      'Letonia',
+      'Líbano',
+      'Liberia',
+      'Libia',
+      'Liechtenstein',
+      'Lituania',
+      'Luxemburgo',
+      'Madagascar',
+      'Malasia',
+      'Malaui',
+      'Maldivas',
+      'Malí',
+      'Malta',
+      'Marruecos',
+      'Mauricio',
+      'Mauritania',
+      'México',
+      'Micronesia',
+      'Moldavia',
+      'Mónaco',
+      'Mongolia',
+      'Montenegro',
+      'Mozambique',
+      'Namibia',
+      'Nauru',
+      'Nepal',
+      'Nicaragua',
+      'Níger',
+      'Nigeria',
+      'Noruega',
+      'Nueva Zelanda',
+      'Omán',
+      'Países Bajos',
+      'Pakistán',
+      'Palaos',
+      'Panamá',
+      'Papúa Nueva Guinea',
+      'Paraguay',
+      'Perú',
+      'Polonia',
+      'Portugal',
+      'Reino Unido',
+      'República Centroafricana',
+      'República Checa',
+      'República Democrática del Congo',
+      'República Dominicana',
+      'Ruanda',
+      'Rumanía',
+      'Rusia',
+      'Samoa',
+      'San Cristóbal y Nieves',
+      'San Marino',
+      'San Vicente y las Granadinas',
+      'Santa Lucía',
+      'Santo Tomé y Príncipe',
+      'Senegal',
+      'Serbia',
+      'Seychelles',
+      'Sierra Leona',
+      'Singapur',
+      'Siria',
+      'Somalia',
+      'Sri Lanka',
+      'Sudáfrica',
+      'Sudán',
+      'Sudán del Sur',
+      'Suecia',
+      'Suiza',
+      'Surinam',
+      'Tailandia',
+      'Tanzania',
+      'Tayikistán',
+      'Timor Oriental',
+      'Togo',
+      'Tonga',
+      'Trinidad y Tobago',
+      'Túnez',
+      'Turkmenistán',
+      'Turquía',
+      'Tuvalu',
+      'Ucrania',
+      'Uganda',
+      'Uruguay',
+      'Uzbekistán',
+      'Vanuatu',
+      'Vaticano',
+      'Venezuela',
+      'Vietnam',
+      'Yemen',
+      'Yibuti',
+      'Zambia',
+      'Zimbabue',
+    ].map((c) => ({ value: c, label: c })),
   ];
 
   formulario = this.fb.nonNullable.group({
@@ -61,7 +252,6 @@ export class ChampionshipForm implements OnInit {
     teamsIDs: [<number[]>[], [Validators.required, Validators.minLength(1)]],
   });
 
-  // Equipos que coinciden con el texto y que NO están seleccionados todavía
   filteredAvailableTeams = computed(() => {
     const query = this.teamSearchQuery().trim().toLowerCase();
     const selected = this.selectedTeamIds();
@@ -76,7 +266,6 @@ export class ChampionshipForm implements OnInit {
     });
   });
 
-  // Lista de objetos Team para renderizar los chips
   selectedTeamsList = computed(() => {
     const selected = this.selectedTeamIds();
     return this.teams().filter(
@@ -88,6 +277,14 @@ export class ChampionshipForm implements OnInit {
     if (this.teams().length === 0) {
       this.teamService.getAll();
     }
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent): void {
+    const target = event.target as HTMLElement;
+    if (!target.closest('.country-group')) this.isCountryOpen = false;
+    if (!target.closest('.type-group')) this.isTypeOpen = false;
+    if (!target.closest('.team-multisearch-group')) this.isTeamSearchOpen.set(false);
   }
 
   getCountryCode(countryName?: string): string {
@@ -166,7 +363,8 @@ export class ChampionshipForm implements OnInit {
     this.isCountryOpen = false;
   }
 
-  toggleTypeDropdown(): void {
+  toggleTypeDropdown(event?: MouseEvent): void {
+    if (event) event.stopPropagation();
     this.isTypeOpen = !this.isTypeOpen;
     this.isCountryOpen = false;
     this.isTeamSearchOpen.set(false);
@@ -181,7 +379,8 @@ export class ChampionshipForm implements OnInit {
     this.isTypeOpen = false;
   }
 
-  toggleCountryDropdown(): void {
+  toggleCountryDropdown(event?: MouseEvent): void {
+    if (event) event.stopPropagation();
     this.isCountryOpen = !this.isCountryOpen;
     this.isTypeOpen = false;
     this.isTeamSearchOpen.set(false);
@@ -240,7 +439,6 @@ export class ChampionshipForm implements OnInit {
     this.formulario.controls.teamsIDs.markAsTouched();
   }
 
-  // 👇 Nuevo método para manejar la URL del logo de forma limpia y directa
   onLogoUrlInput(event: Event): void {
     const input = event.target as HTMLInputElement;
     const url = input.value.trim();

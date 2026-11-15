@@ -59,7 +59,7 @@
       rgba(4, 18, 36, 0.3) 70%
     ),
     url('/estadio.png') 30% 60% / cover no-repeat;
-  border: 1px solid #45220c; /* 👈 Borde sutil y elegante */
+  border: 1px solid #45220c;
   border-radius: 20px;
   padding: 2.5rem;
   margin-bottom: 2rem;
@@ -136,7 +136,7 @@
 
 .stat-card {
   background: linear-gradient(180deg, #06182e 0%, #041224 100%);
-  border: 1px solid #45220c; /* 👈 Borde sutil y elegante */
+  border: 1px solid #45220c;
   border-radius: 16px;
   padding: 1.5rem;
   display: flex;
@@ -208,7 +208,7 @@
 .admin-left-pane {
   min-width: 0;
   background: linear-gradient(180deg, #06182e 0%, #041224 100%);
-  border: 1px solid #45220c; /* 👈 Borde sutil y elegante */
+  border: 1px solid #45220c;
   border-radius: 18px;
   padding: 1.5rem;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
@@ -223,7 +223,7 @@
   overflow: hidden;
   transition: all 0.3s ease-in-out;
   background: linear-gradient(180deg, #06182e 0%, #041224 100%);
-  border: 1px solid #45220c; /* 👈 Borde sutil y elegante */
+  border: 1px solid #45220c;
   border-radius: 18px;
   padding: 1.5rem;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
@@ -285,8 +285,8 @@
 /* Barra de filtros estándar para Equipos, Campeonatos, Partidos y Usuarios */
 .teams-filters-bar {
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr;
-  gap: 1rem;
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr) minmax(0, 1fr);
+  gap: 0.75rem;
   margin-bottom: 1.5rem;
 }
 
@@ -322,7 +322,7 @@
   width: 100%;
   height: 42px;
   background: linear-gradient(180deg, #030d1a 0%, #020813 100%);
-  border: 1px solid #45220c; /* 👈 Borde sutil y elegante */
+  border: 1px solid #45220c;
   border-radius: 12px;
   padding: 0 14px 0 42px;
   color: #ffffff;
@@ -346,11 +346,12 @@
 }
 
 .filter-dropdown-box {
+  width: 100%;
   height: 42px;
   background: linear-gradient(180deg, #030d1a 0%, #020813 100%);
-  border: 1px solid #45220c; /* 👈 Borde sutil y elegante */
+  border: 1px solid #45220c;
   border-radius: 12px;
-  padding: 0 14px;
+  padding: 0 14px 0 16px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -360,6 +361,7 @@
   transition:
     border-color 0.2s ease,
     box-shadow 0.2s ease;
+  gap: 10px;
 }
 
 .filter-dropdown-box:hover {
@@ -395,7 +397,7 @@
   max-height: 220px;
   overflow-y: auto;
   background-color: #041224;
-  border: 1px solid #45220c; /* 👈 Borde sutil y elegante */
+  border: 1px solid #45220c;
   border-radius: 12px;
   padding: 6px;
   margin: 0;
@@ -460,7 +462,7 @@
   color: #7d96b3;
   font-weight: 600;
   padding: 12px;
-  border-bottom: 1px solid #45220c; /* 👈 Borde sutil y elegante */
+  border-bottom: 1px solid #45220c;
   text-transform: uppercase;
   font-size: 0.75rem;
   letter-spacing: 0.5px;
@@ -604,7 +606,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-top: 1px solid #45220c; /* 👈 Borde sutil y elegante */
+  border-top: 1px solid #45220c;
   padding-top: 1rem;
   margin-top: auto;
   gap: 1rem;
@@ -637,7 +639,7 @@
 
 .pagination-page-btn {
   background: linear-gradient(180deg, #030d1a 0%, #020813 100%);
-  border: 1px solid #45220c; /* 👈 Borde sutil y elegante */
+  border: 1px solid #45220c;
   border-radius: 10px;
   color: #c9d8eb;
   min-width: 36px;
@@ -654,7 +656,7 @@
 
 .pagination-arrow-btn {
   background: linear-gradient(180deg, #030d1a 0%, #020813 100%);
-  border: 1px solid #45220c; /* 👈 Borde sutil y elegante */
+  border: 1px solid #45220c;
   border-radius: 10px;
   color: #c9d8eb;
   min-width: 36px;
@@ -714,7 +716,7 @@
 
 .custom-modal-box {
   background: linear-gradient(180deg, #06182e 0%, #041224 100%);
-  border: 1px solid #45220c; /* 👈 Borde sutil y elegante */
+  border: 1px solid #45220c;
   border-radius: 20px;
   padding: 2.2rem;
   width: 90%;
@@ -750,7 +752,7 @@
 
 .btn-modal-cancel {
   background: transparent;
-  border: 1px solid #45220c; /* 👈 Borde sutil y elegante */
+  border: 1px solid #45220c;
   border-radius: 12px;
   color: #c9d8eb;
   padding: 0 1.25rem;
@@ -815,4 +817,8 @@
     gap: 1rem;
     align-items: center;
   }
+}
+
+.match-section-container .teams-filters-bar {
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
 }

@@ -73,11 +73,12 @@ export class PlayerForm implements OnInit {
       nationality: ['', [Validators.required, Validators.minLength(3)]],
       preferredFoot: ['', [Validators.required]],
 
-      matchesPlayed: [0, [Validators.required, Validators.min(0)]],
-      goals: [0, [Validators.required, Validators.min(0)]],
-      assists: [0, [Validators.required, Validators.min(0)]],
-      yellowCards: [0, [Validators.required, Validators.min(0)]],
-      redCards: [0, [Validators.required, Validators.min(0)]],
+      // Estadísticas iniciales opcionales vacías por defecto (null)
+      matchesPlayed: [null, [Validators.min(0)]],
+      goals: [null, [Validators.min(0)]],
+      assists: [null, [Validators.min(0)]],
+      yellowCards: [null, [Validators.min(0)]],
+      redCards: [null, [Validators.min(0)]],
     });
   }
 
@@ -91,11 +92,11 @@ export class PlayerForm implements OnInit {
       birthDate: '',
       nationality: '',
       preferredFoot: '',
-      matchesPlayed: 0,
-      goals: 0,
-      assists: 0,
-      yellowCards: 0,
-      redCards: 0,
+      matchesPlayed: null,
+      goals: null,
+      assists: null,
+      yellowCards: null,
+      redCards: null,
     });
     this.isCalendarOpen = false;
     this.isPositionOpen = false;
@@ -158,13 +159,13 @@ export class PlayerForm implements OnInit {
     return `${d}/${m}/${y}`;
   }
 
-  onMonthChange(monthIndex: any): void {
-    this.currentDate = new Date(this.currentDate.getFullYear(), Number(monthIndex), 1);
+  onMonthChange(monthIndex: number): void {
+    this.currentDate = new Date(this.currentDate.getFullYear(), monthIndex, 1);
     this.generateCalendar();
   }
 
-  onYearChange(year: any): void {
-    this.currentDate = new Date(Number(year), this.currentDate.getMonth(), 1);
+  onYearChange(year: number): void {
+    this.currentDate = new Date(year, this.currentDate.getMonth(), 1);
     this.generateCalendar();
   }
 
@@ -270,11 +271,12 @@ export class PlayerForm implements OnInit {
       name: raw.name.trim(),
       nationality: raw.nationality.trim(),
       birthDate: raw.birthDate,
-      matchesPlayed: Number(raw.matchesPlayed) || 0,
-      goals: Number(raw.goals) || 0,
-      assists: Number(raw.assists) || 0,
-      yellowCards: Number(raw.yellowCards) || 0,
-      redCards: Number(raw.redCards) || 0,
+      matchesPlayed:
+        raw.matchesPlayed !== null && raw.matchesPlayed !== '' ? Number(raw.matchesPlayed) : 0,
+      goals: raw.goals !== null && raw.goals !== '' ? Number(raw.goals) : 0,
+      assists: raw.assists !== null && raw.assists !== '' ? Number(raw.assists) : 0,
+      yellowCards: raw.yellowCards !== null && raw.yellowCards !== '' ? Number(raw.yellowCards) : 0,
+      redCards: raw.redCards !== null && raw.redCards !== '' ? Number(raw.redCards) : 0,
     };
 
     this.playerService.savePlayer(newPlayer);
@@ -284,7 +286,7 @@ export class PlayerForm implements OnInit {
   onNumericInput(controlName: string, event: Event): void {
     const inputEl = event.target as HTMLInputElement;
     const onlyDigits = inputEl.value.replace(/\D/g, '');
-    const numValue = onlyDigits === '' ? 0 : Number(onlyDigits);
+    const numValue = onlyDigits === '' ? null : Number(onlyDigits);
     inputEl.value = onlyDigits;
     this.formulario.get(controlName)?.setValue(numValue);
   }

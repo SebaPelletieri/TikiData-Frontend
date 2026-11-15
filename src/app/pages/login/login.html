@@ -1,1 +1,6 @@
-<app-login-form (formSubmit)="handleLogin($event)"></app-login-form>
+<app-login-form
+  [errorMessage]="loginError()"
+  [isSubmitting]="isSubmitting()"
+  (formSubmit)="handleLogin($event)"
+  (edited)="loginError.set(null)"
+></app-login-form>

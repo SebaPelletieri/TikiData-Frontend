@@ -600,3 +600,83 @@
   height: 100%;
   object-fit: cover;
 }
+
+/* =====================================================================
+   SUBDIVISIÓN POR LIGA dentro de cada país
+   ===================================================================== */
+.league-header {
+  position: relative;
+  gap: 12px;
+  padding: 0 0 0.75rem 14px;
+}
+
+/* Línea naranja a la izquierda que marca el inicio de cada liga */
+.league-header::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 4px;
+  bottom: calc(0.75rem + 4px);
+  width: 4px;
+  border-radius: 2px;
+  background: var(--brand-orange);
+}
+
+.league-logo-wrapper {
+  width: 36px;
+  height: 36px;
+  padding: 5px;
+  flex-shrink: 0;
+}
+
+.league-header h4 {
+  flex: 1;
+  min-width: 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-strong);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.league-count {
+  flex-shrink: 0;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--brand-orange-text);
+  background: rgba(255, 107, 0, 0.12);
+  border: 1px solid rgba(255, 107, 0, 0.25);
+}
+
+.league-icon {
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  background: var(--surface-0);
+  border: 1px solid var(--border);
+}
+
+/* Equipos sin liga: más apagado para no competir con las ligas reales */
+.league-subblock--unassigned .league-header::before {
+  background: var(--border-3);
+}
+
+.league-subblock--unassigned .league-header h4 {
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.league-subblock--unassigned .league-count {
+  color: var(--text-muted);
+  background: var(--surface-3);
+  border-color: var(--border);
+}

@@ -38,6 +38,7 @@ interface CalendarDay {
 const STADIUMS_URL = 'http://localhost:3000/estadios';
 const CHAMPIONSHIPS_URL = 'http://localhost:3000/campeonatos';
 
+/** Datos del campeonato que usa este formulario. */
 interface ChampionshipLite {
   id: number | string;
   name: string;
@@ -69,17 +70,7 @@ export class TeamEdit implements OnInit {
   errorMessage = signal<string | null>(null);
 
   teamForm: FormGroup = this.fb.group({
-    name: [
-      '',
-      [
-        Validators.required,
-        uniqueFieldValidator(
-          () => this.teamService.teams(),
-          'name',
-          () => this.teamId,
-        ),
-      ],
-    ],
+    name: ['', [Validators.required]],
     country: ['', [Validators.required]],
     shield: ['', [Validators.required]],
     yearOfFoundation: ['', [Validators.required]],
@@ -536,7 +527,9 @@ export class TeamEdit implements OnInit {
   filteredStadiums: StadiumOption[] = [];
   stadiumError = signal(false);
 
-
+  // --- Campeonatos ---
+  // Lista real de campeonatos (antes era una lista fija escrita en el código).
+  // Los ids se comparan como texto porque hay ids numéricos y alfanuméricos.
   championships: ChampionshipLite[] = [];
   championshipSearchText = signal<string>('');
   isChampionshipsFocused = signal<boolean>(false);
@@ -561,7 +554,10 @@ export class TeamEdit implements OnInit {
     return this.championships.filter((c) => this.isSelected(c.id));
   }
 
-  
+  /**
+   * Un equipo juega una sola liga: si ya tiene un campeonato de tipo LIGA,
+   * las demás ligas quedan bloqueadas (las copas no tienen límite).
+   */
   blockingLeagueFor(champ: { type?: string; id?: number | string }): string | null {
     if (champ.type !== 'LIGA') return null;
     const chosen = this.selectedChampionshipsList.find(
@@ -587,7 +583,11 @@ export class TeamEdit implements OnInit {
     this.teamForm.get('championshipsActive')?.markAsTouched();
   }
 
-  
+  /**
+   * Campeonatos del equipo al abrir la edición: los de su propia lista que
+   * existen, más los campeonatos que lo tienen en su lista de equipos
+   * (así Boca aparece con la Liga Profesional aunque su lista esté desactualizada).
+   */
   private initialChampionshipIds(team: Team): (number | string)[] {
     const teamId = String(team.id);
     const ids: (number | string)[] = [];
@@ -596,6 +596,7 @@ export class TeamEdit implements OnInit {
       const inChamp = (c.teamsIDs || []).some((x) => String(x) === teamId);
       if (inTeam || inChamp) ids.push(c.id);
     }
+    // Si por datos viejos quedaran dos ligas, se conserva solo la primera
     let leagueKept = false;
     return ids.filter((id) => {
       const c = this.championships.find((x) => String(x.id) === String(id));
@@ -606,7 +607,11 @@ export class TeamEdit implements OnInit {
     });
   }
 
-
+  /**
+   * Al guardar, actualiza la lista de equipos de cada campeonato para que
+   * coincida con lo elegido acá (agrega o quita al equipo). Así la división por
+   * ligas de Equipos y el formulario de campeonatos ven siempre lo mismo.
+   */
   private championshipSyncRequests(teamId: number | string, selected: (number | string)[]) {
     const id = String(teamId);
     return this.championships.flatMap((c) => {
@@ -686,9 +691,6 @@ export class TeamEdit implements OnInit {
 
   ngOnInit(): void {
     window.scrollTo({ top: 0, behavior: 'instant' });
-    if (this.teamService.teams().length === 0) {
-      this.teamService.getAll();
-    }
     this.setupSearchFilters();
 
     this.playerNumberCtrl.valueChanges.subscribe((val) => {
@@ -1057,6 +1059,7 @@ export class TeamEdit implements OnInit {
     forkJoin([
       this.teamService.updateTeam(this.teamId as any, updatedTeam),
       ...(playerUpdates.length > 0 ? playerUpdates : [of(null)]),
+      // Mantiene sincronizada la lista de equipos de cada campeonato
       ...this.championshipSyncRequests(this.teamId as number | string, updatedTeam.championshipsActive),
     ]).subscribe({
       next: () => goBackOr(this.location, this.router),
@@ -1067,11 +1070,8 @@ export class TeamEdit implements OnInit {
     });
   }
 
+  // Vuelve a donde estaba el usuario (misma página y posición del scroll)
   onCancel() {
     goBackOr(this.location, this.router);
   }
-}
-
-function uniqueFieldValidator(arg0: () => Team[], arg1: string, arg2: () => string | number | null): any | string {
-  throw new Error('Function not implemented.');
 }

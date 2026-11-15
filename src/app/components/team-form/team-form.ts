@@ -743,41 +743,55 @@ export class TeamForm implements OnInit {
   }
 
   // --- Campeonatos ---
+  // Los ids se guardan tal cual vienen y se comparan como texto: hay campeonatos
+  // con id alfanumérico (ej. "37Ug3LyjWg8") que con Number() quedaban en NaN.
   championships = this.championshipService.championships;
   championshipSearchText = signal<string>('');
   isChampionshipsFocused = signal<boolean>(false);
-  selectedChampionshipIds = signal<number[]>([]);
+  selectedChampionshipIds = signal<(number | string)[]>([]);
 
   selectedChampionshipsCount = computed(() => this.selectedChampionshipIds().length);
 
-  selectedChampionshipsList = computed(() => {
-    const ids = this.selectedChampionshipIds();
-    return this.championships().filter((c) => c.id !== undefined && ids.includes(Number(c.id)));
-  });
+  private isSelected(id: number | string | undefined): boolean {
+    return this.selectedChampionshipIds().some((x) => String(x) === String(id));
+  }
+
+  selectedChampionshipsList = computed(() =>
+    this.championships().filter((c) => c.id !== undefined && this.isSelected(c.id)),
+  );
 
   filteredChampionships = computed(() => {
     const search = this.championshipSearchText().toLowerCase().trim();
-    const selectedIds = this.selectedChampionshipIds();
     if (!search) return [];
     return this.championships().filter(
-      (c) =>
-        c.id !== undefined &&
-        c.name.toLowerCase().includes(search) &&
-        !selectedIds.includes(Number(c.id)),
+      (c) => c.id !== undefined && c.name.toLowerCase().includes(search) && !this.isSelected(c.id),
     );
   });
+
+  /**
+   * Un equipo juega una sola liga: si ya eligió un campeonato de tipo LIGA,
+   * las demás ligas quedan bloqueadas (las copas no tienen límite).
+   * Devuelve el nombre de la liga ya elegida, o null si se puede agregar.
+   */
+  blockingLeagueFor(champ: { type?: string; id?: number | string }): string | null {
+    if (champ.type !== 'LIGA') return null;
+    const chosen = this.selectedChampionshipsList().find(
+      (c) => c.type === 'LIGA' && String(c.id) !== String(champ.id),
+    );
+    return chosen ? chosen.name : null;
+  }
 
   addChampionship(championshipId: number | string | undefined, event?: Event) {
     if (event) event.stopPropagation();
     if (championshipId === undefined) return;
 
-    const id = Number(championshipId);
-    const current = this.selectedChampionshipIds();
+    const champ = this.championships().find((c) => String(c.id) === String(championshipId));
+    if (champ && this.blockingLeagueFor(champ)) return;
 
-    if (!current.includes(id)) {
-      const updated = [...current, id];
+    if (!this.isSelected(championshipId)) {
+      const updated = [...this.selectedChampionshipIds(), championshipId];
       this.selectedChampionshipIds.set(updated);
-      this.formulario.controls['championshipsActive'].setValue(updated);
+      this.formulario.controls['championshipsActive'].setValue(updated as number[]);
       this.formulario.controls['championshipsActive'].markAsTouched();
     }
     this.championshipSearchText.set('');
@@ -787,10 +801,11 @@ export class TeamForm implements OnInit {
   removeChampionship(championshipId: number | string | undefined) {
     if (championshipId === undefined) return;
 
-    const id = Number(championshipId);
-    const updated = this.selectedChampionshipIds().filter((x) => x !== id);
+    const updated = this.selectedChampionshipIds().filter(
+      (x) => String(x) !== String(championshipId),
+    );
     this.selectedChampionshipIds.set(updated);
-    this.formulario.controls['championshipsActive'].setValue(updated);
+    this.formulario.controls['championshipsActive'].setValue(updated as number[]);
     this.formulario.controls['championshipsActive'].markAsTouched();
   }
 

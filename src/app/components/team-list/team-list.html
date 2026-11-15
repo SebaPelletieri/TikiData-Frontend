@@ -102,17 +102,20 @@
         @if (isCountryOpen(group.countryName)) {
           <div class="country-content">
             @for (league of group.leagues; track league.leagueName) {
-              <div class="league-subblock">
-                <!-- Título de la Liga con Logo -->
+              <div class="league-subblock" [class.league-subblock--unassigned]="!league.leagueLogo">
+                <!-- Subdivisión por liga (solo campeonatos de tipo Liga) -->
                 <div class="league-header">
                   @if (league.leagueLogo) {
                     <div class="league-logo-wrapper">
                       <img [src]="league.leagueLogo" [alt]="league.leagueName" />
                     </div>
                   } @else {
-                    <span class="league-icon">🏆</span>
+                    <span class="league-icon"><i class="fas fa-shield-alt"></i></span>
                   }
                   <h4>{{ league.leagueName }}</h4>
+                  <span class="league-count">
+                    {{ league.teams.length }} {{ league.teams.length === 1 ? 'equipo' : 'equipos' }}
+                  </span>
                 </div>
 
                 <!-- Cuadrícula de equipos de esta liga -->

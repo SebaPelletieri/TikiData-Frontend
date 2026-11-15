@@ -1,9 +1,19 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { User, Role } from '../models/User';
 import { map, Observable, switchMap, tap, throwError } from 'rxjs';
 import { LoginRequest } from '../models/LoginRequest';
 import { RegisterRequest } from '../models/RegisterRequest';
+
+export type RegisterTakenField = 'username' | 'email';
+
+/** Error de registro cuando el nombre de usuario y/o el correo ya están en uso. */
+export class RegisterTakenError extends Error {
+  constructor(public readonly fields: RegisterTakenField[]) {
+    super('El nombre de usuario o el correo ya están registrados.');
+    this.name = 'RegisterTakenError';
+  }
+}
 
 @Injectable({
   providedIn: 'root',
@@ -43,10 +53,14 @@ export class AuthService {
   }
 
   login(credentials: LoginRequest): Observable<User> {
+    // HttpParams codifica los valores: sin esto, un "+" o "&" en el correo o la
+    // contraseña rompía la consulta y parecía que la cuenta no existía
+    const params = new HttpParams()
+      .set('email', credentials.email)
+      .set('password', credentials.password);
+
     return this.http
-      .get<any[]>(
-        `${this.apiUrl}/usuarios?email=${credentials.email}&password=${credentials.password}`,
-      )
+      .get<any[]>(`${this.apiUrl}/usuarios`, { params })
       .pipe(
         map((users) => {
           if (!users || users.length === 0) {
@@ -68,16 +82,18 @@ export class AuthService {
   }
 
   register(userData: RegisterRequest): Observable<User> {
-    return this.checkUsernameExists(userData.username).pipe(
-      switchMap((usernameExists) => {
-        if (usernameExists) {
-          return throwError(() => new Error('El nombre de usuario ya está registrado.'));
-        }
-        return this.checkEmailExists(userData.email);
-      }),
-      switchMap((emailExists) => {
-        if (emailExists) {
-          return throwError(() => new Error('El correo electrónico ya está registrado.'));
+    // Se revisan usuario y correo juntos (una sola consulta) para poder avisar
+    // de los dos a la vez si ambos ya están en uso
+    return this.http.get<User[]>(`${this.apiUrl}/usuarios`).pipe(
+      switchMap((users) => {
+        const username = userData.username.trim().toLowerCase();
+        const email = userData.email.trim().toLowerCase();
+        const takenFields: RegisterTakenField[] = [];
+        if (users.some((u) => u.username?.toLowerCase() === username)) takenFields.push('username');
+        if (users.some((u) => u.email?.toLowerCase() === email)) takenFields.push('email');
+
+        if (takenFields.length) {
+          return throwError(() => new RegisterTakenError(takenFields));
         }
 
         const dataWithRole = {

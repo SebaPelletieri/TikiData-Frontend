@@ -52,10 +52,10 @@
     {
       "id": "5",
       "name": "San Lorenzo",
-      "shield": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/san-lorenzo.png",
+      "shield": "https://www.footylogos.com/dls/logo/rgba-v1/san-lorenzo.png",
       "country": "Argentina",
-      "yearOfFoundation": "1908-04-01T00:00:00Z",
-      "stadiumID": 5,
+      "yearOfFoundation": "1908-03-31T00:00:00.000Z",
+      "stadiumID": "5",
       "championshipsActive": [
         1
       ],
@@ -64,10 +64,10 @@
     {
       "id": "6",
       "name": "Estudiantes de La Plata",
-      "shield": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/estudiantes-de-la-plata.png",
+      "shield": "https://www.footylogos.com/dls/logo/rgba-v1/estudiantes-de-la-plata.png",
       "country": "Argentina",
-      "yearOfFoundation": "1905-08-04T00:00:00Z",
-      "stadiumID": 6,
+      "yearOfFoundation": "1905-08-03T00:00:00.000Z",
+      "stadiumID": "6",
       "championshipsActive": [
         1,
         2
@@ -152,9 +152,9 @@
     {
       "id": "11",
       "name": "Argentinos Juniors",
-      "shield": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/argentinos-juniors.png",
+      "shield": "https://www.footylogos.com/dls/logo/rgba-v1/argentinos-juniors.png",
       "country": "Argentina",
-      "yearOfFoundation": "1904-08-10T00:00:00.000Z",
+      "yearOfFoundation": "1904-08-09T00:00:00.000Z",
       "stadiumID": "1",
       "championshipsActive": [
         1
@@ -191,10 +191,10 @@
     {
       "id": "14",
       "name": "Belgrano (Córdoba)",
-      "shield": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/belgrano.png",
+      "shield": "https://www.footylogos.com/dls/logo/rgba-v1/belgrano.png",
       "country": "Argentina",
-      "yearOfFoundation": "1905-03-19T00:00:00Z",
-      "stadiumID": 14,
+      "yearOfFoundation": "1905-03-18T00:00:00.000Z",
+      "stadiumID": "5",
       "championshipsActive": [
         1
       ],
@@ -215,10 +215,10 @@
     {
       "id": "16",
       "name": "Atlético Tucumán",
-      "shield": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/atletico-tucuman.png",
+      "shield": "https://www.footylogos.com/dls/logo/rgba-v1/atletico-tucuman.png",
       "country": "Argentina",
-      "yearOfFoundation": "1902-09-27T00:00:00Z",
-      "stadiumID": 16,
+      "yearOfFoundation": "1902-09-26T00:00:00.000Z",
+      "stadiumID": "6",
       "championshipsActive": [
         1
       ],
@@ -227,9 +227,9 @@
     {
       "id": "17",
       "name": "Banfield",
-      "shield": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/banfield.png",
+      "shield": "https://www.footylogos.com/dls/logo/rgba-v1/banfield.png",
       "country": "Argentina",
-      "yearOfFoundation": "1896-01-19T00:00:00.000Z",
+      "yearOfFoundation": "1896-01-18T00:00:00.000Z",
       "stadiumID": "10",
       "championshipsActive": [
         1
@@ -253,10 +253,10 @@
     {
       "id": "19",
       "name": "Defensa y Justicia",
-      "shield": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/defensa-y-justicia.png",
+      "shield": "https://www.footylogos.com/dls/logo/rgba-v1/defensa-y-justicia.png",
       "country": "Argentina",
-      "yearOfFoundation": "1935-03-20T00:00:00Z",
-      "stadiumID": 19,
+      "yearOfFoundation": "1935-03-19T00:00:00.000Z",
+      "stadiumID": "5",
       "championshipsActive": [
         1
       ],
@@ -313,10 +313,10 @@
     {
       "id": "24",
       "name": "Central Córdoba (SdE)",
-      "shield": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/central-cordoba.png",
+      "shield": "https://www.footylogos.com/dls/logo/rgba-v1/central-cordoba-se.png",
       "country": "Argentina",
-      "yearOfFoundation": "1919-06-03T00:00:00Z",
-      "stadiumID": 24,
+      "yearOfFoundation": "1919-06-02T00:00:00.000Z",
+      "stadiumID": "6",
       "championshipsActive": [
         1
       ],
@@ -337,10 +337,10 @@
     {
       "id": "26",
       "name": "Barracas Central",
-      "shield": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/barracas-central.png",
+      "shield": "https://www.footylogos.com/dls/logo/rgba-v1/barracas-central.png",
       "country": "Argentina",
-      "yearOfFoundation": "1904-04-05T00:00:00Z",
-      "stadiumID": 26,
+      "yearOfFoundation": "1904-04-04T00:00:00.000Z",
+      "stadiumID": "7",
       "championshipsActive": [
         1
       ],
@@ -349,10 +349,10 @@
     {
       "id": "27",
       "name": "Deportivo Riestra",
-      "shield": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/deportivo-riestra.png",
+      "shield": "https://www.footylogos.com/dls/logo/rgba-v1/deportivo-riestra.png",
       "country": "Argentina",
-      "yearOfFoundation": "1931-02-22T00:00:00Z",
-      "stadiumID": 27,
+      "yearOfFoundation": "1931-02-21T00:00:00.000Z",
+      "stadiumID": "10",
       "championshipsActive": [
         1
       ],

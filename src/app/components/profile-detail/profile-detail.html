@@ -68,7 +68,7 @@
       @for (team of favoriteTeamsList(); track team.id) {
         <div class="favorite-team-card">
           <div class="favorite-team-shield">
-            <img [src]="team.shield || 'https://via.placeholder.com/45'" [alt]="team.name" />
+            <img [src]="team.shield || 'https://placehold.co/45'" [alt]="team.name" />
           </div>
           <h4 class="favorite-team-name">{{ team.name }}</h4>
           <span class="favorite-team-country">{{ team.country }}</span>
@@ -106,7 +106,7 @@
       @for (champ of favoriteChampionshipsList(); track champ.id) {
         <div class="favorite-team-card">
           <div class="favorite-team-shield">
-            <img [src]="champ.logo || 'https://via.placeholder.com/45'" [alt]="champ.name" />
+            <img [src]="champ.logo || 'https://placehold.co/45'" [alt]="champ.name" />
           </div>
           <h4 class="favorite-team-name">{{ champ.name }}</h4>
           <span class="favorite-team-country">{{ champ.country }} • {{ champ.type }}</span>
@@ -144,7 +144,7 @@
       @for (player of favoritePlayersList(); track player.id) {
         <div class="favorite-team-card">
           <div class="favorite-team-shield">
-            <img [src]="player.photo || 'https://via.placeholder.com/45'" [alt]="player.name" />
+            <img [src]="player.photo || 'https://placehold.co/45'" [alt]="player.name" />
           </div>
           <h4 class="favorite-team-name">{{ player.name }}</h4>
           <span class="favorite-team-country"

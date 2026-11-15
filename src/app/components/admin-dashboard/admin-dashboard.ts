@@ -7,6 +7,7 @@ import { TeamService } from '../../services/team-service';
 import { ChampionshipService } from '../../services/championship-service';
 import { PlayerService } from '../../services/player-service';
 import { MatchService } from '../../services/match-service';
+import { AdminDashboardState } from '../../services/admin-dashboard-state';
 import { TeamForm } from '../team-form/team-form';
 import { ChampionshipForm } from '../../components/championship-form/championship-form';
 import { PlayerForm } from '../player-form/player-form';
@@ -43,6 +44,9 @@ export class AdminDashboard implements OnInit {
   private championshipService = inject(ChampionshipService);
   private playerService = inject(PlayerService);
   private matchService = inject(MatchService);
+  // Página y filtros de cada listado viven en AdminDashboardState,
+  // así se conservan al ir a editar y volver
+  private dashboardState = inject(AdminDashboardState);
 
   successMessage = '';
   errorMessage = '';
@@ -56,48 +60,83 @@ export class AdminDashboard implements OnInit {
   totalMatchesCount = computed(() => this.matchService.matches().length);
 
   // Equipos
-  adminSearchText = signal('');
-  selectedAdminCountry = signal('ALL');
-  selectedAdminChampionship = signal('ALL');
-  currentPage = signal(1);
+  adminSearchText = this.dashboardState.adminSearchText;
+  selectedAdminCountry = this.dashboardState.selectedAdminCountry;
+  selectedAdminChampionship = this.dashboardState.selectedAdminChampionship;
+  currentPage = this.dashboardState.currentPage;
   itemsPerPage = 10;
   isCountryDropdownOpen = false;
   isChampionshipDropdownOpen = false;
-  selectedCountryLabel = 'Todos los países';
-  selectedChampionshipLabel = 'Todos los campeonatos';
+  get selectedCountryLabel(): string {
+    return this.dashboardState.selectedCountryLabel;
+  }
+  set selectedCountryLabel(value: string) {
+    this.dashboardState.selectedCountryLabel = value;
+  }
+  get selectedChampionshipLabel(): string {
+    return this.dashboardState.selectedChampionshipLabel;
+  }
+  set selectedChampionshipLabel(value: string) {
+    this.dashboardState.selectedChampionshipLabel = value;
+  }
   teamToDeleteId = signal<number | null>(null);
 
   // Campeonatos
-  championshipSearchText = signal('');
-  selectedChampionshipCountry = signal('ALL');
-  selectedChampionshipType = signal('ALL');
-  currentChampPage = signal(1);
+  championshipSearchText = this.dashboardState.championshipSearchText;
+  selectedChampionshipCountry = this.dashboardState.selectedChampionshipCountry;
+  selectedChampionshipType = this.dashboardState.selectedChampionshipType;
+  currentChampPage = this.dashboardState.currentChampPage;
   itemsPerPageChamps = 10;
   isChampCountryDropdownOpen = false;
   isChampTypeDropdownOpen = false;
-  selectedChampCountryLabel = 'Todos los países';
-  selectedChampTypeLabel = 'Todos los tipos';
+  get selectedChampCountryLabel(): string {
+    return this.dashboardState.selectedChampCountryLabel;
+  }
+  set selectedChampCountryLabel(value: string) {
+    this.dashboardState.selectedChampCountryLabel = value;
+  }
+  get selectedChampTypeLabel(): string {
+    return this.dashboardState.selectedChampTypeLabel;
+  }
+  set selectedChampTypeLabel(value: string) {
+    this.dashboardState.selectedChampTypeLabel = value;
+  }
   championshipToDeleteId = signal<number | string | null>(null);
 
   // Partidos
-  matchSearchText = signal('');
-  selectedMatchStatus = signal('ALL');
-  currentMatchPage = signal(1);
+  matchSearchText = this.dashboardState.matchSearchText;
+  selectedMatchStatus = this.dashboardState.selectedMatchStatus;
+  currentMatchPage = this.dashboardState.currentMatchPage;
   itemsPerPageMatches = 10;
   isMatchStatusDropdownOpen = false;
-  selectedMatchStatusLabel = 'Todos los estados';
+  get selectedMatchStatusLabel(): string {
+    return this.dashboardState.selectedMatchStatusLabel;
+  }
+  set selectedMatchStatusLabel(value: string) {
+    this.dashboardState.selectedMatchStatusLabel = value;
+  }
   matchToDeleteId = signal<number | string | null>(null);
 
   // Jugadores
-  playerSearchText = signal('');
-  selectedPlayerPosition = signal('ALL');
-  selectedPlayerNationality = signal('ALL');
-  currentPlayerPage = signal(1);
+  playerSearchText = this.dashboardState.playerSearchText;
+  selectedPlayerPosition = this.dashboardState.selectedPlayerPosition;
+  selectedPlayerNationality = this.dashboardState.selectedPlayerNationality;
+  currentPlayerPage = this.dashboardState.currentPlayerPage;
   itemsPerPagePlayers = 10;
   isPlayerPositionDropdownOpen = false;
   isPlayerNationalityDropdownOpen = false;
-  selectedPlayerPositionLabel = 'Todas las posiciones';
-  selectedPlayerNationalityLabel = 'Todas las nacionalidades';
+  get selectedPlayerPositionLabel(): string {
+    return this.dashboardState.selectedPlayerPositionLabel;
+  }
+  set selectedPlayerPositionLabel(value: string) {
+    this.dashboardState.selectedPlayerPositionLabel = value;
+  }
+  get selectedPlayerNationalityLabel(): string {
+    return this.dashboardState.selectedPlayerNationalityLabel;
+  }
+  set selectedPlayerNationalityLabel(value: string) {
+    this.dashboardState.selectedPlayerNationalityLabel = value;
+  }
   playerToDeleteId = signal<number | null>(null);
 
   // Usuarios

@@ -67,9 +67,19 @@
           "
         >
           <button type="button" class="dropdown-trigger" (click)="toggleCountryDropdown($event)">
-            <span [class.placeholder]="!formulario.controls['country'].value">
-              {{ formulario.controls['country'].value || 'Selecciona un país' }}
-            </span>
+            <div class="dropdown-item-content">
+              @if (formulario.controls['country'].value) {
+                <div class="dropdown-flag-wrapper">
+                  <img
+                    [src]="getCountryFlag(formulario.controls['country'].value)"
+                    [alt]="formulario.controls['country'].value"
+                  />
+                </div>
+              }
+              <span [class.placeholder]="!formulario.controls['country'].value">
+                {{ formulario.controls['country'].value || 'Selecciona un país' }}
+              </span>
+            </div>
             <span class="triangle-icon"></span>
           </button>
 
@@ -81,7 +91,10 @@
                   [class.active]="formulario.controls['country'].value === item"
                   (click)="selectCountry(item); $event.stopPropagation()"
                 >
-                  <div class="item-content">
+                  <div class="dropdown-item-content">
+                    <div class="dropdown-flag-wrapper">
+                      <img [src]="getCountryFlag(item)" [alt]="item" />
+                    </div>
                     <span>{{ item }}</span>
                   </div>
                   @if (formulario.controls['country'].value === item) {
@@ -490,8 +503,8 @@
     <!-- SECCIÓN: Plantel de Futbolistas -->
     <div class="section-divider"></div>
     <div class="section-title-box" style="margin-bottom: 1rem">
-      <h4 style="margin: 0; font-size: 1rem; color: #ffffff">Plantel de Futbolistas</h4>
-      <p style="margin: 3px 0 0; font-size: 0.85rem; color: #7d96b3">
+      <h4 style="margin: 0; font-size: 1rem; color: var(--text-strong)">Plantel de Futbolistas</h4>
+      <p style="margin: 3px 0 0; font-size: 0.85rem; color: var(--text-muted)">
         Busca e incorpora nuevos jugadores a la plantilla actual del equipo.
       </p>
     </div>
@@ -526,7 +539,7 @@
               @for (fp of filteredPlayers; track fp.id) {
                 <li class="suggestion-item" (click)="selectPlayerSuggestion(fp)">
                   <span
-                    >{{ fp.name }} <small style="color: #7d96b3">({{ fp.position }})</small></span
+                    >{{ fp.name }} <small style="color: var(--text-muted)">({{ fp.position }})</small></span
                   >
                   <span
                     class="add-action-text"
@@ -593,7 +606,7 @@
                 justify-content: space-between;
                 gap: 10px;
                 background: #1a120b;
-                border: 1px solid #4a290c;
+                border: 1px solid var(--warm-border);
                 border-radius: 20px;
                 padding: 4px 12px;
                 color: #ffd8bd;
@@ -607,7 +620,7 @@
                   >
                 }
                 <span class="p-name" style="font-weight: 600">{{ p.name }}</span>
-                <span class="p-pos" style="font-size: 0.75rem; color: #7d96b3"
+                <span class="p-pos" style="font-size: 0.75rem; color: var(--text-muted)"
                   >({{ p.position }})</span
                 >
               </div>
@@ -619,7 +632,7 @@
                 style="
                   background: transparent;
                   border: none;
-                  color: #7d96b3;
+                  color: var(--text-muted);
                   font-size: 11px;
                   cursor: pointer;
                   display: flex;

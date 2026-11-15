@@ -10,6 +10,11 @@ import {
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ChampionshipService } from '../../services/championship-service';
+import {
+  COUNTRY_OPTIONS,
+  CountryOption,
+  getCountryFlag as countryFlagUrl,
+} from '../../utils/countries';
 
 @Component({
   selector: 'app-championship-edit',
@@ -29,28 +34,23 @@ export class ChampionshipEdit implements OnInit {
 
   types = ['LIGA', 'COPA'];
 
-  countries = [
-    'Argentina',
-    'Brasil',
-    'Uruguay',
-    'Chile',
-    'Colombia',
-    'Perú',
-    'Bolivia',
-    'Paraguay',
-    'Ecuador',
-    'Venezuela',
-    'México',
-    'Estados Unidos',
-    'España',
-    'Francia',
-    'Italia',
-    'Alemania',
-    'Inglaterra',
-    'Portugal',
-    'Países Bajos',
-    'Internacional',
-  ].sort();
+  // Misma lista de países y banderas que ChampionshipForm
+  countryOptions: CountryOption[] = COUNTRY_OPTIONS;
+  getCountryFlag = countryFlagUrl;
+
+  get selectedCountry(): string {
+    return this.champForm?.get('country')?.value || '';
+  }
+
+  get isKnownCountry(): boolean {
+    return this.countryOptions.some((c) => c.value === this.selectedCountry);
+  }
+
+  // Si el campeonato tiene un país que no está en la lista se muestra su nombre tal cual
+  get selectedCountryLabel(): string {
+    const value = this.selectedCountry;
+    return this.countryOptions.find((c) => c.value === value)?.label || value;
+  }
 
   isTypeOpen = false;
   isCountryOpen = false;
@@ -115,6 +115,7 @@ export class ChampionshipEdit implements OnInit {
 
   selectCountry(countryName: string) {
     this.champForm.get('country')?.setValue(countryName);
+    this.champForm.get('country')?.markAsTouched();
     this.isCountryOpen = false;
   }
 

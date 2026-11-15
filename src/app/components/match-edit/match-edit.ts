@@ -21,6 +21,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MatchService } from '../../services/match-service';
 import { TeamService } from '../../services/team-service';
 import { ChampionshipService } from '../../services/championship-service';
+import { PlayerService } from '../../services/player-service';
+import { Player } from '../../models/Player';
 import { Team } from '../../models/Team';
 import { Championship } from '../../models/Championship';
 import { GoalDetail, LineupPlayer, MatchLineups } from '../../models/Match';
@@ -50,6 +52,27 @@ interface PlayerOption {
   label: string;
 }
 
+// Jugador del plantel ya normalizado (dorsal según el equipo)
+interface RosterPlayer {
+  id?: number | string;
+  name: string;
+  number?: number;
+  position?: string;
+}
+
+// Incidencia lista para mostrar en la columna de su equipo
+interface TeamEvent {
+  index: number; // posición real dentro de this.incidences (para poder borrarla)
+  inc: MatchIncidence;
+  team: TeamSide | null;
+  player: string;
+  playerOut: string;
+  playerIn: string;
+  score?: string; // solo goles: cómo queda el resultado
+}
+
+const POSITION_ORDER: Record<string, number> = { ARQ: 0, POR: 0, DEF: 1, MED: 2, DEL: 3 };
+
 @Component({
   selector: 'app-match-edit',
   standalone: true,
@@ -67,7 +90,12 @@ export class MatchEdit implements OnInit {
   private matchService = inject(MatchService);
   private teamService = inject(TeamService);
   private championshipService = inject(ChampionshipService);
+  private playerService = inject(PlayerService);
   private cdr = inject(ChangeDetectorRef);
+
+  // Todos los jugadores (se piden una sola vez y se filtran por equipo)
+  private allPlayers: Player[] | null = null;
+  private pendingRosters: { teamId: number | string; type: TeamSide }[] = [];
 
   matchForm!: FormGroup;
   matchId: number | null = null;
@@ -87,8 +115,14 @@ export class MatchEdit implements OnInit {
     'Estadio Maracaná',
   ];
 
-  localTeamRoster: any[] = [];
-  awayTeamRoster: any[] = [];
+  localTeamRoster: RosterPlayer[] = [];
+  awayTeamRoster: RosterPlayer[] = [];
+  readonly MAX_STARTERS = 11;
+  readonly sides: TeamSide[] = ['local', 'away'];
+
+  // Desplegable de jugadores del plantel (Formaciones)
+  openRosterMenu: TeamSide | null = null;
+  rosterSelection: Record<TeamSide, string> = { local: '', away: '' };
 
   localGoalsDetail: GoalDetail[] = [];
   awayGoalsDetail: GoalDetail[] = [];
@@ -209,6 +243,16 @@ export class MatchEdit implements OnInit {
     this.today.setHours(0, 0, 0, 0);
     this.initForm();
 
+    this.playerService.getAllPlayers().subscribe({
+      next: (players: Player[]) => {
+        this.allPlayers = players || [];
+        // Planteles que se pidieron antes de que llegaran los jugadores
+        this.pendingRosters.forEach((r) => this.loadRosterForTeam(r.teamId, r.type));
+        this.pendingRosters = [];
+      },
+      error: (err) => console.error('Error al cargar jugadores:', err),
+    });
+
     this.teamService.getAllTeams().subscribe({
       next: (teams: Team[]) => {
         this.allTeams = teams;
@@ -293,6 +337,7 @@ export class MatchEdit implements OnInit {
     if (!target.closest('.stadium-group')) this.isStadiumDropdownOpen = false;
     if (!target.closest('.status-group')) this.isStatusOpen = false;
     if (!target.closest('.menu-dropdown')) this.openMenu = null;
+    if (!target.closest('.roster-dropdown')) this.openRosterMenu = null;
     if (!target.closest('.inc-player-group')) this.isIncPlayerOpen = false;
     if (!target.closest('.sub-out-group')) this.isSubOutOpen = false;
     if (!target.closest('.sub-in-group')) this.isSubInOpen = false;
@@ -363,24 +408,94 @@ export class MatchEdit implements OnInit {
     });
   }
 
+  // Los equipos no guardan sus jugadores: cada jugador apunta a su equipo con currentTeamID
   loadRosterForTeam(teamId: number | string | undefined, type: TeamSide) {
     if (!teamId) return;
-    this.teamService.getById(Number(teamId)).subscribe({
-      next: (teamData: any) => {
-        const players = teamData?.players || teamData?.plantel || [];
-        if (type === 'local') this.localTeamRoster = players;
-        else this.awayTeamRoster = players;
-        this.cdr.markForCheck();
-      },
-      error: () => {
-        const found = this.allTeams.find((t) => String(t.id) === String(teamId));
-        if (found && (found as any).players) {
-          if (type === 'local') this.localTeamRoster = (found as any).players;
-          else this.awayTeamRoster = (found as any).players;
-        }
-        this.cdr.markForCheck();
-      },
-    });
+
+    if (!this.allPlayers) {
+      this.pendingRosters = this.pendingRosters.filter((r) => r.type !== type);
+      this.pendingRosters.push({ teamId, type });
+      return;
+    }
+
+    const roster: RosterPlayer[] = this.allPlayers
+      .filter((p) => String(p.currentTeamID) === String(teamId))
+      .map((p) => ({
+        id: p.id,
+        name: p.name,
+        number: p.dorsals?.[Number(teamId)] ?? undefined,
+        position: p.position,
+      }))
+      .sort(
+        (a, b) =>
+          (POSITION_ORDER[a.position || ''] ?? 9) - (POSITION_ORDER[b.position || ''] ?? 9) ||
+          (a.number ?? 999) - (b.number ?? 999) ||
+          a.name.localeCompare(b.name, 'es'),
+      );
+
+    if (type === 'local') this.localTeamRoster = roster;
+    else this.awayTeamRoster = roster;
+    this.cdr.markForCheck();
+  }
+
+  // Jugadores del plantel que todavía no están en la formación (para el selector)
+  availableRoster(team: TeamSide): RosterPlayer[] {
+    const used = new Set(
+      [...this.startersOf(team), ...this.substitutesOf(team)].map((p) => this.playerName(p)),
+    );
+    return this.rosterOf(team).filter((p) => !used.has(p.name));
+  }
+
+  toggleRosterMenu(side: TeamSide, event: MouseEvent) {
+    event.stopPropagation();
+    this.openRosterMenu = this.openRosterMenu === side ? null : side;
+    this.openMenu = null;
+  }
+
+  selectRosterPlayer(side: TeamSide, name: string) {
+    this.rosterSelection[side] = name;
+    this.openRosterMenu = null;
+  }
+
+  rosterSelectionLabel(side: TeamSide): string {
+    const name = this.rosterSelection[side];
+    if (!name) {
+      return this.availableRoster(side).length
+        ? 'Seleccionar jugador del plantel...'
+        : 'No quedan jugadores disponibles';
+    }
+    const p = this.rosterOf(side).find((r) => r.name === name);
+    return (p?.number ? `#${p.number} · ` : '') + name + (p?.position ? ` (${p.position})` : '');
+  }
+
+  addSelectedToLineup(side: TeamSide, listType: 'starters' | 'substitutes') {
+    const name = this.rosterSelection[side];
+    if (!name) return;
+    this.addLineupPlayer(side, listType, name);
+    this.rosterSelection[side] = '';
+  }
+
+  startersList(team: TeamSide): LineupPlayer[] {
+    return this.startersOf(team);
+  }
+
+  substitutesList(team: TeamSide): LineupPlayer[] {
+    return this.substitutesOf(team);
+  }
+
+  hasRosterTeam(team: TeamSide): boolean {
+    return !!(team === 'local'
+      ? this.matchForm.get('localTeamID')?.value
+      : this.matchForm.get('awayTeamID')?.value);
+  }
+
+  displayTeamName(team: TeamSide): string {
+    return this.teamName(team) || (team === 'local' ? 'Equipo local' : 'Equipo visitante');
+  }
+
+  teamShield(team: TeamSide): string {
+    const id = this.matchForm.get(team === 'local' ? 'localTeamID' : 'awayTeamID')?.value;
+    return this.allTeams.find((t) => String(t.id) === String(id))?.shield || '';
   }
 
   tryResolveNames() {
@@ -416,7 +531,7 @@ export class MatchEdit implements OnInit {
     return (n ? `#${n} - ` : '') + this.playerName(p);
   }
 
-  private rosterOf(team: TeamSide): any[] {
+  private rosterOf(team: TeamSide): RosterPlayer[] {
     return (team === 'local' ? this.localTeamRoster : this.awayTeamRoster) || [];
   }
 
@@ -432,23 +547,182 @@ export class MatchEdit implements OnInit {
     return (team === 'local' ? this.localSearchCtrl.value : this.visitorSearchCtrl.value) || '';
   }
 
+  // =====================================================================
+  // Lectura de incidencias (las cargadas antes solo tienen "text")
+  // =====================================================================
+  private normalize(s: string): string {
+    return (s || '')
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[̀-ͯ]/g, '')
+      .replace(/[^a-z0-9' ]/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+
+  /** "M. Falcón" coincide con "Matías Falcón" (mismo apellido e inicial). */
+  private nameMatches(a: string, b: string): boolean {
+    const na = this.normalize(a);
+    const nb = this.normalize(b);
+    if (!na || !nb) return false;
+    if (na === nb) return true;
+    const pa = na.split(' ');
+    const pb = nb.split(' ');
+    const sameSurname = pa[pa.length - 1] === pb[pb.length - 1];
+    const sameInitial = pa[0][0] === pb[0][0];
+    return (
+      sameSurname &&
+      sameInitial &&
+      (pa.length === 1 || pb.length === 1 || pa[0].length <= 2 || pb[0].length <= 2)
+    );
+  }
+
+  /** "Vélez" coincide con "Vélez Sarsfield", "Newell's" con "Newell's Old Boys", etc. */
+  private sideByTeamName(name: string): TeamSide | null {
+    const n = this.normalize(name);
+    if (!n) return null;
+    for (const side of this.sides) {
+      const t = this.normalize(this.teamName(side));
+      if (t && (t === n || t.includes(n) || n.includes(t))) return side;
+    }
+    return null;
+  }
+
+  private sideByPlayer(name: string): TeamSide | null {
+    if (!name) return null;
+    for (const side of this.sides) {
+      const pool = [...this.startersOf(side), ...this.substitutesOf(side), ...this.rosterOf(side)];
+      if (pool.some((p) => this.nameMatches(this.playerName(p), name))) return side;
+    }
+    return null;
+  }
+
+  /** Datos de la incidencia: los campos propios o, si no están, sacados del texto. */
+  private parseIncidence(inc: MatchIncidence): {
+    team: TeamSide | null;
+    player: string;
+    playerOut: string;
+    playerIn: string;
+  } {
+    const text = (inc.text || '').trim();
+    let player = inc.player || '';
+    let playerOut = inc.playerOut || '';
+    let playerIn = inc.playerIn || '';
+    let teamHint = '';
+    let m: RegExpMatchArray | null;
+
+    if (inc.type === 'GOAL' && !player) {
+      if ((m = text.match(/^Gol de (.+?)\s*\(/i)) || (m = text.match(/^Gol de (.+)$/i)))
+        player = m[1];
+    } else if (inc.type === 'YELLOW_CARD' || inc.type === 'RED_CARD') {
+      if (!player) {
+        if ((m = text.match(/^Tarjeta \w+ (?:a|para) (.+?)\s*\((.+)\)$/i))) {
+          player = m[1];
+          teamHint = m[2];
+        } else if ((m = text.match(/^Tarjeta \w+ (?:a|para) (.+)$/i))) {
+          player = m[1];
+        } else if ((m = text.match(/^Tarjeta \w+ en (.+)$/i))) {
+          teamHint = m[1];
+        }
+      }
+    } else if (inc.type === 'SUBSTITUTION' && (!playerOut || !playerIn)) {
+      if ((m = text.match(/^Cambio en (.+?):\s*Entra (.+?),\s*sale (.+)$/i))) {
+        teamHint = m[1];
+        playerIn = m[2];
+        playerOut = m[3];
+      } else if ((m = text.match(/^Sale (.+?),\s*entra (.+)$/i))) {
+        playerOut = m[1];
+        playerIn = m[2];
+      }
+    }
+
+    let team: TeamSide | null = inc.team || null;
+    if (!team && teamHint) team = this.sideByTeamName(teamHint);
+    if (!team && inc.type === 'GOAL' && player) {
+      const inLocal = this.localGoalsDetail.some(
+        (g) => g.minute === inc.minute && this.nameMatches(g.player, player),
+      );
+      const inAway = this.awayGoalsDetail.some(
+        (g) => g.minute === inc.minute && this.nameMatches(g.player, player),
+      );
+      if (inLocal !== inAway) team = inLocal ? 'local' : 'away';
+    }
+    if (!team) team = this.sideByPlayer(player || playerOut || playerIn);
+
+    return { team, player, playerOut, playerIn };
+  }
+
   /** Expulsado: tiene roja, o ya acumuló 2 amarillas. */
   isSentOff(team: TeamSide, name: string): boolean {
-    const mine = this.incidences.filter((i) => i.team === team && i.player === name);
-    if (mine.some((i) => i.type === 'RED_CARD')) return true;
-    return mine.filter((i) => i.type === 'YELLOW_CARD').length >= 2;
+    const mine = this.incidences
+      .map((i) => ({ i, d: this.parseIncidence(i) }))
+      .filter((x) => x.d.team === team && this.nameMatches(x.d.player, name));
+    if (mine.some((x) => x.i.type === 'RED_CARD')) return true;
+    return mine.filter((x) => x.i.type === 'YELLOW_CARD').length >= 2;
   }
 
   private hasLeftPitch(team: TeamSide, name: string): boolean {
-    return this.incidences.some(
-      (i) => i.type === 'SUBSTITUTION' && i.team === team && i.playerOut === name,
-    );
+    return this.incidences.some((i) => {
+      if (i.type !== 'SUBSTITUTION') return false;
+      const d = this.parseIncidence(i);
+      return d.team === team && this.nameMatches(d.playerOut, name);
+    });
   }
 
   private hasEnteredPitch(team: TeamSide, name: string): boolean {
-    return this.incidences.some(
-      (i) => i.type === 'SUBSTITUTION' && i.team === team && i.playerIn === name,
-    );
+    return this.incidences.some((i) => {
+      if (i.type !== 'SUBSTITUTION') return false;
+      const d = this.parseIncidence(i);
+      return d.team === team && this.nameMatches(d.playerIn, name);
+    });
+  }
+
+  // =====================================================================
+  // Eventos agrupados por equipo (para las listas de Incidencias y Sustituciones)
+  // =====================================================================
+  private get allEvents(): TeamEvent[] {
+    const events: TeamEvent[] = this.incidences.map((inc, index) => {
+      const d = this.parseIncidence(inc);
+      return { index, inc, ...d };
+    });
+
+    // Resultado parcial de cada gol, recorriendo los goles en orden de minuto
+    let local = 0;
+    let away = 0;
+    events
+      .filter((e) => e.inc.type === 'GOAL')
+      .sort((a, b) => a.inc.minute - b.inc.minute || a.index - b.index)
+      .forEach((e) => {
+        if (e.team === 'local') local++;
+        else if (e.team === 'away') away++;
+        else {
+          // Sin equipo conocido: se usa el resultado que traía el texto, si lo tiene
+          const m = (e.inc.text || '').match(/\((\d+)\s*[-–]\s*(\d+)\)/);
+          if (m) {
+            local = Number(m[1]);
+            away = Number(m[2]);
+          }
+        }
+        e.score = `${local} - ${away}`;
+      });
+
+    return events.sort((a, b) => a.inc.minute - b.inc.minute || a.index - b.index);
+  }
+
+  teamIncidenceEvents(side: TeamSide): TeamEvent[] {
+    return this.allEvents.filter((e) => e.inc.type !== 'SUBSTITUTION' && e.team === side);
+  }
+
+  teamSubstitutionEvents(side: TeamSide): TeamEvent[] {
+    return this.allEvents.filter((e) => e.inc.type === 'SUBSTITUTION' && e.team === side);
+  }
+
+  get unassignedIncidenceEvents(): TeamEvent[] {
+    return this.allEvents.filter((e) => e.inc.type !== 'SUBSTITUTION' && !e.team);
+  }
+
+  get unassignedSubstitutionEvents(): TeamEvent[] {
+    return this.allEvents.filter((e) => e.inc.type === 'SUBSTITUTION' && !e.team);
   }
 
   private filterByQuery(items: PlayerOption[], selectedName: string, query: string | null) {
@@ -457,56 +731,115 @@ export class MatchEdit implements OnInit {
     return q ? items.filter((i) => i.label.toLowerCase().includes(q)) : items;
   }
 
-  // Candidatos para Gol / Amarilla / Roja: plantel del equipo elegido, sin expulsados
-  get incPlayerCandidates(): PlayerOption[] {
-    const team = this.newIncidenceTeam;
-    const items = this.rosterOf(team)
-      .map((p) => ({ name: this.playerName(p), label: this.playerLabel(p) }))
+  private toOption(p: LineupPlayer): PlayerOption {
+    return { name: this.playerName(p), label: this.playerLabel(p) };
+  }
+
+  /** Citados: titulares + suplentes, sin expulsados (roja o doble amarilla). */
+  private calledUpOptions(team: TeamSide): PlayerOption[] {
+    return [...this.startersOf(team), ...this.substitutesOf(team)]
+      .map((p) => this.toOption(p))
       .filter((c) => c.name && !this.isSentOff(team, c.name));
-    return this.filterByQuery(items, this.newIncidencePlayer, this.incPlayerSearchCtrl.value);
   }
 
-  // Candidatos que SALEN: solo titulares, sin expulsados y sin haber salido ya
+  /**
+   * En cancha: titulares que no salieron + suplentes que entraron y no volvieron a salir,
+   * sin expulsados.
+   */
+  private onPitchOptions(team: TeamSide): PlayerOption[] {
+    const starters = this.startersOf(team)
+      .map((p) => this.toOption(p))
+      .filter((c) => c.name && !this.hasLeftPitch(team, c.name));
+    const enteredSubs = this.substitutesOf(team)
+      .map((p) => this.toOption(p))
+      .filter(
+        (c) => c.name && this.hasEnteredPitch(team, c.name) && !this.hasLeftPitch(team, c.name),
+      );
+    return [...starters, ...enteredSubs].filter((c) => !this.isSentOff(team, c.name));
+  }
+
+  /** En el banco: suplentes que nunca entraron, sin expulsados. */
+  private benchOptions(team: TeamSide): PlayerOption[] {
+    return this.substitutesOf(team)
+      .map((p) => this.toOption(p))
+      .filter(
+        (c) =>
+          c.name &&
+          !this.hasEnteredPitch(team, c.name) &&
+          !this.hasLeftPitch(team, c.name) &&
+          !this.isSentOff(team, c.name),
+      );
+  }
+
+  // Amarilla / Roja: todos los citados. Gol: solo los que están en cancha.
+  private incPlayerPool(): PlayerOption[] {
+    const team = this.newIncidenceTeam;
+    return this.newIncidenceType === 'GOAL'
+      ? this.onPitchOptions(team)
+      : this.calledUpOptions(team);
+  }
+
+  get incPlayerCandidates(): PlayerOption[] {
+    return this.filterByQuery(
+      this.incPlayerPool(),
+      this.newIncidencePlayer,
+      this.incPlayerSearchCtrl.value,
+    );
+  }
+
+  // Sale: jugadores que están en cancha en este momento
   get subOutCandidates(): PlayerOption[] {
-    const team = this.newSubTeam;
-    const items = this.startersOf(team)
-      .map((p) => ({ name: this.playerName(p), label: this.playerLabel(p) }))
-      .filter((c) => c.name && !this.isSentOff(team, c.name) && !this.hasLeftPitch(team, c.name));
-    return this.filterByQuery(items, this.newSubOut, this.subOutSearchCtrl.value);
+    return this.filterByQuery(
+      this.onPitchOptions(this.newSubTeam),
+      this.newSubOut,
+      this.subOutSearchCtrl.value,
+    );
   }
 
-  // Candidatos que ENTRAN: solo suplentes que todavía no ingresaron
+  // Entra: suplentes que siguen en el banco (nunca entraron ni salieron)
   get subInCandidates(): PlayerOption[] {
-    const team = this.newSubTeam;
-    const items = this.substitutesOf(team)
-      .map((p) => ({ name: this.playerName(p), label: this.playerLabel(p) }))
-      .filter((c) => c.name && !this.hasEnteredPitch(team, c.name));
-    return this.filterByQuery(items, this.newSubIn, this.subInSearchCtrl.value);
+    return this.filterByQuery(
+      this.benchOptions(this.newSubTeam),
+      this.newSubIn,
+      this.subInSearchCtrl.value,
+    );
   }
 
-  // Listados para el template (con el índice real dentro de this.incidences)
-  get incidenceEntries() {
-    return this.incidences
-      .map((inc, index) => ({ inc, index }))
-      .filter((e) => e.inc.type !== 'SUBSTITUTION');
-  }
-
-  get substitutionEntries() {
-    return this.incidences
-      .map((inc, index) => ({ inc, index }))
-      .filter((e) => e.inc.type === 'SUBSTITUTION');
+  get incPlayerEmptyText(): string {
+    if (
+      !this.startersOf(this.newIncidenceTeam).length &&
+      !this.substitutesOf(this.newIncidenceTeam).length
+    ) {
+      return 'Primero cargá la formación de este equipo';
+    }
+    return this.newIncidenceType === 'GOAL'
+      ? 'No hay jugadores en cancha disponibles'
+      : 'No hay jugadores citados disponibles';
   }
 
   private validMinute(m: number | null): boolean {
     return m !== null && Number(m) >= 1 && Number(m) <= 120;
   }
 
+  // Además de estar elegido, el jugador tiene que seguir siendo válido
+  // (por ejemplo, si lo expulsaron después de elegirlo)
   get canAddIncidence(): boolean {
-    return this.validMinute(this.newIncidenceMinute) && !!this.newIncidencePlayer;
+    return (
+      this.validMinute(this.newIncidenceMinute) &&
+      !!this.newIncidencePlayer &&
+      this.incPlayerPool().some((c) => c.name === this.newIncidencePlayer)
+    );
   }
 
   get canAddSubstitution(): boolean {
-    return this.validMinute(this.newSubMinute) && !!this.newSubOut && !!this.newSubIn;
+    const team = this.newSubTeam;
+    return (
+      this.validMinute(this.newSubMinute) &&
+      !!this.newSubOut &&
+      !!this.newSubIn &&
+      this.onPitchOptions(team).some((c) => c.name === this.newSubOut) &&
+      this.benchOptions(team).some((c) => c.name === this.newSubIn)
+    );
   }
 
   // =====================================================================
@@ -521,6 +854,13 @@ export class MatchEdit implements OnInit {
   selectIncidenceType(type: IncidenceKind) {
     this.newIncidenceType = type;
     this.openMenu = null;
+    // Al cambiar a Gol la lista se achica: si el elegido ya no está en cancha se descarta
+    if (
+      this.newIncidencePlayer &&
+      !this.incPlayerPool().some((c) => c.name === this.newIncidencePlayer)
+    ) {
+      this.resetIncidencePlayer();
+    }
   }
 
   selectIncidenceTeam(team: TeamSide) {
@@ -636,14 +976,17 @@ export class MatchEdit implements OnInit {
     const inc = this.incidences[index];
     if (!inc) return;
 
-    // Si era un gol cargado desde acá, también se descuenta del marcador
-    if (inc.type === 'GOAL' && inc.team && inc.player) {
-      const list = inc.team === 'local' ? this.localGoalsDetail : this.awayGoalsDetail;
-      const i = list.findIndex((g) => g.minute === inc.minute && g.player === inc.player);
+    // Si era un gol, también se descuenta del marcador
+    const d = this.parseIncidence(inc);
+    if (inc.type === 'GOAL' && d.team && d.player) {
+      const list = d.team === 'local' ? this.localGoalsDetail : this.awayGoalsDetail;
+      const i = list.findIndex(
+        (g) => g.minute === inc.minute && this.nameMatches(g.player, d.player),
+      );
       if (i > -1) {
         list.splice(i, 1);
         this.matchForm.patchValue(
-          inc.team === 'local'
+          d.team === 'local'
             ? { localGoals: this.localGoalsDetail.length }
             : { awayGoals: this.awayGoalsDetail.length },
         );
@@ -657,23 +1000,19 @@ export class MatchEdit implements OnInit {
   // =====================================================================
   // Alineaciones
   // =====================================================================
-  addLineupPlayer(teamType: TeamSide, listType: 'starters' | 'substitutes', selected: any) {
-    if (!selected) return;
+  addLineupPlayer(teamType: TeamSide, listType: 'starters' | 'substitutes', selectedName: string) {
+    if (!selectedName) return;
 
-    // El <select> entrega el texto de la opción: se busca el jugador en el plantel
-    let playerObj = selected;
-    if (typeof selected === 'string') {
-      const text = selected.trim();
-      playerObj = this.rosterOf(teamType).find(
-        (p) => this.playerLabel(p) === text || this.playerName(p) === text,
-      );
-      if (!playerObj) return;
-    }
+    // El <select> entrega el nombre del jugador: se busca en el plantel
+    const playerObj = this.rosterOf(teamType).find((p) => p.name === selectedName);
+    if (!playerObj) return;
+
+    if (listType === 'starters' && this.startersOf(teamType).length >= this.MAX_STARTERS) return;
 
     const item: LineupPlayer = {
-      number: playerObj.number || playerObj.dorsal,
-      name: playerObj.name || playerObj.nombre,
-      position: playerObj.position || playerObj.posicion,
+      number: playerObj.number,
+      name: playerObj.name,
+      position: playerObj.position,
     };
 
     // Un jugador no puede estar dos veces en la alineación del mismo equipo
@@ -849,6 +1188,12 @@ export class MatchEdit implements OnInit {
 
   selectLocalTeam(team: Team) {
     if (!team.id) return;
+    // Si cambia el equipo, la formación anterior ya no corresponde
+    if (String(this.matchForm.get('localTeamID')?.value) !== String(team.id)) {
+      this.lineups.local = [];
+      this.lineups.localSubstitutes = [];
+      this.rosterSelection.local = '';
+    }
     this.matchForm.get('localTeamID')?.setValue(team.id);
     this.localSearchCtrl.setValue(team.name, { emitEvent: false });
     this.isLocalDropdownOpen = false;
@@ -857,6 +1202,11 @@ export class MatchEdit implements OnInit {
 
   selectVisitorTeam(team: Team) {
     if (!team.id) return;
+    if (String(this.matchForm.get('awayTeamID')?.value) !== String(team.id)) {
+      this.lineups.away = [];
+      this.lineups.awaySubstitutes = [];
+      this.rosterSelection.away = '';
+    }
     this.matchForm.get('awayTeamID')?.setValue(team.id);
     this.visitorSearchCtrl.setValue(team.name, { emitEvent: false });
     this.isVisitorDropdownOpen = false;

@@ -8,11 +8,11 @@
   width: 100% !important;
   margin: 2.5rem auto !important;
   padding: 2.5rem;
-  background: linear-gradient(180deg, #071528 0%, #040e1d 100%);
-  border: 1px solid #4a290c;
+  background: linear-gradient(180deg, var(--surface-card) 0%, var(--surface-1) 100%);
+  border: 1px solid var(--warm-border);
   border-radius: 20px;
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
-  color: #fff;
+  box-shadow: 0 16px 40px rgba(var(--shadow-rgb), calc(0.5 * var(--shadow-k)));
+  color: var(--text-strong);
   font-family:
     'Plus Jakarta Sans',
     -apple-system,
@@ -28,7 +28,7 @@
   gap: 16px;
   margin-bottom: 2rem;
   padding-bottom: 1.2rem;
-  border-bottom: 1px solid #2b1d14;
+  border-bottom: 1px solid var(--warm-2);
 }
 
 .form-icon-box {
@@ -48,13 +48,13 @@
   font-size: 1.5rem;
   font-weight: 700;
   margin: 0;
-  color: #ffffff;
+  color: var(--text-strong);
 }
 
 .form-header p {
   margin: 4px 0 0;
   font-size: 0.9rem;
-  color: #7d96b3;
+  color: var(--text-muted);
 }
 
 .team-form {
@@ -80,7 +80,7 @@
   font-size: 0.85rem;
   font-weight: 600;
   margin-bottom: 0.5rem;
-  color: #ffffff;
+  color: var(--text-strong);
 }
 
 .required {
@@ -94,9 +94,9 @@
   width: 100%;
   height: 46px;
   padding: 0 16px;
-  background: linear-gradient(180deg, #071a33 0%, #051428 100%);
-  color: #ffffff;
-  border: 1px solid #4a290c;
+  background: linear-gradient(180deg, var(--surface-raised) 0%, var(--surface-raised-2) 100%);
+  color: var(--text-strong);
+  border: 1px solid var(--warm-border);
   border-radius: 10px;
   font-size: 0.95rem;
   font-family: inherit;
@@ -108,7 +108,7 @@
 .form-group input:hover,
 .dropdown-trigger:hover {
   border-color: #ff6b00;
-  background: linear-gradient(180deg, #1c1511 0%, #0e121a 100%);
+  background: linear-gradient(180deg, var(--warm-hover-1) 0%, var(--warm-hover-2) 100%);
   box-shadow: 0 0 12px rgba(255, 107, 0, 0.2);
   transform: translateY(-1px);
 }
@@ -117,7 +117,7 @@
 .dropdown-trigger:focus,
 .custom-dropdown.open .dropdown-trigger {
   border-color: #ff6b00;
-  background: linear-gradient(180deg, #1c1511 0%, #0e121a 100%);
+  background: linear-gradient(180deg, var(--warm-hover-1) 0%, var(--warm-hover-2) 100%);
   box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.25);
   transform: translateY(-1px);
 }
@@ -136,7 +136,7 @@
 }
 
 .dropdown-trigger .placeholder {
-  color: #637d9d;
+  color: var(--text-faint);
 }
 
 .triangle-icon {
@@ -161,15 +161,15 @@
   width: 100%;
   max-height: 200px;
   overflow-y: auto;
-  background-color: #06182e;
-  border: 1px solid #4a290c;
+  background-color: var(--surface-card);
+  border: 1px solid var(--warm-border);
   border-radius: 12px;
   padding: 4px;
   margin: 0;
   list-style: none;
   z-index: 100;
   box-shadow:
-    0 12px 30px rgba(0, 0, 0, 0.65),
+    0 12px 30px rgba(var(--shadow-rgb), calc(0.65 * var(--shadow-k))),
     0 0 1px rgba(255, 107, 0, 0.15);
   backdrop-filter: blur(8px);
 }
@@ -178,7 +178,7 @@
   width: 4px;
 }
 .dropdown-menu::-webkit-scrollbar-thumb {
-  background: #3a2009;
+  background: var(--warm-6);
   border-radius: 4px;
 }
 .dropdown-menu::-webkit-scrollbar-thumb:hover {
@@ -188,7 +188,7 @@
 .dropdown-item {
   padding: 10px 14px;
   font-size: 0.9rem;
-  color: #c9d8eb;
+  color: var(--text-soft);
   border-radius: 8px;
   cursor: pointer;
   transition:
@@ -197,8 +197,64 @@
 }
 
 .dropdown-item:hover {
-  background-color: #381a05;
-  color: #ffffff;
+  background-color: var(--warm-3);
+  color: var(--text-strong);
+}
+
+/* ================= PAÍSES CON BANDERA (igual que ChampionshipForm) ================= */
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.dropdown-item.active {
+  background-color: var(--warm-5);
+  color: var(--text-strong);
+  font-weight: 600;
+}
+
+.dropdown-item-content {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.dropdown-flag-wrapper {
+  width: 22px;
+  height: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 3px;
+  overflow: hidden;
+  border: 1px solid rgba(var(--overlay-rgb), 0.15);
+  flex-shrink: 0;
+  box-shadow: 0 1px 3px rgba(var(--shadow-rgb), calc(0.2 * var(--shadow-k)));
+}
+
+.dropdown-flag-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Planeta para "Internacional" */
+.all-countries-icon {
+  font-size: 0.95rem;
+  width: 22px;
+  text-align: center;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.check-icon {
+  width: 16px;
+  height: 16px;
+  stroke: #ff6b00;
+  flex-shrink: 0;
 }
 
 /* Mensaje de error */
@@ -207,7 +263,7 @@
 }
 
 .error-text {
-  color: #fca5a5;
+  color: var(--danger-text);
   font-size: 0.78rem;
 }
 
@@ -231,13 +287,13 @@
 
 .btn-cancel {
   background-color: transparent;
-  border: 1px solid #4a280c;
-  color: #ffffff;
+  border: 1px solid var(--warm-border);
+  color: var(--text-strong);
 }
 
 .btn-cancel:hover {
   border-color: #ff6b00;
-  background-color: #1f1207;
+  background-color: var(--warm-1);
   box-shadow: 0 0 14px rgba(255, 107, 0, 0.25);
   transform: translateY(-1px);
 }
@@ -256,8 +312,8 @@
 }
 
 .btn-submit:disabled {
-  background: #2b1d14;
-  color: #735745;
+  background: var(--warm-2);
+  color: var(--text-warm-muted);
   box-shadow: none;
   cursor: not-allowed;
 }
@@ -265,5 +321,18 @@
 @media (max-width: 900px) {
   .team-form-container {
     padding: 1.5rem;
+  }
+}
+
+/* =====================================================================
+   CELULAR: campos de a uno y márgenes más chicos
+   ===================================================================== */
+@media (max-width: 600px) {
+  .team-form-container {
+    padding: 1.3rem 1rem;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
   }
 }

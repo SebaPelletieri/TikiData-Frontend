@@ -1,6 +1,7 @@
 import { Component, signal, computed, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { goToLogin } from '../../utils/auth-redirect';
 import { HttpClient } from '@angular/common/http';
 import { forkJoin } from 'rxjs';
 import { AuthService } from '../../services/auth-service';
@@ -16,6 +17,12 @@ export class ChampionshipDetail implements OnInit {
   private route = inject(ActivatedRoute);
   private http = inject(HttpClient);
   public authService = inject(AuthService);
+  private router = inject(Router);
+
+  /** Para el botón Seguir: sin sesión manda al login en lugar de seguir. */
+  isLoggedIn(): boolean {
+    return this.authService.isLoggedIn();
+  }
 
   private apiUrl = 'http://localhost:3000';
 
@@ -168,7 +175,7 @@ export class ChampionshipDetail implements OnInit {
         const champData = found || {
           id: 1,
           name: searchName.toUpperCase(),
-          logo: 'https://via.placeholder.com/24',
+          logo: 'https://placehold.co/24',
           country: 'Argentina',
           type: 'LIGA',
           season: '2026',
@@ -497,6 +504,12 @@ export class ChampionshipDetail implements OnInit {
   toggleFollow() {
     const user = (this.authService.currentUser as any)();
     const champ = this.championship();
+
+    // Sin sesión no se puede seguir: se manda al login y después se vuelve a esta página
+    if (!user || !user.id) {
+      goToLogin(this.router);
+      return;
+    }
 
     if (!user || !user.id || !champ) return;
 

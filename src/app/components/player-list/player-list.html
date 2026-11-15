@@ -134,8 +134,8 @@
             <td class="col-photo">
               <div class="avatar-wrapper">
                 <img
-                  [src]="player.photo || 'https://via.placeholder.com/80?text=Jugador'"
-                  (error)="$any($event.target).src = 'https://via.placeholder.com/80?text=Jugador'"
+                  [src]="player.photo || 'https://placehold.co/80?text=Jugador'"
+                  (error)="$any($event.target).src = 'https://placehold.co/80?text=Jugador'"
                   [alt]="player.name"
                   referrerpolicy="no-referrer"
                 />

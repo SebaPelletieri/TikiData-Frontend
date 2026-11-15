@@ -25,6 +25,7 @@
         class="btn-follow-champ"
         [class.following]="isFollowing()"
         (click)="toggleFollow()"
+        [title]="isLoggedIn() ? '' : 'Iniciá sesión para seguir'"
       >
         <span class="follow-icon">
           {{ isFollowing() ? '✓' : '+' }}

@@ -41,17 +41,58 @@
         <label for="nationality">Nacionalidad <span class="required">*</span></label>
         <div class="custom-dropdown" [class.open]="isCountryOpen">
           <button type="button" class="dropdown-trigger" (click)="toggleCountryDropdown($event)">
-            <span [class.placeholder]="!playerForm.get('nationality')?.value">
-              {{ playerForm.get('nationality')?.value || 'Seleccionar nacionalidad...' }}
-            </span>
+            <div class="dropdown-item-content">
+              @if (selectedNationality && isKnownNationality) {
+                <div class="dropdown-flag-wrapper">
+                  <img [src]="getCountryFlag(selectedNationality)" [alt]="selectedNationality" />
+                </div>
+              }
+              <span [class.placeholder]="!selectedNationality">
+                {{ selectedNationality || 'Seleccionar nacionalidad...' }}
+              </span>
+            </div>
             <span class="triangle-icon"></span>
           </button>
           @if (isCountryOpen) {
-            <ul class="dropdown-menu">
-              @for (c of countries; track c) {
-                <li class="dropdown-item" (click)="selectCountry(c)">
-                  <span>{{ c }}</span>
+            <ul class="dropdown-menu nationality-menu">
+              <li class="nationality-search">
+                <input
+                  type="text"
+                  placeholder="Buscar país..."
+                  autocomplete="off"
+                  [value]="nationalitySearch"
+                  (input)="nationalitySearch = $any($event.target).value"
+                  (click)="$event.stopPropagation()"
+                />
+              </li>
+              @for (c of filteredNationalities; track c.value) {
+                <li
+                  class="dropdown-item"
+                  [class.active]="selectedNationality === c.value"
+                  (click)="selectCountry(c.value)"
+                >
+                  <div class="dropdown-item-content">
+                    <div class="dropdown-flag-wrapper">
+                      <img [src]="getCountryFlag(c.value)" [alt]="c.label" loading="lazy" />
+                    </div>
+                    <span>{{ c.label }}</span>
+                  </div>
+                  @if (selectedNationality === c.value) {
+                    <svg
+                      class="check-icon"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                  }
                 </li>
+              } @empty {
+                <li class="nationality-empty">No se encontraron países</li>
               }
             </ul>
           }
@@ -63,7 +104,7 @@
         <label>Posición <span class="required">*</span></label>
         <div class="custom-dropdown" [class.open]="isPositionOpen">
           <button type="button" class="dropdown-trigger" (click)="togglePositionDropdown($event)">
-            <span [style.color]="playerForm.get('position')?.value ? '#ffffff' : '#637d9d'">
+            <span [style.color]="playerForm.get('position')?.value ? 'var(--text-strong)' : 'var(--text-faint)'">
               {{ selectedPositionLabel || 'Seleccionar posición...' }}
             </span>
             <span class="triangle-icon"></span>
@@ -94,7 +135,7 @@
           "
           (click)="toggleCalendar()"
         >
-          <span [style.color]="formattedBirthDate ? '#ffffff' : '#637d9d'">
+          <span [style.color]="formattedBirthDate ? 'var(--text-strong)' : 'var(--text-faint)'">
             {{ formattedBirthDate || 'Selecciona fecha' }}
           </span>
           <svg

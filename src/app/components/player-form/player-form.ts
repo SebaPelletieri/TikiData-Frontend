@@ -1,8 +1,14 @@
-import { Component, OnInit, inject, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, inject, Output, EventEmitter, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { PlayerService } from '../../services/player-service';
 import { Player, Position } from '../../models/Player';
+import {
+  CountryOption,
+  NATIONALITY_OPTIONS,
+  filterCountries,
+  getCountryFlag as countryFlagUrl,
+} from '../../utils/countries';
 
 interface CalendarDay {
   day: number;
@@ -37,6 +43,53 @@ export class PlayerForm implements OnInit {
   isPositionOpen: boolean = false;
   isFootOpen: boolean = false;
 
+  // Nacionalidad: lista de países del mundo con bandera y buscador
+  isNationalityOpen = false;
+  nationalitySearch = '';
+  getCountryFlag = countryFlagUrl;
+
+  get filteredNationalities(): CountryOption[] {
+    return filterCountries(NATIONALITY_OPTIONS, this.nationalitySearch);
+  }
+
+  get selectedNationality(): string {
+    return this.formulario?.controls['nationality'].value || '';
+  }
+
+  get isKnownNationality(): boolean {
+    return NATIONALITY_OPTIONS.some((c) => c.value === this.selectedNationality);
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent): void {
+    const target = event.target as HTMLElement;
+    if (this.isNationalityOpen && !target.closest('.nationality-group')) {
+      this.closeNationalityDropdown();
+    }
+  }
+
+  toggleNationalityDropdown(): void {
+    if (this.isNationalityOpen) {
+      this.closeNationalityDropdown();
+      return;
+    }
+    this.isNationalityOpen = true;
+    this.isPositionOpen = false;
+    this.isFootOpen = false;
+    this.isCalendarOpen = false;
+  }
+
+  private closeNationalityDropdown(): void {
+    this.isNationalityOpen = false;
+    this.nationalitySearch = '';
+    this.formulario.controls['nationality'].markAsTouched();
+  }
+
+  selectNationality(country: string): void {
+    this.formulario.controls['nationality'].setValue(country);
+    this.closeNationalityDropdown();
+  }
+
   isCalendarOpen: boolean = false;
   currentDate: Date = new Date();
   calendarDays: CalendarDay[] = [];
@@ -70,7 +123,7 @@ export class PlayerForm implements OnInit {
       position: ['', [Validators.required]],
       currentTeamID: [null],
       birthDate: ['', [Validators.required]],
-      nationality: ['', [Validators.required, Validators.minLength(3)]],
+      nationality: ['', [Validators.required]],
       preferredFoot: ['', [Validators.required]],
 
       // Estadísticas iniciales opcionales vacías por defecto (null)
@@ -101,6 +154,8 @@ export class PlayerForm implements OnInit {
     this.isCalendarOpen = false;
     this.isPositionOpen = false;
     this.isFootOpen = false;
+    this.isNationalityOpen = false;
+    this.nationalitySearch = '';
     this.closePanel.emit();
   }
 
@@ -116,6 +171,7 @@ export class PlayerForm implements OnInit {
   // --- CALENDARIO & EDAD ---
   toggleCalendar(): void {
     this.isCalendarOpen = !this.isCalendarOpen;
+    this.isNationalityOpen = false;
     this.isPositionOpen = false;
     this.isFootOpen = false;
 
@@ -220,6 +276,7 @@ export class PlayerForm implements OnInit {
   // --- DROPDOWNS ---
   togglePositionDropdown(): void {
     this.isPositionOpen = !this.isPositionOpen;
+    this.isNationalityOpen = false;
     this.isFootOpen = false;
     this.isCalendarOpen = false;
     if (!this.isPositionOpen) {
@@ -240,6 +297,7 @@ export class PlayerForm implements OnInit {
 
   toggleFootDropdown(): void {
     this.isFootOpen = !this.isFootOpen;
+    this.isNationalityOpen = false;
     this.isPositionOpen = false;
     this.isCalendarOpen = false;
     if (!this.isFootOpen) {

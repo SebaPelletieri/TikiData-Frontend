@@ -76,7 +76,6 @@ export class TeamForm implements OnInit {
     }
     this.playerService.getAll();
 
-    // Cargar jugadores del sistema para el buscador
     this.playerService.getAllPlayers().subscribe({
       next: (players) => {
         this.allSystemPlayers = players;
@@ -86,7 +85,6 @@ export class TeamForm implements OnInit {
 
     this.setupSearchFilters();
 
-    // Sanitizar dorsal en tiempo real (1 al 99)
     this.playerNumberCtrl.valueChanges.subscribe((val) => {
       if (val !== null && val !== undefined && val !== ('' as any)) {
         const num = Number(val);
@@ -145,7 +143,6 @@ export class TeamForm implements OnInit {
         this.selectedPlayerCandidate = null;
       }
 
-      // Filtramos únicamente jugadores libres (sin equipo/dorsales asignadas) y que no estén en la lista actual
       this.filteredPlayers = !q
         ? []
         : this.allSystemPlayers
@@ -167,7 +164,6 @@ export class TeamForm implements OnInit {
   isPlayerAdderValid(): boolean {
     const query = (this.playerSearchCtrl.value || '').trim().toLowerCase();
 
-    // Validar si hay un jugador seleccionado de la sugerencia o escrito de forma exacta
     const found =
       this.selectedPlayerCandidate ||
       this.allSystemPlayers.find(
@@ -220,7 +216,6 @@ export class TeamForm implements OnInit {
     this.errorMessage.set(null);
     this.playersList.push(toAdd);
 
-    // Limpiar campos de jugadores
     this.selectedPlayerCandidate = null;
     this.playerSearchCtrl.setValue('', { emitEvent: false });
     this.playerNumberCtrl.setValue(null);
@@ -242,8 +237,6 @@ export class TeamForm implements OnInit {
       playerIDs: this.playersList.map((p) => p.id),
     };
 
-    // Actualizamos los dorsales en los jugadores que se están uniendo al nuevo equipo
-    // (Opcional según cómo maneje tu API los dorsales al crear)
     this.teamService.saveTeam(teamActual);
     this.resetFormState();
     this.closePanel.emit();
@@ -264,6 +257,220 @@ export class TeamForm implements OnInit {
     this.playerNumberCtrl.setValue(null);
   }
 
+  // --- Función universal y robusta para banderas ---
+  getCountryFlag(countryName: string | number): string {
+    if (!countryName) return 'https://flagcdn.com/w40/xx.png';
+
+    const strCountry = String(countryName)
+      .toLowerCase()
+      .trim()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, ''); // Limpia tildes y espacios
+
+    // Diccionario universal exacto para evitar duplicaciones o errores
+    const countryIsoMap: Record<string, string> = {
+      afganistan: 'af',
+      albania: 'al',
+      alemania: 'de',
+      andorra: 'ad',
+      angola: 'ao',
+      'antigua y barbuda': 'ag',
+      'arabia saudita': 'sa',
+      argelia: 'dz',
+      argentina: 'ar',
+      armenia: 'am',
+      australia: 'au',
+      austria: 'at',
+      azerbaiyan: 'az',
+      bahamas: 'bs',
+      banglades: 'bd',
+      barbados: 'bb',
+      barein: 'bh',
+      belgica: 'be',
+      belice: 'bz',
+      benin: 'bj',
+      bielorrusia: 'by',
+      birmania: 'mm',
+      bolivia: 'bo',
+      'bosnia y herzegovina': 'ba',
+      botsuana: 'bw',
+      brasil: 'br',
+      brazil: 'br',
+      brunei: 'bn',
+      bulgaria: 'bg',
+      'burkina faso': 'bf',
+      burundi: 'bi',
+      butan: 'bt',
+      'cabo verde': 'cv',
+      camboya: 'kh',
+      camerun: 'cm',
+      canada: 'ca',
+      catar: 'qa',
+      chad: 'td',
+      chile: 'cl',
+      china: 'cn',
+      chipre: 'cy',
+      colombia: 'co',
+      comoras: 'km',
+      congo: 'cg',
+      'corea del norte': 'kp',
+      'corea del sur': 'kr',
+      'costa de marfil': 'ci',
+      'costa rica': 'cr',
+      croacia: 'hr',
+      cuba: 'cu',
+      dinamarca: 'dk',
+      dominica: 'dm',
+      ecuador: 'ec',
+      egipto: 'eg',
+      'el salvador': 'sv',
+      'emiratos arabes unidos': 'ae',
+      eritrea: 'er',
+      eslovaquia: 'sk',
+      eslovenia: 'si',
+      espana: 'es',
+      spain: 'es',
+      'estados unidos': 'us',
+      estonia: 'ee',
+      esuatini: 'sz',
+      etiopia: 'et',
+      filipinas: 'ph',
+      finlandia: 'fi',
+      fiyi: 'fj',
+      francia: 'fr',
+      gabon: 'ga',
+      gambia: 'gm',
+      georgia: 'ge',
+      ghana: 'gh',
+      granada: 'gd',
+      grecia: 'gr',
+      guatemala: 'gt',
+      guinea: 'gn',
+      'guinea ecuatorial': 'gq',
+      'guinea-bisau': 'gw',
+      guyana: 'gy',
+      haiti: 'ht',
+      honduras: 'hn',
+      hungria: 'hu',
+      india: 'in',
+      indonesia: 'id',
+      irak: 'iq',
+      iran: 'ir',
+      irlanda: 'ie',
+      islandia: 'is',
+      'islas marshall': 'mh',
+      'islas salomon': 'sb',
+      israel: 'il',
+      italia: 'it',
+      italy: 'it',
+      jamaica: 'jm',
+      japon: 'jp',
+      jordania: 'jo',
+      kazajistan: 'kz',
+      kenia: 'ke',
+      kirguistan: 'kg',
+      kiribati: 'ki',
+      kuwait: 'kw',
+      laos: 'la',
+      lesoto: 'ls',
+      letonia: 'lv',
+      libano: 'lb',
+      liberia: 'lr',
+      libia: 'ly',
+      liechtenstein: 'li',
+      lituania: 'lt',
+      luxemburgo: 'lu',
+      madagascar: 'mg',
+      malasia: 'my',
+      malaui: 'mw',
+      maldivas: 'mv',
+      mali: 'ml',
+      malta: 'mt',
+      marruecos: 'ma',
+      mauricio: 'mu',
+      mauritania: 'mr',
+      mexico: 'mx',
+      micronesia: 'fm',
+      moldavia: 'md',
+      monaco: 'mc',
+      mongolia: 'mn',
+      montenegro: 'me',
+      mozambique: 'mz',
+      namibia: 'na',
+      nauru: 'nr',
+      nepal: 'np',
+      nicaragua: 'ni',
+      niger: 'ne',
+      nigeria: 'ng',
+      noruega: 'no',
+      'nueva zelanda': 'nz',
+      oman: 'om',
+      'paises bajos': 'nl',
+      pakistan: 'pk',
+      palaos: 'pw',
+      panama: 'pa',
+      'papua nueva guinea': 'pg',
+      paraguay: 'py',
+      peru: 'pe',
+      polonia: 'pl',
+      portugal: 'pt',
+      'reino unido': 'gb',
+      inglaterra: 'gb-eng',
+      'republica centroafricana': 'cf',
+      'republica checa': 'cz',
+      'republica democratica del congo': 'cd',
+      'republica dominicana': 'do',
+      ruanda: 'rw',
+      rumania: 'ro',
+      rusia: 'ru',
+      samoa: 'ws',
+      'san cristobal y nieves': 'kn',
+      'san marino': 'sm',
+      'san vicente y las granadinas': 'vc',
+      'santa lucia': 'lc',
+      'santo tome y principe': 'st',
+      senegal: 'sn',
+      serbia: 'rs',
+      seychelles: 'sc',
+      'sierra leona': 'sl',
+      singapur: 'sg',
+      siria: 'sy',
+      somalia: 'so',
+      'sri lanka': 'lk',
+      sudafrica: 'za',
+      sudan: 'sd',
+      'sudan del sur': 'ss',
+      suecia: 'se',
+      suiza: 'ch',
+      surinam: 'sr',
+      tailandia: 'th',
+      tanzania: 'tz',
+      tayikistan: 'tj',
+      'timor oriental': 'tl',
+      togo: 'tg',
+      tonga: 'to',
+      'trinidad y tobago': 'tt',
+      tunez: 'tn',
+      turkmenistan: 'tm',
+      turquia: 'tr',
+      tuvalu: 'tv',
+      ucrania: 'ua',
+      uganda: 'ug',
+      uruguay: 'uy',
+      uzbekistan: 'uz',
+      vanuatu: 'vu',
+      vaticano: 'va',
+      venezuela: 've',
+      vietnam: 'vn',
+      yemen: 'ye',
+      yibuti: 'dj',
+      zambia: 'zm',
+      zimbabue: 'zw',
+    };
+
+    const isoCode = countryIsoMap[strCountry] || 'xx';
+    return `https://flagcdn.com/w40/${isoCode}.png`;
+  }
   // --- Países ---
   countries = [
     'Afganistán',

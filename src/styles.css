@@ -1,14 +1,163 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
+/* ==========================================================================
+   VARIABLES DE TEMA
+   --------------------------------------------------------------------------
+   Todos los componentes usan estas variables en lugar de colores fijos.
+   :root tiene los valores del tema oscuro (el original) y body.light-theme
+   los reemplaza por los del tema claro. Para cambiar un color en todo el
+   proyecto alcanza con tocarlo acá.
+   ========================================================================== */
 :root {
   --font-main: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-  --bg-app: #040e1e;
-  --bg-card: #06182e;
-  --border-color: #143560;
+
+  /* Marca (igual en los dos temas) */
   --brand-blue: #38bdf8;
   --brand-orange: #ff6b00;
-  --text-primary: #ffffff;
-  --text-secondary: #7d96b3;
+  --brand-orange-text: #ff6b00; /* naranja para textos (más oscuro en el tema claro) */
+
+  /* Fondos, de más profundo a más elevado */
+  --bg-app: #040e1e;
+  --surface-0: #030d1a; /* huecos: círculos de logos, pozos */
+  --surface-1: #040e1e; /* inputs, barras */
+  --surface-card: #06182e; /* tarjetas y paneles */
+  --surface-card-2: #041224; /* final del degradé de las tarjetas */
+  --surface-raised: #071a33; /* inputs con degradé (inicio) */
+  --surface-raised-2: #051428; /* inputs con degradé (final) */
+  --surface-3: #0b1a2f;
+  --surface-4: #1e293b;
+
+  /* Tonos cálidos (hovers y estados activos con naranja) */
+  --warm-hover-1: #1c1511;
+  --warm-hover-2: #0e121a;
+  --warm-1: #1f1207;
+  --warm-2: #2b1d14;
+  --warm-3: #381a05; /* hover de opciones en desplegables */
+  --warm-4: #45220c;
+  --warm-5: #572906; /* opción elegida en desplegables */
+  --warm-6: #3a2009; /* barras de scroll de los desplegables */
+  --warm-border: #4a290c; /* bordes naranja oscuro */
+
+  /* Bordes */
+  --border: #143560;
+  --border-2: #1a3154;
+  --border-3: #1e497e;
+  --border-rgb: 49, 93, 148; /* para bordes translúcidos: rgba(var(--border-rgb), .45) */
+
+  /* Textos */
+  --text-strong: #ffffff;
+  --text-soft: #c9d8eb;
+  --text-muted: #7d96b3;
+  --text-muted-2: #94a3b8;
+  --text-faint: #637d9d;
+  --text-warm-muted: #735745;
+  --danger-text: #fca5a5;
+  --danger-bg: #1f0d14; /* fondo de cajas de error */
+  --text-warm: #ffd8bd; /* texto sobre fondos naranja oscuro */
+
+  /* Acentos de texto (pastel en el oscuro, más saturados en el claro) */
+  --accent-blue: #93c5fd;
+  --accent-sky: #7dd3fc;
+  --accent-green: #86efac;
+  --accent-yellow: #fde047;
+  --accent-orange: #fdba74;
+
+  /* Sombras y brillos */
+  --shadow-rgb: 0, 0, 0;
+  --shadow-k: 1; /* intensidad de las sombras */
+  --overlay-rgb: 255, 255, 255; /* brillos y líneas translúcidas */
+
+  /* Navbar (fondo translúcido de la barra / isla) */
+  --nav-rgb: 4, 19, 38;
+  /* Fondos translúcidos de tarjetas/velos y tono cálido translúcido */
+  --card-rgb: 6, 24, 46;
+  --warm-rgb: 69, 34, 12;
+  /* Velo sobre las fotos de los banners (ej. estadio en el detalle de equipo) */
+  --banner-rgb: 4, 14, 30;
+
+  /* Barra de scroll */
+  --scrollbar-track: #030d1a;
+  --scrollbar-thumb-1: #143560;
+  --scrollbar-thumb-2: #1e4d88;
+
+  color-scheme: dark;
+}
+
+/* ==========================================================================
+   TEMA CLARO
+   --------------------------------------------------------------------------
+   También se aplica a <html> (con :has) porque la barra de scroll de la
+   página pertenece a <html>, y su scrollbar-color se hereda a todos los
+   elementos con scroll (por ejemplo, la lista del buscador del navbar).
+   ========================================================================== */
+:root:has(body.light-theme),
+body.light-theme {
+  --bg-app: #f1f5f9;
+  --brand-orange-text: #e05200;
+  --surface-0: #e8edf4;
+  --surface-1: #ffffff;
+  --surface-card: #ffffff;
+  --surface-card-2: #f8fafc;
+  --surface-raised: #ffffff;
+  --surface-raised-2: #f8fafc;
+  --surface-3: #f1f5f9;
+  --surface-4: #e2e8f0;
+
+  --warm-hover-1: #fff7ed;
+  --warm-hover-2: #fff3e6;
+  --warm-1: #fff7ed;
+  --warm-2: #ffedd5;
+  --warm-3: #ffedd5;
+  --warm-4: #fed7aa;
+  --warm-5: #fed7aa;
+  --warm-6: #fdba74;
+  --warm-border: #fcd2ad;
+
+  --border: #d5dde8;
+  --border-2: #d5dde8;
+  --border-3: #94a3b8;
+  --border-rgb: 100, 116, 139;
+
+  --text-strong: #0f172a;
+  --text-soft: #334155;
+  --text-muted: #5b6b82;
+  --text-muted-2: #64748b;
+  --text-faint: #94a3b8;
+  --text-warm-muted: #9a6b4f;
+  --danger-text: #dc2626;
+  --danger-bg: #fef2f2;
+  --text-warm: #c2410c;
+
+  --accent-blue: #2563eb;
+  --accent-sky: #0284c7;
+  --accent-green: #16a34a;
+  --accent-yellow: #b45309;
+  --accent-orange: #ea580c;
+
+  --shadow-rgb: 15, 23, 42;
+  --shadow-k: 0.28;
+  --overlay-rgb: 15, 23, 42;
+
+  --nav-rgb: 255, 255, 255;
+  --card-rgb: 255, 255, 255;
+  --warm-rgb: 253, 186, 116;
+  --banner-rgb: 241, 245, 249;
+
+  --scrollbar-track: #eef2f7;
+  --scrollbar-thumb-1: #cbd5e1;
+  --scrollbar-thumb-2: #b6c2d2;
+
+  color-scheme: light;
+}
+
+/* Nombres anteriores de algunas variables. Se declaran sobre body (y no en :root)
+   para que se recalculen con el tema activo; si estuvieran en :root quedarían
+   siempre con el valor oscuro. */
+body {
+  --bg-card: var(--surface-card);
+  --border-color: var(--border);
+  --text-primary: var(--text-strong);
+  --text-secondary: var(--text-muted);
 }
 
 *,
@@ -26,6 +175,9 @@ body {
   color: var(--text-primary);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition:
+    background-color 0.25s ease,
+    color 0.25s ease;
 }
 
 /* Herencia uniforme de tipografía */
@@ -43,7 +195,7 @@ textarea {
 /* Firefox */
 html {
   scrollbar-width: thin;
-  scrollbar-color: #1a4175 #030d1a;
+  scrollbar-color: var(--scrollbar-thumb-2) var(--scrollbar-track);
 }
 
 /* Chrome, Edge, Safari, Brave */
@@ -53,14 +205,14 @@ html {
 }
 
 ::-webkit-scrollbar-track {
-  background-color: #030d1a;
-  border-left: 1px solid rgba(20, 53, 96, 0.4);
+  background-color: var(--scrollbar-track);
+  border-left: 1px solid rgba(var(--border-rgb), 0.3);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #143560 0%, #1e4d88 100%);
+  background: linear-gradient(180deg, var(--scrollbar-thumb-1) 0%, var(--scrollbar-thumb-2) 100%);
   border-radius: 8px;
-  border: 2px solid #030d1a;
+  border: 2px solid var(--scrollbar-track);
   transition: background 0.2s ease;
 }
 
@@ -74,215 +226,37 @@ html {
 }
 
 ::-webkit-scrollbar-corner {
-  background-color: #030d1a;
+  background-color: var(--scrollbar-track);
 }
 
 /* ==========================================================================
-   MODO CLARO (LIGHT THEME GLOBAL PARA TIKIDATA)
+   CELULAR Y TABLET: espacio para la barra de navegación inferior del navbar
    ========================================================================== */
-body.light-theme {
-  background-color: #f1f5f9 !important;
-  color: #0f172a !important;
-}
-
-/* Tarjetas, contenedores principales y bloques */
-body.light-theme .profile-section-card,
-body.light-theme .stat-card,
-body.light-theme .content-panel,
-body.light-theme .table-card,
-body.light-theme .country-block,
-body.light-theme .card-box,
-body.light-theme .champ-header-banner {
-  background: #ffffff !important;
-  border-color: #cbd5e1 !important;
-  color: #0f172a !important;
-  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06) !important;
-}
-
-/* Inputs de búsqueda y selects */
-body.light-theme input,
-body.light-theme select,
-body.light-theme textarea,
-body.light-theme .search-box input,
-body.light-theme .filter-main-btn,
-body.light-theme .dropdown-trigger,
-body.light-theme .sub-dropdown-trigger {
-  background: #ffffff !important;
-  border-color: #cbd5e1 !important;
-  color: #0f172a !important;
-}
-
-body.light-theme input::placeholder,
-body.light-theme textarea::placeholder {
-  color: #94a3b8 !important;
-}
-
-/* Menús desplegables (dropdowns y paneles) */
-body.light-theme .dropdown-menu,
-body.light-theme .filter-panel,
-body.light-theme .sub-dropdown-menu {
-  background-color: #ffffff !important;
-  border-color: #cbd5e1 !important;
-  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.12) !important;
-}
-
-body.light-theme .dropdown-item,
-body.light-theme .sub-dropdown-item {
-  color: #334155 !important;
-}
-
-body.light-theme .dropdown-item:hover,
-body.light-theme .sub-dropdown-item:hover {
-  background-color: rgba(255, 107, 0, 0.1) !important;
-  color: #0f172a !important;
-}
-
-/* Textos principales y títulos */
-body.light-theme h1,
-body.light-theme h2,
-body.light-theme h3,
-body.light-theme h4,
-body.light-theme h5,
-body.light-theme h6,
-body.light-theme .item-name,
-body.light-theme .stat-number,
-body.light-theme .user-main-info h3,
-body.light-theme .section-header h3,
-body.light-theme .champ-text-data h1,
-body.light-theme .card-header-row h3,
-body.light-theme .country-header h3,
-body.light-theme .champ-name,
-body.light-theme .player-name-cell .name {
-  color: #0f172a !important;
-}
-
-/* Textos secundarios, etiquetas y celdas de la tabla de jugadores */
-body.light-theme .item-country,
-body.light-theme .stat-label,
-body.light-theme .subtitle,
-body.light-theme .champ-meta-badges,
-body.light-theme .team-country,
-body.light-theme .pagination-info,
-body.light-theme .match-date-badge,
-body.light-theme .filter-panel-title,
-body.light-theme .position-text,
-body.light-theme .team-cell,
-body.light-theme .age-text {
-  color: #475569 !important;
-  font-weight: 500;
-}
-
-/* Tablas y filas de datos */
-body.light-theme .styled-table th,
-body.light-theme .custom-data-table th {
-  background-color: #f8fafc !important;
-  color: #475569 !important;
-  border-bottom-color: #cbd5e1 !important;
-}
-
-body.light-theme .styled-table td,
-body.light-theme .custom-data-table td {
-  color: #0f172a !important;
-  border-bottom-color: #f1f5f9 !important;
-}
-
-body.light-theme .player-row:hover,
-body.light-theme .custom-data-table tr:hover {
-  background-color: rgba(255, 107, 0, 0.18) !important; /* Naranja TikiData con más cuerpo */
-}
-
-/* Cabeceras de bloques colapsables (como países o ligas) */
-body.light-theme .country-header {
-  background-color: #f8fafc !important;
-  border-bottom-color: #cbd5e1 !important;
-}
-
-body.light-theme .country-header:hover {
-  background-color: rgba(255, 107, 0, 0.08) !important;
-}
-
-/* Avatares y logos contenedores */
-body.light-theme .avatar-wrapper,
-body.light-theme .champ-logo-wrapper,
-body.light-theme .team-logo-wrapper,
-body.light-theme .league-logo-wrapper,
-body.light-theme .country-flag-wrapper {
-  background-color: #f8fafc !important;
-  border-color: #cbd5e1 !important;
+@media (max-width: 900px) {
+  body {
+    /* Alto de la isla inferior (62px) + su separación del borde (12px) + aire */
+    padding-bottom: calc(92px + env(safe-area-inset-bottom));
+  }
 }
 
 /* ==========================================================================
-   PAGINACIÓN GLOBAL EN MODO CLARO
-   ========================================================================== */
-body.light-theme .pagination-container {
-  background: #ffffff !important;
-  background-image: none !important;
-  border-top-color: #cbd5e1 !important;
-}
-
-body.light-theme .pagination-info {
-  color: #64748b !important;
-}
-
-body.light-theme .page-btn {
-  background-color: #f8fafc !important;
-  color: #334155 !important;
-  border-color: #cbd5e1 !important;
-}
-
-body.light-theme .page-btn:hover:not(:disabled) {
-  border-color: #ff6b00 !important;
-  background-color: rgba(255, 107, 0, 0.1) !important;
-  color: #0f172a !important;
-}
-
-body.light-theme .page-btn.active {
-  background-color: #ff6b00 !important;
-  border-color: #ff6b00 !important;
-  color: #ffffff !important;
-}
-
-/* ==========================================================================
-   CORRECCIÓN DE SUB-DROPDOWNS EN MODO CLARO
+   BASE RESPONSIVE
+   --------------------------------------------------------------------------
+   Cortes usados en todo el proyecto:
+     - hasta 600px  → celular
+     - hasta 900px  → tablet (también es donde aparece la barra inferior)
+     - hasta 1200px → escritorio chico
    ========================================================================== */
 
-/* Fondo del panel desplegable de filtros y sub-menús */
-body.light-theme .filter-panel,
-body.light-theme .sub-dropdown-menu {
-  background-color: #ffffff !important;
-  border-color: #cbd5e1 !important;
-  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.12) !important;
+/* Las imágenes nunca superan el ancho de su contenedor */
+img,
+video {
+  max-width: 100%;
 }
 
-/* Texto de los elementos del sub-menú */
-body.light-theme .sub-dropdown-item {
-  color: #334155 !important;
-}
-
-/* Hover en los elementos del sub-menú */
-body.light-theme .sub-dropdown-item:hover {
-  background-color: rgba(255, 107, 0, 0.08) !important;
-  color: #0f172a !important;
-}
-
-/* Elemento ACTIVO / SELECCIONADO (Texto oscuro y legible sobre fondo naranja suave) */
-body.light-theme .sub-dropdown-item.active {
-  background-color: rgba(255, 107, 0, 0.2) !important; /* Naranja un poco más marcado */
-  color: #0f172a !important;
-  font-weight: 600 !important;
-}
-
-body.light-theme .sub-dropdown-item.active .check-icon {
-  color: #ff6b00 !important;
-}
-
-/* Botón disparador del sub-dropdown (ej. "Todas las posiciones") */
-body.light-theme .sub-dropdown-trigger {
-  background-color: #ffffff !important;
-  color: #0f172a !important;
-  border-color: #cbd5e1 !important;
-}
-
-body.light-theme .sub-dropdown-trigger:hover {
-  border-color: #ff6b00 !important;
+/* Red de seguridad: si algo se pasa del ancho, se recorta en lugar de
+   agrandar toda la página (clip no rompe position: sticky como hidden) */
+html,
+body {
+  overflow-x: clip;
 }

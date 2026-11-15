@@ -7,7 +7,14 @@ import {
   inject,
   HostListener,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
+import { goBackOr } from '../../utils/navigation';
+import {
+  CountryOption,
+  NATIONALITY_OPTIONS,
+  filterCountries,
+  getCountryFlag as countryFlagUrl,
+} from '../../utils/countries';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PlayerService } from '../../services/player-service';
@@ -33,6 +40,7 @@ export class PlayerEdit implements OnInit {
   private fb = inject(FormBuilder);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
+  private location = inject(Location);
   private playerService = inject(PlayerService);
 
   playerForm!: FormGroup;
@@ -47,27 +55,21 @@ export class PlayerEdit implements OnInit {
 
   footPreferences = ['Derecho', 'Izquierdo', 'Ambidiestro'];
 
-  countries = [
-    'Argentina',
-    'Brasil',
-    'Uruguay',
-    'Chile',
-    'Colombia',
-    'Perú',
-    'Bolivia',
-    'Paraguay',
-    'Ecuador',
-    'Venezuela',
-    'México',
-    'Estados Unidos',
-    'España',
-    'Francia',
-    'Italia',
-    'Alemania',
-    'Inglaterra',
-    'Portugal',
-    'Países Bajos',
-  ].sort();
+  // Nacionalidad: lista de países del mundo con bandera y buscador (igual que PlayerForm)
+  nationalitySearch = '';
+  getCountryFlag = countryFlagUrl;
+
+  get filteredNationalities(): CountryOption[] {
+    return filterCountries(NATIONALITY_OPTIONS, this.nationalitySearch);
+  }
+
+  get selectedNationality(): string {
+    return this.playerForm?.get('nationality')?.value || '';
+  }
+
+  get isKnownNationality(): boolean {
+    return NATIONALITY_OPTIONS.some((c) => c.value === this.selectedNationality);
+  }
 
   isPositionOpen = false;
   isFootOpen = false;
@@ -360,6 +362,7 @@ export class PlayerEdit implements OnInit {
   toggleCountryDropdown(event?: MouseEvent) {
     if (event) event.stopPropagation();
     this.isCountryOpen = !this.isCountryOpen;
+    this.nationalitySearch = '';
     this.isPositionOpen = false;
     this.isFootOpen = false;
     this.isCalendarOpen = false;
@@ -369,7 +372,9 @@ export class PlayerEdit implements OnInit {
 
   selectCountry(country: string) {
     this.playerForm.get('nationality')?.setValue(country);
+    this.playerForm.get('nationality')?.markAsTouched();
     this.isCountryOpen = false;
+    this.nationalitySearch = '';
   }
 
   onSubmit() {
@@ -382,7 +387,7 @@ export class PlayerEdit implements OnInit {
       this.playerService.updatePlayer(this.playerId, updatedData).subscribe({
         next: () => {
           this.closePanel.emit();
-          this.router.navigate(['/admin']);
+          goBackOr(this.location, this.router);
         },
         error: (err: any) => console.error('Error al actualizar:', err),
       });
@@ -391,8 +396,9 @@ export class PlayerEdit implements OnInit {
     }
   }
 
+  // Vuelve a donde estaba el usuario (misma página y posición del scroll)
   onCancel() {
     this.closePanel.emit();
-    this.router.navigate(['/admin']);
+    goBackOr(this.location, this.router);
   }
 }

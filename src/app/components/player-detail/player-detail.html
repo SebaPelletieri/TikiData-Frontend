@@ -4,9 +4,9 @@
     <div class="player-header-card">
       <div class="player-avatar-wrapper">
         <img
-          [src]="p.photo || 'https://via.placeholder.com/150?text=Player'"
+          [src]="p.photo || 'https://placehold.co/150?text=Player'"
           [alt]="p.name"
-          (error)="$any($event.target).src = 'https://via.placeholder.com/150?text=Player'"
+          (error)="$any($event.target).src = 'https://placehold.co/150?text=Player'"
           class="player-avatar"
           referrerpolicy="no-referrer"
         />
@@ -39,6 +39,7 @@
           class="btn-follow"
           [class.following]="isFollowing()"
           (click)="toggleFollowPlayer()"
+          [title]="isLoggedIn() ? '' : 'Iniciá sesión para seguir'"
         >
           <span class="follow-icon">
             {{ isFollowing() ? '✓' : '+' }}
@@ -171,7 +172,7 @@
       </div>
     } @else {
       <div class="info-card" style="text-align: center; padding: 3rem">
-        <p style="color: #94a3b8">Contenido de la pestaña {{ activeTab() }} en desarrollo.</p>
+        <p style="color: var(--text-muted-2)">Contenido de la pestaña {{ activeTab() }} en desarrollo.</p>
       </div>
     }
 

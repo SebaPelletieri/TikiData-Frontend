@@ -347,13 +347,34 @@
         <!-- Equipo -->
         <div class="custom-dropdown menu-dropdown" [class.open]="openMenu === 'subTeam'">
           <button type="button" class="dropdown-trigger" (click)="toggleMenu('subTeam', $event)">
-            <span>{{ newSubTeam === 'local' ? 'Local' : 'Visitante' }}</span>
+            <span class="team-option">
+              <span class="team-option-shield">
+                @if (teamShield(newSubTeam)) {
+                  <img [src]="teamShield(newSubTeam)" alt="" />
+                }
+              </span>
+              <span class="team-option-name">{{ displayTeamName(newSubTeam) }}</span>
+            </span>
             <span class="triangle-icon"></span>
           </button>
           @if (openMenu === 'subTeam') {
             <ul class="dropdown-menu">
-              <li class="dropdown-item" (click)="selectSubTeam('local')">Local</li>
-              <li class="dropdown-item" (click)="selectSubTeam('away')">Visitante</li>
+              @for (s of sides; track s) {
+                <li
+                  class="dropdown-item"
+                  [class.active]="newSubTeam === s"
+                  (click)="selectSubTeam(s)"
+                >
+                  <span class="team-option">
+                    <span class="team-option-shield">
+                      @if (teamShield(s)) {
+                        <img [src]="teamShield(s)" alt="" />
+                      }
+                    </span>
+                    <span class="team-option-name">{{ displayTeamName(s) }}</span>
+                  </span>
+                </li>
+              }
             </ul>
           }
         </div>
@@ -368,7 +389,7 @@
           max="120"
         />
 
-        <!-- Jugador que SALE (solo titulares) -->
+        <!-- Jugador que SALE (solo los que están en cancha) -->
         <div class="form-group sub-out-group">
           <div class="direct-search-input-box">
             <svg
@@ -398,14 +419,14 @@
                     <span class="add-action-text">Seleccionar</span>
                   </li>
                 } @empty {
-                  <li class="suggestion-empty">No hay titulares disponibles</li>
+                  <li class="suggestion-empty">No hay jugadores en cancha disponibles</li>
                 }
               </ul>
             }
           </div>
         </div>
 
-        <!-- Jugador que ENTRA (solo suplentes) -->
+        <!-- Jugador que ENTRA (solo suplentes que siguen en el banco) -->
         <div class="form-group sub-in-group">
           <div class="direct-search-input-box">
             <svg
@@ -435,7 +456,7 @@
                     <span class="add-action-text">Seleccionar</span>
                   </li>
                 } @empty {
-                  <li class="suggestion-empty">No hay suplentes disponibles</li>
+                  <li class="suggestion-empty">No quedan suplentes en el banco</li>
                 }
               </ul>
             }
@@ -452,18 +473,72 @@
         </button>
       </div>
 
-      <div class="badges-container">
-        @for (e of substitutionEntries; track e.index) {
-          <div class="item-badge">
-            <span
-              >[{{ e.inc.minute }}']
-              <strong>{{ e.inc.team === 'away' ? 'Visitante' : 'Local' }}</strong
-              >: {{ e.inc.text }}</span
-            >
-            <button type="button" (click)="removeIncidenceAt(e.index)">✕</button>
+      <!-- Sustituciones cargadas, divididas por equipo -->
+      <div class="events-grid">
+        @for (side of sides; track side) {
+          <div class="events-team-card">
+            <div class="events-team-header">
+              <span class="team-option-shield">
+                @if (teamShield(side)) {
+                  <img [src]="teamShield(side)" alt="" />
+                }
+              </span>
+              <span class="events-team-name">{{ displayTeamName(side) }}</span>
+              <span class="events-count">{{ teamSubstitutionEvents(side).length }}</span>
+            </div>
+            <ul class="events-list">
+              @for (e of teamSubstitutionEvents(side); track e.index) {
+                <li class="event-row">
+                  <span class="event-minute">{{ e.inc.minute }}'</span>
+                  <span class="event-icon sub-icon">⇄</span>
+                  <span class="event-body sub-body">
+                    <span class="sub-line out">
+                      <span class="sub-arrow">▼</span>
+                      <span class="event-player" [title]="e.playerOut">{{
+                        e.playerOut || '—'
+                      }}</span>
+                    </span>
+                    <span class="sub-line in">
+                      <span class="sub-arrow">▲</span>
+                      <span class="event-player" [title]="e.playerIn">{{ e.playerIn || '—' }}</span>
+                    </span>
+                  </span>
+                  <button
+                    type="button"
+                    class="event-remove"
+                    title="Quitar"
+                    (click)="removeIncidenceAt(e.index)"
+                  >
+                    ✕
+                  </button>
+                </li>
+              } @empty {
+                <li class="events-empty">Sin sustituciones</li>
+              }
+            </ul>
           </div>
         }
       </div>
+
+      @if (unassignedSubstitutionEvents.length) {
+        <div class="events-unassigned">
+          <span class="events-unassigned-title">Sin equipo identificado</span>
+          @for (e of unassignedSubstitutionEvents; track e.index) {
+            <div class="event-row">
+              <span class="event-minute">{{ e.inc.minute }}'</span>
+              <span class="event-body">{{ e.inc.text }}</span>
+              <button
+                type="button"
+                class="event-remove"
+                title="Quitar"
+                (click)="removeIncidenceAt(e.index)"
+              >
+                ✕
+              </button>
+            </div>
+          }
+        </div>
+      }
     </div>
 
     <!-- INCIDENCIAS (2 columnas) -->
@@ -490,13 +565,34 @@
         <!-- Equipo -->
         <div class="custom-dropdown menu-dropdown" [class.open]="openMenu === 'incTeam'">
           <button type="button" class="dropdown-trigger" (click)="toggleMenu('incTeam', $event)">
-            <span>{{ newIncidenceTeam === 'local' ? 'Local' : 'Visitante' }}</span>
+            <span class="team-option">
+              <span class="team-option-shield">
+                @if (teamShield(newIncidenceTeam)) {
+                  <img [src]="teamShield(newIncidenceTeam)" alt="" />
+                }
+              </span>
+              <span class="team-option-name">{{ displayTeamName(newIncidenceTeam) }}</span>
+            </span>
             <span class="triangle-icon"></span>
           </button>
           @if (openMenu === 'incTeam') {
             <ul class="dropdown-menu">
-              <li class="dropdown-item" (click)="selectIncidenceTeam('local')">Local</li>
-              <li class="dropdown-item" (click)="selectIncidenceTeam('away')">Visitante</li>
+              @for (s of sides; track s) {
+                <li
+                  class="dropdown-item"
+                  [class.active]="newIncidenceTeam === s"
+                  (click)="selectIncidenceTeam(s)"
+                >
+                  <span class="team-option">
+                    <span class="team-option-shield">
+                      @if (teamShield(s)) {
+                        <img [src]="teamShield(s)" alt="" />
+                      }
+                    </span>
+                    <span class="team-option-name">{{ displayTeamName(s) }}</span>
+                  </span>
+                </li>
+              }
             </ul>
           }
         </div>
@@ -511,7 +607,7 @@
           max="120"
         />
 
-        <!-- Jugador (plantel del equipo elegido, sin expulsados) -->
+        <!-- Jugador: tarjetas = citados, gol = en cancha (siempre sin expulsados) -->
         <div class="form-group inc-player-group">
           <div class="direct-search-input-box">
             <svg
@@ -541,7 +637,7 @@
                     <span class="add-action-text">Seleccionar</span>
                   </li>
                 } @empty {
-                  <li class="suggestion-empty">No hay jugadores disponibles</li>
+                  <li class="suggestion-empty">{{ incPlayerEmptyText }}</li>
                 }
               </ul>
             }
@@ -558,132 +654,229 @@
         </button>
       </div>
 
-      <div class="badges-container">
-        @for (e of incidenceEntries; track e.index) {
-          <div
-            class="item-badge"
-            [class.yellow]="e.inc.type === 'YELLOW_CARD'"
-            [class.red]="e.inc.type === 'RED_CARD'"
-            [class.goal]="e.inc.type === 'GOAL'"
-          >
-            <span
-              >[{{ e.inc.minute }}'] <strong>{{ getIncidenceTypeLabel(e.inc.type) }}</strong
-              >: {{ e.inc.text }}</span
-            >
-            <button type="button" (click)="removeIncidenceAt(e.index)">✕</button>
+      <!-- Incidencias cargadas, divididas por equipo -->
+      <div class="events-grid">
+        @for (side of sides; track side) {
+          <div class="events-team-card">
+            <div class="events-team-header">
+              <span class="team-option-shield">
+                @if (teamShield(side)) {
+                  <img [src]="teamShield(side)" alt="" />
+                }
+              </span>
+              <span class="events-team-name">{{ displayTeamName(side) }}</span>
+              <span class="events-count">{{ teamIncidenceEvents(side).length }}</span>
+            </div>
+            <ul class="events-list">
+              @for (e of teamIncidenceEvents(side); track e.index) {
+                <li class="event-row">
+                  <span class="event-minute">{{ e.inc.minute }}'</span>
+                  @switch (e.inc.type) {
+                    @case ('GOAL') {
+                      <span class="event-icon">⚽</span>
+                    }
+                    @case ('YELLOW_CARD') {
+                      <span class="event-icon"><span class="card-icon yellow"></span></span>
+                    }
+                    @case ('RED_CARD') {
+                      <span class="event-icon"><span class="card-icon red"></span></span>
+                    }
+                  }
+                  <span class="event-body">
+                    <span class="event-player" [title]="e.player || e.inc.text">
+                      {{ e.player || e.inc.text }}
+                    </span>
+                  </span>
+                  @if (e.inc.type === 'GOAL' && e.score) {
+                    <span class="event-score">{{ e.score }}</span>
+                  }
+                  <button
+                    type="button"
+                    class="event-remove"
+                    title="Quitar"
+                    (click)="removeIncidenceAt(e.index)"
+                  >
+                    ✕
+                  </button>
+                </li>
+              } @empty {
+                <li class="events-empty">Sin incidencias</li>
+              }
+            </ul>
           </div>
         }
       </div>
+
+      @if (unassignedIncidenceEvents.length) {
+        <div class="events-unassigned">
+          <span class="events-unassigned-title">Sin equipo identificado</span>
+          @for (e of unassignedIncidenceEvents; track e.index) {
+            <div class="event-row">
+              <span class="event-minute">{{ e.inc.minute }}'</span>
+              <span class="event-body">{{ e.inc.text }}</span>
+              @if (e.inc.type === 'GOAL' && e.score) {
+                <span class="event-score">{{ e.score }}</span>
+              }
+              <button
+                type="button"
+                class="event-remove"
+                title="Quitar"
+                (click)="removeIncidenceAt(e.index)"
+              >
+                ✕
+              </button>
+            </div>
+          }
+        </div>
+      }
     </div>
 
     <!-- FORMACIÓN Y ALINEACIONES (ancho completo) -->
-    <div class="sub-section-box">
+    <div class="sub-section-box lineups-section">
       <h4>Formaciones y Planteles</h4>
 
-      <!-- Local -->
-      <div class="lineup-block">
-        <h5>Plantel Local - Titulares y Suplentes</h5>
-        <div class="roster-selector-row">
-          <select #locPlayer class="styled-select" style="flex: 2">
-            <option value="">Seleccionar jugador del plantel local...</option>
-            @for (p of localTeamRoster; track p.id || p.name) {
-              <option [ngValue]="p">
-                {{ p.number ? '#' + p.number + ' - ' : '' }}{{ p.name || p.nombre }}
-              </option>
-            }
-          </select>
-          <button
-            type="button"
-            class="btn-sub-add"
-            (click)="addLineupPlayer('local', 'starters', locPlayer.value); locPlayer.value = ''"
-          >
-            + Titular
-          </button>
-          <button
-            type="button"
-            class="btn-sub-add alt"
-            (click)="addLineupPlayer('local', 'substitutes', locPlayer.value); locPlayer.value = ''"
-          >
-            + Suplente
-          </button>
-        </div>
-        <div class="lineup-lists-preview">
-          <div>
-            <strong>Titulares Local:</strong>
-            @for (p of lineups.local; track $index) {
-              <span class="mini-chip"
-                >{{ p.name }}
-                <button type="button" (click)="removeLineupPlayer('local', 'starters', $index)">
-                  ✕
-                </button></span
-              >
-            }
-          </div>
-          <div>
-            <strong>Suplentes Local:</strong>
-            @for (p of lineups.localSubstitutes; track $index) {
-              <span class="mini-chip"
-                >{{ p.name }}
-                <button type="button" (click)="removeLineupPlayer('local', 'substitutes', $index)">
-                  ✕
-                </button></span
-              >
-            }
-          </div>
-        </div>
-      </div>
+      <div class="lineups-grid">
+        @for (side of sides; track side) {
+          <div class="lineup-team-card">
+            <!-- Cabecera del equipo -->
+            <div class="lineup-team-header">
+              <div class="lineup-team-shield">
+                @if (teamShield(side)) {
+                  <img [src]="teamShield(side)" [alt]="displayTeamName(side)" />
+                }
+              </div>
+              <div class="lineup-team-titles">
+                <span class="lineup-team-side">{{ side === 'local' ? 'Local' : 'Visitante' }}</span>
+                <span class="lineup-team-name">{{ displayTeamName(side) }}</span>
+              </div>
+            </div>
 
-      <!-- Visitante -->
-      <div class="lineup-block">
-        <h5>Plantel Visitante - Titulares y Suplentes</h5>
-        <div class="roster-selector-row">
-          <select #visPlayer class="styled-select" style="flex: 2">
-            <option value="">Seleccionar jugador del plantel visitante...</option>
-            @for (p of awayTeamRoster; track p.id || p.name) {
-              <option [ngValue]="p">
-                {{ p.number ? '#' + p.number + ' - ' : '' }}{{ p.name || p.nombre }}
-              </option>
-            }
-          </select>
-          <button
-            type="button"
-            class="btn-sub-add"
-            (click)="addLineupPlayer('away', 'starters', visPlayer.value); visPlayer.value = ''"
-          >
-            + Titular
-          </button>
-          <button
-            type="button"
-            class="btn-sub-add alt"
-            (click)="addLineupPlayer('away', 'substitutes', visPlayer.value); visPlayer.value = ''"
-          >
-            + Suplente
-          </button>
-        </div>
-        <div class="lineup-lists-preview">
-          <div>
-            <strong>Titulares Visitante:</strong>
-            @for (p of lineups.away; track $index) {
-              <span class="mini-chip"
-                >{{ p.name }}
-                <button type="button" (click)="removeLineupPlayer('away', 'starters', $index)">
-                  ✕
-                </button></span
-              >
+            @if (!hasRosterTeam(side)) {
+              <p class="lineup-placeholder">Elegí el equipo para cargar su plantel.</p>
+            } @else {
+              <!-- Selector de jugador + botones -->
+              <div class="roster-selector-row">
+                <div class="custom-dropdown roster-dropdown" [class.open]="openRosterMenu === side">
+                  <button
+                    type="button"
+                    class="dropdown-trigger"
+                    (click)="toggleRosterMenu(side, $event)"
+                  >
+                    <span class="roster-trigger-text" [class.placeholder]="!rosterSelection[side]">
+                      {{ rosterSelectionLabel(side) }}
+                    </span>
+                    <span class="triangle-icon"></span>
+                  </button>
+                  @if (openRosterMenu === side) {
+                    <ul class="dropdown-menu roster-menu">
+                      @for (p of availableRoster(side); track p.name) {
+                        <li
+                          class="dropdown-item roster-item"
+                          [class.active]="rosterSelection[side] === p.name"
+                          (click)="selectRosterPlayer(side, p.name)"
+                        >
+                          <span class="lineup-number">{{ p.number ?? '–' }}</span>
+                          <span class="lineup-name">{{ p.name }}</span>
+                          @if (p.position) {
+                            <span class="lineup-pos" [attr.data-pos]="p.position">{{
+                              p.position
+                            }}</span>
+                          }
+                        </li>
+                      } @empty {
+                        <li class="suggestion-empty">No quedan jugadores disponibles</li>
+                      }
+                    </ul>
+                  }
+                </div>
+                <button
+                  type="button"
+                  class="btn-sub-add"
+                  [disabled]="!rosterSelection[side] || startersList(side).length >= MAX_STARTERS"
+                  (click)="addSelectedToLineup(side, 'starters')"
+                >
+                  + Titular
+                </button>
+                <button
+                  type="button"
+                  class="btn-sub-add alt"
+                  [disabled]="!rosterSelection[side]"
+                  (click)="addSelectedToLineup(side, 'substitutes')"
+                >
+                  + Suplente
+                </button>
+              </div>
+
+              <!-- Titulares y suplentes separados -->
+              <div class="lineup-columns">
+                <div class="lineup-column starters">
+                  <div class="lineup-column-header">
+                    <span>Titulares</span>
+                    <span
+                      class="lineup-count"
+                      [class.full]="startersList(side).length === MAX_STARTERS"
+                    >
+                      {{ startersList(side).length }}/{{ MAX_STARTERS }}
+                    </span>
+                  </div>
+                  <ul class="lineup-list">
+                    @for (p of startersList(side); track p.name; let i = $index) {
+                      <li class="lineup-row">
+                        <span class="lineup-number">{{ p.number ?? '–' }}</span>
+                        <span class="lineup-name" [title]="p.name">{{ p.name }}</span>
+                        @if (p.position) {
+                          <span class="lineup-pos" [attr.data-pos]="p.position">{{
+                            p.position
+                          }}</span>
+                        }
+                        <button
+                          type="button"
+                          class="lineup-remove"
+                          title="Quitar"
+                          (click)="removeLineupPlayer(side, 'starters', i)"
+                        >
+                          ✕
+                        </button>
+                      </li>
+                    } @empty {
+                      <li class="lineup-empty">Sin titulares cargados</li>
+                    }
+                  </ul>
+                </div>
+
+                <div class="lineup-column substitutes">
+                  <div class="lineup-column-header">
+                    <span>Suplentes</span>
+                    <span class="lineup-count">{{ substitutesList(side).length }}</span>
+                  </div>
+                  <ul class="lineup-list">
+                    @for (p of substitutesList(side); track p.name; let i = $index) {
+                      <li class="lineup-row">
+                        <span class="lineup-number">{{ p.number ?? '–' }}</span>
+                        <span class="lineup-name" [title]="p.name">{{ p.name }}</span>
+                        @if (p.position) {
+                          <span class="lineup-pos" [attr.data-pos]="p.position">{{
+                            p.position
+                          }}</span>
+                        }
+                        <button
+                          type="button"
+                          class="lineup-remove"
+                          title="Quitar"
+                          (click)="removeLineupPlayer(side, 'substitutes', i)"
+                        >
+                          ✕
+                        </button>
+                      </li>
+                    } @empty {
+                      <li class="lineup-empty">Sin suplentes cargados</li>
+                    }
+                  </ul>
+                </div>
+              </div>
             }
           </div>
-          <div>
-            <strong>Suplentes Visitante:</strong>
-            @for (p of lineups.awaySubstitutes; track $index) {
-              <span class="mini-chip"
-                >{{ p.name }}
-                <button type="button" (click)="removeLineupPlayer('away', 'substitutes', $index)">
-                  ✕
-                </button></span
-              >
-            }
-          </div>
-        </div>
+        }
       </div>
     </div>
 

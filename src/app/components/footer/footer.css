@@ -1,9 +1,9 @@
 .tiki-footer {
-  background-color: #0b1329; /* Tono oscuro acorde a tu panel */
-  color: #94a3b8;
+  background-color: var(--surface-card); /* Tono oscuro acorde a tu panel */
+  color: var(--text-muted-2);
   padding: 3rem 2rem 1.5rem 2rem;
   margin-top: 4rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 1px solid rgba(var(--overlay-rgb), 0.08);
   font-family: inherit;
 }
 
@@ -14,7 +14,7 @@
   grid-template-columns: 2fr 1fr 1fr;
   gap: 2rem;
   padding-bottom: 2.5rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid rgba(var(--overlay-rgb), 0.06);
 }
 
 @media (max-width: 768px) {
@@ -36,7 +36,7 @@
 }
 
 .footer-brand h3 {
-  color: #ffffff;
+  color: var(--text-strong);
   font-size: 1.25rem;
   font-weight: 700;
   margin: 0;
@@ -45,14 +45,14 @@
 .footer-desc {
   font-size: 0.925rem;
   line-height: 1.5;
-  color: #94a3b8;
+  color: var(--text-muted-2);
   max-width: 380px;
   margin: 0;
 }
 
 .footer-links-col h4,
 .footer-info-col h4 {
-  color: #ffffff;
+  color: var(--text-strong);
   font-size: 1rem;
   font-weight: 600;
   margin-bottom: 1rem;
@@ -70,7 +70,7 @@
 }
 
 .footer-links-col a {
-  color: #94a3b8;
+  color: var(--text-muted-2);
   text-decoration: none;
   font-size: 0.9rem;
   transition: color 0.2s ease;
@@ -100,5 +100,5 @@
 }
 
 .footer-bottom strong {
-  color: #cbd5e1;
+  color: var(--text-soft);
 }

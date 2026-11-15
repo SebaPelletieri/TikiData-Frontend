@@ -1,5 +1,6 @@
 import { Component, OnInit, inject, signal, computed, HostListener } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
+import { goBackOr } from '../../utils/navigation';
 import { HttpClient } from '@angular/common/http';
 import {
   FormBuilder,
@@ -47,6 +48,7 @@ export class TeamEdit implements OnInit {
   private fb = inject(FormBuilder);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
+  private location = inject(Location);
   private http = inject(HttpClient);
   private teamService = inject(TeamService);
   private playerService = inject(PlayerService);
@@ -94,7 +96,221 @@ export class TeamEdit implements OnInit {
     this.isMonthOpen = false;
     this.isYearOpen = false;
     this.isChampionshipsFocused.set(false);
-    this.filteredPlayers = []; 
+    this.filteredPlayers = [];
+  }
+
+  // --- Función universal y robusta para banderas ---
+  getCountryFlag(countryName: string | number): string {
+    if (!countryName) return 'https://flagcdn.com/w40/xx.png';
+
+    const strCountry = String(countryName)
+      .toLowerCase()
+      .trim()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '');
+
+    const countryIsoMap: Record<string, string> = {
+      afganistan: 'af',
+      albania: 'al',
+      alemania: 'de',
+      andorra: 'ad',
+      angola: 'ao',
+      'antigua y barbuda': 'ag',
+      'arabia saudita': 'sa',
+      argelia: 'dz',
+      argentina: 'ar',
+      armenia: 'am',
+      australia: 'au',
+      austria: 'at',
+      azerbaiyan: 'az',
+      bahamas: 'bs',
+      banglades: 'bd',
+      barbados: 'bb',
+      barein: 'bh',
+      belgica: 'be',
+      belice: 'bz',
+      benin: 'bj',
+      bielorrusia: 'by',
+      birmania: 'mm',
+      bolivia: 'bo',
+      'bosnia y herzegovina': 'ba',
+      botsuana: 'bw',
+      brasil: 'br',
+      brazil: 'br',
+      brunei: 'bn',
+      bulgaria: 'bg',
+      'burkina faso': 'bf',
+      burundi: 'bi',
+      butan: 'bt',
+      'cabo verde': 'cv',
+      camboya: 'kh',
+      camerun: 'cm',
+      canada: 'ca',
+      catar: 'qa',
+      chad: 'td',
+      chile: 'cl',
+      china: 'cn',
+      chipre: 'cy',
+      colombia: 'co',
+      comoras: 'km',
+      congo: 'cg',
+      'corea del norte': 'kp',
+      'corea del sur': 'kr',
+      'costa de marfil': 'ci',
+      'costa rica': 'cr',
+      croacia: 'hr',
+      cuba: 'cu',
+      dinamarca: 'dk',
+      dominica: 'dm',
+      ecuador: 'ec',
+      egipto: 'eg',
+      'el salvador': 'sv',
+      'emiratos arabes unidos': 'ae',
+      eritrea: 'er',
+      eslovaquia: 'sk',
+      eslovenia: 'si',
+      espana: 'es',
+      spain: 'es',
+      'estados unidos': 'us',
+      estonia: 'ee',
+      esuatini: 'sz',
+      etiopia: 'et',
+      filipinas: 'ph',
+      finlandia: 'fi',
+      fiyi: 'fj',
+      francia: 'fr',
+      gabon: 'ga',
+      gambia: 'gm',
+      georgia: 'ge',
+      ghana: 'gh',
+      granada: 'gd',
+      grecia: 'gr',
+      guatemala: 'gt',
+      guinea: 'gn',
+      'guinea ecuatorial': 'gq',
+      'guinea-bisau': 'gw',
+      guyana: 'gy',
+      haiti: 'ht',
+      honduras: 'hn',
+      hungria: 'hu',
+      india: 'in',
+      indonesia: 'id',
+      irak: 'iq',
+      iran: 'ir',
+      irlanda: 'ie',
+      islandia: 'is',
+      'islas marshall': 'mh',
+      'islas salomon': 'sb',
+      israel: 'il',
+      italia: 'it',
+      italy: 'it',
+      jamaica: 'jm',
+      japon: 'jp',
+      jordania: 'jo',
+      kazajistan: 'kz',
+      kenia: 'ke',
+      kirguistan: 'kg',
+      kiribati: 'ki',
+      kuwait: 'kw',
+      laos: 'la',
+      lesoto: 'ls',
+      letonia: 'lv',
+      libano: 'lb',
+      liberia: 'lr',
+      libia: 'ly',
+      liechtenstein: 'li',
+      lituania: 'lt',
+      luxemburgo: 'lu',
+      madagascar: 'mg',
+      malasia: 'my',
+      malaui: 'mw',
+      maldivas: 'mv',
+      mali: 'ml',
+      malta: 'mt',
+      marruecos: 'ma',
+      mauricio: 'mu',
+      mauritania: 'mr',
+      mexico: 'mx',
+      micronesia: 'fm',
+      moldavia: 'md',
+      monaco: 'mc',
+      mongolia: 'mn',
+      montenegro: 'me',
+      mozambique: 'mz',
+      namibia: 'na',
+      nauru: 'nr',
+      nepal: 'np',
+      nicaragua: 'ni',
+      niger: 'ne',
+      nigeria: 'ng',
+      noruega: 'no',
+      'nueva zelanda': 'nz',
+      oman: 'om',
+      'paises bajos': 'nl',
+      pakistan: 'pk',
+      palaos: 'pw',
+      panama: 'pa',
+      'papua nueva guinea': 'pg',
+      paraguay: 'py',
+      peru: 'pe',
+      polonia: 'pl',
+      portugal: 'pt',
+      'reino unido': 'gb',
+      inglaterra: 'gb-eng',
+      'republica centroafricana': 'cf',
+      'republica checa': 'cz',
+      'republica democratica del congo': 'cd',
+      'republica dominicana': 'do',
+      ruanda: 'rw',
+      rumania: 'ro',
+      rusia: 'ru',
+      samoa: 'ws',
+      'san cristobal y nieves': 'kn',
+      'san marino': 'sm',
+      'san vicente y las granadinas': 'vc',
+      'santa lucia': 'lc',
+      'santo tome y principe': 'st',
+      senegal: 'sn',
+      serbia: 'rs',
+      seychelles: 'sc',
+      'sierra leona': 'sl',
+      singapur: 'sg',
+      siria: 'sy',
+      somalia: 'so',
+      'sri lanka': 'lk',
+      sudafrica: 'za',
+      sudan: 'sd',
+      'sudan del sur': 'ss',
+      suecia: 'se',
+      suiza: 'ch',
+      surinam: 'sr',
+      tailandia: 'th',
+      tanzania: 'tz',
+      tayikistan: 'tj',
+      'timor oriental': 'tl',
+      togo: 'tg',
+      tonga: 'to',
+      'trinidad y tobago': 'tt',
+      tunez: 'tn',
+      turkmenistan: 'tm',
+      turquia: 'tr',
+      tuvalu: 'tv',
+      ucrania: 'ua',
+      uganda: 'ug',
+      uruguay: 'uy',
+      uzbekistan: 'uz',
+      vanuatu: 'vu',
+      vaticano: 'va',
+      venezuela: 've',
+      vietnam: 'vn',
+      yemen: 'ye',
+      yibuti: 'dj',
+      zambia: 'zm',
+      zimbabue: 'zw',
+    };
+
+    const isoCode = countryIsoMap[strCountry] || 'xx';
+    return `https://flagcdn.com/w40/${isoCode}.png`;
   }
 
   countries = [
@@ -409,7 +625,6 @@ export class TeamEdit implements OnInit {
     window.scrollTo({ top: 0, behavior: 'instant' });
     this.setupSearchFilters();
 
-    // Sanitizar dorsal en tiempo real (1 al 99)
     this.playerNumberCtrl.valueChanges.subscribe((val) => {
       if (val !== null && val !== undefined && val !== ('' as any)) {
         const num = Number(val);
@@ -509,10 +724,6 @@ export class TeamEdit implements OnInit {
         this.selectedPlayerCandidate = null;
       }
 
-      // Filtramos únicamente jugadores que:
-      // 1. Coincidan con la búsqueda por nombre.
-      // 2. NO estén ya agregados en la plantilla actual (playersList).
-      // 3. Estén LIBRES (es decir, que no tengan equipos asignados o que su diccionario de dorsals esté vacío/sin equipos).
       this.filteredPlayers = !q
         ? []
         : this.allSystemPlayers
@@ -523,8 +734,6 @@ export class TeamEdit implements OnInit {
               const notInCurrentPlantel = !this.playersList.some(
                 (x) => String(x.id) === String(p.id),
               );
-
-              // Comprobamos si el jugador está libre (sin equipo/dorsales asignadas en otros clubes)
               const hasNoTeamAssigned = !p.dorsals || Object.keys(p.dorsals).length === 0;
 
               return matchesQuery && notInCurrentPlantel && hasNoTeamAssigned;
@@ -563,7 +772,6 @@ export class TeamEdit implements OnInit {
     this.filteredPlayers = [];
   }
 
-  // --- Métodos del Calendario ---
   toggleCalendar(event?: MouseEvent): void {
     if (event) event.stopPropagation();
     this.isCalendarOpen = !this.isCalendarOpen;
@@ -709,7 +917,6 @@ export class TeamEdit implements OnInit {
     this.errorMessage.set(null);
     this.playersList.push(toAdd);
 
-    // Limpiar campos
     this.selectedPlayerCandidate = null;
     this.playerSearchCtrl.setValue('', { emitEvent: false });
     this.playerNumberCtrl.setValue(null);
@@ -783,10 +990,7 @@ export class TeamEdit implements OnInit {
       this.teamService.updateTeam(this.teamId as any, updatedTeam),
       ...(playerUpdates.length > 0 ? playerUpdates : [of(null)]),
     ]).subscribe({
-      next: () => {
-        window.scrollTo({ top: 0, behavior: 'instant' });
-        this.router.navigate(['/admin']);
-      },
+      next: () => goBackOr(this.location, this.router),
       error: (err: any) => {
         console.error('Error al actualizar:', err);
         this.errorMessage.set('No se pudieron guardar los cambios.');
@@ -794,8 +998,8 @@ export class TeamEdit implements OnInit {
     });
   }
 
+  // Vuelve a donde estaba el usuario (misma página y posición del scroll)
   onCancel() {
-    window.scrollTo({ top: 0, behavior: 'instant' });
-    this.router.navigate(['/admin']);
+    goBackOr(this.location, this.router);
   }
 }

@@ -106,9 +106,23 @@
         "
       >
         <button type="button" class="dropdown-trigger" (click)="toggleCountryDropdown($event)">
-          <span [class.placeholder]="!formulario.controls.country.value">
-            {{ formulario.controls.country.value || 'Seleccionar país' }}
-          </span>
+          <div class="dropdown-item-content">
+            @if (formulario.controls.country.value) {
+              @if (formulario.controls.country.value === 'Internacional') {
+                <span class="all-countries-icon">🌎</span>
+              } @else {
+                <div class="dropdown-flag-wrapper">
+                  <img
+                    [src]="getCountryFlag(formulario.controls.country.value)"
+                    [alt]="formulario.controls.country.value"
+                  />
+                </div>
+              }
+            }
+            <span [class.placeholder]="!formulario.controls.country.value">
+              {{ formulario.controls.country.value || 'Seleccionar país' }}
+            </span>
+          </div>
           <span class="triangle-icon"></span>
         </button>
 
@@ -121,6 +135,13 @@
                 (click)="selectCountry(c.value)"
               >
                 <div class="item-content">
+                  @if (c.value === 'Internacional') {
+                    <span class="all-countries-icon">🌎</span>
+                  } @else {
+                    <div class="dropdown-flag-wrapper">
+                      <img [src]="getCountryFlag(c.value)" [alt]="c.label" />
+                    </div>
+                  }
                   <span>{{ c.label }}</span>
                 </div>
                 @if (formulario.controls.country.value === c.value) {
@@ -308,19 +329,21 @@
               (mousedown)="selectTeamFromSearch(team.id, $event)"
             >
               <img
-                [src]="team.shield || 'https://via.placeholder.com/40'"
-                (error)="$any($event.target).src = 'https://via.placeholder.com/40'"
+                [src]="team.shield || 'https://placehold.co/40'"
+                (error)="$any($event.target).src = 'https://placehold.co/40'"
                 class="result-thumb"
                 alt=""
               />
               <div class="result-info">
                 <span class="result-name">{{ team.name }}</span>
                 <span class="result-meta">
-                  <img
-                    [src]="'https://flagcdn.com/w40/' + getCountryCode(team.country) + '.png'"
-                    alt="Bandera"
-                    class="flag-icon"
-                  />
+                  @if (team.country === 'Internacional') {
+                    <span class="all-countries-icon">🌎</span>
+                  } @else {
+                    <div class="dropdown-flag-wrapper">
+                      <img [src]="getCountryFlag(team.country)" alt="Bandera" />
+                    </div>
+                  }
                   <span>{{ team.country || 'Argentina' }}</span>
                 </span>
               </div>
@@ -338,8 +361,8 @@
           @for (team of selectedTeamsList(); track team.id) {
             <div class="team-chip">
               <img
-                [src]="team.shield || 'https://via.placeholder.com/30'"
-                (error)="$any($event.target).src = 'https://via.placeholder.com/30'"
+                [src]="team.shield || 'https://placehold.co/30'"
+                (error)="$any($event.target).src = 'https://placehold.co/30'"
                 alt=""
                 class="chip-shield"
               />

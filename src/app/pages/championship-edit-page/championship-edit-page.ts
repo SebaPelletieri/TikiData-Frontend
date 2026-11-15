@@ -1,6 +1,7 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
+import { goBackOr } from '../../utils/navigation';
 import { ChampionshipEdit } from '../../components/championship-edit/championship-edit'; // Ajusta tu ruta de importación
 
 @Component({
@@ -18,6 +19,7 @@ import { ChampionshipEdit } from '../../components/championship-edit/championshi
 export class ChampionshipEditPage implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
+  private location = inject(Location);
 
   championshipId = signal<number | null>(null);
 
@@ -31,6 +33,6 @@ export class ChampionshipEditPage implements OnInit {
   }
 
   goBack() {
-    this.router.navigate(['/admin']);
+    goBackOr(this.location, this.router);
   }
 }

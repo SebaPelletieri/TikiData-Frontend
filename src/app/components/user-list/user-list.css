@@ -3,7 +3,7 @@
   width: 94%;
   margin: 2rem auto;
   font-family: 'Plus Jakarta Sans', sans-serif;
-  color: #ffffff;
+  color: var(--text-strong);
 }
 .header-section {
   margin-bottom: 2rem;
@@ -14,17 +14,17 @@
   margin: 0;
 }
 .header-section p {
-  color: #7d96b3;
+  color: var(--text-muted);
   font-size: 0.9rem;
   margin-top: 4px;
 }
 
 .table-wrapper {
-  background: linear-gradient(180deg, #06182e 0%, #041224 100%);
-  border: 1px solid #143560;
+  background: linear-gradient(180deg, var(--surface-card) 0%, var(--surface-card-2) 100%);
+  border: 1px solid var(--border);
   border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 12px 30px rgba(var(--shadow-rgb), calc(0.4 * var(--shadow-k)));
 }
 .users-table {
   width: 100%;
@@ -32,19 +32,19 @@
   text-align: left;
 }
 .users-table th {
-  background: #071a33;
-  color: #7d96b3;
+  background: var(--surface-raised);
+  color: var(--text-muted);
   font-size: 0.82rem;
   font-weight: 700;
   text-transform: uppercase;
   padding: 1rem 1.25rem;
-  border-bottom: 1px solid #143560;
+  border-bottom: 1px solid var(--border);
 }
 .users-table td {
   padding: 1rem 1.25rem;
-  border-bottom: 1px solid #143560;
+  border-bottom: 1px solid var(--border);
   font-size: 0.9rem;
-  color: #c9d8eb;
+  color: var(--text-soft);
 }
 .users-table tr:last-child td {
   border-bottom: none;
@@ -52,7 +52,7 @@
 
 .username {
   font-weight: 700;
-  color: #ffffff;
+  color: var(--text-strong);
 }
 .role-badge {
   display: inline-block;
@@ -92,7 +92,7 @@
 .btn-delete {
   background: rgba(239, 68, 68, 0.1);
   border: 1px solid rgba(239, 68, 68, 0.3);
-  color: #f87171;
+  color: var(--danger-text);
   padding: 6px 12px;
   border-radius: 8px;
   font-size: 0.8rem;
@@ -105,6 +105,81 @@
 }
 .empty-state {
   text-align: center;
-  color: #7d96b3;
+  color: var(--text-muted);
   padding: 3rem;
+}
+
+/* =====================================================================
+   CELULAR: cada usuario como tarjeta
+     Usuario                     [Rol]
+     email
+     [ Cambiar Rol ][ Eliminar ]
+   ===================================================================== */
+@media (max-width: 600px) {
+  .admin-container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .users-table thead {
+    display: none;
+  }
+
+  .users-table,
+  .users-table tbody {
+    display: block;
+    width: 100%;
+  }
+
+  .users-table tr {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      'name    role'
+      'email   email'
+      'actions actions';
+    gap: 6px 10px;
+    padding: 1rem;
+    border-bottom: 1px solid rgba(var(--border-rgb), 0.3);
+  }
+
+  .users-table td {
+    display: block;
+    padding: 0;
+    border: none;
+  }
+
+  .users-table td:first-child {
+    display: none;
+  }
+  .users-table td.user-cell {
+    grid-area: name;
+    min-width: 0;
+  }
+  .users-table td:nth-child(3) {
+    grid-area: email;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    overflow-wrap: anywhere;
+  }
+  .users-table td:nth-child(4) {
+    grid-area: role;
+  }
+  .users-table td:nth-child(5) {
+    grid-area: actions;
+    margin-top: 4px;
+  }
+
+  .users-table .action-buttons {
+    display: flex;
+    gap: 8px;
+  }
+
+  .users-table .action-buttons button {
+    flex: 1;
+  }
+
+  .users-table tr:has(.empty-state) {
+    display: block;
+  }
 }

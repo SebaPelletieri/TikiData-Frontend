@@ -1,9 +1,9 @@
 :host {
   display: block;
   width: 100%;
-  background-color: #041224;
+  background-color: var(--surface-card-2);
   min-height: calc(100vh - 70px);
-  color: #ffffff;
+  color: var(--text-strong);
   font-family:
     'Plus Jakarta Sans',
     -apple-system,
@@ -27,19 +27,19 @@
 
 .breadcrumb {
   font-size: 0.8rem;
-  color: #7d96b3;
+  color: var(--text-muted);
 }
 
 .profile-top-bar h2 {
   font-size: 2.1rem;
   font-weight: 800;
   margin: 0.2rem 0;
-  color: #ffffff;
+  color: var(--text-strong);
 }
 
 .subtitle {
   font-size: 0.9rem;
-  color: #7d96b3;
+  color: var(--text-muted);
   margin: 0;
 }
 
@@ -71,12 +71,12 @@
   background:
     radial-gradient(
       circle at 15% 50%,
-      rgba(4, 18, 36, 0.95) 0%,
-      rgba(4, 18, 36, 0.75) 35%,
-      rgba(4, 18, 36, 0.3) 70%
+      rgba(var(--card-rgb), 0.95) 0%,
+      rgba(var(--card-rgb), 0.75) 35%,
+      rgba(var(--card-rgb), 0.3) 70%
     ),
     url('/estadio.png') 30% 60% / cover no-repeat;
-  border: 1px solid #45220c;
+  border: 1px solid var(--warm-4);
   border-radius: 20px;
   padding: 2.5rem;
   margin-bottom: 2rem;
@@ -84,7 +84,7 @@
   display: flex;
   align-items: center;
   overflow: hidden;
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 16px 40px rgba(var(--shadow-rgb), calc(0.4 * var(--shadow-k)));
   width: 100%;
 }
 
@@ -101,7 +101,7 @@
   width: 100px;
   height: 100px;
   border-radius: 50%;
-  background: #030d1a;
+  background: var(--surface-0);
   border: 3px solid #ff6b00;
   display: flex;
   align-items: center;
@@ -115,12 +115,12 @@
   font-size: 2.1rem;
   font-weight: 800;
   margin: 0 0 8px 0;
-  color: #ffffff;
+  color: var(--text-strong);
 }
 
 .admin-banner-subtitle {
   font-size: 0.95rem;
-  color: #7d96b3;
+  color: var(--text-muted);
   margin: 0;
 }
 
@@ -133,8 +133,8 @@
 }
 
 .stat-card {
-  background: linear-gradient(180deg, #06182e 0%, #041224 100%);
-  border: 1px solid #45220c;
+  background: linear-gradient(180deg, var(--surface-card) 0%, var(--surface-card-2) 100%);
+  border: 1px solid var(--warm-4);
   border-radius: 16px;
   padding: 1.5rem;
   display: flex;
@@ -156,7 +156,7 @@
 .stat-icon-wrapper.blue-shield,
 .stat-icon-wrapper.blue-group,
 .stat-icon-wrapper.blue-trophy {
-  background: #030d1a;
+  background: var(--surface-0);
   color: #f97316;
   border: 1px solid rgba(249, 115, 22, 0.3);
 }
@@ -168,27 +168,27 @@
 
 .stat-label {
   font-size: 0.85rem;
-  color: #c9d8eb;
+  color: var(--text-soft);
   font-weight: 500;
 }
 
 .stat-number {
   font-size: 1.8rem;
   font-weight: 800;
-  color: #ffffff;
+  color: var(--text-strong);
 }
 
 .stat-footer {
   font-size: 0.78rem;
-  color: #7d96b3;
+  color: var(--text-muted);
 }
 
 .admin-left-pane {
-  background: linear-gradient(180deg, #06182e 0%, #041224 100%);
-  border: 1px solid #45220c;
+  background: linear-gradient(180deg, var(--surface-card) 0%, var(--surface-card-2) 100%);
+  border: 1px solid var(--warm-4);
   border-radius: 18px;
   padding: 1.5rem;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 10px 30px rgba(var(--shadow-rgb), calc(0.3 * var(--shadow-k)));
 }
 
 .teams-admin-header-row {
@@ -206,8 +206,8 @@
 .team-shield-icon-box {
   width: 48px;
   height: 48px;
-  background: #030d1a;
-  border: 1px solid #45220c;
+  background: var(--surface-0);
+  border: 1px solid var(--warm-4);
   border-radius: 12px;
   display: flex;
   align-items: center;
@@ -219,13 +219,13 @@
 .teams-title-block h3 {
   font-size: 1.3rem;
   font-weight: 800;
-  color: #ffffff;
+  color: var(--text-strong);
   margin: 0 0 2px 0;
 }
 
 .teams-title-block p {
   font-size: 0.88rem;
-  color: #7d96b3;
+  color: var(--text-muted);
   margin: 0;
 }
 
@@ -238,8 +238,8 @@
 }
 
 .favorite-team-card {
-  background: linear-gradient(180deg, #030d1a 0%, #020813 100%);
-  border: 1px solid #45220c;
+  background: linear-gradient(180deg, var(--surface-0) 0%, var(--surface-0) 100%);
+  border: 1px solid var(--warm-4);
   border-radius: 16px;
   padding: 1.5rem 1rem;
   display: flex;
@@ -248,7 +248,7 @@
   text-align: center;
   position: relative;
   transition: all 0.25s ease;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 8px 20px rgba(var(--shadow-rgb), calc(0.3 * var(--shadow-k)));
 }
 
 .favorite-team-card:hover {
@@ -264,8 +264,8 @@
   align-items: center;
   justify-content: center;
   margin-bottom: 1rem;
-  background-color: #030d1a;
-  border: 1px solid #143560;
+  background-color: var(--surface-0);
+  border: 1px solid var(--border);
   border-radius: 50%;
   padding: 8px;
   overflow: hidden;
@@ -275,13 +275,13 @@
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
-  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.4));
+  filter: drop-shadow(0 3px 6px rgba(var(--shadow-rgb), calc(0.4 * var(--shadow-k))));
 }
 
 .favorite-team-name {
   font-size: 1.05rem;
   font-weight: 700;
-  color: #ffffff;
+  color: var(--text-strong);
   margin: 0 0 4px 0;
   white-space: nowrap;
   overflow: hidden;
@@ -291,7 +291,7 @@
 
 .favorite-team-country {
   font-size: 0.78rem;
-  color: #7d96b3;
+  color: var(--text-muted);
   margin-bottom: 1.2rem;
 }
 
@@ -315,7 +315,7 @@
 .btn-icon-action.delete {
   background-color: rgba(239, 68, 68, 0.15);
   border: 1px solid #ef4444;
-  color: #f87171;
+  color: var(--danger-text);
 }
 
 .btn-icon-action.delete:hover {
@@ -326,7 +326,7 @@
 
 .empty-msg {
   font-size: 0.88rem;
-  color: #7d96b3;
+  color: var(--text-muted);
   margin: 1rem 0 0 0;
   font-style: italic;
   grid-column: 1 / -1;
@@ -335,5 +335,34 @@
 @media (max-width: 900px) {
   .stats-cards-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+/* =====================================================================
+   CELULAR: banner más compacto (igual que en el panel de admin)
+   ===================================================================== */
+@media (max-width: 600px) {
+  .profile-hero-banner {
+    min-height: 0;
+    padding: 1.4rem 1.2rem;
+  }
+
+  .profile-hero-banner .hero-content {
+    gap: 1rem;
+  }
+
+  .profile-hero-banner .avatar-circle {
+    width: 72px;
+    height: 72px;
+    flex-shrink: 0;
+  }
+
+  .profile-hero-banner .user-main-info {
+    min-width: 0;
+  }
+
+  .profile-hero-banner .user-main-info h3 {
+    font-size: 1.5rem;
+    overflow-wrap: anywhere;
   }
 }

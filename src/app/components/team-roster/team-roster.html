@@ -75,7 +75,7 @@
                 @for (p of searchResults(); track p.id) {
                   <div class="search-result-item" (click)="selectPlayer(p)">
                     <img
-                      [src]="p.photo || 'https://via.placeholder.com/80'"
+                      [src]="p.photo || 'https://placehold.co/80'"
                       class="result-thumb"
                       alt=""
                     />
@@ -101,7 +101,7 @@
           @if (selectedPlayer(); as sp) {
             <div class="selected-player-preview">
               <img
-                [src]="sp.photo || 'https://via.placeholder.com/80'"
+                [src]="sp.photo || 'https://placehold.co/80'"
                 class="preview-avatar"
                 alt=""
               />
@@ -191,7 +191,7 @@
                 <div class="player-avatar-wrapper">
                   <span class="dorsal-tag">#{{ getDorsal(player) }}</span>
                   <img
-                    [src]="player.photo || 'https://via.placeholder.com/120'"
+                    [src]="player.photo || 'https://placehold.co/120'"
                     [alt]="player.name"
                     class="player-avatar"
                   />
@@ -238,7 +238,7 @@
                 <div class="player-avatar-wrapper">
                   <span class="dorsal-tag">#{{ getDorsal(player) }}</span>
                   <img
-                    [src]="player.photo || 'https://via.placeholder.com/120'"
+                    [src]="player.photo || 'https://placehold.co/120'"
                     [alt]="player.name"
                     class="player-avatar"
                   />
@@ -285,7 +285,7 @@
                 <div class="player-avatar-wrapper">
                   <span class="dorsal-tag">#{{ getDorsal(player) }}</span>
                   <img
-                    [src]="player.photo || 'https://via.placeholder.com/120'"
+                    [src]="player.photo || 'https://placehold.co/120'"
                     [alt]="player.name"
                     class="player-avatar"
                   />
@@ -332,7 +332,7 @@
                 <div class="player-avatar-wrapper">
                   <span class="dorsal-tag">#{{ getDorsal(player) }}</span>
                   <img
-                    [src]="player.photo || 'https://via.placeholder.com/120'"
+                    [src]="player.photo || 'https://placehold.co/120'"
                     [alt]="player.name"
                     class="player-avatar"
                   />

@@ -51,9 +51,19 @@
           [class.is-invalid]="teamForm.get('country')?.touched && teamForm.get('country')?.invalid"
         >
           <button type="button" class="dropdown-trigger" (click)="toggleCountryDropdown($event)">
-            <span [class.placeholder]="!teamForm.get('country')?.value">
-              {{ teamForm.get('country')?.value || 'Seleccionar país...' }}
-            </span>
+            <div class="dropdown-item-content">
+              @if (teamForm.get('country')?.value) {
+                <div class="dropdown-flag-wrapper">
+                  <img
+                    [src]="getCountryFlag(teamForm.get('country')?.value)"
+                    [alt]="teamForm.get('country')?.value"
+                  />
+                </div>
+              }
+              <span [class.placeholder]="!teamForm.get('country')?.value">
+                {{ teamForm.get('country')?.value || 'Seleccionar país...' }}
+              </span>
+            </div>
             <span class="triangle-icon"></span>
           </button>
           @if (isCountryOpen()) {
@@ -64,7 +74,10 @@
                   [class.active]="teamForm.get('country')?.value === c"
                   (click)="selectCountry(c, $event)"
                 >
-                  <div class="item-content">
+                  <div class="dropdown-item-content">
+                    <div class="dropdown-flag-wrapper">
+                      <img [src]="getCountryFlag(c)" [alt]="c" />
+                    </div>
                     <span>{{ c }}</span>
                   </div>
                   @if (teamForm.get('country')?.value === c) {

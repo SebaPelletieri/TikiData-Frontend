@@ -1,12 +1,13 @@
 import { Component, input, output, signal, inject, computed, OnInit } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { goToLogin } from '../../utils/auth-redirect';
 import { Team } from '../../models/Team';
 import { Player } from '../../models/Player';
 import { TeamRoster } from '../team-roster/team-roster';
 import { AuthService } from '../../services/auth-service';
 import { TeamService } from '../../services/team-service';
-import { Stadium } from '../../models/stadium';
+import { Stadium } from '../../models/Stadium';
 
 @Component({
   selector: 'app-team-detail',
@@ -17,6 +18,12 @@ import { Stadium } from '../../models/stadium';
 })
 export class TeamDetail implements OnInit {
   private authService = inject(AuthService) as AuthService;
+  private router = inject(Router);
+
+  /** Para el botón Seguir: sin sesión manda al login en lugar de seguir. */
+  isLoggedIn(): boolean {
+    return this.authService.isLoggedIn();
+  }
   private route = inject(ActivatedRoute);
   public teamService = inject(TeamService);
 
@@ -86,6 +93,12 @@ export class TeamDetail implements OnInit {
   toggleFollowTeam() {
     const user = this.currentUser();
     const currentTeam = this.team();
+
+    // Sin sesión no se puede seguir: se manda al login y después se vuelve a esta página
+    if (!user || !user.id) {
+      goToLogin(this.router);
+      return;
+    }
     if (!user || !user.id || !currentTeam || !currentTeam.id) return;
 
     let favoriteTeams: number[] = [...(user.favoriteTeams || [])];

@@ -55,14 +55,73 @@
 
     <!-- Nacionalidad y Posición -->
     <div class="form-row">
-      <div class="form-group">
-        <label for="nacionality">Nacionalidad <span class="required">*</span></label>
-        <input
-          id="nacionality"
-          type="text"
-          formControlName="nationality"
-          placeholder="Ej. Argentina"
-        />
+      <div class="form-group nationality-group">
+        <label>Nacionalidad <span class="required">*</span></label>
+        <div
+          class="custom-dropdown"
+          [class.open]="isNationalityOpen"
+          [class.is-invalid]="
+            formulario.controls['nationality'].touched && formulario.controls['nationality'].invalid
+          "
+        >
+          <button type="button" class="dropdown-trigger" (click)="toggleNationalityDropdown()">
+            <div class="dropdown-item-content">
+              @if (selectedNationality && isKnownNationality) {
+                <div class="dropdown-flag-wrapper">
+                  <img [src]="getCountryFlag(selectedNationality)" [alt]="selectedNationality" />
+                </div>
+              }
+              <span [class.placeholder]="!selectedNationality">
+                {{ selectedNationality || 'Selecciona nacionalidad' }}
+              </span>
+            </div>
+            <span class="triangle-icon"></span>
+          </button>
+
+          @if (isNationalityOpen) {
+            <ul class="dropdown-menu nationality-menu">
+              <li class="nationality-search">
+                <input
+                  type="text"
+                  placeholder="Buscar país..."
+                  autocomplete="off"
+                  [value]="nationalitySearch"
+                  (input)="nationalitySearch = $any($event.target).value"
+                  (click)="$event.stopPropagation()"
+                />
+              </li>
+              @for (c of filteredNationalities; track c.value) {
+                <li
+                  class="dropdown-item"
+                  [class.active]="selectedNationality === c.value"
+                  (click)="selectNationality(c.value)"
+                >
+                  <div class="dropdown-item-content">
+                    <div class="dropdown-flag-wrapper">
+                      <img [src]="getCountryFlag(c.value)" [alt]="c.label" loading="lazy" />
+                    </div>
+                    <span>{{ c.label }}</span>
+                  </div>
+                  @if (selectedNationality === c.value) {
+                    <svg
+                      class="check-icon"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                  }
+                </li>
+              } @empty {
+                <li class="nationality-empty">No se encontraron países</li>
+              }
+            </ul>
+          }
+        </div>
 
         @if (
           formulario.controls['nationality'].touched && formulario.controls['nationality'].invalid
@@ -94,7 +153,7 @@
           "
         >
           <button type="button" class="dropdown-trigger" (click)="togglePositionDropdown()">
-            <span [style.color]="formulario.controls['position'].value ? '#ffffff' : '#637d9d'">
+            <span [style.color]="formulario.controls['position'].value ? 'var(--text-strong)' : 'var(--text-faint)'">
               {{ selectedPositionLabel || 'Selecciona posición' }}
             </span>
             <span class="triangle-icon"></span>
@@ -162,7 +221,7 @@
           "
           (click)="toggleCalendar()"
         >
-          <span [style.color]="formattedBirthDate ? '#ffffff' : '#637d9d'">
+          <span [style.color]="formattedBirthDate ? 'var(--text-strong)' : 'var(--text-faint)'">
             {{ formattedBirthDate || 'Selecciona fecha' }}
           </span>
           <svg
@@ -275,7 +334,7 @@
         "
       >
         <button type="button" class="dropdown-trigger" (click)="toggleFootDropdown()">
-          <span [style.color]="formulario.controls['preferredFoot'].value ? '#ffffff' : '#637d9d'">
+          <span [style.color]="formulario.controls['preferredFoot'].value ? 'var(--text-strong)' : 'var(--text-faint)'">
             {{ formulario.controls['preferredFoot'].value || 'Selecciona pie hábil' }}
           </span>
           <span class="triangle-icon"></span>
@@ -395,7 +454,7 @@
       <div class="form-group">
         <label for="matchesPlayed"
           >Partidos jugados
-          <span style="color: #7d96b3; font-weight: normal; font-size: 0.78rem">(Opcional)</span></label
+          <span style="color: var(--text-muted); font-weight: normal; font-size: 0.78rem">(Opcional)</span></label
         >
         <input
           id="matchesPlayed"
@@ -410,7 +469,7 @@
       <div class="form-group">
         <label for="goals"
           >Goles
-          <span style="color: #7d96b3; font-weight: normal; font-size: 0.78rem">(Opcional)</span></label
+          <span style="color: var(--text-muted); font-weight: normal; font-size: 0.78rem">(Opcional)</span></label
         >
         <input
           id="goals"
@@ -428,7 +487,7 @@
       <div class="form-group">
         <label for="assists"
           >Asistencias
-          <span style="color: #7d96b3; font-weight: normal; font-size: 0.78rem">(Opcional)</span></label
+          <span style="color: var(--text-muted); font-weight: normal; font-size: 0.78rem">(Opcional)</span></label
         >
         <input
           id="assists"
@@ -443,7 +502,7 @@
       <div class="form-group">
         <label for="yellowCards"
           >Tarjetas amarillas
-          <span style="color: #7d96b3; font-weight: normal; font-size: 0.78rem">(Opcional)</span></label
+          <span style="color: var(--text-muted); font-weight: normal; font-size: 0.78rem">(Opcional)</span></label
         >
         <input
           id="yellowCards"
@@ -461,7 +520,7 @@
       <div class="form-group">
         <label for="redCards"
           >Tarjetas rojas
-          <span style="color: #7d96b3; font-weight: normal; font-size: 0.78rem">(Opcional)</span></label
+          <span style="color: var(--text-muted); font-weight: normal; font-size: 0.78rem">(Opcional)</span></label
         >
         <input
           id="redCards"

@@ -16,7 +16,7 @@
   background-color: transparent;
   border: none;
   border-radius: 0;
-  color: #fff;
+  color: var(--text-strong);
   box-shadow: none;
 }
 
@@ -35,7 +35,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #041326;
+  color: var(--surface-1);
   flex-shrink: 0;
 }
 
@@ -43,13 +43,13 @@
   font-size: 1.45rem;
   font-weight: 700;
   margin: 0;
-  color: #ffffff;
+  color: var(--text-strong);
 }
 
 .form-header p {
   margin: 3px 0 0;
   font-size: 0.88rem;
-  color: #7d96b3;
+  color: var(--text-muted);
 }
 
 .team-form {
@@ -69,7 +69,7 @@
   font-size: 0.85rem;
   font-weight: 600;
   margin-bottom: 0.4rem;
-  color: #ffffff;
+  color: var(--text-strong);
 }
 
 .required {
@@ -105,9 +105,9 @@
 .search-input-wrapper input {
   width: 100%;
   height: 46px;
-  background: linear-gradient(180deg, #071a33 0%, #051428 100%);
-  color: #ffffff;
-  border: 1px solid #4a290c;
+  background: linear-gradient(180deg, var(--surface-raised) 0%, var(--surface-raised-2) 100%);
+  color: var(--text-strong);
+  border: 1px solid var(--warm-border);
   border-radius: 10px;
   padding: 0 16px 0 42px !important;
   margin: 0;
@@ -118,19 +118,19 @@
 }
 
 .search-input-wrapper input::placeholder {
-  color: #637d9d;
+  color: var(--text-faint);
 }
 
 .search-input-wrapper input:hover {
   border-color: #ff6b00;
-  background: linear-gradient(180deg, #1c1511 0%, #0e121a 100%);
+  background: linear-gradient(180deg, var(--warm-hover-1) 0%, var(--warm-hover-2) 100%);
   box-shadow: 0 0 12px rgba(255, 107, 0, 0.2);
   transform: translateY(-1px);
 }
 
 .search-input-wrapper input:focus {
   border-color: #ff6b00;
-  background: linear-gradient(180deg, #1c1511 0%, #0e121a 100%);
+  background: linear-gradient(180deg, var(--warm-hover-1) 0%, var(--warm-hover-2) 100%);
   box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.25);
   transform: translateY(-1px);
 }
@@ -145,14 +145,14 @@
   width: 100%;
   max-height: 200px;
   overflow-y: auto;
-  background-color: #06182e;
-  border: 1px solid #4a290c;
+  background-color: var(--surface-card);
+  border: 1px solid var(--warm-border);
   border-radius: 12px;
   padding: 4px;
   margin: 0;
   list-style: none;
   z-index: 1000;
-  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.7);
+  box-shadow: 0 14px 32px rgba(var(--shadow-rgb), calc(0.7 * var(--shadow-k)));
   backdrop-filter: blur(8px);
   animation: dropdownFadeIn 0.18s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
@@ -179,7 +179,7 @@
 }
 
 .search-result-item:hover {
-  background-color: #381a05;
+  background-color: var(--warm-3);
 }
 
 .result-thumb {
@@ -197,7 +197,7 @@
 .result-name {
   font-size: 0.86rem;
   font-weight: 500;
-  color: #fff;
+  color: var(--text-strong);
 }
 
 .result-meta {
@@ -205,7 +205,7 @@
   align-items: center;
   gap: 6px;
   font-size: 0.75rem;
-  color: #7d96b3;
+  color: var(--text-muted);
 }
 
 .flag-icon {
@@ -219,7 +219,7 @@
   padding: 10px;
   text-align: center;
   font-size: 0.84rem;
-  color: #7d96b3;
+  color: var(--text-muted);
   font-style: italic;
 }
 
@@ -237,12 +237,12 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background-color: #1a120b;
-  border: 1px solid #4a290c;
+  background-color: var(--warm-hover-1);
+  border: 1px solid var(--warm-border);
   border-radius: 20px;
   padding: 4px 12px;
   margin: 0;
-  color: #ffd8bd;
+  color: var(--text-warm);
   font-size: 0.85rem;
   font-weight: 600;
   animation: chipIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
@@ -272,7 +272,7 @@
 .btn-remove-chip {
   background: transparent;
   border: none;
-  color: #7d96b3;
+  color: var(--text-muted);
   font-size: 11px;
   cursor: pointer;
   display: flex;
@@ -301,9 +301,9 @@
 .calendar-trigger {
   width: 100%;
   height: 46px;
-  background: linear-gradient(180deg, #071a33 0%, #051428 100%);
-  color: #ffffff;
-  border: 1px solid #4a290c;
+  background: linear-gradient(180deg, var(--surface-raised) 0%, var(--surface-raised-2) 100%);
+  color: var(--text-strong);
+  border: 1px solid var(--warm-border);
   border-radius: 10px;
   padding: 0 16px;
   display: flex;
@@ -324,7 +324,7 @@
 
 .calendar-trigger:hover {
   border-color: #ff6b00;
-  background: linear-gradient(180deg, #1c1511 0%, #0e121a 100%);
+  background: linear-gradient(180deg, var(--warm-hover-1) 0%, var(--warm-hover-2) 100%);
 }
 
 .calendar-trigger.open {
@@ -333,12 +333,12 @@
 }
 
 .calendar-trigger .placeholder {
-  color: #637d9d;
+  color: var(--text-faint);
 }
 
 .calendar-trigger.input-error {
   border-color: #ef4444 !important;
-  background-color: #0b1a2f;
+  background-color: var(--surface-3);
   box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15) !important;
 }
 
@@ -355,10 +355,10 @@
   left: 0;
   right: 0;
   width: 100%;
-  background-color: #041224;
-  border: 1px solid #4a290c;
+  background-color: var(--surface-card-2);
+  border: 1px solid var(--warm-border);
   border-radius: 12px;
-  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.8);
+  box-shadow: 0 14px 32px rgba(var(--shadow-rgb), calc(0.8 * var(--shadow-k)));
   backdrop-filter: blur(8px);
   padding: 0.75rem 0.6rem;
   z-index: 1000;
@@ -402,9 +402,9 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: linear-gradient(180deg, #071a33 0%, #051428 100%);
-  border: 1px solid #4a290c;
-  color: #fff;
+  background: linear-gradient(180deg, var(--surface-raised) 0%, var(--surface-raised-2) 100%);
+  border: 1px solid var(--warm-border);
+  color: var(--text-strong);
   cursor: pointer;
   outline: none;
   transition: all 0.2s ease;
@@ -421,14 +421,14 @@
   width: 100%;
   max-height: 150px;
   overflow-y: auto;
-  background-color: #041224;
+  background-color: var(--surface-card-2);
   border: 1px solid #ff6b00;
   border-radius: 10px;
   padding: 4px;
   margin: 0;
   list-style: none;
   z-index: 1100;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.8);
+  box-shadow: 0 10px 25px rgba(var(--shadow-rgb), calc(0.8 * var(--shadow-k)));
 }
 
 .calendar-dropdown .dropdown-item {
@@ -437,19 +437,19 @@
   justify-content: space-between;
   padding: 6px 10px;
   font-size: 0.8rem;
-  color: #c9d8eb;
+  color: var(--text-soft);
   border-radius: 6px;
   cursor: pointer;
 }
 
 .calendar-dropdown .dropdown-item:hover {
-  background-color: #381a05;
-  color: #ffffff;
+  background-color: var(--warm-3);
+  color: var(--text-strong);
 }
 
 .calendar-dropdown .dropdown-item.active {
-  background-color: #572906;
-  color: #ffffff;
+  background-color: var(--warm-5);
+  color: var(--text-strong);
   font-weight: 600;
 }
 
@@ -464,9 +464,9 @@
 }
 
 .calendar-nav-btn {
-  background: linear-gradient(180deg, #071a33 0%, #051428 100%);
-  border: 1px solid #4a290c;
-  color: #ffffff;
+  background: linear-gradient(180deg, var(--surface-raised) 0%, var(--surface-raised-2) 100%);
+  border: 1px solid var(--warm-border);
+  color: var(--text-strong);
   border-radius: 8px;
   width: 32px;
   height: 34px;
@@ -493,7 +493,7 @@
 }
 
 .calendar-weekday {
-  color: #7d96b3;
+  color: var(--text-muted);
   font-size: 0.68rem;
   font-weight: 700;
   letter-spacing: 0.05em;
@@ -510,7 +510,7 @@
   height: 30px;
   background: transparent;
   border: none;
-  color: #ffffff;
+  color: var(--text-strong);
   font-size: 0.82rem;
   border-radius: 8px;
   cursor: pointer;
@@ -550,7 +550,7 @@
   justify-content: center;
   padding-top: 8px;
   margin-top: 4px;
-  border-top: 1px solid #4a290c;
+  border-top: 1px solid var(--warm-border);
 }
 
 .time-dropdown-wrapper {
@@ -561,9 +561,9 @@
 .time-main-trigger {
   width: 100%;
   height: 34px;
-  background: linear-gradient(180deg, #071a33 0%, #051428 100%);
-  border: 1px solid #4a290c;
-  color: #ffffff;
+  background: linear-gradient(180deg, var(--surface-raised) 0%, var(--surface-raised-2) 100%);
+  border: 1px solid var(--warm-border);
+  color: var(--text-strong);
   border-radius: 8px;
   padding: 0 10px;
   font-size: 0.82rem;
@@ -587,10 +587,10 @@
   right: 0;
   left: 0;
   width: 100%;
-  background-color: #041224;
+  background-color: var(--surface-card-2);
   border: 1px solid #ff6b00;
   border-radius: 10px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.8);
+  box-shadow: 0 10px 25px rgba(var(--shadow-rgb), calc(0.8 * var(--shadow-k)));
   padding: 6px;
   display: flex;
   gap: 6px;
@@ -606,7 +606,7 @@
 .time-col-title {
   font-size: 0.68rem;
   font-weight: 700;
-  color: #7d96b3;
+  color: var(--text-muted);
   text-align: center;
   margin-bottom: 4px;
   text-transform: uppercase;
@@ -632,19 +632,19 @@
   text-align: center;
   padding: 5px 0;
   font-size: 0.78rem;
-  color: #c9d8eb;
+  color: var(--text-soft);
   border-radius: 6px;
   cursor: pointer;
   transition: background-color 0.15s ease;
 }
 
 .time-option-item:hover {
-  background-color: #381a05;
-  color: #ffffff;
+  background-color: var(--warm-3);
+  color: var(--text-strong);
 }
 
 .time-option-item.active {
-  background-color: #572906;
+  background-color: var(--warm-5);
   color: #ff6b00;
   font-weight: 700;
 }
@@ -674,12 +674,12 @@
 .error-icon {
   width: 14px;
   height: 14px;
-  stroke: #f87171;
+  stroke: var(--danger-text);
   flex-shrink: 0;
 }
 
 .error-text {
-  color: #fca5a5;
+  color: var(--danger-text);
   font-size: 0.78rem;
   font-weight: 500;
 }
@@ -687,7 +687,7 @@
 .search-tag-container.is-invalid .search-input-wrapper input,
 .calendar-trigger.input-error {
   border-color: #ef4444 !important;
-  background-color: #0b1a2f;
+  background-color: var(--surface-3);
   box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15) !important;
 }
 
@@ -705,8 +705,8 @@
   flex: 1;
   height: 46px;
   background-color: transparent;
-  border: 1px solid #4a280c;
-  color: #ffffff;
+  border: 1px solid var(--warm-border);
+  color: var(--text-strong);
   border-radius: 12px;
   font-size: 0.95rem;
   font-weight: 500;
@@ -716,7 +716,7 @@
 
 .btn-cancel:hover {
   border-color: #ff6b00;
-  background-color: #1f1207;
+  background-color: var(--warm-1);
   box-shadow: 0 0 14px rgba(255, 107, 0, 0.25);
   transform: translateY(-1px);
 }
@@ -742,8 +742,8 @@
 }
 
 .btn-save:disabled {
-  background: #2b1d14;
-  color: #735745;
+  background: var(--warm-2);
+  color: var(--text-warm-muted);
   box-shadow: none;
   cursor: not-allowed;
 }

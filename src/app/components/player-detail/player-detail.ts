@@ -1,6 +1,7 @@
 import { Component, input, signal, inject, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { goToLogin } from '../../utils/auth-redirect';
 import { Player } from '../../models/Player';
 import { AuthService } from '../../services/auth-service';
 
@@ -13,6 +14,12 @@ import { AuthService } from '../../services/auth-service';
 })
 export class PlayerDetail {
   private authService = inject(AuthService) as AuthService;
+  private router = inject(Router);
+
+  /** Para el botón Seguir: sin sesión manda al login en lugar de seguir. */
+  isLoggedIn(): boolean {
+    return this.authService.isLoggedIn();
+  }
 
   player = input<Player | null>(null);
 
@@ -52,6 +59,12 @@ export class PlayerDetail {
   toggleFollowPlayer() {
     const user = this.currentUser();
     const currentPlayer = this.player();
+
+    // Sin sesión no se puede seguir: se manda al login y después se vuelve a esta página
+    if (!user || !user.id) {
+      goToLogin(this.router);
+      return;
+    }
     if (!user || !user.id || !currentPlayer || !currentPlayer.id) return;
 
     let favoritePlayers: any[] = [...(user.favoritePlayers || [])];

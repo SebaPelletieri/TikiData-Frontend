@@ -152,9 +152,9 @@
                 >
                   <div class="champ-logo-wrapper">
                     <img
-                      [src]="champ.logo || 'https://via.placeholder.com/80?text=Torneo'"
+                      [src]="champ.logo || 'https://placehold.co/80?text=Torneo'"
                       (error)="
-                        $any($event.target).src = 'https://via.placeholder.com/80?text=Torneo'
+                        $any($event.target).src = 'https://placehold.co/80?text=Torneo'
                       "
                       [alt]="champ.name"
                       referrerpolicy="no-referrer"

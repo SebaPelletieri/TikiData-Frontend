@@ -1,7 +1,8 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatchEdit } from '../../components/match-edit/match-edit';
+import { goBackOr } from '../../utils/navigation';
 
 @Component({
   selector: 'app-match-edit-page',
@@ -13,6 +14,7 @@ import { MatchEdit } from '../../components/match-edit/match-edit';
 export class MatchEditPage implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
+  private location = inject(Location);
 
   // El id es un string (ej: "UmIrmEemXVk"), no se puede convertir a número
   matchId = signal<string | null>(null);
@@ -27,6 +29,6 @@ export class MatchEditPage implements OnInit {
   }
 
   goBack() {
-    this.router.navigate(['/admin']);
+    goBackOr(this.location, this.router);
   }
 }

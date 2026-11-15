@@ -1,6 +1,8 @@
 <nav class="navbar">
   <div class="navbar__brand">
     <img src="Logo-NavBar.png" alt="TikiData Logo" class="navbar__logo" routerLink="/" />
+    <!-- En la isla flotante el logo completo se desvanece y aparece el ícono -->
+    <img src="favicon.ico" alt="TikiData" class="navbar__favicon" routerLink="/" />
   </div>
 
   <ul class="navbar__menu">
@@ -9,41 +11,52 @@
       routerLinkActive="navbar__item--active"
       [routerLinkActiveOptions]="{ exact: true }"
     >
-      <a class="navbar__link" routerLink="/">
+      <a class="navbar__link" routerLink="/" title="Inicio">
         <i class="fas fa-home navbar__icon"></i>
-        Inicio
+        <span class="navbar__label">Inicio</span>
       </a>
     </li>
     <li class="navbar__item" routerLinkActive="navbar__item--active">
-      <a class="navbar__link" routerLink="/matches">
+      <a class="navbar__link" routerLink="/matches" title="Partidos">
         <i class="fas fa-futbol navbar__icon"></i>
-        Partidos
+        <span class="navbar__label">Partidos</span>
       </a>
     </li>
     <li class="navbar__item" routerLinkActive="navbar__item--active">
-      <a class="navbar__link" routerLink="/championships">
+      <a class="navbar__link" routerLink="/championships" title="Campeonatos">
         <i class="fas fa-trophy navbar__icon"></i>
-        Campeonatos
+        <span class="navbar__label">Campeonatos</span>
       </a>
     </li>
     <li class="navbar__item" routerLinkActive="navbar__item--active">
-      <a class="navbar__link" routerLink="/teams">
+      <a class="navbar__link" routerLink="/teams" title="Equipos">
         <i class="fas fa-shield-alt navbar__icon"></i>
-        Equipos
+        <span class="navbar__label">Equipos</span>
       </a>
     </li>
     <li class="navbar__item" routerLinkActive="navbar__item--active">
-      <a class="navbar__link" routerLink="/players">
+      <a class="navbar__link" routerLink="/players" title="Jugadores">
         <i class="fas fa-users navbar__icon"></i>
-        Jugadores
+        <span class="navbar__label">Jugadores</span>
       </a>
     </li>
   </ul>
 
   <div class="navbar__utils">
-    <div class="navbar__search">
+    <!-- Celular: la búsqueda es un ícono que abre el buscador a pantalla completa -->
+    <button
+      type="button"
+      class="navbar__search-toggle"
+      aria-label="Buscar"
+      (click)="openMobileSearch()"
+    >
+      <i class="fas fa-search"></i>
+    </button>
+
+    <div class="navbar__search" [class.navbar__search--open]="isMobileSearchOpen()">
       <i class="fas fa-search navbar__search-icon"></i>
       <input
+        #searchInput
         type="text"
         class="navbar__search-input"
         [ngModel]="searchText()"
@@ -51,7 +64,17 @@
         (focus)="isSearchFocused.set(true)"
         (click)="isSearchFocused.set(true)"
         placeholder="Buscar equipos, ligas o jugadores..."
+        (keydown.escape)="closeMobileSearch()"
       />
+      <!-- Solo se ve en celular, con el buscador abierto -->
+      <button
+        type="button"
+        class="navbar__search-close"
+        aria-label="Cerrar búsqueda"
+        (click)="closeMobileSearch()"
+      >
+        <i class="fas fa-times"></i>
+      </button>
 
       @if (isSearchFocused() && searchText().trim() !== '') {
         <ul class="navbar__search-dropdown" (mousedown)="$event.preventDefault()">
@@ -186,4 +209,36 @@
       </div>
     }
   </div>
+</nav>
+<!-- Celular y tablet: los 5 links en una barra fija abajo, como en las apps -->
+<nav class="bottom-nav" aria-label="Navegación principal">
+  <a
+    class="bottom-nav__item"
+    routerLink="/"
+    routerLinkActive="bottom-nav__item--active"
+    [routerLinkActiveOptions]="{ exact: true }"
+  >
+    <span class="bottom-nav__icon"><i class="fas fa-home"></i></span>
+    <span class="bottom-nav__label">Inicio</span>
+  </a>
+  <a class="bottom-nav__item" routerLink="/matches" routerLinkActive="bottom-nav__item--active">
+    <span class="bottom-nav__icon"><i class="fas fa-futbol"></i></span>
+    <span class="bottom-nav__label">Partidos</span>
+  </a>
+  <a
+    class="bottom-nav__item"
+    routerLink="/championships"
+    routerLinkActive="bottom-nav__item--active"
+  >
+    <span class="bottom-nav__icon"><i class="fas fa-trophy"></i></span>
+    <span class="bottom-nav__label">Campeonatos</span>
+  </a>
+  <a class="bottom-nav__item" routerLink="/teams" routerLinkActive="bottom-nav__item--active">
+    <span class="bottom-nav__icon"><i class="fas fa-shield-alt"></i></span>
+    <span class="bottom-nav__label">Equipos</span>
+  </a>
+  <a class="bottom-nav__item" routerLink="/players" routerLinkActive="bottom-nav__item--active">
+    <span class="bottom-nav__icon"><i class="fas fa-users"></i></span>
+    <span class="bottom-nav__label">Jugadores</span>
+  </a>
 </nav>

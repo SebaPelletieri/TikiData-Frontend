@@ -124,9 +124,9 @@
                     >
                       <div class="team-logo-wrapper">
                         <img
-                          [src]="team.shield || 'https://via.placeholder.com/80?text=Club'"
+                          [src]="team.shield || 'https://placehold.co/80?text=Club'"
                           (error)="
-                            $any($event.target).src = 'https://via.placeholder.com/80?text=Club'
+                            $any($event.target).src = 'https://placehold.co/80?text=Club'
                           "
                           [alt]="team.name"
                           class="team-logo"

@@ -2,7 +2,7 @@
   padding: 2rem;
   max-width: 1100px;
   margin: 0 auto;
-  color: #fff;
+  color: var(--text-strong);
   font-family: inherit;
 }
 
@@ -11,12 +11,12 @@
   display: flex;
   align-items: center;
   gap: 2rem;
-  background: #111c2e;
+  background: var(--surface-3);
   padding: 2rem;
   border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 4px 20px rgba(var(--shadow-rgb), calc(0.4 * var(--shadow-k)));
   margin-bottom: 1.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(var(--overlay-rgb), 0.06);
   position: relative;
 }
 
@@ -26,7 +26,7 @@
   border-radius: 50%;
   overflow: hidden;
   border: 3px solid #3b82f6;
-  background: #1e293b;
+  background: var(--surface-4);
   flex-shrink: 0;
 }
 
@@ -47,7 +47,7 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  color: #94a3b8;
+  color: var(--text-muted-2);
   font-size: 0.95rem;
   margin-bottom: 0.75rem;
 }
@@ -109,7 +109,7 @@
 .player-tabs {
   display: flex;
   gap: 8px;
-  border-bottom: 1px solid #0d2a52;
+  border-bottom: 1px solid var(--border-2);
   margin-bottom: 2rem;
   padding-bottom: 0.5rem;
 }
@@ -133,7 +133,7 @@
 }
 
 .tab-btn:hover {
-  color: #ffffff;
+  color: var(--text-strong);
   background: rgba(249, 115, 22, 0.08);
 }
 
@@ -145,8 +145,8 @@
 }
 
 .tab-btn.active {
-  color: #ffffff;
-  background: #0d2a52;
+  color: var(--text-strong);
+  background: var(--surface-3);
   border-bottom: 2px solid #f97316;
 }
 
@@ -159,17 +159,17 @@
 }
 
 .info-card {
-  background: #111c2e;
+  background: var(--surface-3);
   padding: 1.75rem;
   border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(var(--overlay-rgb), 0.06);
 }
 
 .info-card h3 {
   margin-top: 0;
   margin-bottom: 1.25rem;
   font-size: 1.1rem;
-  color: #f1f5f9;
+  color: var(--text-strong);
   font-weight: 600;
 }
 
@@ -183,16 +183,16 @@
   display: flex;
   justify-content: space-between;
   padding: 0.65rem 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  border-bottom: 1px solid rgba(var(--overlay-rgb), 0.04);
   font-size: 0.95rem;
 }
 
 .info-list li span {
-  color: #94a3b8;
+  color: var(--text-muted-2);
 }
 
 .info-list li strong {
-  color: #f8fafc;
+  color: var(--text-strong);
 }
 
 /* Club actual */
@@ -206,13 +206,13 @@
 .club-shield-placeholder {
   width: 50px;
   height: 50px;
-  background: #1e293b;
+  background: var(--surface-4);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 1.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(var(--overlay-rgb), 0.1);
 }
 
 .club-details h4 {
@@ -222,23 +222,23 @@
 
 .club-country {
   margin: 0;
-  color: #94a3b8;
+  color: var(--text-muted-2);
   font-size: 0.85rem;
 }
 
 /* Estadísticas Generales inferiores */
 .stats-overview-card {
-  background: #111c2e;
+  background: var(--surface-3);
   padding: 1.75rem;
   border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(var(--overlay-rgb), 0.06);
 }
 
 .stats-overview-card h3 {
   margin-top: 0;
   margin-bottom: 1.25rem;
   font-size: 1.1rem;
-  color: #f1f5f9;
+  color: var(--text-strong);
   font-weight: 600;
 }
 
@@ -249,13 +249,13 @@
 }
 
 .stat-item {
-  background: #19263b;
+  background: var(--surface-3);
   padding: 1.25rem 1rem;
   border-radius: 12px;
   display: flex;
   align-items: center;
   gap: 1rem;
-  border: 1px solid rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(var(--overlay-rgb), 0.04);
 }
 
 .stat-icon {
@@ -276,14 +276,14 @@
   display: block;
   font-size: 1.25rem;
   font-weight: 700;
-  color: #fff;
+  color: var(--text-strong);
   line-height: 1.2;
 }
 
 .stat-item .lbl {
   display: block;
   font-size: 0.75rem;
-  color: #94a3b8;
+  color: var(--text-muted-2);
   text-transform: uppercase;
   margin-top: 0.2rem;
   white-space: nowrap;
@@ -308,19 +308,19 @@
 }
 
 .btn-back {
-  background: #1e293b;
-  color: #fff;
+  background: var(--surface-4);
+  color: var(--text-strong);
   border: none;
   padding: 0.75rem 1.5rem;
   border-radius: 8px;
   cursor: pointer;
   font-weight: 600;
   transition: background 0.2s;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(var(--overlay-rgb), 0.05);
 }
 
 .btn-back:hover {
-  background: #334155;
+  background: var(--surface-4);
 }
 
 @media (max-width: 900px) {
@@ -341,4 +341,19 @@
   .player-sub-badges {
     justify-content: center;
   }
+}
+
+/* =====================================================================
+   RESPONSIVE: pestañas desplazables con el dedo
+   ===================================================================== */
+.player-tabs {
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.player-tabs::-webkit-scrollbar {
+  display: none;
+}
+.player-tabs .tab-btn {
+  flex-shrink: 0;
+  white-space: nowrap;
 }

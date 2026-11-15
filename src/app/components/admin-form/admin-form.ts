@@ -1,4 +1,14 @@
-import { Component, EventEmitter, Input, OnInit, Output, inject, signal } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewChild,
+  inject,
+  signal,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth-service';
@@ -17,6 +27,7 @@ export class AdminForm implements OnInit {
 
   @Input() userIdToEdit: number | null = null;
   @Output() closePanel = new EventEmitter<void>();
+  @ViewChild('avatarInput') avatarInput?: ElementRef<HTMLInputElement>;
 
   adminForm!: FormGroup;
   isEditMode = signal(false);
@@ -165,6 +176,21 @@ export class AdminForm implements OnInit {
   }
 
   onCancel(): void {
-    this.closePanel.emit();
+    // reset() deja los controles en untouched/pristine, así desaparecen los avisos de los validators
+    this.adminForm.reset({
+      username: '',
+      email: '',
+      password: '',
+      avatar: '',
+    });
+    this.avatarPreview = null;
+    this.showPassword = false;
+    this.errorMessage.set('');
+    this.successMessage.set('');
+
+    // Limpia el input file para que se pueda volver a elegir la misma imagen
+    if (this.avatarInput) {
+      this.avatarInput.nativeElement.value = '';
+    }
   }
 }

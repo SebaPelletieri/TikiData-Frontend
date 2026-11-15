@@ -3,7 +3,7 @@
   <div
     class="team-banner"
     [style.backgroundImage]="
-      'linear-gradient(to top, #040e1e 0%, rgba(4, 14, 30, 0.45) 60%, rgba(4, 14, 30, 0.7) 100%), url(' +
+      'linear-gradient(to top, var(--bg-app) 0%, rgba(var(--banner-rgb), 0.45) 60%, rgba(var(--banner-rgb), 0.7) 100%), url(' +
       (stadium()?.imageUrl || '') +
       ')'
     "
@@ -28,6 +28,7 @@
           class="btn-follow"
           [class.following]="isFollowing()"
           (click)="toggleFollowTeam()"
+          [title]="isLoggedIn() ? '' : 'Iniciá sesión para seguir'"
         >
           <span class="follow-icon">
             {{ isFollowing() ? '✓' : '+' }}
@@ -205,7 +206,7 @@
     }
   </div>
 } @else {
-  <div class="loading-container" style="text-align: center; padding: 5rem 1rem; color: #7d96b3">
+  <div class="loading-container" style="text-align: center; padding: 5rem 1rem; color: var(--text-muted)">
     <p>Cargando información del equipo...</p>
   </div>
 }

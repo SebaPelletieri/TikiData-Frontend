@@ -62,7 +62,7 @@ export class Navbar implements OnInit {
       name: p.name,
       type: 'jugador',
       route: `/players/${p.id}`,
-      subtitle: [p.position, p.teamName].filter(Boolean).join(' • ') || 'Jugador',
+      subtitle: [p.position].filter(Boolean).join(' • ') || 'Jugador',
     }));
 
     return [...championships, ...teams, ...players];
@@ -141,7 +141,7 @@ export class Navbar implements OnInit {
   onLogout(): void {
     this.closeProfileMenu();
     this.authService.logout();
-    this.router.navigate(['/login']);
+    this.router.navigate(['/']); // Redirige a la página de inicio en lugar de login
   }
 
   toggleTheme() {

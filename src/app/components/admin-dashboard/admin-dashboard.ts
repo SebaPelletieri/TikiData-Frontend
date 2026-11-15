@@ -187,24 +187,40 @@ export class AdminDashboard implements OnInit {
     }
   }
 
-  adminCountryOptions = computed(() => [
-    { value: 'ALL', label: 'Todos los países' },
-    { value: 'Argentina', label: 'Argentina' },
-    { value: 'Brasil', label: 'Brasil' },
-    { value: 'Inglaterra', label: 'Inglaterra' },
-  ]);
+  adminCountryOptions = computed(() => {
+    const teams = this.teamService.teams();
+    const uniqueCountries = Array.from(new Set(teams.map((t) => t.country).filter(Boolean))).sort();
+    const options = uniqueCountries.map((country) => ({
+      value: country,
+      label: country,
+    }));
+    return [{ value: 'ALL', label: 'Todos los países' }, ...options];
+  });
 
-  adminChampionshipOptions = computed(() => [
-    { value: 'ALL', label: 'Todos los campeonatos' },
-    { value: 'Liga Profesional', label: 'Liga Profesional' },
-    { value: 'Copa Libertadores', label: 'Copa Libertadores' },
-  ]);
+  adminChampionshipOptions = computed(() => {
+    const allChamps = this.championshipService.championships();
+    const leagueChamps = allChamps.filter((c) => (c.type || '').toUpperCase() === 'LIGA');
+    const options = leagueChamps.map((c) => ({
+      value: String(c.id),
+      label: c.name,
+    }));
+    return [{ value: 'ALL', label: 'Todos los campeonatos' }, ...options];
+  });
 
-  champCountryOptions = computed(() => [
-    { value: 'ALL', label: 'Todos los países' },
-    { value: 'Argentina', label: 'Argentina' },
-    { value: 'Internacional', label: 'Internacional' },
-  ]);
+  champCountryOptions = computed(() => {
+    // Obtenemos todos los campeonatos actuales desde el servicio
+    const championships = this.championshipService.championships();
+    // Extraemos los países únicos que existan, eliminando vacíos/nulos y ordenándolos
+    const uniqueCountries = Array.from(
+      new Set(championships.map((c) => c.country).filter(Boolean)),
+    ).sort();
+    // Mapeamos al formato de opciones de filtro
+    const options = uniqueCountries.map((country) => ({
+      value: country,
+      label: country,
+    }));
+    return [{ value: 'ALL', label: 'Todos los países' }, ...options];
+  });
 
   champTypeOptions = computed(() => [
     { value: 'ALL', label: 'Todos los tipos' },
@@ -511,12 +527,21 @@ export class AdminDashboard implements OnInit {
     const users = this.allUsersForAdmin();
     const search = this.userSearchText().toLowerCase().trim();
     const role = this.selectedUserRole();
+    const currentLoggedUser = this.authService.currentUser(); // Obtenemos el usuario actual del sistema
 
     return users.filter((u) => {
+      // Excluir al usuario actual del sistema (comparando por id o por email)
+      const isCurrentSystemUser =
+        currentLoggedUser && (u.id === currentLoggedUser.id || u.email === currentLoggedUser.email);
+      if (isCurrentSystemUser) {
+        return false;
+      }
+
       const username = (u.username || '').toLowerCase();
       const email = (u.email || '').toLowerCase();
       const matchesSearch = !search || username.includes(search) || email.includes(search);
       const matchesRole = role === 'ALL' || u.role === role;
+
       return matchesSearch && matchesRole;
     });
   });

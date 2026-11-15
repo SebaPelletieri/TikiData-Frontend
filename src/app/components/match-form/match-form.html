@@ -38,8 +38,9 @@
         "
       >
         @if (!selectedChampionshipObject) {
-          <div class="direct-search-input-box">
+          <div class="direct-search-input-box search-input-wrapper">
             <svg
+              class="search-lens-icon"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -63,24 +64,28 @@
           </div>
 
           @if (isChampionshipFocused() && championshipSearchText().trim() !== '') {
-            <ul class="direct-suggestions-list" (mousedown)="$event.preventDefault()">
+            <ul class="search-results-list" (mousedown)="$event.preventDefault()">
               @for (champ of filteredChampionships(); track champ.id) {
                 <li
-                  class="suggestion-item"
+                  class="search-result-item clickable"
                   (click)="selectChampionship(champ); isChampionshipFocused.set(false)"
                 >
-                  <span>{{ champ.name }}</span>
+                  <div class="result-info">
+                    <span class="result-name">{{ champ.name }}</span>
+                  </div>
                 </li>
               } @empty {
-                <li class="suggestion-empty">No se encontraron campeonatos</li>
+                <li class="no-results-msg">No se encontraron campeonatos</li>
               }
             </ul>
           }
         } @else {
-          <div class="selected-tags-box">
-            <div class="championship-tag">
-              <span>{{ selectedChampionshipObject.name }}</span>
-              <button type="button" class="tag-remove-btn" (click)="removeChampionship()">✕</button>
+          <div class="selected-teams-chips">
+            <div class="team-chip">
+              <span class="chip-name">{{ selectedChampionshipObject.name }}</span>
+              <button type="button" class="btn-remove-chip" (click)="removeChampionship()">
+                ✕
+              </button>
             </div>
           </div>
         }
@@ -229,7 +234,7 @@
                 [class.disabled-day]="isDayDisabled(item.date)"
                 [class.selected]="isDaySelected(item.date)"
                 [disabled]="isDayDisabled(item.date)"
-                (click)="selectDate(item.date); $event.stopPropagation()"
+                (click)="selectDate(item.date, $event)"
               >
                 {{ item.day }}
               </button>
@@ -318,8 +323,9 @@
         "
       >
         @if (!selectedLocalObject) {
-          <div class="direct-search-input-box">
+          <div class="direct-search-input-box search-input-wrapper">
             <svg
+              class="search-lens-icon"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -343,24 +349,46 @@
           </div>
 
           @if (isLocalFocused() && localTeamSearchText().trim() !== '') {
-            <ul class="direct-suggestions-list" (mousedown)="$event.preventDefault()">
+            <ul class="search-results-list" (mousedown)="$event.preventDefault()">
               @for (team of filteredLocalTeams(); track team.id) {
                 <li
-                  class="suggestion-item"
+                  class="search-result-item clickable"
                   (click)="selectLocalTeam(team); isLocalFocused.set(false)"
                 >
-                  <span>{{ team.name }}</span>
+                  <img
+                    [src]="team.shield || 'https://via.placeholder.com/40'"
+                    (error)="$any($event.target).src = 'https://via.placeholder.com/40'"
+                    class="result-thumb"
+                    alt=""
+                  />
+                  <div class="result-info">
+                    <span class="result-name">{{ team.name }}</span>
+                    <span class="result-meta">
+                      <img
+                        [src]="'https://flagcdn.com/w40/' + getCountryCode(team.country) + '.png'"
+                        alt="Bandera"
+                        class="flag-icon"
+                      />
+                      <span>{{ team.country || 'Argentina' }}</span>
+                    </span>
+                  </div>
                 </li>
               } @empty {
-                <li class="suggestion-empty">No se encontraron equipos</li>
+                <li class="no-results-msg">No se encontraron equipos</li>
               }
             </ul>
           }
         } @else {
-          <div class="selected-tags-box">
-            <div class="championship-tag">
-              <span>{{ selectedLocalObject.name }}</span>
-              <button type="button" class="tag-remove-btn" (click)="removeLocalTeam()">✕</button>
+          <div class="selected-teams-chips">
+            <div class="team-chip">
+              <img
+                [src]="selectedLocalObject.shield || 'https://via.placeholder.com/30'"
+                (error)="$any($event.target).src = 'https://via.placeholder.com/30'"
+                alt=""
+                class="chip-shield"
+              />
+              <span class="chip-name">{{ selectedLocalObject.name }}</span>
+              <button type="button" class="btn-remove-chip" (click)="removeLocalTeam()">✕</button>
             </div>
           </div>
         }
@@ -395,8 +423,9 @@
         "
       >
         @if (!selectedAwayObject) {
-          <div class="direct-search-input-box">
+          <div class="direct-search-input-box search-input-wrapper">
             <svg
+              class="search-lens-icon"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -420,24 +449,46 @@
           </div>
 
           @if (isAwayFocused() && awayTeamSearchText().trim() !== '') {
-            <ul class="direct-suggestions-list" (mousedown)="$event.preventDefault()">
+            <ul class="search-results-list" (mousedown)="$event.preventDefault()">
               @for (team of filteredAwayTeams(); track team.id) {
                 <li
-                  class="suggestion-item"
+                  class="search-result-item clickable"
                   (click)="selectAwayTeam(team); isAwayFocused.set(false)"
                 >
-                  <span>{{ team.name }}</span>
+                  <img
+                    [src]="team.shield || 'https://via.placeholder.com/40'"
+                    (error)="$any($event.target).src = 'https://via.placeholder.com/40'"
+                    class="result-thumb"
+                    alt=""
+                  />
+                  <div class="result-info">
+                    <span class="result-name">{{ team.name }}</span>
+                    <span class="result-meta">
+                      <img
+                        [src]="'https://flagcdn.com/w40/' + getCountryCode(team.country) + '.png'"
+                        alt="Bandera"
+                        class="flag-icon"
+                      />
+                      <span>{{ team.country || 'Argentina' }}</span>
+                    </span>
+                  </div>
                 </li>
               } @empty {
-                <li class="suggestion-empty">No se encontraron equipos</li>
+                <li class="no-results-msg">No se encontraron equipos</li>
               }
             </ul>
           }
         } @else {
-          <div class="selected-tags-box">
-            <div class="championship-tag">
-              <span>{{ selectedAwayObject.name }}</span>
-              <button type="button" class="tag-remove-btn" (click)="removeAwayTeam()">✕</button>
+          <div class="selected-teams-chips">
+            <div class="team-chip">
+              <img
+                [src]="selectedAwayObject.shield || 'https://via.placeholder.com/30'"
+                (error)="$any($event.target).src = 'https://via.placeholder.com/30'"
+                alt=""
+                class="chip-shield"
+              />
+              <span class="chip-name">{{ selectedAwayObject.name }}</span>
+              <button type="button" class="btn-remove-chip" (click)="removeAwayTeam()">✕</button>
             </div>
           </div>
         }
@@ -472,8 +523,9 @@
         "
       >
         @if (!matchForm.controls['stadium'].value) {
-          <div class="direct-search-input-box">
+          <div class="direct-search-input-box search-input-wrapper">
             <svg
+              class="search-lens-icon"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -497,29 +549,33 @@
           </div>
 
           @if (isStadiumFocused() && stadiumSearchText().trim() !== '') {
-            <ul class="direct-suggestions-list" (mousedown)="$event.preventDefault()">
+            <ul class="search-results-list" (mousedown)="$event.preventDefault()">
               @for (stadium of filteredStadiums(); track $index) {
                 <li
-                  class="suggestion-item"
+                  class="search-result-item clickable"
                   (click)="selectStadium(stadium); isStadiumFocused.set(false)"
                 >
-                  <span>{{ stadium }}</span>
+                  <div class="result-info">
+                    <span class="result-name">{{ stadium }}</span>
+                  </div>
                 </li>
               } @empty {
                 <li
-                  class="suggestion-item"
+                  class="search-result-item clickable"
                   (click)="selectStadium(stadiumSearchText()); isStadiumFocused.set(false)"
                 >
-                  <span>Usar: "{{ stadiumSearchText() }}"</span>
+                  <div class="result-info">
+                    <span class="result-name">Usar: "{{ stadiumSearchText() }}"</span>
+                  </div>
                 </li>
               }
             </ul>
           }
         } @else {
-          <div class="selected-tags-box">
-            <div class="championship-tag">
-              <span>{{ matchForm.controls['stadium'].value }}</span>
-              <button type="button" class="tag-remove-btn" (click)="removeStadium()">✕</button>
+          <div class="selected-teams-chips">
+            <div class="team-chip">
+              <span class="chip-name">{{ matchForm.controls['stadium'].value }}</span>
+              <button type="button" class="btn-remove-chip" (click)="removeStadium()">✕</button>
             </div>
           </div>
         }

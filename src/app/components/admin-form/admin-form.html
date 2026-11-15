@@ -166,9 +166,9 @@
       </div>
     }
 
-    <!-- Foto de Perfil (Avatar con Dropzone) -->
+    <!-- Foto de Perfil (Opcional) -->
     <div class="form-group">
-      <label>Foto de perfil <span class="required">*</span></label>
+      <label>Foto de perfil</label>
       <div class="shield-container">
         <label class="dropzone" for="avatar-file">
           <input
@@ -215,23 +215,6 @@
           }
         </div>
       </div>
-
-      @if (adminForm.get('avatar')?.touched && adminForm.get('avatar')?.invalid) {
-        <div class="error-feedback">
-          <svg
-            class="error-icon"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <circle cx="12" cy="12" r="10"></circle>
-            <line x1="12" y1="8" x2="12" y2="12"></line>
-            <line x1="12" y1="16" x2="12.01" y2="16"></line>
-          </svg>
-          <span class="error-text">La foto de perfil es obligatoria.</span>
-        </div>
-      }
     </div>
 
     <!-- Botones de Acción -->

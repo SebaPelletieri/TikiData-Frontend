@@ -18,19 +18,31 @@
     </div>
     <div>
       <h3>Editar Partido</h3>
-      <p>Modifica la fecha, los equipos contendientes, goles y el estado actual del encuentro.</p>
+      <p>Configura campeonatos, equipos, sustituciones, incidencias y alineaciones.</p>
     </div>
   </div>
 
   <form [formGroup]="matchForm" (ngSubmit)="onSubmit()" class="team-form">
-    <!-- Buscador de Campeonato -->
+    <!-- Campeonato -->
     <div class="form-group championship-group">
       <label>Campeonato <span class="required">*</span></label>
-      <div class="direct-search-input-box" style="position: relative">
+      <div class="direct-search-input-box">
+        <svg
+          class="search-lens-icon"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          width="16"
+          height="16"
+        >
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
         <input
           type="text"
           [formControl]="championshipSearchCtrl"
-          placeholder="Escribe para buscar campeonato..."
+          placeholder="Buscar campeonato..."
           autocomplete="off"
           (focus)="isChampDropdownOpen = filteredChampionships.length > 0"
         />
@@ -38,8 +50,8 @@
           <ul class="direct-suggestions-list" (mousedown)="$event.preventDefault()">
             @for (c of filteredChampionships; track c.id) {
               <li class="suggestion-item" (click)="selectChampionship(c)">
-                <span>{{ c.name }}</span>
-                <span class="add-action-text">Seleccionar</span>
+                <span>{{ c.name }}</span
+                ><span class="add-action-text">Seleccionar</span>
               </li>
             }
           </ul>
@@ -47,106 +59,271 @@
       </div>
     </div>
 
-    <!-- Fecha y Hora + Estado -->
-    <div class="form-row">
-      <div class="form-group">
-        <label>Fecha y Hora <span class="required">*</span></label>
-        <input type="datetime-local" formControlName="matchDate" />
-      </div>
+    <!-- Fecha y Hora -->
+    <div class="form-group calendar-field-container">
+      <label>Fecha y Hora <span class="required">*</span></label>
+      <button
+        type="button"
+        class="calendar-trigger"
+        [class.open]="isCalendarOpen"
+        (click)="toggleCalendar($event)"
+      >
+        <span [class.placeholder]="!selectedDate">{{
+          formattedSelectedDateTime || 'Seleccione fecha'
+        }}</span>
+        <svg
+          class="calendar-icon"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+          <line x1="16" y1="2" x2="16" y2="6"></line>
+          <line x1="8" y1="2" x2="8" y2="6"></line>
+          <line x1="3" y1="10" x2="21" y2="10"></line>
+        </svg>
+      </button>
 
-      <!-- Selector de Estado -->
-      <div class="form-group status-group">
-        <label>Estado del Partido <span class="required">*</span></label>
-        <div class="custom-dropdown" [class.open]="isStatusOpen">
-          <button type="button" class="dropdown-trigger" (click)="toggleStatusDropdown($event)">
-            <span [class.placeholder]="!matchForm.get('status')?.value">
-              {{ matchForm.get('status')?.value || 'Seleccionar estado...' }}
-            </span>
-            <span class="triangle-icon"></span>
-          </button>
-          @if (isStatusOpen) {
-            <ul class="dropdown-menu">
-              @for (st of statuses; track st) {
-                <li class="dropdown-item" (click)="selectStatus(st)">
-                  <span>{{ st }}</span>
-                </li>
+      @if (isCalendarOpen) {
+        <div class="calendar-popover" (click)="$event.stopPropagation()">
+          <div class="calendar-header">
+            <button type="button" class="calendar-nav-btn" (click)="prevMonth()">&#8249;</button>
+            <div class="calendar-selects">
+              <div
+                class="custom-dropdown calendar-dropdown month-dropdown"
+                [class.open]="isMonthOpen"
+              >
+                <button
+                  type="button"
+                  class="dropdown-trigger header-trigger"
+                  (click)="toggleMonthDropdown()"
+                >
+                  <span>{{ months[currentMonth] }}</span
+                  ><span class="triangle-icon"></span>
+                </button>
+                @if (isMonthOpen) {
+                  <ul class="dropdown-menu">
+                    @for (m of months; track $index) {
+                      <li class="dropdown-item" (click)="selectMonth($index)">{{ m }}</li>
+                    }
+                  </ul>
+                }
+              </div>
+              <div
+                class="custom-dropdown calendar-dropdown year-dropdown"
+                [class.open]="isYearOpen"
+              >
+                <button
+                  type="button"
+                  class="dropdown-trigger header-trigger"
+                  (click)="toggleYearDropdown()"
+                >
+                  <span>{{ currentYear }}</span
+                  ><span class="triangle-icon"></span>
+                </button>
+                @if (isYearOpen) {
+                  <ul class="dropdown-menu">
+                    @for (y of yearsList; track y) {
+                      <li class="dropdown-item" (click)="selectYear(y)">{{ y }}</li>
+                    }
+                  </ul>
+                }
+              </div>
+            </div>
+            <button type="button" class="calendar-nav-btn" (click)="nextMonth()">&#8250;</button>
+          </div>
+          <div class="calendar-weekdays">
+            @for (d of weekDays; track d) {
+              <span class="calendar-weekday">{{ d }}</span>
+            }
+          </div>
+          <div class="calendar-grid">
+            @for (item of calendarDays; track $index) {
+              <button
+                type="button"
+                class="calendar-day"
+                [class.other-month]="!item.isCurrentMonth"
+                [class.disabled-day]="isDayDisabled(item.date)"
+                [class.selected]="isDaySelected(item.date)"
+                [disabled]="isDayDisabled(item.date)"
+                (click)="selectDate(item.date, $event)"
+              >
+                {{ item.day }}
+              </button>
+            }
+          </div>
+          <div class="calendar-time-section">
+            <div class="time-dropdown-wrapper">
+              <button
+                type="button"
+                class="time-main-trigger"
+                [class.open]="isTimeOpen"
+                (click)="toggleTimeDropdown()"
+              >
+                <span>{{ selectedHour }} : {{ selectedMinute }} hs</span
+                ><span class="triangle-icon"></span>
+              </button>
+              @if (isTimeOpen) {
+                <div class="time-popover-menu">
+                  <div class="time-column">
+                    <div class="time-col-title">Hora</div>
+                    <div class="time-options-list">
+                      @for (h of hoursList; track h) {
+                        <div
+                          class="time-option-item"
+                          [class.active]="selectedHour === h"
+                          (click)="selectHour(h)"
+                        >
+                          {{ h }}
+                        </div>
+                      }
+                    </div>
+                  </div>
+                  <div class="time-column">
+                    <div class="time-col-title">Min</div>
+                    <div class="time-options-list">
+                      @for (m of ['00', '15', '30', '45']; track m) {
+                        <div
+                          class="time-option-item"
+                          [class.active]="selectedMinute === m"
+                          (click)="selectMinute(m)"
+                        >
+                          {{ m }}
+                        </div>
+                      }
+                    </div>
+                  </div>
+                </div>
               }
-            </ul>
-          }
+            </div>
+          </div>
         </div>
+      }
+    </div>
+
+    <!-- Estado -->
+    <div class="form-group status-group">
+      <label>Estado <span class="required">*</span></label>
+      <div class="custom-dropdown" [class.open]="isStatusOpen">
+        <button type="button" class="dropdown-trigger" (click)="toggleStatusDropdown($event)">
+          <span>{{ matchForm.get('status')?.value || 'Seleccionar...' }}</span
+          ><span class="triangle-icon"></span>
+        </button>
+        @if (isStatusOpen) {
+          <ul class="dropdown-menu">
+            @for (st of statuses; track st) {
+              <li class="dropdown-item" (click)="selectStatus(st)">{{ st }}</li>
+            }
+          </ul>
+        }
       </div>
     </div>
 
-    <!-- Equipo Local y Equipo Visitante (Buscadores) -->
-    <div class="form-row">
-      <div class="form-group local-group">
-        <label>Equipo Local <span class="required">*</span></label>
-        <div class="direct-search-input-box" style="position: relative">
-          <input
-            type="text"
-            [formControl]="localSearchCtrl"
-            placeholder="Buscar equipo local..."
-            autocomplete="off"
-            (focus)="isLocalDropdownOpen = filteredLocalTeams.length > 0"
-          />
-          @if (isLocalDropdownOpen && filteredLocalTeams.length > 0) {
-            <ul class="direct-suggestions-list" (mousedown)="$event.preventDefault()">
-              @for (t of filteredLocalTeams; track t.id) {
-                <li class="suggestion-item" (click)="selectLocalTeam(t)">
-                  <span>{{ t.name }}</span>
-                  <span class="add-action-text">Seleccionar</span>
-                </li>
-              }
-            </ul>
-          }
-        </div>
-      </div>
-
-      <div class="form-group visitor-group">
-        <label>Equipo Visitante <span class="required">*</span></label>
-        <div class="direct-search-input-box" style="position: relative">
-          <input
-            type="text"
-            [formControl]="visitorSearchCtrl"
-            placeholder="Buscar equipo visitante..."
-            autocomplete="off"
-            (focus)="isVisitorDropdownOpen = filteredVisitorTeams.length > 0"
-          />
-          @if (isVisitorDropdownOpen && filteredVisitorTeams.length > 0) {
-            <ul class="direct-suggestions-list" (mousedown)="$event.preventDefault()">
-              @for (t of filteredVisitorTeams; track t.id) {
-                <li class="suggestion-item" (click)="selectVisitorTeam(t)">
-                  <span>{{ t.name }}</span>
-                  <span class="add-action-text">Seleccionar</span>
-                </li>
-              }
-            </ul>
-          }
-        </div>
+    <!-- Equipo Local -->
+    <div class="form-group local-group">
+      <label>Equipo Local <span class="required">*</span></label>
+      <div class="direct-search-input-box">
+        <svg
+          class="search-lens-icon"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          width="16"
+          height="16"
+        >
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input
+          type="text"
+          [formControl]="localSearchCtrl"
+          placeholder="Buscar local..."
+          autocomplete="off"
+          (focus)="isLocalDropdownOpen = filteredLocalTeams.length > 0"
+        />
+        @if (isLocalDropdownOpen && filteredLocalTeams.length > 0) {
+          <ul class="direct-suggestions-list" (mousedown)="$event.preventDefault()">
+            @for (t of filteredLocalTeams; track t.id) {
+              <li class="suggestion-item" (click)="selectLocalTeam(t)">
+                <span>{{ t.name }}</span
+                ><span class="add-action-text">Seleccionar</span>
+              </li>
+            }
+          </ul>
+        }
       </div>
     </div>
 
-    <!-- Goles (Local - Visitante) -->
-    <div class="form-row">
-      <div class="form-group">
-        <label>Goles Local</label>
-        <input type="number" formControlName="homeGoals" min="0" />
-      </div>
-
-      <div class="form-group">
-        <label>Goles Visitante</label>
-        <input type="number" formControlName="awayGoals" min="0" />
+    <!-- Equipo Visitante -->
+    <div class="form-group visitor-group">
+      <label>Equipo Visitante <span class="required">*</span></label>
+      <div class="direct-search-input-box">
+        <svg
+          class="search-lens-icon"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          width="16"
+          height="16"
+        >
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input
+          type="text"
+          [formControl]="visitorSearchCtrl"
+          placeholder="Buscar visitante..."
+          autocomplete="off"
+          (focus)="isVisitorDropdownOpen = filteredVisitorTeams.length > 0"
+        />
+        @if (isVisitorDropdownOpen && filteredVisitorTeams.length > 0) {
+          <ul class="direct-suggestions-list" (mousedown)="$event.preventDefault()">
+            @for (t of filteredVisitorTeams; track t.id) {
+              <li class="suggestion-item" (click)="selectVisitorTeam(t)">
+                <span>{{ t.name }}</span
+                ><span class="add-action-text">Seleccionar</span>
+              </li>
+            }
+          </ul>
+        }
       </div>
     </div>
 
-    <!-- Estadio con Buscador -->
+    <!-- Goles Local -->
+    <div class="form-group">
+      <label>Goles Local</label>
+      <input type="number" formControlName="localGoals" min="0" />
+    </div>
+
+    <!-- Goles Visitante -->
+    <div class="form-group">
+      <label>Goles Visitante</label>
+      <input type="number" formControlName="awayGoals" min="0" />
+    </div>
+
+    <!-- Estadio Principal -->
     <div class="form-group stadium-group">
-      <label>Estadio Principal</label>
-      <div class="direct-search-input-box" style="position: relative">
+      <label>Estadio Principal <span class="required">*</span></label>
+      <div class="direct-search-input-box">
+        <svg
+          class="search-lens-icon"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          width="16"
+          height="16"
+        >
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
         <input
           type="text"
           [formControl]="stadiumSearchCtrl"
-          placeholder="Escribe o busca un estadio..."
+          placeholder="Estadio..."
           autocomplete="off"
           (focus)="isStadiumDropdownOpen = filteredStadiums.length > 0"
         />
@@ -154,8 +331,8 @@
           <ul class="direct-suggestions-list" (mousedown)="$event.preventDefault()">
             @for (stad of filteredStadiums; track stad) {
               <li class="suggestion-item" (click)="selectStadium(stad)">
-                <span>{{ stad }}</span>
-                <span class="add-action-text">Seleccionar</span>
+                <span>{{ stad }}</span
+                ><span class="add-action-text">Seleccionar</span>
               </li>
             }
           </ul>
@@ -163,7 +340,354 @@
       </div>
     </div>
 
-    <!-- Botones de Acción -->
+    <!-- SUSTITUCIONES (2 columnas) -->
+    <div class="sub-section-box">
+      <h4>Sustituciones</h4>
+      <div class="sub-grid-row substitution-row">
+        <!-- Equipo -->
+        <div class="custom-dropdown menu-dropdown" [class.open]="openMenu === 'subTeam'">
+          <button type="button" class="dropdown-trigger" (click)="toggleMenu('subTeam', $event)">
+            <span>{{ newSubTeam === 'local' ? 'Local' : 'Visitante' }}</span>
+            <span class="triangle-icon"></span>
+          </button>
+          @if (openMenu === 'subTeam') {
+            <ul class="dropdown-menu">
+              <li class="dropdown-item" (click)="selectSubTeam('local')">Local</li>
+              <li class="dropdown-item" (click)="selectSubTeam('away')">Visitante</li>
+            </ul>
+          }
+        </div>
+
+        <!-- Minuto -->
+        <input
+          type="number"
+          [(ngModel)]="newSubMinute"
+          [ngModelOptions]="{ standalone: true }"
+          placeholder="Min (1-120)"
+          min="1"
+          max="120"
+        />
+
+        <!-- Jugador que SALE (solo titulares) -->
+        <div class="form-group sub-out-group">
+          <div class="direct-search-input-box">
+            <svg
+              class="search-lens-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              width="16"
+              height="16"
+            >
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input
+              type="text"
+              [formControl]="subOutSearchCtrl"
+              placeholder="Jugador que sale..."
+              autocomplete="off"
+              (focus)="isSubOutOpen = true; isSubInOpen = false"
+            />
+            @if (isSubOutOpen) {
+              <ul class="direct-suggestions-list" (mousedown)="$event.preventDefault()">
+                @for (c of subOutCandidates; track c.name) {
+                  <li class="suggestion-item" (click)="selectSubOut(c)">
+                    <span>{{ c.label }}</span>
+                    <span class="add-action-text">Seleccionar</span>
+                  </li>
+                } @empty {
+                  <li class="suggestion-empty">No hay titulares disponibles</li>
+                }
+              </ul>
+            }
+          </div>
+        </div>
+
+        <!-- Jugador que ENTRA (solo suplentes) -->
+        <div class="form-group sub-in-group">
+          <div class="direct-search-input-box">
+            <svg
+              class="search-lens-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              width="16"
+              height="16"
+            >
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input
+              type="text"
+              [formControl]="subInSearchCtrl"
+              placeholder="Jugador que entra..."
+              autocomplete="off"
+              (focus)="isSubInOpen = true; isSubOutOpen = false"
+            />
+            @if (isSubInOpen) {
+              <ul class="direct-suggestions-list" (mousedown)="$event.preventDefault()">
+                @for (c of subInCandidates; track c.name) {
+                  <li class="suggestion-item" (click)="selectSubIn(c)">
+                    <span>{{ c.label }}</span>
+                    <span class="add-action-text">Seleccionar</span>
+                  </li>
+                } @empty {
+                  <li class="suggestion-empty">No hay suplentes disponibles</li>
+                }
+              </ul>
+            }
+          </div>
+        </div>
+
+        <button
+          type="button"
+          class="btn-sub-add"
+          [disabled]="!canAddSubstitution"
+          (click)="addSubstitution()"
+        >
+          Añadir
+        </button>
+      </div>
+
+      <div class="badges-container">
+        @for (e of substitutionEntries; track e.index) {
+          <div class="item-badge">
+            <span
+              >[{{ e.inc.minute }}']
+              <strong>{{ e.inc.team === 'away' ? 'Visitante' : 'Local' }}</strong
+              >: {{ e.inc.text }}</span
+            >
+            <button type="button" (click)="removeIncidenceAt(e.index)">✕</button>
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- INCIDENCIAS (2 columnas) -->
+    <div class="sub-section-box">
+      <h4>Incidencias (Tarjetas / Goles)</h4>
+      <div class="sub-grid-row incidence-row">
+        <!-- Tipo -->
+        <div class="custom-dropdown menu-dropdown" [class.open]="openMenu === 'incType'">
+          <button type="button" class="dropdown-trigger" (click)="toggleMenu('incType', $event)">
+            <span>{{ getIncidenceTypeLabel(newIncidenceType) }}</span>
+            <span class="triangle-icon"></span>
+          </button>
+          @if (openMenu === 'incType') {
+            <ul class="dropdown-menu">
+              <li class="dropdown-item" (click)="selectIncidenceType('YELLOW_CARD')">
+                Tarjeta Amarilla
+              </li>
+              <li class="dropdown-item" (click)="selectIncidenceType('RED_CARD')">Tarjeta Roja</li>
+              <li class="dropdown-item" (click)="selectIncidenceType('GOAL')">Gol</li>
+            </ul>
+          }
+        </div>
+
+        <!-- Equipo -->
+        <div class="custom-dropdown menu-dropdown" [class.open]="openMenu === 'incTeam'">
+          <button type="button" class="dropdown-trigger" (click)="toggleMenu('incTeam', $event)">
+            <span>{{ newIncidenceTeam === 'local' ? 'Local' : 'Visitante' }}</span>
+            <span class="triangle-icon"></span>
+          </button>
+          @if (openMenu === 'incTeam') {
+            <ul class="dropdown-menu">
+              <li class="dropdown-item" (click)="selectIncidenceTeam('local')">Local</li>
+              <li class="dropdown-item" (click)="selectIncidenceTeam('away')">Visitante</li>
+            </ul>
+          }
+        </div>
+
+        <!-- Minuto -->
+        <input
+          type="number"
+          [(ngModel)]="newIncidenceMinute"
+          [ngModelOptions]="{ standalone: true }"
+          placeholder="Min (1-120)"
+          min="1"
+          max="120"
+        />
+
+        <!-- Jugador (plantel del equipo elegido, sin expulsados) -->
+        <div class="form-group inc-player-group">
+          <div class="direct-search-input-box">
+            <svg
+              class="search-lens-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              width="16"
+              height="16"
+            >
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input
+              type="text"
+              [formControl]="incPlayerSearchCtrl"
+              placeholder="Buscar jugador..."
+              autocomplete="off"
+              (focus)="isIncPlayerOpen = true"
+            />
+            @if (isIncPlayerOpen) {
+              <ul class="direct-suggestions-list" (mousedown)="$event.preventDefault()">
+                @for (c of incPlayerCandidates; track c.name) {
+                  <li class="suggestion-item" (click)="selectIncPlayer(c)">
+                    <span>{{ c.label }}</span>
+                    <span class="add-action-text">Seleccionar</span>
+                  </li>
+                } @empty {
+                  <li class="suggestion-empty">No hay jugadores disponibles</li>
+                }
+              </ul>
+            }
+          </div>
+        </div>
+
+        <button
+          type="button"
+          class="btn-sub-add"
+          [disabled]="!canAddIncidence"
+          (click)="addIncidence()"
+        >
+          Añadir
+        </button>
+      </div>
+
+      <div class="badges-container">
+        @for (e of incidenceEntries; track e.index) {
+          <div
+            class="item-badge"
+            [class.yellow]="e.inc.type === 'YELLOW_CARD'"
+            [class.red]="e.inc.type === 'RED_CARD'"
+            [class.goal]="e.inc.type === 'GOAL'"
+          >
+            <span
+              >[{{ e.inc.minute }}'] <strong>{{ getIncidenceTypeLabel(e.inc.type) }}</strong
+              >: {{ e.inc.text }}</span
+            >
+            <button type="button" (click)="removeIncidenceAt(e.index)">✕</button>
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- FORMACIÓN Y ALINEACIONES (ancho completo) -->
+    <div class="sub-section-box">
+      <h4>Formaciones y Planteles</h4>
+
+      <!-- Local -->
+      <div class="lineup-block">
+        <h5>Plantel Local - Titulares y Suplentes</h5>
+        <div class="roster-selector-row">
+          <select #locPlayer class="styled-select" style="flex: 2">
+            <option value="">Seleccionar jugador del plantel local...</option>
+            @for (p of localTeamRoster; track p.id || p.name) {
+              <option [ngValue]="p">
+                {{ p.number ? '#' + p.number + ' - ' : '' }}{{ p.name || p.nombre }}
+              </option>
+            }
+          </select>
+          <button
+            type="button"
+            class="btn-sub-add"
+            (click)="addLineupPlayer('local', 'starters', locPlayer.value); locPlayer.value = ''"
+          >
+            + Titular
+          </button>
+          <button
+            type="button"
+            class="btn-sub-add alt"
+            (click)="addLineupPlayer('local', 'substitutes', locPlayer.value); locPlayer.value = ''"
+          >
+            + Suplente
+          </button>
+        </div>
+        <div class="lineup-lists-preview">
+          <div>
+            <strong>Titulares Local:</strong>
+            @for (p of lineups.local; track $index) {
+              <span class="mini-chip"
+                >{{ p.name }}
+                <button type="button" (click)="removeLineupPlayer('local', 'starters', $index)">
+                  ✕
+                </button></span
+              >
+            }
+          </div>
+          <div>
+            <strong>Suplentes Local:</strong>
+            @for (p of lineups.localSubstitutes; track $index) {
+              <span class="mini-chip"
+                >{{ p.name }}
+                <button type="button" (click)="removeLineupPlayer('local', 'substitutes', $index)">
+                  ✕
+                </button></span
+              >
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- Visitante -->
+      <div class="lineup-block">
+        <h5>Plantel Visitante - Titulares y Suplentes</h5>
+        <div class="roster-selector-row">
+          <select #visPlayer class="styled-select" style="flex: 2">
+            <option value="">Seleccionar jugador del plantel visitante...</option>
+            @for (p of awayTeamRoster; track p.id || p.name) {
+              <option [ngValue]="p">
+                {{ p.number ? '#' + p.number + ' - ' : '' }}{{ p.name || p.nombre }}
+              </option>
+            }
+          </select>
+          <button
+            type="button"
+            class="btn-sub-add"
+            (click)="addLineupPlayer('away', 'starters', visPlayer.value); visPlayer.value = ''"
+          >
+            + Titular
+          </button>
+          <button
+            type="button"
+            class="btn-sub-add alt"
+            (click)="addLineupPlayer('away', 'substitutes', visPlayer.value); visPlayer.value = ''"
+          >
+            + Suplente
+          </button>
+        </div>
+        <div class="lineup-lists-preview">
+          <div>
+            <strong>Titulares Visitante:</strong>
+            @for (p of lineups.away; track $index) {
+              <span class="mini-chip"
+                >{{ p.name }}
+                <button type="button" (click)="removeLineupPlayer('away', 'starters', $index)">
+                  ✕
+                </button></span
+              >
+            }
+          </div>
+          <div>
+            <strong>Suplentes Visitante:</strong>
+            @for (p of lineups.awaySubstitutes; track $index) {
+              <span class="mini-chip"
+                >{{ p.name }}
+                <button type="button" (click)="removeLineupPlayer('away', 'substitutes', $index)">
+                  ✕
+                </button></span
+              >
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Botones -->
     <div class="form-actions">
       <button type="button" class="btn-cancel" (click)="onCancel()">Cancelar</button>
       <button type="submit" class="btn-submit" [disabled]="matchForm.invalid">

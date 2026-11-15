@@ -352,12 +352,9 @@
           </div>
 
           @if (isStadiumFocused() && stadiumSearchText().trim() !== '') {
-            <ul class="direct-suggestions-list" (mousedown)="$event.preventDefault()">
+            <ul class="direct-suggestions-list">
               @for (item of filteredStadiums(); track item.id) {
-                <li
-                  class="suggestion-item"
-                  (click)="selectStadiumFromSearch(item.id); isStadiumFocused.set(false)"
-                >
+                <li class="suggestion-item" (mousedown)="selectStadiumFromSearch(item.id, $event)">
                   <span>{{ item.name }}</span>
                 </li>
               } @empty {
@@ -395,7 +392,22 @@
 
     <!-- Campeonatos activos -->
     <div class="form-group">
-      <label for="championship-search">Campeonatos activos <span class="required">*</span></label>
+      <div
+        style="
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 0.4rem;
+        "
+      >
+        <label for="championship-search" style="margin-bottom: 0"
+          >Campeonatos activos <span class="required">*</span></label
+        >
+        <span class="counter-badge" [class.has-selection]="selectedChampionshipsCount() > 0">
+          {{ selectedChampionshipsCount() }}
+          {{ selectedChampionshipsCount() === 1 ? 'seleccionado' : 'seleccionados' }}
+        </span>
+      </div>
 
       <div
         class="search-tag-container"
@@ -429,12 +441,9 @@
         </div>
 
         @if (isChampionshipsFocused() && championshipSearchText().trim() !== '') {
-          <ul class="direct-suggestions-list" (mousedown)="$event.preventDefault()">
+          <ul class="direct-suggestions-list">
             @for (item of filteredChampionships(); track item.id) {
-              <li
-                class="suggestion-item"
-                (click)="addChampionship(item.id); isChampionshipsFocused.set(false)"
-              >
+              <li class="suggestion-item" (mousedown)="addChampionship(item.id, $event)">
                 <span>{{ item.name }}</span>
               </li>
             } @empty {
@@ -443,9 +452,9 @@
           </ul>
         }
 
-        @if (selectedChampionshipsList.length > 0) {
+        @if (selectedChampionshipsList().length > 0) {
           <div class="selected-tags-box">
-            @for (item of selectedChampionshipsList; track item.id) {
+            @for (item of selectedChampionshipsList(); track item.id) {
               <div class="championship-tag">
                 <span>{{ item.name }}</span>
                 <button type="button" class="tag-remove-btn" (click)="removeChampionship(item.id)">
@@ -477,6 +486,162 @@
         </div>
       }
     </div>
+
+    <!-- SECCIÓN: Plantel de Futbolistas -->
+    <div class="section-divider"></div>
+    <div class="section-title-box" style="margin-bottom: 1rem">
+      <h4 style="margin: 0; font-size: 1rem; color: #ffffff">Plantel de Futbolistas</h4>
+      <p style="margin: 3px 0 0; font-size: 0.85rem; color: #7d96b3">
+        Busca e incorpora nuevos jugadores a la plantilla actual del equipo.
+      </p>
+    </div>
+
+    <!-- Buscador de jugadores y Dorsal (1 a 99) -->
+    <div class="player-adder-box">
+      <div class="form-row player-row-grid" style="grid-template-columns: 2.2fr 1fr 1fr">
+        <div class="form-group search-player-group" style="margin-bottom: 0">
+          <label for="player-search">Nombre del Jugador</label>
+          <div class="direct-search-input-box">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              width="16"
+              height="16"
+            >
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input
+              type="text"
+              id="player-search"
+              [formControl]="playerSearchCtrl"
+              placeholder="Buscar jugador..."
+              autocomplete="off"
+            />
+          </div>
+          @if (filteredPlayers.length > 0) {
+            <ul class="direct-suggestions-list" (mousedown)="$event.preventDefault()">
+              @for (fp of filteredPlayers; track fp.id) {
+                <li class="suggestion-item" (click)="selectPlayerSuggestion(fp)">
+                  <span
+                    >{{ fp.name }} <small style="color: #7d96b3">({{ fp.position }})</small></span
+                  >
+                  <span
+                    class="add-action-text"
+                    style="color: #ff6b00; font-size: 0.8rem; font-weight: 600"
+                    >Seleccionar</span
+                  >
+                </li>
+              }
+            </ul>
+          }
+        </div>
+
+        <div class="form-group number-col" style="margin-bottom: 0">
+          <label for="player-number">Dorsal (#)</label>
+          <input
+            type="number"
+            id="player-number"
+            class="no-spinners"
+            [formControl]="playerNumberCtrl"
+            min="1"
+            max="99"
+            placeholder="Ej. 10"
+          />
+        </div>
+
+        <div class="form-group btn-col" style="margin-bottom: 0">
+          <label style="opacity: 0; pointer-events: none">&nbsp;</label>
+          <button
+            type="button"
+            class="btn-add-player"
+            [disabled]="!isPlayerAdderValid()"
+            (click)="addPlayer()"
+          >
+            Añadir
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chips / Lista visual de jugadores actuales -->
+    @if (playersList.length > 0) {
+      <div class="added-players-container" style="margin-top: 1.2rem">
+        <span
+          class="players-counter-badge"
+          style="
+            display: inline-block;
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: #ff6b00;
+            background: rgba(255, 107, 0, 0.12);
+            padding: 3px 10px;
+            border-radius: 6px;
+            margin-bottom: 8px;
+          "
+          >Plantel actual ({{ playersList.length }})</span
+        >
+        <div class="players-chips-grid" style="display: flex; flex-wrap: wrap; gap: 8px">
+          @for (p of playersList; track p.id; let i = $index) {
+            <div
+              class="player-chip-card"
+              style="
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 10px;
+                background: #1a120b;
+                border: 1px solid #4a290c;
+                border-radius: 20px;
+                padding: 4px 12px;
+                color: #ffd8bd;
+                font-size: 0.85rem;
+              "
+            >
+              <div class="player-chip-info" style="display: flex; align-items: center; gap: 6px">
+                @if (p.number) {
+                  <span class="p-num" style="color: #ff6b00; font-weight: 700"
+                    >#{{ p.number }}</span
+                  >
+                }
+                <span class="p-name" style="font-weight: 600">{{ p.name }}</span>
+                <span class="p-pos" style="font-size: 0.75rem; color: #7d96b3"
+                  >({{ p.position }})</span
+                >
+              </div>
+              <button
+                type="button"
+                class="btn-remove-chip"
+                (click)="removePlayer(i)"
+                title="Quitar jugador"
+                style="
+                  background: transparent;
+                  border: none;
+                  color: #7d96b3;
+                  font-size: 11px;
+                  cursor: pointer;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  padding: 2px;
+                "
+              >
+                ✕
+              </button>
+            </div>
+          }
+        </div>
+      </div>
+    }
+
+    <!-- Mensaje de error general de jugadores -->
+    @if (errorMessage()) {
+      <div class="error-feedback" style="margin-top: 8px">
+        <span class="error-text">{{ errorMessage() }}</span>
+      </div>
+    }
 
     <!-- Botones de acción -->
     <div class="form-actions">

@@ -45,7 +45,7 @@ export class AdminForm implements OnInit {
       username: ['', [Validators.required, Validators.minLength(3)]],
       email: ['', [Validators.required, Validators.email]],
       password: ['', this.userIdToEdit ? [] : [Validators.required, Validators.minLength(6)]],
-      avatar: ['', [Validators.required]],
+      avatar: [''], // Opcional (sin Validators.required)
     });
   }
 

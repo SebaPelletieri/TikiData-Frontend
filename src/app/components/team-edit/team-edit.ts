@@ -94,6 +94,7 @@ export class TeamEdit implements OnInit {
     this.isMonthOpen = false;
     this.isYearOpen = false;
     this.isChampionshipsFocused.set(false);
+    this.filteredPlayers = []; 
   }
 
   countries = [
@@ -507,15 +508,27 @@ export class TeamEdit implements OnInit {
       if (this.selectedPlayerCandidate && this.selectedPlayerCandidate.name.toLowerCase() !== q) {
         this.selectedPlayerCandidate = null;
       }
+
+      // Filtramos únicamente jugadores que:
+      // 1. Coincidan con la búsqueda por nombre.
+      // 2. NO estén ya agregados en la plantilla actual (playersList).
+      // 3. Estén LIBRES (es decir, que no tengan equipos asignados o que su diccionario de dorsals esté vacío/sin equipos).
       this.filteredPlayers = !q
         ? []
         : this.allSystemPlayers
-            .filter(
-              (p) =>
-                p.id !== undefined &&
-                p.name.toLowerCase().includes(q) &&
-                !this.playersList.some((x) => String(x.id) === String(p.id)),
-            )
+            .filter((p) => {
+              if (p.id === undefined) return false;
+
+              const matchesQuery = p.name.toLowerCase().includes(q);
+              const notInCurrentPlantel = !this.playersList.some(
+                (x) => String(x.id) === String(p.id),
+              );
+
+              // Comprobamos si el jugador está libre (sin equipo/dorsales asignadas en otros clubes)
+              const hasNoTeamAssigned = !p.dorsals || Object.keys(p.dorsals).length === 0;
+
+              return matchesQuery && notInCurrentPlantel && hasNoTeamAssigned;
+            })
             .map((p) => this.toPlayerItem(p));
     });
   }

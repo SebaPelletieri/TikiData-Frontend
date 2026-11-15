@@ -62,12 +62,13 @@
   display: flex;
   flex-direction: column;
   margin-bottom: 0 !important;
+  position: relative;
 }
 
 .form-group label {
   font-size: 0.85rem;
   font-weight: 600;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.4rem;
   color: #ffffff;
 }
 
@@ -77,42 +78,7 @@
 }
 
 /* =========================================
-   Estilo de Inputs y Selects
-   ========================================= */
-.form-control {
-  width: 100%;
-  height: 44px;
-  padding: 0 14px;
-  background: linear-gradient(180deg, #071a33 0%, #051428 100%);
-  color: #ffffff;
-  border: 1.5px solid #45220c;
-  border-radius: 14px;
-  font-size: 0.9rem;
-  outline: none;
-  transition: all 0.25s ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-}
-
-.form-control::placeholder {
-  color: #637d9d;
-}
-
-.form-control:hover {
-  border-color: #ff6b00;
-  background: linear-gradient(180deg, #1c1511 0%, #0e121a 100%);
-  box-shadow: 0 0 12px rgba(255, 107, 0, 0.2);
-  transform: translateY(-1px);
-}
-
-.form-control:focus {
-  border-color: #ff6b00;
-  background: linear-gradient(180deg, #1c1511 0%, #0e121a 100%);
-  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.35);
-  transform: translateY(-1px);
-}
-
-/* =========================================
-   Búsqueda Inteligente
+   Inputs y Buscadores (Estilo unificado)
    ========================================= */
 .search-tag-container {
   position: relative;
@@ -121,14 +87,14 @@
   flex-direction: column;
 }
 
-.direct-search-input-box {
+.search-input-wrapper {
   position: relative;
   display: flex;
   align-items: center;
   width: 100%;
 }
 
-.direct-search-input-box svg {
+.search-lens-icon {
   position: absolute;
   left: 14px;
   color: #ff6b00;
@@ -136,75 +102,121 @@
   z-index: 2;
 }
 
-.direct-search-input-box input {
+.search-input-wrapper input {
   width: 100%;
-  height: 44px;
+  height: 46px;
   background: linear-gradient(180deg, #071a33 0%, #051428 100%);
   color: #ffffff;
-  border: 1.5px solid #45220c;
-  border-radius: 14px;
-  padding: 0 14px 0 40px;
-  font-size: 0.9rem;
+  border: 1px solid #4a290c;
+  border-radius: 10px;
+  padding: 0 16px 0 42px !important;
+  margin: 0;
+  font-size: 0.92rem;
   outline: none;
   transition: all 0.25s ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  box-sizing: border-box;
 }
 
-.direct-search-input-box input::placeholder {
+.search-input-wrapper input::placeholder {
   color: #637d9d;
 }
 
-.direct-search-input-box input:hover {
+.search-input-wrapper input:hover {
   border-color: #ff6b00;
   background: linear-gradient(180deg, #1c1511 0%, #0e121a 100%);
   box-shadow: 0 0 12px rgba(255, 107, 0, 0.2);
   transform: translateY(-1px);
 }
 
-.direct-search-input-box input:focus {
+.search-input-wrapper input:focus {
   border-color: #ff6b00;
   background: linear-gradient(180deg, #1c1511 0%, #0e121a 100%);
-  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.35);
+  box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.25);
   transform: translateY(-1px);
 }
 
-.direct-suggestions-list {
+/* =========================================
+   Listas de Resultados (Sugerencias)
+   ========================================= */
+.search-results-list {
   position: absolute;
-  top: calc(100% + 6px);
+  top: calc(100% + 4px);
   left: 0;
   width: 100%;
-  max-height: 180px;
+  max-height: 200px;
   overflow-y: auto;
   background-color: #06182e;
-  border: 1.5px solid #ff6b00;
+  border: 1px solid #4a290c;
   border-radius: 12px;
-  padding: 6px;
+  padding: 4px;
   margin: 0;
   list-style: none;
   z-index: 1000;
   box-shadow: 0 14px 32px rgba(0, 0, 0, 0.7);
   backdrop-filter: blur(8px);
+  animation: dropdownFadeIn 0.18s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-.suggestion-item {
+@keyframes dropdownFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.search-result-item {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 10px 14px;
-  font-size: 0.86rem;
-  color: #c9d8eb;
-  border-radius: 8px;
+  gap: 12px;
+  padding: 8px 12px;
   cursor: pointer;
-  transition: all 0.15s ease;
+  border-radius: 8px;
+  transition: background-color 0.15s ease;
 }
 
-.suggestion-item:hover {
-  background-color: #2b1406;
-  color: #ff6b00;
+.search-result-item:hover {
+  background-color: #381a05;
 }
 
-.suggestion-empty {
-  padding: 12px;
+.result-thumb {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.result-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.result-name {
+  font-size: 0.86rem;
+  font-weight: 500;
+  color: #fff;
+}
+
+.result-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  color: #7d96b3;
+}
+
+.flag-icon {
+  width: 14px;
+  height: 10px;
+  object-fit: cover;
+  border-radius: 2px;
+}
+
+.no-results-msg {
+  padding: 10px;
   text-align: center;
   font-size: 0.84rem;
   color: #7d96b3;
@@ -212,25 +224,26 @@
 }
 
 /* =========================================
-   Estilo de Tags Seleccionados (Chips)
+   Chips de Equipos Seleccionados
    ========================================= */
-.selected-tags-box {
+.selected-teams-chips {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 4px;
+  gap: 6px;
+  margin-top: 6px;
 }
 
-.championship-tag {
+.team-chip {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   background-color: #1a120b;
   border: 1px solid #4a290c;
   border-radius: 20px;
-  padding: 6px 14px;
+  padding: 4px 12px;
+  margin: 0;
   color: #ffd8bd;
-  font-size: 0.88rem;
+  font-size: 0.85rem;
   font-weight: 600;
   animation: chipIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
@@ -246,27 +259,39 @@
   }
 }
 
-.tag-remove-btn {
+.chip-shield {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+
+.chip-name {
+  font-size: 0.85rem;
+}
+
+.btn-remove-chip {
   background: transparent;
   border: none;
   color: #7d96b3;
-  font-size: 12px;
+  font-size: 11px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 2px;
   border-radius: 50%;
-  transition: all 0.15s ease;
+  transition:
+    color 0.15s ease,
+    transform 0.15s ease;
 }
 
-.tag-remove-btn:hover {
+.btn-remove-chip:hover {
   color: #ef4444;
   transform: scale(1.2);
 }
 
 /* =========================================
-   Calendario y Selector de Hora
+   Calendario y Desplegables del Formulario
    ========================================= */
 .calendar-field-container {
   position: relative;
@@ -275,23 +300,22 @@
 
 .calendar-trigger {
   width: 100%;
-  height: 44px;
+  height: 46px;
   background: linear-gradient(180deg, #071a33 0%, #051428 100%);
   color: #ffffff;
-  border: 1.5px solid #45220c;
-  border-radius: 14px;
-  padding: 0 14px;
+  border: 1px solid #4a290c;
+  border-radius: 10px;
+  padding: 0 16px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 0.9rem;
+  font-size: 0.92rem;
   font-family: inherit;
   cursor: pointer;
   outline: none;
   transition: all 0.25s ease;
   position: relative;
   z-index: 5;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .calendar-trigger * {
@@ -305,7 +329,7 @@
 
 .calendar-trigger.open {
   border-color: #ff6b00;
-  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.35);
+  box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.25);
 }
 
 .calendar-trigger .placeholder {
@@ -332,8 +356,8 @@
   right: 0;
   width: 100%;
   background-color: #041224;
-  border: 1.5px solid #45220c;
-  border-radius: 14px;
+  border: 1px solid #4a290c;
+  border-radius: 12px;
   box-shadow: 0 14px 32px rgba(0, 0, 0, 0.8);
   backdrop-filter: blur(8px);
   padding: 0.75rem 0.6rem;
@@ -379,7 +403,7 @@
   align-items: center;
   justify-content: space-between;
   background: linear-gradient(180deg, #071a33 0%, #051428 100%);
-  border: 1.5px solid #45220c;
+  border: 1px solid #4a290c;
   color: #fff;
   cursor: pointer;
   outline: none;
@@ -419,13 +443,13 @@
 }
 
 .calendar-dropdown .dropdown-item:hover {
-  background-color: #1f1007;
+  background-color: #381a05;
   color: #ffffff;
 }
 
 .calendar-dropdown .dropdown-item.active {
-  background-color: #2b1406;
-  color: #ff6b00;
+  background-color: #572906;
+  color: #ffffff;
   font-weight: 600;
 }
 
@@ -436,11 +460,12 @@
   clip-path: polygon(0 0, 100% 0, 50% 100%);
   display: inline-block;
   flex-shrink: 0;
+  transition: transform 0.2s ease;
 }
 
 .calendar-nav-btn {
   background: linear-gradient(180deg, #071a33 0%, #051428 100%);
-  border: 1.5px solid #45220c;
+  border: 1px solid #4a290c;
   color: #ffffff;
   border-radius: 8px;
   width: 32px;
@@ -525,19 +550,19 @@
   justify-content: center;
   padding-top: 8px;
   margin-top: 4px;
-  border-top: 1px solid #45220c;
+  border-top: 1px solid #4a290c;
 }
 
 .time-dropdown-wrapper {
   position: relative;
-  width: 130px;
+  width: 140px;
 }
 
 .time-main-trigger {
   width: 100%;
   height: 34px;
   background: linear-gradient(180deg, #071a33 0%, #051428 100%);
-  border: 1.5px solid #45220c;
+  border: 1px solid #4a290c;
   color: #ffffff;
   border-radius: 8px;
   padding: 0 10px;
@@ -563,7 +588,7 @@
   left: 0;
   width: 100%;
   background-color: #041224;
-  border: 1.5px solid #ff6b00;
+  border: 1px solid #ff6b00;
   border-radius: 10px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.8);
   padding: 6px;
@@ -614,12 +639,12 @@
 }
 
 .time-option-item:hover {
-  background-color: #1f1007;
+  background-color: #381a05;
   color: #ffffff;
 }
 
 .time-option-item.active {
-  background-color: #2b1406;
+  background-color: #572906;
   color: #ff6b00;
   font-weight: 700;
 }
@@ -631,7 +656,7 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  margin-top: 6px;
+  margin-top: 4px;
   animation: errorSlideIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
@@ -659,7 +684,7 @@
   font-weight: 500;
 }
 
-.search-tag-container.is-invalid .direct-search-input-box input,
+.search-tag-container.is-invalid .search-input-wrapper input,
 .calendar-trigger.input-error {
   border-color: #ef4444 !important;
   background-color: #0b1a2f;
@@ -673,11 +698,12 @@
   display: flex;
   gap: 1rem;
   margin-top: 2rem;
+  padding: 0;
 }
 
 .btn-cancel {
   flex: 1;
-  height: 48px;
+  height: 46px;
   background-color: transparent;
   border: 1px solid #4a280c;
   color: #ffffff;
@@ -697,7 +723,7 @@
 
 .btn-save {
   flex: 1;
-  height: 48px;
+  height: 46px;
   background: linear-gradient(180deg, #ff6b00 0%, #e05e00 100%);
   border: none;
   color: #ffffff;
@@ -720,7 +746,6 @@
   color: #735745;
   box-shadow: none;
   cursor: not-allowed;
-  opacity: 0.6;
 }
 
 .alert-error {

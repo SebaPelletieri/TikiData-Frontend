@@ -9,6 +9,7 @@ import {
   computed,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
+  HostListener,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
@@ -240,6 +241,66 @@ export class MatchForm implements OnInit {
     }
   }
 
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent): void {
+    const target = event.target as HTMLElement;
+    if (!target.closest('.calendar-field-container')) {
+      if (this.isCalendarOpen || this.isMonthOpen || this.isYearOpen || this.isTimeOpen) {
+        this.isCalendarOpen = false;
+        this.isMonthOpen = false;
+        this.isYearOpen = false;
+        this.isTimeOpen = false;
+        this.matchForm.controls['date'].markAsTouched();
+        this.cdr.markForCheck();
+      }
+    }
+  }
+
+  getCountryCode(countryName?: string): string {
+    const norm = (countryName || '').trim().toLowerCase();
+    switch (norm) {
+      case 'argentina':
+        return 'ar';
+      case 'brasil':
+      case 'brazil':
+        return 'br';
+      case 'uruguay':
+        return 'uy';
+      case 'chile':
+        return 'cl';
+      case 'colombia':
+        return 'co';
+      case 'paraguay':
+        return 'py';
+      case 'peru':
+      case 'perú':
+        return 'pe';
+      case 'ecuador':
+        return 'ec';
+      case 'bolivia':
+        return 'bo';
+      case 'venezuela':
+        return 've';
+      case 'españa':
+      case 'spain':
+        return 'es';
+      case 'inglaterra':
+      case 'england':
+        return 'gb-eng';
+      case 'italia':
+      case 'italy':
+        return 'it';
+      case 'alemania':
+      case 'germany':
+        return 'de';
+      case 'francia':
+      case 'france':
+        return 'fr';
+      default:
+        return 'ar';
+    }
+  }
+
   get formattedSelectedDateTime(): string {
     if (!this.selectedDate) return '';
     const day = String(this.selectedDate.getDate()).padStart(2, '0');
@@ -257,6 +318,7 @@ export class MatchForm implements OnInit {
     if (!this.isCalendarOpen) {
       this.matchForm.controls['date'].markAsTouched();
     }
+    this.cdr.markForCheck();
   }
 
   toggleMonthDropdown() {
@@ -359,12 +421,13 @@ export class MatchForm implements OnInit {
     );
   }
 
-  selectDate(date: Date) {
+  selectDate(date: Date, event?: Event) {
+    if (event) event.stopPropagation(); // Opcional por si quieres prevenir propagación
     this.selectedDate = new Date(date);
     this.updateMatchDateTimeString();
     this.isCalendarOpen = false;
+    this.cdr.markForCheck();
   }
-
   updateMatchDateTimeString() {
     if (!this.selectedDate) return;
     const year = this.selectedDate.getFullYear();

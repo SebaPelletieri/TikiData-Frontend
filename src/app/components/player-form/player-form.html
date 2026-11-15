@@ -387,130 +387,92 @@
       }
     </div>
 
-    <!-- Estadísticas Iniciales -->
+    <!-- Estadísticas Iniciales (Opcionales con placeholders distintos) -->
     <div class="section-subtitle">Estadísticas iniciales</div>
 
-    <!-- Fila: Partidos y Goles -->
+    <!-- Fila 1: Partidos jugados y Goles -->
     <div class="form-row">
       <div class="form-group">
-        <label for="matchesPlayed">Partidos jugados</label>
+        <label for="matchesPlayed"
+          >Partidos jugados
+          <span style="color: #7d96b3; font-weight: normal; font-size: 0.78rem">(Opcional)</span></label
+        >
         <input
           id="matchesPlayed"
           type="text"
           inputmode="numeric"
-          placeholder="0"
+          placeholder="Ingrese los partidos jugados"
           formControlName="matchesPlayed"
           (input)="onNumericInput('matchesPlayed', $event)"
         />
-        @if (
-          formulario.controls['matchesPlayed'].touched &&
-          formulario.controls['matchesPlayed'].invalid
-        ) {
-          <div class="error-feedback">
-            <svg
-              class="error-icon"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-            >
-              <circle cx="12" cy="12" r="10"></circle>
-              <line x1="12" y1="8" x2="12" y2="12"></line>
-              <line x1="12" y1="16" x2="12.01" y2="16"></line>
-            </svg>
-            <span class="error-text">Debe ser un número válido (≥ 0).</span>
-          </div>
-        }
       </div>
 
       <div class="form-group">
-        <label for="goals">Goles</label>
+        <label for="goals"
+          >Goles
+          <span style="color: #7d96b3; font-weight: normal; font-size: 0.78rem">(Opcional)</span></label
+        >
         <input
           id="goals"
           type="text"
           inputmode="numeric"
-          placeholder="0"
+          placeholder="Ingrese los goles"
           formControlName="goals"
           (input)="onNumericInput('goals', $event)"
         />
-        @if (formulario.controls['goals'].touched && formulario.controls['goals'].invalid) {
-          <div class="error-feedback">
-            <svg
-              class="error-icon"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-            >
-              <circle cx="12" cy="12" r="10"></circle>
-              <line x1="12" y1="8" x2="12" y2="12"></line>
-              <line x1="12" y1="16" x2="12.01" y2="16"></line>
-            </svg>
-            <span class="error-text">Debe ser un número válido (≥ 0).</span>
-          </div>
-        }
       </div>
     </div>
 
-    <!-- Fila: Asistencias y Tarjetas Amarillas -->
+    <!-- Fila 2: Asistencias y Tarjetas amarillas -->
     <div class="form-row">
       <div class="form-group">
-        <label for="assists">Asistencias</label>
+        <label for="assists"
+          >Asistencias
+          <span style="color: #7d96b3; font-weight: normal; font-size: 0.78rem">(Opcional)</span></label
+        >
         <input
           id="assists"
           type="text"
           inputmode="numeric"
-          placeholder="0"
+          placeholder="Ingrese las asistencias"
           formControlName="assists"
           (input)="onNumericInput('assists', $event)"
         />
-        @if (formulario.controls['assists'].touched && formulario.controls['assists'].invalid) {
-          <div class="error-feedback">
-            <svg
-              class="error-icon"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-            >
-              <circle cx="12" cy="12" r="10"></circle>
-              <line x1="12" y1="8" x2="12" y2="12"></line>
-              <line x1="12" y1="16" x2="12.01" y2="16"></line>
-            </svg>
-            <span class="error-text">Debe ser un número válido (≥ 0).</span>
-          </div>
-        }
       </div>
 
       <div class="form-group">
-        <label for="yellowCards">Tarjetas amarillas</label>
+        <label for="yellowCards"
+          >Tarjetas amarillas
+          <span style="color: #7d96b3; font-weight: normal; font-size: 0.78rem">(Opcional)</span></label
+        >
         <input
           id="yellowCards"
           type="text"
           inputmode="numeric"
-          placeholder="0"
+          placeholder="Ingrese las tarjetas amarillas"
           formControlName="yellowCards"
           (input)="onNumericInput('yellowCards', $event)"
         />
-        @if (
-          formulario.controls['yellowCards'].touched && formulario.controls['yellowCards'].invalid
-        ) {
-          <div class="error-feedback">
-            <svg
-              class="error-icon"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-            >
-              <circle cx="12" cy="12" r="10"></circle>
-              <line x1="12" y1="8" x2="12" y2="12"></line>
-              <line x1="12" y1="16" x2="12.01" y2="16"></line>
-            </svg>
-            <span class="error-text">Debe ser un número válido (≥ 0).</span>
-          </div>
-        }
       </div>
+    </div>
+
+    <!-- Fila 3: Tarjetas rojas -->
+    <div class="form-row">
+      <div class="form-group">
+        <label for="redCards"
+          >Tarjetas rojas
+          <span style="color: #7d96b3; font-weight: normal; font-size: 0.78rem">(Opcional)</span></label
+        >
+        <input
+          id="redCards"
+          type="text"
+          inputmode="numeric"
+          placeholder="Ingrese las tarjetas rojas"
+          formControlName="redCards"
+          (input)="onNumericInput('redCards', $event)"
+        />
+      </div>
+      <div class="form-group" style="visibility: hidden"></div>
     </div>
 
     <!-- Botones de Acción -->

@@ -20,11 +20,10 @@ export class MatchEditPage implements OnInit {
   matchId = signal<string | null>(null);
 
   ngOnInit() {
-    this.route.paramMap.subscribe((params) => {
-      const id = params.get('id');
-      if (id) {
-        this.matchId.set(id);
-      }
+    // La URL trae local-vs-visitante-fecha; el resolver de la ruta deja el id en data
+    this.route.data.subscribe((data) => {
+      const id = data['id'];
+      if (id) this.matchId.set(String(id));
     });
   }
 

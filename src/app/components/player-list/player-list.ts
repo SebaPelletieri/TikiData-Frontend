@@ -3,6 +3,8 @@ import { Component, computed, inject, OnInit, signal, HostListener } from '@angu
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { PlayerService } from '../../services/player-service';
+import { getCountryFlag as countryFlagUrl } from '../../utils/countries';
+import { compareEs, sortByName } from '../../utils/sort';
 
 interface FilterOption {
   value: string | number;
@@ -62,7 +64,7 @@ export class PlayerList implements OnInit {
     const options: FilterOption[] = [{ value: 'ALL', label: 'Todas las nacionalidades' }];
 
     Array.from(nationalitiesSet)
-      .sort()
+      .sort(compareEs) // "España" entre "Escocia" y "Estados Unidos"
       .forEach((nationality) => {
         options.push({ value: nationality, label: nationality });
       });
@@ -70,60 +72,9 @@ export class PlayerList implements OnInit {
     return options;
   });
 
-  // Función mejorada con mapeo robusto para códigos ISO de países de todo el mundo
+  // Bandera del país: usa la lista completa compartida (utils/countries.ts)
   getCountryFlag(countryName: string | number): string {
-    if (!countryName) return 'https://flagcdn.com/w40/xx.png';
-
-    const strCountry = String(countryName);
-
-    // Diccionario completo de códigos ISO oficiales (incluyendo Angola, Haití y otros)
-    const universalIsoExceptions: Record<string, string> = {
-      argentina: 'ar',
-      brasil: 'br',
-      brazil: 'br',
-      espana: 'es',
-      spain: 'es',
-      inglaterra: 'gb-eng',
-      england: 'gb-eng',
-      alemania: 'de',
-      germany: 'de',
-      italia: 'it',
-      italy: 'it',
-      uruguay: 'uy',
-      colombia: 'co',
-      chile: 'cl',
-      ecuador: 'ec',
-      paraguay: 'py',
-      bolivia: 'bo',
-      peru: 'pe',
-      venezuela: 've',
-      mexico: 'mx',
-      francia: 'fr',
-      portugal: 'pt',
-      japon: 'jp',
-      estadosunidos: 'us',
-      reinounido: 'gb',
-      suiza: 'ch',
-      republicacheca: 'cz',
-      angola: 'ao',
-      haiti: 'ht',
-      costarica: 'cr',
-      panama: 'pa',
-      eslovenia: 'si',
-      siria: 'sy',
-    };
-
-    const normalized = strCountry
-      .toLowerCase()
-      .trim()
-      .normalize('NFD')
-      .replace(/[\u0300-\u036f]/g, '')
-      .replace(/\s+/g, '');
-
-    // Si está en el diccionario usa su ISO correcto; si no, intenta con las dos primeras letras como respaldo
-    const isoCode = universalIsoExceptions[normalized] || normalized.substring(0, 2);
-
-    return `https://flagcdn.com/w40/${isoCode}.png`;
+    return countryFlagUrl(countryName);
   }
 
   ngOnInit(): void {
@@ -204,8 +155,14 @@ export class PlayerList implements OnInit {
     return player.teamName || 'Equipo TikiData';
   }
 
+  // Orden alfabético (ignora tildes y mayúsculas). Se ordena solo cuando cambian los
+  // jugadores, no en cada búsqueda; el filtro mantiene ese orden.
+  private sortedPlayers = computed(() =>
+    sortByName(this.playerService.players ? this.playerService.players() : []),
+  );
+
   filteredPlayersList = computed(() => {
-    const list = this.playerService.players ? this.playerService.players() : [];
+    const list = this.sortedPlayers();
     const search = this.searchText().toLowerCase().trim();
     const pos = this.selectedPosition();
     const natFilter = this.selectedNationality();

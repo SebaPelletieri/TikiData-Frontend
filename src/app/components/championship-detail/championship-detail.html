@@ -4,12 +4,19 @@
     <div class="champ-header-banner">
       <div class="champ-main-info">
         <div class="champ-logo-wrapper">
-          <img [src]="champ.logo" [alt]="champ.name" class="champ-logo" />
+          <img loading="lazy" decoding="async" [src]="champ.logo" [alt]="champ.name" class="champ-logo" />
         </div>
         <div class="champ-text-data">
           <h1>{{ champ.name }}</h1>
           <div class="champ-meta-badges">
-            <span class="meta-item">🇦🇷 {{ champ.country }}</span>
+            <span class="meta-item meta-country">
+              @if (countryFlag(champ.country)) {
+                <img loading="lazy" decoding="async" [src]="countryFlag(champ.country)" [alt]="champ.country" class="meta-flag" />
+              } @else {
+                <span class="meta-flag-emoji">🌎</span>
+              }
+              {{ champ.country }}
+            </span>
             <span class="separator">•</span>
             <span class="meta-item">{{ champ.type }}</span>
             @if (champ.season) {
@@ -95,7 +102,7 @@
                           <td class="text-center fw-bold">{{ row.position }}</td>
                           <td>
                             <div class="team-cell">
-                              <img [src]="row.shield" [alt]="row.name" class="mini-shield" />
+                              <img loading="lazy" decoding="async" [src]="row.shield" [alt]="row.name" class="mini-shield" />
                               <span>{{ row.name }}</span>
                             </div>
                           </td>
@@ -152,7 +159,7 @@
                       <td class="text-center fw-bold">{{ row.position }}</td>
                       <td>
                         <div class="team-cell">
-                          <img [src]="row.shield" [alt]="row.name" class="mini-shield" />
+                          <img loading="lazy" decoding="async" [src]="row.shield" [alt]="row.name" class="mini-shield" />
                           <span>{{ row.name }}</span>
                         </div>
                       </td>
@@ -199,11 +206,11 @@
                   <div class="match-teams-info">
                     <span class="team-right-side">
                       {{ match.homeName }}
-                      <img [src]="match.homeShield" class="tiny-shield" alt="" />
+                      <img loading="lazy" decoding="async" [src]="match.homeShield" class="tiny-shield" alt="" />
                     </span>
                     <span class="vs-text">vs</span>
                     <span class="team-left-side">
-                      <img [src]="match.awayShield" class="tiny-shield" alt="" />
+                      <img loading="lazy" decoding="async" [src]="match.awayShield" class="tiny-shield" alt="" />
                       {{ match.awayName }}
                     </span>
                   </div>
@@ -237,7 +244,7 @@
                       <td class="fw-bold">{{ scorer.position }}</td>
                       <td>
                         <div class="player-cell">
-                          <img [src]="scorer.photo" [alt]="scorer.name" class="player-avatar" />
+                          <img loading="lazy" decoding="async" [src]="scorer.photo" [alt]="scorer.name" class="player-avatar" />
                           <span>{{ scorer.name }}</span>
                         </div>
                       </td>
@@ -311,7 +318,7 @@
                         <td class="text-center fw-bold">{{ row.position }}</td>
                         <td>
                           <div class="team-cell">
-                            <img [src]="row.shield" [alt]="row.name" class="mini-shield" />
+                            <img loading="lazy" decoding="async" [src]="row.shield" [alt]="row.name" class="mini-shield" />
                             <span>{{ row.name }}</span>
                           </div>
                         </td>
@@ -365,7 +372,7 @@
                     <td class="text-center fw-bold">{{ row.position }}</td>
                     <td>
                       <div class="team-cell">
-                        <img [src]="row.shield" [alt]="row.name" class="mini-shield" />
+                        <img loading="lazy" decoding="async" [src]="row.shield" [alt]="row.name" class="mini-shield" />
                         <span>{{ row.name }}</span>
                       </div>
                     </td>
@@ -429,7 +436,7 @@
                         <div class="match-teams-info">
                           <span class="team-right-side">
                             {{ match.homeName }}
-                            <img [src]="match.homeShield" class="tiny-shield" alt="" />
+                            <img loading="lazy" decoding="async" [src]="match.homeShield" class="tiny-shield" alt="" />
                           </span>
                           <span
                             class="vs-text fw-bold"
@@ -438,7 +445,7 @@
                             {{ match.score }}
                           </span>
                           <span class="team-left-side">
-                            <img [src]="match.awayShield" class="tiny-shield" alt="" />
+                            <img loading="lazy" decoding="async" [src]="match.awayShield" class="tiny-shield" alt="" />
                             {{ match.awayName }}
                           </span>
                         </div>
@@ -478,7 +485,7 @@
                   <td class="fw-bold">{{ scorer.position }}</td>
                   <td>
                     <div class="player-cell">
-                      <img [src]="scorer.photo" [alt]="scorer.name" class="player-avatar" />
+                      <img loading="lazy" decoding="async" [src]="scorer.photo" [alt]="scorer.name" class="player-avatar" />
                       <span>{{ scorer.name }}</span>
                     </div>
                   </td>
@@ -522,7 +529,7 @@
                   <td class="fw-bold">{{ item.position }}</td>
                   <td>
                     <div class="player-cell">
-                      <img [src]="item.photo" [alt]="item.name" class="player-avatar" />
+                      <img loading="lazy" decoding="async" [src]="item.photo" [alt]="item.name" class="player-avatar" />
                       <span
                         ><span>{{ item.name }}</span></span
                       >

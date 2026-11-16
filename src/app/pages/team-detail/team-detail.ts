@@ -10,6 +10,8 @@ import { MatchService } from '../../services/match-service';
 import { Match } from '../../models/Match';
 import { ChampionshipService } from '../../services/championship-service';
 import { Championship } from '../../models/Championship';
+import { Stadium } from '../../models/Stadium';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-team-detail-page',
@@ -24,10 +26,12 @@ export class TeamDetailPage implements OnInit {
   private playerService = inject(PlayerService);
   private matchService = inject(MatchService);
   private championshipService = inject(ChampionshipService);
+  private http = inject(HttpClient);
 
   squadPlayers = signal<Player[]>([]);
   teamMatches = signal<any[]>([]);
   teamChampionships = signal<any[]>([]);
+  teamStadium = signal<Stadium | null>(null);
 
   ngOnInit() {
     this.route.paramMap.subscribe((params) => {
@@ -36,6 +40,7 @@ export class TeamDetailPage implements OnInit {
       this.squadPlayers.set([]);
       this.teamMatches.set([]);
       this.teamChampionships.set([]);
+      this.teamStadium.set(null);
 
       const paramValue = params.get('id') || params.get('name');
 
@@ -60,6 +65,7 @@ export class TeamDetailPage implements OnInit {
             this.loadPlayers(foundTeam);
             this.loadMatches(foundTeam.id, teams);
             this.loadChampionships(foundTeam);
+            this.loadStadium(foundTeam);
           }
         } else {
           console.warn(`No se encontró el equipo con ID: ${targetId}`);
@@ -84,6 +90,7 @@ export class TeamDetailPage implements OnInit {
             this.loadPlayers(foundTeam);
             this.loadMatches(foundTeam.id, teams);
             this.loadChampionships(foundTeam);
+            this.loadStadium(foundTeam);
           }
         } else {
           console.warn(`No se encontró el equipo con slug: ${slug}`);
@@ -165,6 +172,18 @@ export class TeamDetailPage implements OnInit {
         this.teamMatches.set(filtered);
       },
       error: (err) => console.error('Error cargando partidos del equipo:', err),
+    });
+  }
+
+  /** Estadio del equipo (por stadiumID). Antes nunca se cargaba y siempre decía "No disponible". */
+  loadStadium(team: Team) {
+    if (team.stadiumID === null || team.stadiumID === undefined) return;
+    this.http.get<Stadium[]>('http://localhost:3000/estadios').subscribe({
+      next: (stadiums) => {
+        const found = stadiums.find((st) => String(st.id) === String(team.stadiumID));
+        this.teamStadium.set(found ?? null);
+      },
+      error: (err) => console.error('Error cargando el estadio del equipo:', err),
     });
   }
 

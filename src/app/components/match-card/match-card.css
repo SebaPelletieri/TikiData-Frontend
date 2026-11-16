@@ -8,7 +8,7 @@
   border-radius: 14px;
   padding: 1.2rem;
   cursor: pointer;
-  transition: all 0.25s ease;
+  transition: color 0.25s ease, background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease, opacity 0.25s ease, filter 0.25s ease;
   box-shadow: 0 4px 15px rgba(var(--shadow-rgb), calc(0.2 * var(--shadow-k)));
   width: 100%;
   box-sizing: border-box;

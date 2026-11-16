@@ -57,10 +57,12 @@ export const COUNTRY_OPTIONS: CountryOption[] = [
     'Costa Rica',
     'Croacia',
     'Cuba',
+    'Curazao',
     'Dinamarca',
     'Dominica',
     'Ecuador',
     'Egipto',
+    'Escocia',
     'El Salvador',
     'Emiratos Árabes Unidos',
     'Eritrea',
@@ -76,9 +78,11 @@ export const COUNTRY_OPTIONS: CountryOption[] = [
     'Fiyi',
     'Francia',
     'Gabón',
+    'Gales',
     'Gambia',
     'Georgia',
     'Ghana',
+    'Gibraltar',
     'Granada',
     'Grecia',
     'Guatemala',
@@ -94,6 +98,7 @@ export const COUNTRY_OPTIONS: CountryOption[] = [
     'Irak',
     'Irán',
     'Irlanda',
+    'Irlanda del Norte',
     'Islandia',
     'Islas Marshall',
     'Islas Salomón',
@@ -214,7 +219,8 @@ export function getCountryFlag(countryName: string | number): string {
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '');
 
-  if (strCountry === 'internacional' || strCountry === 'global') {
+  // Regiones o competencias que no son un país: sin bandera (la vista muestra 🌎)
+  if (['internacional', 'global', 'sudamerica', 'europa', 'mundial'].includes(strCountry)) {
     return '';
   }
 
@@ -292,6 +298,7 @@ export function getCountryFlag(countryName: string | number): string {
     gambia: 'gm',
     georgia: 'ge',
     ghana: 'gh',
+    gibraltar: 'gi',
     granada: 'gd',
     grecia: 'gr',
     guatemala: 'gt',
@@ -366,6 +373,10 @@ export function getCountryFlag(countryName: string | number): string {
     portugal: 'pt',
     'reino unido': 'gb',
     inglaterra: 'gb-eng',
+    escocia: 'gb-sct',
+    gales: 'gb-wls',
+    'irlanda del norte': 'gb-nir',
+    curazao: 'cw',
     'republica centroafricana': 'cf',
     'republica checa': 'cz',
     'republica democratica del congo': 'cd',

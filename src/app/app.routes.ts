@@ -14,6 +14,12 @@ import { TeamDetailPage } from './pages/team-detail/team-detail';
 import { Teams } from './pages/teams/teams';
 import { authGuard } from './guards/auth-guard';
 import { adminGuard } from './guards/admin-guard';
+import {
+  championshipEditIdResolver,
+  matchEditIdResolver,
+  playerEditIdResolver,
+  teamEditIdResolver,
+} from './resolvers/edit-id.resolver';
 import { AdminDashboard } from './components/admin-dashboard/admin-dashboard';
 import { MatchList } from './components/match-list/match-list';
 import { MatchDetailPage } from './pages/match-detail/match-detail';
@@ -43,10 +49,12 @@ export const routes: Routes = [
 
   /* Rutas de equipos */
   {
-    path: 'team/edit/:id',
+    // Solo administradores. La URL lleva el nombre y el resolver lo traduce al id
+    path: 'team/edit/:slug',
     loadComponent: () =>
       import('./pages/team-edit-page/team-edit-page').then((m) => m.TeamEditPage),
     canActivate: [adminGuard],
+    resolve: { id: teamEditIdResolver },
   },
   { path: 'team/:id', component: TeamDetailPage },
   { path: 'team/name/:name', component: TeamDetailPage },
@@ -54,10 +62,11 @@ export const routes: Routes = [
 
   /* Rutas de jugadores */
   {
-    path: 'player/edit/:id',
+    path: 'player/edit/:slug',
     loadComponent: () =>
       import('./pages/player-edit-page/player-edit-page').then((m) => m.PlayerEditPage),
     canActivate: [adminGuard],
+    resolve: { id: playerEditIdResolver },
   },
   { path: 'players', component: Players },
   { path: 'player/:name', component: PlayerDetailPage },
@@ -66,12 +75,13 @@ export const routes: Routes = [
 
   /* Rutas de campeonatos */
   {
-    path: 'championship/edit/:id',
+    path: 'championship/edit/:slug',
     loadComponent: () =>
       import('./pages/championship-edit-page/championship-edit-page').then(
         (m) => m.ChampionshipEditPage,
       ),
     canActivate: [adminGuard],
+    resolve: { id: championshipEditIdResolver },
   },
   { path: 'championships', component: Championships },
   { path: 'championship/:name', component: ChampionshipDetailPage },
@@ -79,10 +89,11 @@ export const routes: Routes = [
 
   /* Rutas de partidos */
   {
-    path: 'match/edit/:id',
+    path: 'match/edit/:slug',
     loadComponent: () =>
       import('./pages/match-edit-page/match-edit-page').then((m) => m.MatchEditPage),
     canActivate: [adminGuard],
+    resolve: { id: matchEditIdResolver },
   },
   { path: 'match/:id', component: MatchDetailPage },
   { path: 'matches', component: MatchList },

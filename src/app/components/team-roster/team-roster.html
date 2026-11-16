@@ -74,7 +74,7 @@
               <div class="search-results-list">
                 @for (p of searchResults(); track p.id) {
                   <div class="search-result-item" (click)="selectPlayer(p)">
-                    <img
+                    <img loading="lazy" decoding="async"
                       [src]="p.photo || 'https://placehold.co/80'"
                       class="result-thumb"
                       alt=""
@@ -100,7 +100,7 @@
           <!-- Vista previa cuando hay un jugador seleccionado -->
           @if (selectedPlayer(); as sp) {
             <div class="selected-player-preview">
-              <img
+              <img loading="lazy" decoding="async"
                 [src]="sp.photo || 'https://placehold.co/80'"
                 class="preview-avatar"
                 alt=""
@@ -190,7 +190,7 @@
               <div class="player-card">
                 <div class="player-avatar-wrapper">
                   <span class="dorsal-tag">#{{ getDorsal(player) }}</span>
-                  <img
+                  <img loading="lazy" decoding="async"
                     [src]="player.photo || 'https://placehold.co/120'"
                     [alt]="player.name"
                     class="player-avatar"
@@ -237,7 +237,7 @@
               <div class="player-card">
                 <div class="player-avatar-wrapper">
                   <span class="dorsal-tag">#{{ getDorsal(player) }}</span>
-                  <img
+                  <img loading="lazy" decoding="async"
                     [src]="player.photo || 'https://placehold.co/120'"
                     [alt]="player.name"
                     class="player-avatar"
@@ -284,7 +284,7 @@
               <div class="player-card">
                 <div class="player-avatar-wrapper">
                   <span class="dorsal-tag">#{{ getDorsal(player) }}</span>
-                  <img
+                  <img loading="lazy" decoding="async"
                     [src]="player.photo || 'https://placehold.co/120'"
                     [alt]="player.name"
                     class="player-avatar"
@@ -331,7 +331,7 @@
               <div class="player-card">
                 <div class="player-avatar-wrapper">
                   <span class="dorsal-tag">#{{ getDorsal(player) }}</span>
-                  <img
+                  <img loading="lazy" decoding="async"
                     [src]="player.photo || 'https://placehold.co/120'"
                     [alt]="player.name"
                     class="player-avatar"

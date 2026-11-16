@@ -62,7 +62,7 @@
                       <div class="dropdown-item-content">
                         @if (opt.value !== 'ALL') {
                           <div class="dropdown-flag-wrapper">
-                            <img [src]="getCountryFlag(opt.value)" [alt]="opt.label" />
+                            <img loading="lazy" decoding="async" [src]="getCountryFlag(opt.value)" [alt]="opt.label" />
                           </div>
                         } @else {
                           <span class="all-countries-icon">🌐</span>
@@ -91,7 +91,7 @@
         <div class="country-header" (click)="toggleCountrySection(group.countryName)">
           <div class="country-title-wrapper">
             <div class="country-flag-wrapper">
-              <img [src]="group.countryFlag" [alt]="group.countryName" />
+              <img loading="lazy" decoding="async" [src]="group.countryFlag" [alt]="group.countryName" />
             </div>
             <h3>{{ group.countryName }}</h3>
           </div>
@@ -107,7 +107,7 @@
                 <div class="league-header">
                   @if (league.leagueLogo) {
                     <div class="league-logo-wrapper">
-                      <img [src]="league.leagueLogo" [alt]="league.leagueName" />
+                      <img loading="lazy" decoding="async" [src]="league.leagueLogo" [alt]="league.leagueName" />
                     </div>
                   } @else {
                     <span class="league-icon"><i class="fas fa-shield-alt"></i></span>
@@ -126,7 +126,7 @@
                       [routerLink]="['/team', team.name.toLowerCase().replace(/\s+/g, '-')]"
                     >
                       <div class="team-logo-wrapper">
-                        <img
+                        <img loading="lazy" decoding="async"
                           [src]="team.shield || 'https://placehold.co/80?text=Club'"
                           (error)="
                             $any($event.target).src = 'https://placehold.co/80?text=Club'

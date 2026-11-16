@@ -35,7 +35,7 @@ export class PlayerService {
     return this.http.get<Player[]>(this.apiUrl);
   }
 
-  getByID(id: number): Observable<Player> {
+  getByID(id: number | string): Observable<Player> {
     return this.http.get<Player>(`${this.apiUrl}/${id}`);
   }
 
@@ -51,7 +51,7 @@ export class PlayerService {
     });
   }
 
-  updatePlayer(id: number, player: Player): Observable<Player> {
+  updatePlayer(id: number | string, player: Player): Observable<Player> {
     return this.http.put<Player>(`${this.apiUrl}/${id}`, player).pipe(
       map((data) => {
         this.getAll();

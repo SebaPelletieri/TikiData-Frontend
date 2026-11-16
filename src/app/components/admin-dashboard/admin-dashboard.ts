@@ -1,4 +1,6 @@
 import { Component, OnInit, signal, computed, inject, HostListener } from '@angular/core';
+import { buildSlugMap, matchBaseName } from '../../utils/slug';
+import { compareEs } from '../../utils/sort';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -188,10 +190,38 @@ export class AdminDashboard implements OnInit {
     }
   }
 
+  // Slugs para las URLs de edición (/team/edit/boca-juniors). Se calculan una vez por
+  // cambio de datos, con las mismas reglas que usan los resolvers de las rutas.
+  private teamSlugs = computed(() => buildSlugMap(this.teamService.teams(), (t) => t.name));
+  private playerSlugs = computed(() => buildSlugMap(this.playerService.players(), (p) => p.name));
+  private champSlugs = computed(() =>
+    buildSlugMap(this.championshipService.championships(), (c) => c.name),
+  );
+  private matchSlugs = computed(() =>
+    buildSlugMap(this.matchService.matches(), (m) =>
+      matchBaseName(m, (id) => this.teamService.teamsById().get(String(id))?.name || 'equipo-' + id),
+    ),
+  );
+
+  teamEditSlug(team: { id?: number | string }): string {
+    return this.teamSlugs().get(String(team.id)) ?? String(team.id);
+  }
+  playerEditSlug(player: { id?: number | string }): string {
+    return this.playerSlugs().get(String(player.id)) ?? String(player.id);
+  }
+  champEditSlug(champ: { id?: number | string }): string {
+    return this.champSlugs().get(String(champ.id)) ?? String(champ.id);
+  }
+  matchEditSlug(match: { id?: number | string }): string {
+    return this.matchSlugs().get(String(match.id)) ?? String(match.id);
+  }
+
+  // Búsqueda por índice (Map) en vez de recorrer todos los equipos: se llama dos veces por
+  // partido al filtrar y en cada fila de la tabla, en cada ciclo de detección de cambios
   getTeamName(teamId: number | string): string {
-  const team = this.teamService.teams().find((t) => String(t.id) === String(teamId));
-  return team ? team.name : `Equipo #${teamId}`;
-}
+    const team = this.teamService.teamsById().get(String(teamId));
+    return team ? team.name : `Equipo #${teamId}`;
+  }
 
   confirmToggleRole(user: any): void {
     const newRole = user.role === 'Administrador' ? 'Usuario' : 'Administrador';
@@ -238,11 +268,14 @@ export class AdminDashboard implements OnInit {
 
   adminChampionshipOptions = computed(() => {
     const allChamps = this.championshipService.championships();
-    const leagueChamps = allChamps.filter((c) => (c.type || '').toUpperCase() === 'LIGA');
-    const options = leagueChamps.map((c) => ({
-      value: String(c.id),
-      label: c.name,
-    }));
+    // Ligas primero y después copas, cada grupo en orden alfabético
+    const isLeague = (c: { type?: string }) => (c.type || '').toUpperCase() === 'LIGA';
+    const options = [...allChamps]
+      .sort((a, b) => Number(isLeague(b)) - Number(isLeague(a)) || compareEs(a.name, b.name))
+      .map((c) => ({
+        value: String(c.id),
+        label: c.name,
+      }));
     return [{ value: 'ALL', label: 'Todos los campeonatos' }, ...options];
   });
 
@@ -311,6 +344,7 @@ export class AdminDashboard implements OnInit {
 
   selectAdminCountry(country: string): void {
     this.selectedAdminCountry.set(country);
+    this.currentPage.set(1);
     const found = this.adminCountryOptions().find((o) => o.value === country);
     this.selectedCountryLabel = found ? found.label : 'Todos los países';
     this.isCountryDropdownOpen = false;
@@ -318,6 +352,7 @@ export class AdminDashboard implements OnInit {
 
   selectAdminChampionship(champ: string): void {
     this.selectedAdminChampionship.set(champ);
+    this.currentPage.set(1);
     const found = this.adminChampionshipOptions().find((o) => o.value === champ);
     this.selectedChampionshipLabel = found ? found.label : 'Todos los campeonatos';
     this.isChampionshipDropdownOpen = false;
@@ -405,6 +440,15 @@ export class AdminDashboard implements OnInit {
     const country = this.selectedAdminCountry();
     const championshipId = this.selectedAdminChampionship();
 
+    // Equipos del campeonato elegido. La fuente principal es la lista del campeonato
+    // (teamsIDs, se completa al asignarle equipos); como respaldo, la del equipo.
+    // Todo se compara como texto: hay ids numéricos ("2") y de texto ("premier-league-2026-27").
+    const champ =
+      championshipId === 'ALL'
+        ? null
+        : this.championshipService.championships().find((c) => String(c.id) === championshipId);
+    const champTeamIds = new Set((champ?.teamsIDs || []).map((id: number | string) => String(id)));
+
     return teams.filter((t) => {
       const teamName = (t.name || '').toLowerCase();
       const teamCountry = t.country || '';
@@ -414,9 +458,9 @@ export class AdminDashboard implements OnInit {
 
       let matchesChampionship = true;
       if (championshipId !== 'ALL') {
-        const champIdNum = Number(championshipId);
         matchesChampionship =
-          Array.isArray(t.championshipsActive) && t.championshipsActive.includes(champIdNum);
+          champTeamIds.has(String(t.id)) ||
+          (t.championshipsActive || []).some((id) => String(id) === championshipId);
       }
 
       return matchesSearch && matchesCountry && matchesChampionship;

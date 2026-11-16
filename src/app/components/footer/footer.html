@@ -3,7 +3,7 @@
     <div class="footer-brand">
       <div class="footer-logo-box">
         <span class="footer-logo-icon">⚽</span>
-        <h3>TikiData</h3>
+        <h3>Tiki<span class="brand-accent">Data</span></h3>
       </div>
       <p class="footer-desc">
         La plataforma definitiva para seguir el fútbol argentino e internacional. Gestiona equipos,
@@ -14,10 +14,21 @@
     <div class="footer-links-col">
       <h4>Navegación</h4>
       <ul>
-        <li><a routerLink="/">Inicio</a></li>
-        <li><a routerLink="/championships">Campeonatos</a></li>
-        <li><a routerLink="/teams">Equipos</a></li>
-        <li><a routerLink="/players">Jugadores</a></li>
+        <li>
+          <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Inicio</a>
+        </li>
+        <li>
+          <a routerLink="/matches" routerLinkActive="active">Partidos</a>
+        </li>
+        <li>
+          <a routerLink="/championships" routerLinkActive="active">Campeonatos</a>
+        </li>
+        <li>
+          <a routerLink="/teams" routerLinkActive="active">Equipos</a>
+        </li>
+        <li>
+          <a routerLink="/players" routerLinkActive="active">Jugadores</a>
+        </li>
       </ul>
     </div>
 
@@ -29,6 +40,6 @@
   </div>
 
   <div class="footer-bottom">
-    <p>&copy; 2026 <strong>TikiData</strong>. Todos los derechos reservados.</p>
+    <p>&copy; 2026 <strong>Tiki<span class="brand-accent">Data</span></strong>. Todos los derechos reservados.</p>
   </div>
 </footer>

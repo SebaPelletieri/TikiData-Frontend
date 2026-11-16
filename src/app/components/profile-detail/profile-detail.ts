@@ -1,33 +1,34 @@
-import { Component, OnInit, inject, signal, computed } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit, inject, signal, computed, DestroyRef } from '@angular/core';
+import { CommonModule, Location } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router, RouterModule, ActivatedRoute } from '@angular/router';
+import { forkJoin, of, switchMap } from 'rxjs';
 import { User } from '../../models/User';
 import { AuthService } from '../../services/auth-service';
 import { Team } from '../../models/Team';
-import { TeamService } from '../../services/team-service';
-import { ChampionshipService } from '../../services/championship-service';
 import { Championship } from '../../models/Championship';
-import { PlayerService } from '../../services/player-service';
 import { Player } from '../../models/Player';
-import { FormsModule } from '@angular/forms';
+import { goBackOr } from '../../utils/navigation';
+
+type FavoriteType = 'team' | 'player' | 'championship';
+
+const API = 'http://localhost:3000';
 
 @Component({
   selector: 'app-profile-detail',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './profile-detail.html',
   styleUrls: ['./profile-detail.css'],
 })
 export class ProfileDetail implements OnInit {
-  public authService = inject(AuthService) as AuthService;
-  private teamService = inject(TeamService);
-  private championshipService = inject(ChampionshipService);
-  private playerService = inject(PlayerService);
+  public authService = inject(AuthService);
+  private http = inject(HttpClient);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
-
-  successMessage: string | null = null;
-  errorMessage: string | null = null;
+  private location = inject(Location);
+  private destroyRef = inject(DestroyRef);
 
   profileUser = signal<User | null>(null);
 
@@ -39,146 +40,111 @@ export class ProfileDetail implements OnInit {
   favoritePlayersCount = computed(() => this.favoritePlayersList().length);
   favoriteChampionshipsCount = computed(() => this.favoriteChampionshipsList().length);
 
-  showAllTeams = signal<boolean>(false);
-  showAllPlayers = signal<boolean>(false);
-  showAllChampionships = signal<boolean>(false);
+  /**
+   * true cuando se mira el perfil propio (/profile, o /profile/:id con el id propio).
+   * Si un admin entra al perfil de otro usuario es solo lectura: no puede quitarle
+   * favoritos ni ve el botón "Editar perfil" (que editaba el perfil del admin, no el de él).
+   */
+  isOwnProfile = computed(() => {
+    const viewed = this.profileUser();
+    const me = this.authService.currentUser();
+    return !!viewed && !!me && String(viewed.id) === String(me.id);
+  });
+
+  /** Nombre visible: algunos usuarios viejos tienen name/userName en vez de username. */
+  displayName = computed(() => {
+    const u = this.profileUser() as any;
+    if (!u) return '';
+    return u.username || u.name || u.userName || u.email?.split('@')[0] || 'Usuario';
+  });
 
   ngOnInit() {
-    this.route.paramMap.subscribe((params) => {
-      const id = params.get('id');
-      if (id) {
-        this.authService.getUserById(id).subscribe({
-          next: (user) => {
-            this.profileUser.set(user);
-            this.loadFavoritesForUser(user);
-          },
-          error: (err) => console.error('Error al cargar el usuario:', err),
-        });
-      } else {
-        this.profileUser.set(this.authService.currentUser());
-        this.loadFavorites();
-      }
-    });
-  }
-
-  loadFavoritesForUser(user: User) {
-    if (!user) return;
-
-    if (user.favoriteTeams && user.favoriteTeams.length > 0) {
-      const loadedTeams: Team[] = [];
-      user.favoriteTeams.forEach((id: any) => {
-        const teamId = Number(id);
-        if (!isNaN(teamId)) {
-          this.teamService.getById(teamId).subscribe({
-            next: (team: Team) => {
-              if (team) {
-                loadedTeams.push(team);
-                this.favoriteTeamsList.set([...loadedTeams]);
-              }
-            },
-          });
-        }
+    this.route.paramMap
+      .pipe(
+        switchMap((params) => {
+          const id = params.get('id') ?? this.authService.currentUser()?.id;
+          // Se pide siempre al servidor: la copia guardada en el navegador puede estar vieja
+          return id !== undefined && id !== null ? this.authService.getUserById(id) : of(null);
+        }),
+        takeUntilDestroyed(this.destroyRef),
+      )
+      .subscribe({
+        next: (user) => {
+          this.profileUser.set(user);
+          if (user) this.loadFavorites(user);
+        },
+        error: (err) => console.error('Error al cargar el usuario:', err),
       });
-    }
+  }
 
-    if (user.favoriteChampionships && user.favoriteChampionships.length > 0) {
-      const loadedChamps: Championship[] = [];
-      user.favoriteChampionships.forEach((id: any) => {
-        const champId = Number(id);
-        if (!isNaN(champId)) {
-          this.championshipService.getByID(champId).subscribe({
-            next: (champ: Championship) => {
-              if (champ) {
-                loadedChamps.push(champ);
-                this.favoriteChampionshipsList.set([...loadedChamps]);
-              }
-            },
-          });
-        }
+  /**
+   * Trae las tres listas en un solo paso y filtra por los ids del usuario. Antes se
+   * hacía un pedido por favorito y los ids se pasaban por Number(), así que los ids de
+   * texto (equipos y campeonatos importados) quedaban afuera.
+   */
+  private loadFavorites(user: User): void {
+    const ids = (list?: (number | string)[]) => new Set((list || []).map((id) => String(id)));
+    const teamIds = ids(user.favoriteTeams);
+    const champIds = ids(user.favoriteChampionships);
+    const playerIds = ids(user.favoritePlayers);
+
+    forkJoin({
+      teams: teamIds.size ? this.http.get<Team[]>(`${API}/equipos`) : of([] as Team[]),
+      champs: champIds.size
+        ? this.http.get<Championship[]>(`${API}/campeonatos`)
+        : of([] as Championship[]),
+      players: playerIds.size ? this.http.get<Player[]>(`${API}/jugadores`) : of([] as Player[]),
+    })
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: ({ teams, champs, players }) => {
+          this.favoriteTeamsList.set(teams.filter((t) => teamIds.has(String(t.id))));
+          this.favoriteChampionshipsList.set(champs.filter((c) => champIds.has(String(c.id))));
+          this.favoritePlayersList.set(players.filter((p) => playerIds.has(String(p.id))));
+        },
+        error: (err) => console.error('Error al cargar favoritos:', err),
       });
-    }
-
-    if (user.favoritePlayers && user.favoritePlayers.length > 0) {
-      const loadedPlayers: Player[] = [];
-      user.favoritePlayers.forEach((id: any) => {
-        const playerId = Number(id);
-        if (!isNaN(playerId)) {
-          this.playerService.getByID(playerId).subscribe({
-            next: (player: Player) => {
-              if (player) {
-                loadedPlayers.push(player);
-                this.favoritePlayersList.set([...loadedPlayers]);
-              }
-            },
-          });
-        }
-      });
-    }
   }
 
-  loadFavorites() {
-    if (this.currentUser) {
-      this.loadFavoritesForUser(this.currentUser);
+  removeFavorite(type: FavoriteType, idToRemove: number | string | undefined) {
+    // Solo el dueño del perfil puede tocar sus favoritos
+    if (!this.isOwnProfile()) return;
+    const user = this.profileUser();
+    if (!user?.id || idToRemove === undefined) return;
+
+    const target = String(idToRemove);
+    const without = (list?: (number | string)[]) =>
+      (list || []).map((id) => String(id)).filter((id) => id !== target && id !== 'null');
+
+    let updatedFields: Partial<User> = {};
+    if (type === 'team') {
+      updatedFields = { favoriteTeams: without(user.favoriteTeams) };
+      this.favoriteTeamsList.update((list) => list.filter((t) => String(t.id) !== target));
+    } else if (type === 'player') {
+      updatedFields = { favoritePlayers: without(user.favoritePlayers) };
+      this.favoritePlayersList.update((list) => list.filter((p) => String(p.id) !== target));
+    } else {
+      updatedFields = { favoriteChampionships: without(user.favoriteChampionships) };
+      this.favoriteChampionshipsList.update((list) => list.filter((c) => String(c.id) !== target));
     }
-  }
 
-  get currentUser(): User | null {
-    const targetUser = this.profileUser() || (this.authService.currentUser as any)();
-    if (!targetUser || typeof targetUser !== 'object') return null;
-
-    return {
-      ...targetUser,
-      username:
-        targetUser.username ||
-        targetUser.name ||
-        targetUser.userName ||
-        targetUser.email?.split('@')[0] ||
-        'Usuario',
-      role: targetUser.role || 'Usuario',
-    } as User;
-  }
-
-  removeFavorite(type: 'team' | 'player' | 'championship', idToRemove: number) {
-    const user = this.currentUser;
-    if (!user || !user.id) return;
-
-    let updatedFields: any = {};
-    const cleanId = Number(idToRemove);
-
-    if (type === 'team' && user.favoriteTeams) {
-      const newFavoriteTeams = user.favoriteTeams
-        .map((id: any) => Number(id))
-        .filter((id: number) => id !== cleanId);
-      updatedFields = { favoriteTeams: newFavoriteTeams };
-      this.favoriteTeamsList.update((teams) => teams.filter((t) => Number(t.id) !== cleanId));
-    } else if (type === 'player' && user.favoritePlayers) {
-      const newFavoritePlayers = user.favoritePlayers
-        .map((id: any) => Number(id))
-        .filter((id: number) => id !== cleanId);
-      updatedFields = { favoritePlayers: newFavoritePlayers };
-      this.favoritePlayersList.update((players) => players.filter((p) => Number(p.id) !== cleanId));
-    } else if (type === 'championship' && user.favoriteChampionships) {
-      const newFavoriteChamps = user.favoriteChampionships
-        .map((id: any) => Number(id))
-        .filter((id: number) => id !== cleanId);
-      updatedFields = { favoriteChampionships: newFavoriteChamps };
-      this.favoriteChampionshipsList.update((champs) =>
-        champs.filter((c) => Number(c.id) !== cleanId),
-      );
-    }
+    // Se actualiza también la copia local, para que un segundo borrado parta de la lista nueva
+    this.profileUser.set({ ...user, ...updatedFields });
 
     this.authService.updateUser(user.id, updatedFields).subscribe({
-      next: (updatedUser) => {
-        console.log('Favorito actualizado con éxito:', updatedUser);
-      },
       error: (err) => {
         console.error('Error al guardar en el backend:', err);
-        this.loadFavorites();
+        this.profileUser.set(user);
+        this.loadFavorites(user);
       },
     });
   }
 
   navigateToEdit() {
     this.router.navigate(['/profile/edit']);
+  }
+
+  goBack() {
+    goBackOr(this.location, this.router, '/admin/users');
   }
 }

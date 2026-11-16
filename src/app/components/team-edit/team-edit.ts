@@ -704,12 +704,14 @@ export class TeamEdit implements OnInit {
       }
     });
 
-    this.route.paramMap.subscribe((params) => {
+    // La URL trae el nombre (/team/edit/boca-juniors); el resolver de la ruta deja el id en data
+    this.route.data.subscribe((data) => {
       window.scrollTo({ top: 0, behavior: 'instant' });
-      const raw = params.get('id');
+      const raw = data['id'] ?? this.route.snapshot.paramMap.get('id');
       if (!raw) return;
-      this.teamId = raw !== '' && !isNaN(Number(raw)) ? Number(raw) : raw;
-      this.loadAll(this.teamId);
+      const id = String(raw);
+      this.teamId = id;
+      this.loadAll(id);
     });
   }
 

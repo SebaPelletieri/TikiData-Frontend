@@ -28,7 +28,7 @@ export class ChampionshipService {
     });
   }
 
-  getByID(id: number): Observable<Championship> {
+  getByID(id: number | string): Observable<Championship> {
     return this.http.get<Championship>(`${this.apiUrl}/${id}`);
   }
 
@@ -56,7 +56,7 @@ export class ChampionshipService {
     });
   }
 
-  updateChampionship(id: number, championship: Championship): Observable<Championship> {
+  updateChampionship(id: number | string, championship: Championship): Observable<Championship> {
     return this.http.put<Championship>(`${this.apiUrl}/${id}`, championship).pipe(
       map((data) => {
         this.getAll();

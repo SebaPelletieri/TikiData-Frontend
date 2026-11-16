@@ -13,6 +13,7 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth-service';
 import { User } from '../../models/User';
+import { compressImage } from '../../utils/image';
 
 @Component({
   selector: 'app-admin-form',
@@ -37,6 +38,8 @@ export class AdminForm implements OnInit {
 
   showPassword = false;
   avatarPreview: string | null = null;
+  avatarError = signal('');
+  isProcessingAvatar = signal(false);
 
   ngOnInit(): void {
     this.initForm();
@@ -89,20 +92,27 @@ export class AdminForm implements OnInit {
     });
   }
 
-  onFileSelected(event: Event): void {
+  /**
+   * La foto se achica y comprime antes de guardarla: json-server se cae con pedidos de
+   * más de 100 KB y una foto de celular en base64 pesa varios MB.
+   */
+  async onFileSelected(event: Event): Promise<void> {
     const fileInput = event.target as HTMLInputElement;
-    if (fileInput.files && fileInput.files[0]) {
-      const file = fileInput.files[0];
-      const reader = new FileReader();
+    const file = fileInput.files?.[0];
+    if (!file) return;
 
-      reader.onload = () => {
-        const base64String = reader.result as string;
-        this.avatarPreview = base64String;
-        this.adminForm.patchValue({ avatar: base64String });
-        this.adminForm.get('avatar')?.markAsTouched();
-      };
-
-      reader.readAsDataURL(file);
+    this.avatarError.set('');
+    this.isProcessingAvatar.set(true);
+    try {
+      const compressed = await compressImage(file);
+      this.avatarPreview = compressed;
+      this.adminForm.patchValue({ avatar: compressed });
+      this.adminForm.get('avatar')?.markAsTouched();
+    } catch (err) {
+      this.avatarError.set(err instanceof Error ? err.message : 'No se pudo cargar la imagen.');
+      fileInput.value = '';
+    } finally {
+      this.isProcessingAvatar.set(false);
     }
   }
 

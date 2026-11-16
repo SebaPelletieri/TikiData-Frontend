@@ -5,9 +5,9 @@ export interface User {
   username: string;
   email: string;
   role: Role;
-  favoriteTeams: number[];
-  favoritePlayers: number[];
-  favoriteChampionships: number[];
+  favoriteTeams: (number | string)[];
+  favoritePlayers: (number | string)[];
+  favoriteChampionships: (number | string)[];
   avatar?: string;
   createdAt?: string;
 }

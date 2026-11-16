@@ -70,14 +70,48 @@
 }
 
 .footer-links-col a {
-  color: var(--text-muted-2);
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-soft);
   text-decoration: none;
   font-size: 0.9rem;
-  transition: color 0.2s ease;
+  font-weight: 500;
+  transition: color 0.2s ease, transform 0.2s ease;
 }
 
-.footer-links-col a:hover {
-  color: #38bdf8; /* Azul destacado de la app */
+/* Flechita naranja que aparece al pasar el mouse */
+.footer-links-col a::before {
+  content: '';
+  width: 0;
+  height: 2px;
+  border-radius: 2px;
+  background: #ff6b00;
+  transition: width 0.2s ease;
+}
+
+.footer-links-col a:hover,
+.footer-links-col a:focus-visible,
+.footer-links-col a.active {
+  color: var(--brand-orange-text, #ff6b00);
+}
+
+.footer-links-col a:hover::before,
+.footer-links-col a:focus-visible::before,
+.footer-links-col a.active::before {
+  width: 12px;
+}
+
+.footer-links-col a:focus-visible {
+  outline: none;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* "Data" en naranja, como en el logo */
+.brand-accent {
+  color: #ff6b00;
 }
 
 .footer-info-col p {

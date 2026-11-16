@@ -1,12 +1,25 @@
+@let own = isOwnProfile();
 <div class="profile-container">
   <!-- Barra Superior -->
   <div class="profile-top-bar">
     <div>
-      <span class="breadcrumb">Inicio > Mi Perfil</span>
-      <h2>Mi Perfil</h2>
-      <p class="subtitle">Gestiona tu información, estadísticas y preferencias de usuario.</p>
+      @if (own) {
+        <span class="breadcrumb">Inicio > Mi Perfil</span>
+        <h2>Mi Perfil</h2>
+        <p class="subtitle">Gestiona tu información, estadísticas y preferencias de usuario.</p>
+      } @else {
+        <span class="breadcrumb">Administración > Usuarios > {{ displayName() }}</span>
+        <h2>Perfil de {{ displayName() }}</h2>
+        <p class="subtitle">Vista de solo lectura de la cuenta y los favoritos del usuario.</p>
+      }
     </div>
-    <button type="button" class="btn-edit-profile" (click)="navigateToEdit()">Editar Perfil</button>
+    @if (own) {
+      <button type="button" class="btn-edit-profile" (click)="navigateToEdit()">Editar Perfil</button>
+    } @else {
+      <button type="button" class="btn-edit-profile btn-back-profile" (click)="goBack()">
+        <i class="fas fa-arrow-left"></i> Volver
+      </button>
+    }
   </div>
 
   <!-- Banner Hero / Perfil -->
@@ -16,8 +29,11 @@
         <span>👤</span>
       </div>
       <div class="user-main-info">
-        <h3>{{ currentUser?.username }}</h3>
-        <p class="admin-banner-subtitle">Email: {{ currentUser?.email }}</p>
+        <h3>{{ displayName() }}</h3>
+        <p class="admin-banner-subtitle">Email: {{ profileUser()?.email }}</p>
+        @if (!own) {
+          <span class="readonly-badge"><i class="fas fa-eye"></i> Solo lectura · {{ profileUser()?.role || 'Usuario' }}</span>
+        }
       </div>
     </div>
   </div>
@@ -58,8 +74,10 @@
       <div class="teams-title-block">
         <div class="team-shield-icon-box">🛡️</div>
         <div>
-          <h3>Mis Equipos Favoritos</h3>
-          <p>Listado de equipos que tienes marcados como favoritos.</p>
+          <h3>{{ own ? 'Mis Equipos Favoritos' : 'Equipos favoritos' }}</h3>
+          <p>
+            {{ own ? 'Listado de equipos que tienes marcados como favoritos.' : 'Equipos que este usuario sigue.' }}
+          </p>
         </div>
       </div>
     </div>
@@ -68,24 +86,28 @@
       @for (team of favoriteTeamsList(); track team.id) {
         <div class="favorite-team-card">
           <div class="favorite-team-shield">
-            <img [src]="team.shield || 'https://placehold.co/45'" [alt]="team.name" />
+            <img loading="lazy" decoding="async" [src]="team.shield || 'https://placehold.co/45'" [alt]="team.name" />
           </div>
           <h4 class="favorite-team-name">{{ team.name }}</h4>
           <span class="favorite-team-country">{{ team.country }}</span>
 
-          <div class="favorite-card-actions">
-            <button
-              type="button"
-              class="btn-icon-action delete"
-              (click)="removeFavorite('team', team.id!)"
-              title="Eliminar de favoritos"
-            >
-              🗑️
-            </button>
-          </div>
+          @if (own) {
+            <div class="favorite-card-actions">
+              <button
+                type="button"
+                class="btn-icon-action delete"
+                (click)="removeFavorite('team', team.id)"
+                title="Eliminar de favoritos"
+              >
+                🗑️
+              </button>
+            </div>
+          }
         </div>
       } @empty {
-        <p class="empty-msg">No tienes equipos favoritos guardados todavía.</p>
+        <p class="empty-msg">
+          {{ own ? 'No tienes equipos favoritos guardados todavía.' : 'Este usuario no sigue ningún equipo.' }}
+        </p>
       }
     </div>
   </div>
@@ -96,8 +118,10 @@
       <div class="teams-title-block">
         <div class="team-shield-icon-box">🏆</div>
         <div>
-          <h3>Mis Campeonatos Favoritos</h3>
-          <p>Listado de torneos y ligas que sigues de cerca.</p>
+          <h3>{{ own ? 'Mis Campeonatos Favoritos' : 'Campeonatos favoritos' }}</h3>
+          <p>
+            {{ own ? 'Listado de torneos y ligas que sigues de cerca.' : 'Torneos y ligas que este usuario sigue.' }}
+          </p>
         </div>
       </div>
     </div>
@@ -106,24 +130,28 @@
       @for (champ of favoriteChampionshipsList(); track champ.id) {
         <div class="favorite-team-card">
           <div class="favorite-team-shield">
-            <img [src]="champ.logo || 'https://placehold.co/45'" [alt]="champ.name" />
+            <img loading="lazy" decoding="async" [src]="champ.logo || 'https://placehold.co/45'" [alt]="champ.name" />
           </div>
           <h4 class="favorite-team-name">{{ champ.name }}</h4>
           <span class="favorite-team-country">{{ champ.country }} • {{ champ.type }}</span>
 
-          <div class="favorite-card-actions">
-            <button
-              type="button"
-              class="btn-icon-action delete"
-              (click)="removeFavorite('championship', +champ.id!)"
-              title="Eliminar de favoritos"
-            >
-              🗑️
-            </button>
-          </div>
+          @if (own) {
+            <div class="favorite-card-actions">
+              <button
+                type="button"
+                class="btn-icon-action delete"
+                (click)="removeFavorite('championship', champ.id)"
+                title="Eliminar de favoritos"
+              >
+                🗑️
+              </button>
+            </div>
+          }
         </div>
       } @empty {
-        <p class="empty-msg">No tienes campeonatos favoritos guardados todavía.</p>
+        <p class="empty-msg">
+          {{ own ? 'No tienes campeonatos favoritos guardados todavía.' : 'Este usuario no sigue ningún campeonato.' }}
+        </p>
       }
     </div>
   </div>
@@ -134,8 +162,10 @@
       <div class="teams-title-block">
         <div class="team-shield-icon-box">👤</div>
         <div>
-          <h3>Mis Jugadores Favoritos</h3>
-          <p>Listado de futbolistas que sigues en la plataforma.</p>
+          <h3>{{ own ? 'Mis Jugadores Favoritos' : 'Jugadores favoritos' }}</h3>
+          <p>
+            {{ own ? 'Listado de futbolistas que sigues en la plataforma.' : 'Futbolistas que este usuario sigue.' }}
+          </p>
         </div>
       </div>
     </div>
@@ -144,26 +174,30 @@
       @for (player of favoritePlayersList(); track player.id) {
         <div class="favorite-team-card">
           <div class="favorite-team-shield">
-            <img [src]="player.photo || 'https://placehold.co/45'" [alt]="player.name" />
+            <img loading="lazy" decoding="async" [src]="player.photo || 'https://placehold.co/45'" [alt]="player.name" />
           </div>
           <h4 class="favorite-team-name">{{ player.name }}</h4>
           <span class="favorite-team-country"
             >{{ player.position }} • {{ player.nationality || 'Argentina' }}</span
           >
 
-          <div class="favorite-card-actions">
-            <button
-              type="button"
-              class="btn-icon-action delete"
-              (click)="removeFavorite('player', player.id!)"
-              title="Eliminar de favoritos"
-            >
-              🗑️
-            </button>
-          </div>
+          @if (own) {
+            <div class="favorite-card-actions">
+              <button
+                type="button"
+                class="btn-icon-action delete"
+                (click)="removeFavorite('player', player.id)"
+                title="Eliminar de favoritos"
+              >
+                🗑️
+              </button>
+            </div>
+          }
         </div>
       } @empty {
-        <p class="empty-msg">No tienes jugadores favoritos guardados todavía.</p>
+        <p class="empty-msg">
+          {{ own ? 'No tienes jugadores favoritos guardados todavía.' : 'Este usuario no sigue ningún jugador.' }}
+        </p>
       }
     </div>
   </div>

@@ -68,7 +68,7 @@
   font-size: 0.85rem;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease, opacity 0.2s ease, filter 0.2s ease;
   font-family: inherit;
 }
 
@@ -82,4 +82,275 @@
   color: #ffffff;
   border-color: #ff6b00;
   box-shadow: 0 4px 14px rgba(255, 107, 0, 0.35);
+}
+
+/* Botón para dibujar la siguiente tanda de partidos */
+.show-more-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 28px;
+}
+
+.show-more-btn {
+  padding: 12px 28px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 107, 0, 0.45);
+  background: transparent;
+  color: var(--brand-orange-text, #ff6b00);
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.show-more-btn:hover {
+  background-color: #ff6b00;
+  color: #fff;
+}
+
+.show-more-count {
+  opacity: 0.75;
+  font-weight: 500;
+}
+
+/* =====================================================================
+   DIVISIÓN POR PAÍS Y CAMPEONATO (mismo diseño que Equipos)
+   ===================================================================== */
+.hierarchy-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.country-block {
+  background: linear-gradient(180deg, var(--surface-card) 0%, var(--surface-card-2) 100%);
+  border: 1px solid rgba(var(--border-rgb), 0.45);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(var(--shadow-rgb), calc(0.3 * var(--shadow-k)));
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.country-block:hover {
+  border-color: #ff6b00;
+  box-shadow: 0 6px 20px rgba(255, 107, 0, 0.15);
+}
+
+.country-header {
+  padding: 1.2rem 1.6rem;
+  background-color: rgba(var(--card-rgb), 0.7);
+  border-bottom: 1px solid rgba(var(--border-rgb), 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.2s ease;
+}
+
+.country-header:hover {
+  background-color: rgba(255, 107, 0, 0.12);
+}
+
+.country-title-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.country-header h3 {
+  margin: 0;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--text-strong);
+  letter-spacing: -0.01em;
+}
+
+.country-flag-wrapper {
+  width: 28px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid rgba(var(--overlay-rgb), 0.15);
+  flex-shrink: 0;
+  box-shadow: 0 2px 4px rgba(var(--shadow-rgb), calc(0.2 * var(--shadow-k)));
+}
+
+.country-flag-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.country-globe {
+  font-size: 1.35rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.country-count {
+  flex-shrink: 0;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.triangle-icon {
+  width: 10px;
+  height: 6px;
+  background-color: #7d96b3;
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  display: inline-block;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+  flex-shrink: 0;
+}
+
+.country-header:hover .triangle-icon,
+.triangle-icon.rotate {
+  background-color: #ff6b00;
+}
+
+.triangle-icon.rotate {
+  transform: rotate(180deg);
+}
+
+.country-content {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2.25rem;
+  animation: fadeInContent 0.3s ease both;
+}
+
+@keyframes fadeInContent {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+}
+
+.league-subblock {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Cabecera de cada campeonato, con la línea naranja a la izquierda */
+.league-header {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 0 0.75rem 14px;
+  border-bottom: 1px solid rgba(var(--border-rgb), 0.5);
+}
+
+.league-header::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 4px;
+  bottom: calc(0.75rem + 4px);
+  width: 4px;
+  border-radius: 2px;
+  background: var(--brand-orange, #ff6b00);
+}
+
+.league-logo-wrapper {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--surface-0);
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  padding: 5px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.league-logo-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.league-icon {
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  background: var(--surface-0);
+  border: 1px solid var(--border);
+}
+
+.league-header h4 {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-strong);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.league-count {
+  flex-shrink: 0;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--brand-orange-text, #ff6b00);
+  background: rgba(255, 107, 0, 0.12);
+  border: 1px solid rgba(255, 107, 0, 0.25);
+}
+
+/* Dentro de cada campeonato el botón queda más pegado a sus tarjetas */
+.league-subblock .show-more-wrapper {
+  margin-top: 4px;
+}
+
+.show-less-btn {
+  border-color: var(--border);
+  color: var(--text-muted);
+}
+
+.show-less-btn:hover {
+  background-color: rgba(var(--overlay-rgb), 0.08);
+  color: var(--text-strong);
+}
+
+@media (max-width: 600px) {
+  .country-header {
+    padding: 1rem 1.1rem;
+  }
+
+  .country-header h3 {
+    font-size: 1.1rem;
+  }
+
+  .country-count {
+    display: none;
+  }
+
+  .country-content {
+    padding: 1rem;
+  }
+
+  .matches-grid {
+    grid-template-columns: 1fr;
+  }
 }

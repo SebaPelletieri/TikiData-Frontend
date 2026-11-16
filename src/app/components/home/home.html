@@ -27,7 +27,7 @@
           [routerLink]="['/championship', champ.name]"
         >
           @if (champ.logo) {
-            <img [src]="champ.logo" [alt]="champ.name" class="league-logo-img" />
+            <img loading="lazy" decoding="async" [src]="champ.logo" [alt]="champ.name" class="league-logo-img" />
           } @else {
             <div class="league-flag">{{ getLeagueIcon(champ.name) }}</div>
           }
@@ -86,7 +86,7 @@
               >
                 {{ local?.name || 'Local' }}
               </a>
-              <img
+              <img loading="lazy" decoding="async"
                 [src]="local?.shield || '/Escudos Liga Argentina/default.png'"
                 class="team-shield"
                 [alt]="local?.name || ''"
@@ -98,7 +98,7 @@
                 <span class="vs">vs</span>
               }
 
-              <img
+              <img loading="lazy" decoding="async"
                 [src]="away?.shield || '/Escudos Liga Argentina/default.png'"
                 class="team-shield"
                 [alt]="away?.name || ''"
@@ -166,7 +166,7 @@
                   <td>{{ idx + 1 }}</td>
                   <td class="team-cell">
                     <a class="row-link" [routerLink]="['/team', team.id]">
-                      <img [src]="team.shield" alt="" class="table-shield" />
+                      <img loading="lazy" decoding="async" [src]="team.shield" alt="" class="table-shield" />
                       {{ team.name }}
                     </a>
                   </td>
@@ -223,14 +223,14 @@
                   <td>{{ idx + 1 }}</td>
                   <td class="player-cell">
                     <a class="row-link" [routerLink]="['/player', player.id]">
-                      <img [src]="getPlayerAvatar(player)" class="player-avatar" alt="" />
+                      <img loading="lazy" decoding="async" [src]="getPlayerAvatar(player)" class="player-avatar" alt="" />
                       {{ player.name }}
                     </a>
                   </td>
                   <td class="team-sub-cell">
                     @if (playerTeam) {
                       <a class="row-link" [routerLink]="['/team', playerTeam.id]">
-                        <img [src]="playerTeam.shield" class="tiny-shield" alt="" />
+                        <img loading="lazy" decoding="async" [src]="playerTeam.shield" class="tiny-shield" alt="" />
                         {{ playerTeam.name }}
                       </a>
                     } @else {

@@ -63,6 +63,27 @@
   color: var(--text-muted-2);
 }
 
+/* País con su bandera (o 🌎 si es una competencia internacional) */
+.meta-country {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.meta-flag {
+  width: 20px;
+  height: 14px;
+  object-fit: cover;
+  border-radius: 3px;
+  border: 1px solid rgba(var(--overlay-rgb), 0.15);
+  box-shadow: 0 1px 3px rgba(var(--shadow-rgb), calc(0.3 * var(--shadow-k)));
+}
+
+.meta-flag-emoji {
+  font-size: 0.95rem;
+  line-height: 1;
+}
+
 .separator {
   color: #475569;
 }
@@ -465,7 +486,7 @@
   font-size: 0.85rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease, opacity 0.2s ease, filter 0.2s ease;
 }
 
 .zone-pill-btn:hover {

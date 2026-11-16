@@ -4,6 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { ChampionshipService } from '../../services/championship-service';
 import { Championship, ChampionshipType } from '../../models/Championship';
+import { getCountryFlag as countryFlagUrl } from '../../utils/countries';
+import { compareEs, sortByName } from '../../utils/sort';
 
 interface FilterOption {
   value: string;
@@ -44,62 +46,9 @@ export class ChampionshipList implements OnInit {
     { value: 'COPA', label: 'Copa' },
   ];
 
-  // Función 100% dinámica y universal para obtener la bandera de CUALQUIER país
+  // Bandera del país: usa la lista completa compartida (utils/countries.ts)
   getCountryFlag(countryName: string | number): string {
-    if (!countryName) return 'https://flagcdn.com/w40/xx.png';
-
-    const strCountry = String(countryName);
-
-    if (strCountry.toLowerCase() === 'internacional' || strCountry.toLowerCase() === 'global') {
-      return '';
-    }
-
-    const universalIsoExceptions: Record<string, string> = {
-      argentina: 'ar',
-      brasil: 'br',
-      brazil: 'br',
-      espana: 'es',
-      spain: 'es',
-      inglaterra: 'gb-eng',
-      england: 'gb-eng',
-      alemania: 'de',
-      germany: 'de',
-      italia: 'it',
-      italy: 'it',
-      uruguay: 'uy',
-      colombia: 'co',
-      chile: 'cl',
-      ecuador: 'ec',
-      paraguay: 'py',
-      bolivia: 'bo',
-      peru: 'pe',
-      venezuela: 've',
-      mexico: 'mx',
-      francia: 'fr',
-      portugal: 'pt',
-      japon: 'jp',
-      estadosunidos: 'us',
-      reinounido: 'gb',
-      suiza: 'ch',
-      republicacheca: 'cz',
-      angola: 'ao',
-      haiti: 'ht',
-      costarica: 'cr',
-      panama: 'pa',
-      eslovenia: 'si',
-      siria: 'sy',
-    };
-
-    const normalized = strCountry
-      .toLowerCase()
-      .trim()
-      .normalize('NFD')
-      .replace(/[\u0300-\u036f]/g, '')
-      .replace(/\s+/g, '');
-
-    const isoCode = universalIsoExceptions[normalized] || normalized.substring(0, 2);
-
-    return `https://flagcdn.com/w40/${isoCode}.png`;
+    return countryFlagUrl(countryName);
   }
 
   countryOptions = computed<FilterOption[]>(() => {
@@ -121,7 +70,7 @@ export class ChampionshipList implements OnInit {
     ];
 
     Array.from(countriesSet)
-      .sort()
+      .sort(compareEs)
       .forEach((country) => {
         options.push({
           value: country,
@@ -260,7 +209,7 @@ export class ChampionshipList implements OnInit {
         groupName: 'Competencias Internacionales',
         groupFlag: '',
         isInternational: true,
-        championships: internationalChamps,
+        championships: sortByName(internationalChamps),
         isOpen: false,
       });
     }
@@ -273,7 +222,9 @@ export class ChampionshipList implements OnInit {
         c.country.toLowerCase() !== 'global',
     );
 
-    const uniqueCountries = Array.from(new Set(nationalChamps.map((c) => c.country)));
+    // Países en orden alfabético ("Competencias Internacionales" queda siempre primero).
+    // Es un computed: al agregar un campeonato de un país nuevo, aparece solo en su lugar.
+    const uniqueCountries = Array.from(new Set(nationalChamps.map((c) => c.country))).sort(compareEs);
 
     for (const country of uniqueCountries) {
       const champsInCountry = nationalChamps.filter((c) => c.country === country);
@@ -283,7 +234,7 @@ export class ChampionshipList implements OnInit {
           groupName: country,
           groupFlag: this.getCountryFlag(country), // Bandera generada de forma robusta
           isInternational: false,
-          championships: champsInCountry,
+          championships: sortByName(champsInCountry),
           isOpen: false,
         });
       }

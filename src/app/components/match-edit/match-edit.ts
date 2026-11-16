@@ -98,7 +98,7 @@ export class MatchEdit implements OnInit {
   private pendingRosters: { teamId: number | string; type: TeamSide }[] = [];
 
   matchForm!: FormGroup;
-  matchId: number | null = null;
+  matchId: number | string | null = null;
   loadedMatchData: any = null;
 
   allTeams: Team[] = [];
@@ -268,14 +268,14 @@ export class MatchEdit implements OnInit {
     });
 
     if (this.matchIdInput) {
-      this.matchId = Number(this.matchIdInput);
+      this.matchId = this.matchIdInput;
       this.loadMatchData(this.matchId);
     } else {
-      this.route.paramMap.subscribe((params) => {
-        const id = params.get('id');
+      this.route.data.subscribe((data) => {
+        const id = data['id'] ?? this.route.snapshot.paramMap.get('id');
         if (id) {
-          this.matchId = Number(id);
-          this.loadMatchData(this.matchId);
+          this.matchId = id;
+          this.loadMatchData(id);
         }
       });
     }
@@ -359,7 +359,7 @@ export class MatchEdit implements OnInit {
     });
   }
 
-  loadMatchData(id: number) {
+  loadMatchData(id: number | string) {
     this.matchService.getById(id).subscribe({
       next: (match: any) => {
         if (match) {

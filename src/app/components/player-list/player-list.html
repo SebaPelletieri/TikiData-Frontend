@@ -94,7 +94,7 @@
                       <div class="dropdown-item-content">
                         @if (nat.value !== 'ALL') {
                           <div class="dropdown-flag-wrapper">
-                            <img [src]="getCountryFlag(nat.value)" [alt]="nat.label" />
+                            <img loading="lazy" decoding="async" [src]="getCountryFlag(nat.value)" [alt]="nat.label" />
                           </div>
                         } @else {
                           <span class="all-countries-icon">🌐</span>
@@ -133,7 +133,7 @@
           <tr [routerLink]="['/player', formatPlayerSlug(player.name)]" class="player-row">
             <td class="col-photo">
               <div class="avatar-wrapper">
-                <img
+                <img loading="lazy" decoding="async"
                   [src]="player.photo || 'https://placehold.co/80?text=Jugador'"
                   (error)="$any($event.target).src = 'https://placehold.co/80?text=Jugador'"
                   [alt]="player.name"

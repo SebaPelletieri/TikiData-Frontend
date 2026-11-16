@@ -18,6 +18,31 @@ export class TeamService {
     );
   });
 
+  /** Equipos indexados por id (como texto), para buscar sin recorrer la lista. */
+  teamsById = computed(() => new Map(this.teams().map((t) => [String(t.id), t])));
+  loaded = signal(false);
+  private loading = false;
+
+  /**
+   * Carga los equipos una sola vez y los comparte. Las tarjetas de partido pedían
+   * cada una sus 2 equipos al servidor (cientos de pedidos en /matches).
+   */
+  ensureLoaded(): void {
+    if (this.loaded() || this.loading) return;
+    this.loading = true;
+    this.http.get<Team[]>(this.apiUrl).subscribe({
+      next: (data) => {
+        this.teams.set(data);
+        this.loaded.set(true);
+        this.loading = false;
+      },
+      error: () => {
+        this.loading = false;
+        this.loaded.set(true);
+      },
+    });
+  }
+
   getAllTeams(): Observable<Team[]> {
     return this.http.get<Team[]>(this.apiUrl);
   }
@@ -26,6 +51,7 @@ export class TeamService {
     this.http.get<Team[]>(this.apiUrl).subscribe({
       next: (data) => {
         this.teams.set(data);
+        this.loaded.set(true);
         this.error.set(null);
       },
       error: () => {
@@ -46,7 +72,7 @@ export class TeamService {
     });
   }
 
-  updateTeam(id: number, team: Team): Observable<Team> {
+  updateTeam(id: number | string, team: Team): Observable<Team> {
     return this.http.put<Team>(`${this.apiUrl}/${id}`, team).pipe(
       map((data) => {
         this.teamActual.set(data);
@@ -69,7 +95,7 @@ export class TeamService {
     });
   }
 
-  getById(id: number): Observable<Team> {
+  getById(id: number | string): Observable<Team> {
     return this.http.get<Team>(`${this.apiUrl}/${id}`);
   }
 

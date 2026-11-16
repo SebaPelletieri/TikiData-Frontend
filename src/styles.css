@@ -260,3 +260,30 @@ html,
 body {
   overflow-x: clip;
 }
+
+/* ==========================================================================
+   FOOTER SIEMPRE ABAJO
+   Antes el footer iba pegado justo después del contenido: en páginas cortas
+   (por ejemplo Partidos con los países cerrados) quedaba a mitad de pantalla
+   con un espacio vacío debajo. Ahora la app ocupa como mínimo toda la altura
+   de la ventana y el footer se empuja al fondo con margin-top: auto.
+   ========================================================================== */
+app-root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100dvh; /* en el celular, sin contar las barras del navegador */
+}
+
+app-footer {
+  display: block;
+  margin-top: auto;
+}
+
+/* En celular y tablet el body ya reserva abajo el lugar de la isla de navegación */
+@media (max-width: 900px) {
+  app-root {
+    min-height: calc(100vh - 92px - env(safe-area-inset-bottom));
+    min-height: calc(100dvh - 92px - env(safe-area-inset-bottom));
+  }
+}

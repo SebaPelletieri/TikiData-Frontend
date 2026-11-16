@@ -61,7 +61,7 @@ export class ChampionshipEdit implements OnInit {
     }
     this.initForm();
     if (this.championshipIdInput) {
-      this.loadData(Number(this.championshipIdInput));
+      this.loadData(this.championshipIdInput);
     }
   }
 
@@ -93,7 +93,7 @@ export class ChampionshipEdit implements OnInit {
     );
   }
 
-  loadData(id: number) {
+  loadData(id: number | string) {
     this.championshipService.getByID(id).subscribe({
       next: (champ: any) => {
         if (champ) {
@@ -136,7 +136,7 @@ export class ChampionshipEdit implements OnInit {
   onSubmit() {
     if (this.champForm.valid && this.championshipIdInput) {
       this.championshipService
-        .updateChampionship(Number(this.championshipIdInput), this.champForm.value)
+        .updateChampionship(this.championshipIdInput, this.champForm.value)
         .subscribe({
           next: () => {
             this.closePanel.emit();

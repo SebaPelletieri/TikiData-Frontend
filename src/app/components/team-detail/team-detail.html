@@ -17,11 +17,17 @@
         <h1 class="team-title">{{ t.name }}</h1>
         <div class="team-meta">
           <span class="meta-item">
-            <img src="https://flagcdn.com/w40/ar.png" alt="Bandera" class="flag-icon" />
+            @if (countryFlag(t.country)) {
+              <img [src]="countryFlag(t.country)" [alt]="t.country" class="flag-icon" />
+            } @else {
+              <span class="flag-emoji">🌎</span>
+            }
             {{ t.country }}
           </span>
-          <span class="dot-separator">•</span>
-          <span class="meta-item">Fundado en {{ t.yearOfFoundation | date: 'yyyy' }}</span>
+          @if (t.yearOfFoundation) {
+            <span class="dot-separator">•</span>
+            <span class="meta-item">Fundado en {{ t.yearOfFoundation | date: 'yyyy' }}</span>
+          }
         </div>
         <button
           type="button"
@@ -76,13 +82,17 @@
             <li>
               <span class="label">País</span>
               <span class="value with-icon">
-                <img src="https://flagcdn.com/w40/ar.png" alt="Bandera" class="flag-icon" />
+                @if (countryFlag(t.country)) {
+                  <img [src]="countryFlag(t.country)" [alt]="t.country" class="flag-icon" />
+                } @else {
+                  <span class="flag-emoji">🌎</span>
+                }
                 {{ t.country }}
               </span>
             </li>
             <li>
               <span class="label">Fundación</span>
-              <span class="value">{{ formatSpanishDate(t.yearOfFoundation) }}</span>
+              <span class="value">{{ formatSpanishDate(t.yearOfFoundation) || 'No disponible' }}</span>
             </li>
             <li>
               <span class="label">Estadio</span>
@@ -117,7 +127,7 @@
               <img [src]="champ.logo" [alt]="champ.name" class="mini-champ-logo" />
               <div class="mini-champ-info">
                 <span class="champ-name">{{ champ.name }}</span>
-                <span class="champ-type">{{ champ.category || 'AFA' }}</span>
+                <span class="champ-type">{{ championshipLabel(champ) }}</span>
               </div>
             </div>
           } @empty {

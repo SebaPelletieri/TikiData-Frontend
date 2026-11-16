@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth-service';
+import { compressImage } from '../../utils/image';
 
 @Component({
   selector: 'app-profile-edit',
@@ -20,6 +21,8 @@ export class ProfileEdit implements OnInit {
   errorMessage: string | null = null;
   successMessage: string | null = null;
   previewAvatar: string | null = null;
+  avatarError: string | null = null;
+  isProcessingAvatar = false;
 
   profileForm: FormGroup = this.fb.group({
     username: ['', [Validators.required, Validators.minLength(3)]],
@@ -44,17 +47,27 @@ export class ProfileEdit implements OnInit {
     this.showPassword = !this.showPassword;
   }
 
-  onFileSelected(event: Event) {
+  /**
+   * La foto se achica y comprime antes de guardarla: json-server se cae con pedidos de
+   * más de 100 KB y una foto de celular en base64 pesa varios MB.
+   */
+  async onFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;
     const file = input.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        const result = reader.result as string;
-        this.previewAvatar = result;
-        this.profileForm.patchValue({ avatar: result });
-      };
-      reader.readAsDataURL(file);
+    if (!file) return;
+
+    this.avatarError = null;
+    this.isProcessingAvatar = true;
+    try {
+      const compressed = await compressImage(file);
+      this.previewAvatar = compressed;
+      this.profileForm.patchValue({ avatar: compressed });
+      this.profileForm.markAsDirty();
+    } catch (err) {
+      this.avatarError = err instanceof Error ? err.message : 'No se pudo cargar la imagen.';
+      input.value = '';
+    } finally {
+      this.isProcessingAvatar = false;
     }
   }
 

@@ -116,6 +116,12 @@ export class AuthService {
     this.currentUser.set(null);
   }
 
+  /** Reemplaza el usuario de la sesión con la versión del servidor (ej. cambió su rol). */
+  syncCurrentUser(user: User): void {
+    localStorage.setItem('tiki_user', JSON.stringify(user));
+    this.currentUser.set(user);
+  }
+
   isLoggedIn(): boolean {
     return this.currentUser() !== null;
   }

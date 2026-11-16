@@ -62,7 +62,7 @@
   font-weight: 600;
   cursor: pointer;
   font-size: 0.95rem;
-  transition: all 0.2s ease;
+  transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease, opacity 0.2s ease, filter 0.2s ease;
   border: none;
 }
 
@@ -126,7 +126,7 @@
   justify-content: center;
   gap: 0.4rem;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease, opacity 0.2s ease, filter 0.2s ease;
 }
 
 .league-card.active {
@@ -318,7 +318,7 @@
   font-size: 0.78rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease-in-out;
+  transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out, border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out, transform 0.2s ease-in-out, opacity 0.2s ease-in-out, filter 0.2s ease-in-out;
   display: flex;
   align-items: center;
   gap: 5px;

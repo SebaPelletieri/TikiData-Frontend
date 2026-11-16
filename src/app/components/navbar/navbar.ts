@@ -21,6 +21,7 @@ import { ChampionshipService } from '../../services/championship-service';
 import { Championship } from '../../models/Championship';
 import { Team } from '../../models/Team';
 import { Player } from '../../models/Player';
+import { getCountryFlag as countryFlagUrl } from '../../utils/countries';
 
 interface SearchResult {
   id: number | string;
@@ -230,6 +231,8 @@ export class Navbar implements OnInit, AfterViewInit, OnDestroy {
     }
 
     this.host.nativeElement.style.setProperty('--p', this.ease(this.progress).toFixed(4));
+    // Directo sobre el DOM (sin pasar por Angular): activa el desenfoque solo fuera del tope
+    this.host.nativeElement.classList.toggle('is-scrolled', this.progress > 0.01);
 
     // La clase solo cambia al cruzar la mitad (para pointer-events y estados puntuales)
     const island = this.progress > 0.5;
@@ -241,66 +244,9 @@ export class Navbar implements OnInit, AfterViewInit, OnDestroy {
   searchText = signal<string>('');
   isSearchFocused = signal<boolean>(false);
 
-  // Función 100% dinámica y universal para obtener la bandera de CUALQUIER país
+  // Bandera del país: usa la lista completa compartida (utils/countries.ts)
   getCountryFlag(countryName: string | number): string {
-    if (!countryName) return 'https://flagcdn.com/w40/xx.png';
-
-    const strCountry = String(countryName);
-
-    if (
-      strCountry.toLowerCase() === 'internacional' ||
-      strCountry.toLowerCase() === 'global' ||
-      strCountry.toLowerCase() === 'sudamérica'
-    ) {
-      return '';
-    }
-
-    const universalIsoExceptions: Record<string, string> = {
-      argentina: 'ar',
-      brasil: 'br',
-      brazil: 'br',
-      espana: 'es',
-      spain: 'es',
-      inglaterra: 'gb-eng',
-      england: 'gb-eng',
-      alemania: 'de',
-      germany: 'de',
-      italia: 'it',
-      italy: 'it',
-      uruguay: 'uy',
-      colombia: 'co',
-      chile: 'cl',
-      ecuador: 'ec',
-      paraguay: 'py',
-      bolivia: 'bo',
-      peru: 'pe',
-      venezuela: 've',
-      mexico: 'mx',
-      francia: 'fr',
-      portugal: 'pt',
-      japon: 'jp',
-      estadosunidos: 'us',
-      reinounido: 'gb',
-      suiza: 'ch',
-      republicacheca: 'cz',
-      angola: 'ao',
-      haiti: 'ht',
-      costarica: 'cr',
-      panama: 'pa',
-      eslovenia: 'si',
-      siria: 'sy',
-    };
-
-    const normalized = strCountry
-      .toLowerCase()
-      .trim()
-      .normalize('NFD')
-      .replace(/[\u0300-\u036f]/g, '')
-      .replace(/\s+/g, '');
-
-    const isoCode = universalIsoExceptions[normalized] || normalized.substring(0, 2);
-
-    return `https://flagcdn.com/w40/${isoCode}.png`;
+    return countryFlagUrl(countryName);
   }
 
     private allElements = computed<SearchResult[]>(() => {
@@ -339,22 +285,34 @@ export class Navbar implements OnInit, AfterViewInit, OnDestroy {
 
     return [...championships, ...teams, ...players];
   });
+
+  /**
+   * Texto de búsqueda de cada elemento, normalizado una sola vez (cuando cambian los
+   * datos) y no en cada tecla: antes se normalizaban cientos de nombres por pulsación.
+   */
+  private searchIndex = computed(() =>
+    this.allElements().map((item) => ({
+      item,
+      text: this.normalizeText([item.name, item.type, item.country, item.meta].filter(Boolean).join(' ')),
+    })),
+  );
   isAdmin = computed(() => {
     const user = this.authService.currentUser();
     return user?.role === 'Administrador';
   });
 
-    searchResults = computed(() => {
+  searchResults = computed(() => {
     const query = this.normalizeText(this.searchText());
     if (!query) return [];
-
-    return this.allElements().filter(
-      (item) =>
-        this.normalizeText(item.name).includes(query) ||
-        this.normalizeText(item.type).includes(query) ||
-        (item.country && this.normalizeText(item.country).includes(query)) ||
-        (item.meta && this.normalizeText(item.meta).includes(query)),
-    );
+    const results: SearchResult[] = [];
+    // Con 40 resultados alcanza para el desplegable; dibujar cientos trababa el tipeo
+    for (const entry of this.searchIndex()) {
+      if (entry.text.includes(query)) {
+        results.push(entry.item);
+        if (results.length === 40) break;
+      }
+    }
+    return results;
   });
 
   userName = computed(() => {

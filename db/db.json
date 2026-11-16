@@ -34,7 +34,8 @@
       "stadiumID": 2,
       "championshipsActive": [
         1,
-        2
+        2,
+        "liga-profesional-2026"
       ],
       "playerIDs": []
     },
@@ -46,119 +47,129 @@
       "yearOfFoundation": "1905-01-01T00:00:00Z",
       "stadiumID": 4,
       "championshipsActive": [
-        1
+        1,
+        "liga-profesional-2026"
       ],
       "playerIDs": []
     },
     {
       "id": "5",
       "name": "San Lorenzo",
-      "shield": "https://www.footylogos.com/dls/logo/rgba-v1/san-lorenzo.png",
+      "shield": "/escudos/liga-profesional/san-lorenzo-logo-footylogos.svg",
       "country": "Argentina",
       "yearOfFoundation": "1908-03-31T00:00:00.000Z",
       "stadiumID": "5",
       "championshipsActive": [
-        1
+        1,
+        "liga-profesional-2026"
       ],
       "playerIDs": []
     },
     {
       "id": "6",
       "name": "Estudiantes de La Plata",
-      "shield": "https://www.footylogos.com/dls/logo/rgba-v1/estudiantes-de-la-plata.png",
+      "shield": "/escudos/liga-profesional/estudiantes-de-la-plata-logo-footylogos.svg",
       "country": "Argentina",
       "yearOfFoundation": "1905-08-03T00:00:00.000Z",
       "stadiumID": "6",
       "championshipsActive": [
         1,
-        2
+        2,
+        "liga-profesional-2026"
       ],
       "playerIDs": []
     },
     {
       "id": "7",
       "name": "Gimnasia y Esgrima La Plata",
-      "shield": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/gimnasia-y-esgrima-la-plata.png",
+      "shield": "/escudos/liga-profesional/gimnasia-y-esgrima-lp-logo-footylogos.svg",
       "country": "Argentina",
       "yearOfFoundation": "1887-06-03T00:00:00Z",
       "stadiumID": 7,
       "championshipsActive": [
-        1
+        1,
+        "liga-profesional-2026"
       ],
       "playerIDs": []
     },
     {
       "id": "8",
       "name": "Rosario Central",
-      "shield": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/rosario-central.png",
+      "shield": "/escudos/liga-profesional/rosario-central-logo-footylogos.svg",
       "country": "Argentina",
       "yearOfFoundation": "1889-12-24T00:00:00Z",
       "stadiumID": 8,
       "championshipsActive": [
-        1
+        1,
+        "liga-profesional-2026"
       ],
       "playerIDs": []
     },
     {
       "id": "9",
       "name": "Newell's Old Boys",
-      "shield": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/newells-old-boys.png",
+      "shield": "/escudos/liga-profesional/newells-old-boys-logo-footylogos.svg",
       "country": "Argentina",
       "yearOfFoundation": "1903-11-03T00:00:00Z",
       "stadiumID": 9,
       "championshipsActive": [
-        1
+        1,
+        "liga-profesional-2026"
       ],
       "playerIDs": []
     },
     {
       "id": "10",
       "name": "Vélez Sarsfield",
-      "shield": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/velez-sarsfield.png",
+      "shield": "/escudos/liga-profesional/velez-sarsfield-logo-footylogos.svg",
       "country": "Argentina",
       "yearOfFoundation": "1910-01-01T00:00:00Z",
       "stadiumID": 10,
       "championshipsActive": [
         1,
-        2
+        2,
+        "liga-profesional-2026"
       ],
       "playerIDs": []
     },
     {
       "id": "1",
       "name": "River Plate",
-      "shield": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/river-plate.png",
+      "shield": "/escudos/liga-profesional/river-plate-logo-footylogos.svg",
       "country": "Argentina",
       "yearOfFoundation": "1901-05-25T00:00:00Z",
       "stadiumID": 1,
       "championshipsActive": [
         1,
-        2
+        2,
+        "liga-profesional-2026"
       ],
       "playerIDs": []
     },
     {
       "id": "3",
       "name": "Racing Club",
-      "shield": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/racing-club.png",
+      "shield": "/escudos/liga-profesional/racing-club-logo-footylogos.svg",
       "country": "Argentina",
       "yearOfFoundation": "1903-03-25T00:00:00Z",
       "stadiumID": 3,
       "championshipsActive": [
         1,
-        2
+        2,
+        "liga-profesional-2026"
       ],
       "playerIDs": []
     },
     {
       "id": "11",
       "name": "Argentinos Juniors",
-      "shield": "https://www.footylogos.com/dls/logo/rgba-v1/argentinos-juniors.png",
+      "shield": "/escudos/liga-profesional/argentinos-juniors-logo-footylogos.svg",
       "country": "Argentina",
       "yearOfFoundation": "1904-08-09T00:00:00.000Z",
       "stadiumID": "1",
       "championshipsActive": [
-        1
+        1,
+        "liga-profesional-2026"
       ],
       "playerIDs": [
         "4"
@@ -167,99 +178,105 @@
     {
       "id": "12",
       "name": "Huracán",
-      "shield": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/huracan.png",
+      "shield": "/escudos/liga-profesional/huracan-logo-footylogos.svg",
       "country": "Argentina",
       "yearOfFoundation": "1908-11-01T00:00:00Z",
       "stadiumID": 12,
       "championshipsActive": [
-        1
+        1,
+        "liga-profesional-2026"
       ],
       "playerIDs": []
     },
     {
       "id": "13",
       "name": "Talleres (Córdoba)",
-      "shield": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/talleres.png",
+      "shield": "/escudos/liga-profesional/talleres-logo-footylogos.svg",
       "country": "Argentina",
       "yearOfFoundation": "1913-10-12T00:00:00Z",
       "stadiumID": 13,
       "championshipsActive": [
         1,
-        2
+        2,
+        "liga-profesional-2026"
       ],
       "playerIDs": []
     },
     {
       "id": "14",
       "name": "Belgrano (Córdoba)",
-      "shield": "https://www.footylogos.com/dls/logo/rgba-v1/belgrano.png",
+      "shield": "/escudos/liga-profesional/belgrano-logo-footylogos.svg",
       "country": "Argentina",
       "yearOfFoundation": "1905-03-18T00:00:00.000Z",
       "stadiumID": "5",
       "championshipsActive": [
-        1
+        1,
+        "liga-profesional-2026"
       ],
       "playerIDs": []
     },
     {
       "id": "15",
       "name": "Instituto (Córdoba)",
-      "shield": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/instituto.png",
+      "shield": "/escudos/liga-profesional/instituto-cordoba-logo-footylogos.svg",
       "country": "Argentina",
       "yearOfFoundation": "1918-08-08T00:00:00Z",
       "stadiumID": 15,
       "championshipsActive": [
-        1
+        1,
+        "liga-profesional-2026"
       ],
       "playerIDs": []
     },
     {
       "id": "16",
       "name": "Atlético Tucumán",
-      "shield": "https://www.footylogos.com/dls/logo/rgba-v1/atletico-tucuman.png",
+      "shield": "/escudos/liga-profesional/atletico-tucuman-logo-footylogos.svg",
       "country": "Argentina",
       "yearOfFoundation": "1902-09-26T00:00:00.000Z",
       "stadiumID": "6",
       "championshipsActive": [
-        1
+        1,
+        "liga-profesional-2026"
       ],
       "playerIDs": []
     },
     {
       "id": "17",
       "name": "Banfield",
-      "shield": "https://www.footylogos.com/dls/logo/rgba-v1/banfield.png",
+      "shield": "/escudos/liga-profesional/banfield-logo-footylogos.svg",
       "country": "Argentina",
       "yearOfFoundation": "1896-01-18T00:00:00.000Z",
       "stadiumID": "10",
       "championshipsActive": [
-        1
+        1,
+        "liga-profesional-2026"
       ],
-      "playerIDs": [
-        "1203"
-      ]
+      "playerIDs": []
     },
     {
       "id": "18",
       "name": "Lanús",
-      "shield": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/lanus.png",
+      "shield": "/escudos/liga-profesional/lanus-logo-footylogos.svg",
       "country": "Argentina",
       "yearOfFoundation": "1915-01-03T00:00:00Z",
       "stadiumID": 18,
       "championshipsActive": [
-        1
+        1,
+        "liga-profesional-2026"
       ],
       "playerIDs": []
     },
     {
       "id": "19",
       "name": "Defensa y Justicia",
-      "shield": "https://www.footylogos.com/dls/logo/rgba-v1/defensa-y-justicia.png",
+      "shield": "/escudos/liga-profesional/defensa-y-justicia-logo-footylogos.svg",
       "country": "Argentina",
       "yearOfFoundation": "1935-03-19T00:00:00.000Z",
       "stadiumID": "5",
       "championshipsActive": [
-        1
+        1,
+        "liga-profesional-2026"
       ],
       "playerIDs": []
     },
@@ -278,107 +295,116 @@
     {
       "id": "21",
       "name": "Tigre",
-      "shield": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/tigre.png",
+      "shield": "/escudos/liga-profesional/tigre-logo-footylogos.svg",
       "country": "Argentina",
       "yearOfFoundation": "1902-08-03T00:00:00Z",
       "stadiumID": 21,
       "championshipsActive": [
-        1
+        1,
+        "liga-profesional-2026"
       ],
       "playerIDs": []
     },
     {
       "id": "22",
       "name": "Platense",
-      "shield": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/platense.png",
+      "shield": "/escudos/liga-profesional/atletico-platense-logo-footylogos.svg",
       "country": "Argentina",
       "yearOfFoundation": "1905-05-25T00:00:00Z",
       "stadiumID": 22,
       "championshipsActive": [
-        1
+        1,
+        "liga-profesional-2026"
       ],
       "playerIDs": []
     },
     {
       "id": "23",
       "name": "Sarmiento (Junín)",
-      "shield": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/sarmiento.png",
+      "shield": "/escudos/liga-profesional/sarmiento-logo-footylogos.svg",
       "country": "Argentina",
       "yearOfFoundation": "1911-04-01T00:00:00Z",
       "stadiumID": 23,
       "championshipsActive": [
-        1
+        1,
+        "liga-profesional-2026"
       ],
       "playerIDs": []
     },
     {
       "id": "24",
       "name": "Central Córdoba (SdE)",
-      "shield": "https://www.footylogos.com/dls/logo/rgba-v1/central-cordoba-se.png",
+      "shield": "/escudos/liga-profesional/central-cordoba-se-logo-footylogos.svg",
       "country": "Argentina",
       "yearOfFoundation": "1919-06-02T00:00:00.000Z",
       "stadiumID": "6",
       "championshipsActive": [
-        1
+        1,
+        "liga-profesional-2026"
       ],
       "playerIDs": []
     },
     {
       "id": "25",
       "name": "Unión (Santa Fe)",
-      "shield": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/union.png",
+      "shield": "/escudos/liga-profesional/union-logo-footylogos.svg",
       "country": "Argentina",
       "yearOfFoundation": "1907-04-15T00:00:00Z",
       "stadiumID": 25,
       "championshipsActive": [
-        1
+        1,
+        "liga-profesional-2026"
       ],
       "playerIDs": []
     },
     {
       "id": "26",
       "name": "Barracas Central",
-      "shield": "https://www.footylogos.com/dls/logo/rgba-v1/barracas-central.png",
+      "shield": "/escudos/liga-profesional/barracas-central-logo-footylogos.svg",
       "country": "Argentina",
       "yearOfFoundation": "1904-04-04T00:00:00.000Z",
       "stadiumID": "7",
       "championshipsActive": [
-        1
+        1,
+        "liga-profesional-2026"
       ],
       "playerIDs": []
     },
     {
       "id": "27",
       "name": "Deportivo Riestra",
-      "shield": "https://www.footylogos.com/dls/logo/rgba-v1/deportivo-riestra.png",
+      "shield": "/escudos/liga-profesional/deportivo-riestra-logo-footylogos.svg",
       "country": "Argentina",
       "yearOfFoundation": "1931-02-21T00:00:00.000Z",
       "stadiumID": "10",
       "championshipsActive": [
-        1
+        1,
+        "liga-profesional-2026"
       ],
       "playerIDs": []
     },
     {
       "id": "28",
       "name": "Independiente Rivadavia",
-      "shield": "https://raw.githubusercontent.com/isaac-alves/soccer-logos/main/logos/argentina/independiente-rivadavia.png",
+      "shield": "/escudos/liga-profesional/independiente-rivadavia-logo-footylogos.svg",
       "country": "Argentina",
       "yearOfFoundation": "1913-01-24T00:00:00Z",
       "stadiumID": 28,
       "championshipsActive": [
-        1
+        1,
+        "liga-profesional-2026"
       ],
       "playerIDs": []
     },
     {
       "id": "29",
       "name": "Fluminense",
-      "shield": "https://upload.wikimedia.org/wikipedia/commons/a/ad/Fluminense_FC_escudo.png",
+      "shield": "/escudos/brasileirao-serie-a/fluminense-logo-footylogos.svg",
       "country": "Brasil",
       "yearOfFoundation": "1902-07-21",
       "championshipsActive": [
-        3
+        3,
+        "brasileirao-serie-a-2026"
       ],
       "playerIDs": [],
       "stadiumID": 29
@@ -426,11 +452,12 @@
     {
       "id": "33",
       "name": "São Paulo",
-      "shield": "https://upload.wikimedia.org/wikipedia/commons/6/6f/Brasao_do_Sao_Paulo_Futebol_Clube.svg",
+      "shield": "/escudos/brasileirao-serie-a/sao-paulo-logo-footylogos.svg",
       "country": "Brasil",
       "yearOfFoundation": "1930-01-25",
       "championshipsActive": [
-        3
+        3,
+        "brasileirao-serie-a-2026"
       ],
       "playerIDs": [],
       "stadiumID": 33
@@ -498,11 +525,12 @@
     {
       "id": "39",
       "name": "Palmeiras",
-      "shield": "https://upload.wikimedia.org/wikipedia/commons/1/10/Palmeiras_logo.svg",
+      "shield": "/escudos/brasileirao-serie-a/palmeiras-logo-footylogos.svg",
       "country": "Brasil",
       "yearOfFoundation": "1914-08-26",
       "championshipsActive": [
-        3
+        3,
+        "brasileirao-serie-a-2026"
       ],
       "playerIDs": [],
       "stadiumID": 39
@@ -534,11 +562,12 @@
     {
       "id": "42",
       "name": "Flamengo",
-      "shield": "https://upload.wikimedia.org/wikipedia/commons/2/2e/Flamengo_braz_logo.svg",
+      "shield": "/escudos/brasileirao-serie-a/flamengo-logo-footylogos.svg",
       "country": "Brasil",
       "yearOfFoundation": "1895-11-17",
       "championshipsActive": [
-        3
+        3,
+        "brasileirao-serie-a-2026"
       ],
       "playerIDs": [],
       "stadiumID": 42
@@ -582,11 +611,12 @@
     {
       "id": "46",
       "name": "Atlético Mineiro",
-      "shield": "https://upload.wikimedia.org/wikipedia/commons/5/5f/Atletico_mineiro_galo.png",
+      "shield": "/escudos/brasileirao-serie-a/atletico-mineiro-logo-footylogos.svg",
       "country": "Brasil",
       "yearOfFoundation": "1908-03-25",
       "championshipsActive": [
-        3
+        3,
+        "brasileirao-serie-a-2026"
       ],
       "playerIDs": [],
       "stadiumID": 46
@@ -642,11 +672,12 @@
     {
       "id": "51",
       "name": "Botafogo",
-      "shield": "https://upload.wikimedia.org/wikipedia/commons/5/52/Botafogo_de_Futebol_e_Regatas_logo.svg",
+      "shield": "/escudos/brasileirao-serie-a/botafogo-logo-footylogos.svg",
       "country": "Brasil",
       "yearOfFoundation": "1904-08-12",
       "championshipsActive": [
-        3
+        3,
+        "brasileirao-serie-a-2026"
       ],
       "playerIDs": [],
       "stadiumID": 51
@@ -698,6 +729,2139 @@
       "stadiumID": 2,
       "playerIDs": [],
       "id": "65GP3UYbRO0"
+    },
+    {
+      "id": "55",
+      "name": "AFC Bournemouth",
+      "shield": "/escudos/premier-league/afc-bournemouth-logo-footylogos.svg",
+      "country": "Inglaterra",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "premier-league-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "56",
+      "name": "Arsenal",
+      "shield": "/escudos/premier-league/arsenal-logo-footylogos.svg",
+      "country": "Inglaterra",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "premier-league-2026-27",
+        "uefa-champions-league-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "57",
+      "name": "Aston Villa",
+      "shield": "/escudos/premier-league/aston-villa-logo-footylogos.svg",
+      "country": "Inglaterra",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "premier-league-2026-27",
+        "uefa-champions-league-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "58",
+      "name": "Brentford",
+      "shield": "/escudos/premier-league/brentford-logo-footylogos.svg",
+      "country": "Inglaterra",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "premier-league-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "59",
+      "name": "Brighton & Hove Albion",
+      "shield": "/escudos/premier-league/brighton-and-hove-albion-logo-footylogos.svg",
+      "country": "Inglaterra",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "premier-league-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "60",
+      "name": "Chelsea",
+      "shield": "/escudos/premier-league/chelsea-logo-footylogos.svg",
+      "country": "Inglaterra",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "premier-league-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "61",
+      "name": "Coventry City",
+      "shield": "/escudos/premier-league/coventry-city-logo-footylogos.png",
+      "country": "Inglaterra",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "premier-league-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "62",
+      "name": "Crystal Palace",
+      "shield": "/escudos/premier-league/crystal-palace-logo-footylogos.svg",
+      "country": "Inglaterra",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "premier-league-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "63",
+      "name": "Everton",
+      "shield": "/escudos/premier-league/everton-logo-footylogos.svg",
+      "country": "Inglaterra",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "premier-league-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "64",
+      "name": "Fulham",
+      "shield": "/escudos/premier-league/fulham-logo-footylogos.svg",
+      "country": "Inglaterra",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "premier-league-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "65",
+      "name": "Hull City",
+      "shield": "/escudos/premier-league/hull-city-logo-footylogos.svg",
+      "country": "Inglaterra",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "premier-league-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "66",
+      "name": "Ipswich Town",
+      "shield": "/escudos/premier-league/ipswich-town-logo-footylogos.svg",
+      "country": "Inglaterra",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "premier-league-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "67",
+      "name": "Leeds United",
+      "shield": "/escudos/premier-league/leeds-united-logo-footylogos.svg",
+      "country": "Inglaterra",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "premier-league-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "68",
+      "name": "Liverpool FC",
+      "shield": "/escudos/premier-league/liverpool-fc-logo-footylogos.svg",
+      "country": "Inglaterra",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "premier-league-2026-27",
+        "uefa-champions-league-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "69",
+      "name": "Manchester City",
+      "shield": "/escudos/premier-league/manchester-city-logo-footylogos.svg",
+      "country": "Inglaterra",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "premier-league-2026-27",
+        "uefa-champions-league-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "70",
+      "name": "Manchester United",
+      "shield": "/escudos/premier-league/manchester-united-logo-footylogos.svg",
+      "country": "Inglaterra",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "premier-league-2026-27",
+        "uefa-champions-league-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "71",
+      "name": "Newcastle United",
+      "shield": "/escudos/premier-league/newcastle-united-logo-footylogos.svg",
+      "country": "Inglaterra",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "premier-league-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "72",
+      "name": "Nottingham Forest",
+      "shield": "/escudos/premier-league/nottingham-forest-logo-footylogos.svg",
+      "country": "Inglaterra",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "premier-league-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "73",
+      "name": "Sunderland",
+      "shield": "/escudos/premier-league/sunderland-logo-footylogos.svg",
+      "country": "Inglaterra",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "premier-league-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "74",
+      "name": "Tottenham Hotspur",
+      "shield": "/escudos/premier-league/tottenham-hotspur-logo-footylogos.svg",
+      "country": "Inglaterra",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "premier-league-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "75",
+      "name": "Athletic Club Bilbao",
+      "shield": "/escudos/laliga/athletic-club-bilbao-logo-footylogos.svg",
+      "country": "España",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "laliga-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "76",
+      "name": "Atletico Madrid",
+      "shield": "/escudos/laliga/atletico-madrid-logo-footylogos.svg",
+      "country": "España",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "laliga-2026-27",
+        "uefa-champions-league-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "77",
+      "name": "Celta Vigo",
+      "shield": "/escudos/laliga/celta-vigo-logo-footylogos.svg",
+      "country": "España",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "laliga-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "78",
+      "name": "Deportivo Alaves",
+      "shield": "/escudos/laliga/deportivo-alaves-logo-footylogos.svg",
+      "country": "España",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "laliga-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "79",
+      "name": "Elche CF",
+      "shield": "/escudos/laliga/elche-cf-logo-footylogos.svg",
+      "country": "España",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "laliga-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "80",
+      "name": "FC Barcelona",
+      "shield": "/escudos/laliga/fc-barcelona-logo-footylogos.svg",
+      "country": "España",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "laliga-2026-27",
+        "uefa-champions-league-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "81",
+      "name": "Getafe C.F",
+      "shield": "/escudos/laliga/getafe-cf-logo-footylogos.png",
+      "country": "España",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "laliga-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "82",
+      "name": "Levante UD",
+      "shield": "/escudos/laliga/levante-ud-logo-footylogos.svg",
+      "country": "España",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "laliga-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "83",
+      "name": "Osasuna",
+      "shield": "/escudos/laliga/osasuna-logo-footylogos.svg",
+      "country": "España",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "laliga-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "84",
+      "name": "RCD Espanyol Barcelona",
+      "shield": "/escudos/laliga/rcd-espanyol-barcelona-logo-footylogos.svg",
+      "country": "España",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "laliga-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "85",
+      "name": "Racing Santander",
+      "shield": "/escudos/laliga/racing-santander-logo-footylogos.svg",
+      "country": "España",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "laliga-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "86",
+      "name": "Rayo Vallecano",
+      "shield": "/escudos/laliga/rayo-vallecano-logo-footylogos.svg",
+      "country": "España",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "laliga-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "87",
+      "name": "Real Betis Balompié",
+      "shield": "/escudos/laliga/real-betis-balompie-logo-footylogos.svg",
+      "country": "España",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "laliga-2026-27",
+        "uefa-champions-league-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "88",
+      "name": "Real Madrid",
+      "shield": "/escudos/laliga/real-madrid-logo-footylogos.svg",
+      "country": "España",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "laliga-2026-27",
+        "uefa-champions-league-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "89",
+      "name": "Real Sociedad",
+      "shield": "/escudos/laliga/real-sociedad-logo-footylogos.svg",
+      "country": "España",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "laliga-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "90",
+      "name": "Sevilla FC",
+      "shield": "/escudos/laliga/sevilla-fc-logo-footylogos.png",
+      "country": "España",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "laliga-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "91",
+      "name": "Valencia CF",
+      "shield": "/escudos/laliga/valencia-cf-logo-footylogos.svg",
+      "country": "España",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "laliga-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "92",
+      "name": "Villarreal CF",
+      "shield": "/escudos/laliga/villarreal-cf-logo-footylogos.svg",
+      "country": "España",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "laliga-2026-27",
+        "uefa-champions-league-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "93",
+      "name": "Deportivo La Coruña",
+      "shield": "/escudos/laliga/deportivo-la-coruna-logo-footylogos.svg",
+      "country": "España",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "laliga-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "94",
+      "name": "Málaga CF",
+      "shield": "/escudos/laliga/malaga-cf-logo-footylogos.svg",
+      "country": "España",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "laliga-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "95",
+      "name": "AC Milan",
+      "shield": "/escudos/serie-a/ac-milan-logo-footylogos.svg",
+      "country": "Italia",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "serie-a-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "96",
+      "name": "AC Monza",
+      "shield": "/escudos/serie-a/ac-monza-logo-footylogos.svg",
+      "country": "Italia",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "serie-a-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "97",
+      "name": "AS Roma",
+      "shield": "/escudos/serie-a/roma-logo-footylogos.png",
+      "country": "Italia",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "serie-a-2026-27",
+        "uefa-champions-league-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "98",
+      "name": "Atalanta",
+      "shield": "/escudos/serie-a/atalanta-logo-footylogos.svg",
+      "country": "Italia",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "serie-a-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "99",
+      "name": "Bologna",
+      "shield": "/escudos/serie-a/bologna-logo-footylogos.svg",
+      "country": "Italia",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "serie-a-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "100",
+      "name": "Cagliari",
+      "shield": "/escudos/serie-a/cagliari-logo-footylogos.svg",
+      "country": "Italia",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "serie-a-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "101",
+      "name": "Como 1907",
+      "shield": "/escudos/serie-a/como-1907-logo-footylogos.svg",
+      "country": "Italia",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "serie-a-2026-27",
+        "uefa-champions-league-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "102",
+      "name": "Fiorentina",
+      "shield": "/escudos/serie-a/fiorentina-logo-footylogos.svg",
+      "country": "Italia",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "serie-a-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "103",
+      "name": "Frosinone Calcio",
+      "shield": "/escudos/serie-a/frosinone-calcio-logo-footylogos.svg",
+      "country": "Italia",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "serie-a-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "104",
+      "name": "Genoa",
+      "shield": "/escudos/serie-a/genoa-logo-footylogos.svg",
+      "country": "Italia",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "serie-a-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "105",
+      "name": "Inter Milan",
+      "shield": "/escudos/serie-a/inter-milan-logo-footylogos.svg",
+      "country": "Italia",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "serie-a-2026-27",
+        "uefa-champions-league-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "106",
+      "name": "Juventus",
+      "shield": "/escudos/serie-a/juventus-logo-footylogos.svg",
+      "country": "Italia",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "serie-a-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "107",
+      "name": "Lazio",
+      "shield": "/escudos/serie-a/lazio-logo-footylogos.svg",
+      "country": "Italia",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "serie-a-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "108",
+      "name": "Lecce",
+      "shield": "/escudos/serie-a/lecce-logo-footylogos.svg",
+      "country": "Italia",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "serie-a-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "109",
+      "name": "Napoli",
+      "shield": "/escudos/serie-a/napoli-logo-footylogos.svg",
+      "country": "Italia",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "serie-a-2026-27",
+        "uefa-champions-league-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "110",
+      "name": "Parma",
+      "shield": "/escudos/serie-a/parma-logo-footylogos.svg",
+      "country": "Italia",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "serie-a-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "111",
+      "name": "Sassuolo",
+      "shield": "/escudos/serie-a/sassuolo-logo-footylogos.svg",
+      "country": "Italia",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "serie-a-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "112",
+      "name": "Torino",
+      "shield": "/escudos/serie-a/torino-logo-footylogos.svg",
+      "country": "Italia",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "serie-a-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "113",
+      "name": "Udinese",
+      "shield": "/escudos/serie-a/udinese-logo-footylogos.svg",
+      "country": "Italia",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "serie-a-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "114",
+      "name": "Venezia FC",
+      "shield": "/escudos/serie-a/venezia-fc-logo-footylogos.svg",
+      "country": "Italia",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "serie-a-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "115",
+      "name": "1. FC Köln",
+      "shield": "/escudos/bundesliga/1-fc-koln-logo-footylogos.svg",
+      "country": "Alemania",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "bundesliga-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "116",
+      "name": "Bayer Leverkusen",
+      "shield": "/escudos/bundesliga/bayer-leverkusen-logo-footylogos.svg",
+      "country": "Alemania",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "bundesliga-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "117",
+      "name": "Bayern Munich",
+      "shield": "/escudos/bundesliga/bayern-munich-logo-footylogos.svg",
+      "country": "Alemania",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "bundesliga-2026-27",
+        "uefa-champions-league-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "118",
+      "name": "Borussia Dortmund",
+      "shield": "/escudos/bundesliga/borussia-dortmund-logo-footylogos.svg",
+      "country": "Alemania",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "bundesliga-2026-27",
+        "uefa-champions-league-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "119",
+      "name": "Borussia Mönchengladbach",
+      "shield": "/escudos/bundesliga/borussia-monchengladbach-logo-footylogos.svg",
+      "country": "Alemania",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "bundesliga-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "120",
+      "name": "Eintracht Frankfurt",
+      "shield": "/escudos/bundesliga/eintracht-frankfurt-logo-footylogos.svg",
+      "country": "Alemania",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "bundesliga-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "121",
+      "name": "FC Augsburg",
+      "shield": "/escudos/bundesliga/fc-augsburg-logo-footylogos.svg",
+      "country": "Alemania",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "bundesliga-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "122",
+      "name": "Hamburger SV",
+      "shield": "/escudos/bundesliga/hamburger-sv-logo-footylogos.svg",
+      "country": "Alemania",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "bundesliga-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "123",
+      "name": "Mainz 05",
+      "shield": "/escudos/bundesliga/mainz-05-logo-footylogos.svg",
+      "country": "Alemania",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "bundesliga-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "124",
+      "name": "RB Leipzig",
+      "shield": "/escudos/bundesliga/rb-leipzig-logo-footylogos.svg",
+      "country": "Alemania",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "bundesliga-2026-27",
+        "uefa-champions-league-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "125",
+      "name": "SC Freiburg",
+      "shield": "/escudos/bundesliga/sc-freiburg-logo-footylogos.svg",
+      "country": "Alemania",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "bundesliga-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "126",
+      "name": "SC Paderborn 07",
+      "shield": "/escudos/bundesliga/sc-paderborn-07-logo-footylogos.svg",
+      "country": "Alemania",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "bundesliga-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "127",
+      "name": "SV Elversberg",
+      "shield": "/escudos/bundesliga/sv-elversberg-logo-footylogos.svg",
+      "country": "Alemania",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "bundesliga-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "128",
+      "name": "Schalke 04",
+      "shield": "/escudos/bundesliga/schalke-04-logo-footylogos.svg",
+      "country": "Alemania",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "bundesliga-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "129",
+      "name": "TSG Hoffenheim",
+      "shield": "/escudos/bundesliga/tsg-hoffenheim-logo-footylogos.svg",
+      "country": "Alemania",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "bundesliga-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "130",
+      "name": "Union Berlin",
+      "shield": "/escudos/bundesliga/union-berlin-logo-footylogos.svg",
+      "country": "Alemania",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "bundesliga-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "131",
+      "name": "VfB Stuttgart",
+      "shield": "/escudos/bundesliga/vfb-stuttgart-logo-footylogos.svg",
+      "country": "Alemania",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "bundesliga-2026-27",
+        "uefa-champions-league-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "132",
+      "name": "Werder Bremen",
+      "shield": "/escudos/bundesliga/werder-bremen-logo-footylogos.svg",
+      "country": "Alemania",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "bundesliga-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "133",
+      "name": "AJ Auxerre",
+      "shield": "/escudos/ligue-1/aj-auxerre-logo-footylogos.svg",
+      "country": "Francia",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "ligue-1-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "134",
+      "name": "AS Monaco",
+      "shield": "/escudos/ligue-1/as-monaco-logo-footylogos.svg",
+      "country": "Francia",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "ligue-1-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "135",
+      "name": "Angers SCO",
+      "shield": "/escudos/ligue-1/angers-sco-logo-footylogos.svg",
+      "country": "Francia",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "ligue-1-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "136",
+      "name": "FC Lorient",
+      "shield": "/escudos/ligue-1/fc-lorient-logo-footylogos.svg",
+      "country": "Francia",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "ligue-1-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "137",
+      "name": "LOSC Lille",
+      "shield": "/escudos/ligue-1/losc-lille-logo-footylogos.svg",
+      "country": "Francia",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "ligue-1-2026-27",
+        "uefa-champions-league-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "138",
+      "name": "Le Havre AC",
+      "shield": "/escudos/ligue-1/le-havre-ac-logo-footylogos.svg",
+      "country": "Francia",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "ligue-1-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "139",
+      "name": "Le Mans FC",
+      "shield": "/escudos/ligue-1/le-mans-fc-logo-footylogos.svg",
+      "country": "Francia",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "ligue-1-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "140",
+      "name": "OGC Nice",
+      "shield": "/escudos/ligue-1/ogc-nice-logo-footylogos.png",
+      "country": "Francia",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "ligue-1-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "141",
+      "name": "Olympique Lyonnais",
+      "shield": "/escudos/ligue-1/olympique-lyonnais-logo-footylogos.svg",
+      "country": "Francia",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "ligue-1-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "142",
+      "name": "Olympique de Marseille",
+      "shield": "/escudos/ligue-1/olympique-de-marseille-om-logo-footylogos.svg",
+      "country": "Francia",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "ligue-1-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "143",
+      "name": "Paris FC",
+      "shield": "/escudos/ligue-1/paris-fc-logo-footylogos.svg",
+      "country": "Francia",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "ligue-1-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "144",
+      "name": "Paris Saint-Germain",
+      "shield": "/escudos/ligue-1/paris-saint-germain-psg-logo-footylogos.svg",
+      "country": "Francia",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "ligue-1-2026-27",
+        "uefa-champions-league-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "145",
+      "name": "RC Lens",
+      "shield": "/escudos/ligue-1/rc-lens-logo-footylogos.svg",
+      "country": "Francia",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "ligue-1-2026-27",
+        "uefa-champions-league-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "146",
+      "name": "RC Strasbourg Alsace",
+      "shield": "/escudos/ligue-1/rc-strasbourg-alsace-logo-footylogos.svg",
+      "country": "Francia",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "ligue-1-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "147",
+      "name": "Stade Brestois 29",
+      "shield": "/escudos/ligue-1/stade-brestois-29-logo-footylogos.svg",
+      "country": "Francia",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "ligue-1-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "148",
+      "name": "Stade Rennais",
+      "shield": "/escudos/ligue-1/stade-rennais-logo-footylogos.svg",
+      "country": "Francia",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "ligue-1-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "149",
+      "name": "Toulouse FC",
+      "shield": "/escudos/ligue-1/toulouse-fc-logo-footylogos.svg",
+      "country": "Francia",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "ligue-1-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "150",
+      "name": "Troyes",
+      "shield": "/escudos/ligue-1/troyes-logo-footylogos.png",
+      "country": "Francia",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "ligue-1-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "151",
+      "name": "AEK Athens",
+      "shield": "/escudos/uefa-champions-league/aek-athens-logo-footylogos.svg",
+      "country": "Grecia",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "uefa-champions-league-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "152",
+      "name": "Club Brugge",
+      "shield": "/escudos/uefa-champions-league/club-brugge-logo-footylogos.svg",
+      "country": "Bélgica",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "uefa-champions-league-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "153",
+      "name": "FC Porto",
+      "shield": "/escudos/uefa-champions-league/fc-porto-logo-footylogos.svg",
+      "country": "Portugal",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "uefa-champions-league-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "154",
+      "name": "Fenerbahçe",
+      "shield": "/escudos/uefa-champions-league/fenerbahce-logo-footylogos.svg",
+      "country": "Turquía",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "uefa-champions-league-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "155",
+      "name": "Feyenoord",
+      "shield": "/escudos/uefa-champions-league/feyenoord-logo-footylogos.svg",
+      "country": "Países Bajos",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "uefa-champions-league-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "156",
+      "name": "FK Bodø/Glimt",
+      "shield": "/escudos/uefa-champions-league/fk-bodo-glimt-logo-footylogos.svg",
+      "country": "Noruega",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "uefa-champions-league-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "157",
+      "name": "Galatasaray",
+      "shield": "/escudos/uefa-champions-league/galatasaray-logo-footylogos.svg",
+      "country": "Turquía",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "uefa-champions-league-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "158",
+      "name": "LASK",
+      "shield": "/escudos/uefa-champions-league/lask-logo-footylogos.svg",
+      "country": "Austria",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "uefa-champions-league-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "159",
+      "name": "PSV Eindhoven",
+      "shield": "/escudos/uefa-champions-league/psv-eindhoven-logo-footylogos.svg",
+      "country": "Países Bajos",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "uefa-champions-league-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "160",
+      "name": "Sabah FK",
+      "shield": "/escudos/uefa-champions-league/sabah-fk-logo-footylogos.svg",
+      "country": "Azerbaiyán",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "uefa-champions-league-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "161",
+      "name": "Shakhtar Donetsk",
+      "shield": "/escudos/uefa-champions-league/shakhtar-donetsk-logo-footylogos.svg",
+      "country": "Ucrania",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "uefa-champions-league-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "162",
+      "name": "ŠK Slovan Bratislava",
+      "shield": "/escudos/uefa-champions-league/sk-slovan-bratislava-logo-footylogos.svg",
+      "country": "Eslovaquia",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "uefa-champions-league-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "163",
+      "name": "Slavia Praha",
+      "shield": "/escudos/uefa-champions-league/slavia-praha-logo-footylogos.svg",
+      "country": "República Checa",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "uefa-champions-league-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "164",
+      "name": "Sporting CP",
+      "shield": "/escudos/uefa-champions-league/sporting-cp-logo-footylogos.svg",
+      "country": "Portugal",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "uefa-champions-league-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "165",
+      "name": "Viking FK",
+      "shield": "/escudos/uefa-champions-league/viking-fk-logo-footylogos.svg",
+      "country": "Noruega",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "uefa-champions-league-2026-27"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "166",
+      "name": "Estudiantes de Rio Cuarto",
+      "shield": "/escudos/liga-profesional/estudiantes-de-rio-cuarto-logo-footylogos.svg",
+      "country": "Argentina",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "liga-profesional-2026"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "167",
+      "name": "Gimnasia y Esgrima (Mendoza)",
+      "shield": "/escudos/liga-profesional/gimnasia-y-esgrima-logo-footylogos.svg",
+      "country": "Argentina",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "liga-profesional-2026"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "168",
+      "name": "Aldosivi",
+      "shield": "/escudos/liga-profesional/aldosivi-logo-footylogos.svg",
+      "country": "Argentina",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "liga-profesional-2026"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "169",
+      "name": "Athletico Paranaense",
+      "shield": "/escudos/brasileirao-serie-a/athletico-paranaense-logo-footylogos.svg",
+      "country": "Brasil",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "brasileirao-serie-a-2026"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "170",
+      "name": "SC Internacional",
+      "shield": "/escudos/brasileirao-serie-a/sc-internacional-logo-footylogos.svg",
+      "country": "Brasil",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "brasileirao-serie-a-2026"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "171",
+      "name": "Clube de Remo",
+      "shield": "/escudos/brasileirao-serie-a/club-de-remo-logo-footylogos.svg",
+      "country": "Brasil",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "brasileirao-serie-a-2026"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "172",
+      "name": "RB Bragantino",
+      "shield": "/escudos/brasileirao-serie-a/rb-bragantino-logo-footylogos.svg",
+      "country": "Brasil",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "brasileirao-serie-a-2026"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "173",
+      "name": "Vasco da Gama",
+      "shield": "/escudos/brasileirao-serie-a/vasco-da-gama-logo-footylogos.svg",
+      "country": "Brasil",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "brasileirao-serie-a-2026"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "174",
+      "name": "Chapecoense",
+      "shield": "/escudos/brasileirao-serie-a/chapecoense-logo-footylogos.svg",
+      "country": "Brasil",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "brasileirao-serie-a-2026"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "175",
+      "name": "Corinthians",
+      "shield": "/escudos/brasileirao-serie-a/corinthians-logo-footylogos.png",
+      "country": "Brasil",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "brasileirao-serie-a-2026"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "176",
+      "name": "Mirassol FC",
+      "shield": "/escudos/brasileirao-serie-a/mirassol-fc-logo-footylogos.svg",
+      "country": "Brasil",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "brasileirao-serie-a-2026"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "177",
+      "name": "Santos FC",
+      "shield": "/escudos/brasileirao-serie-a/santos-fc-logo-footylogos.svg",
+      "country": "Brasil",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "brasileirao-serie-a-2026"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "178",
+      "name": "Coritiba",
+      "shield": "/escudos/brasileirao-serie-a/coritiba-logo-footylogos.svg",
+      "country": "Brasil",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "brasileirao-serie-a-2026"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "179",
+      "name": "Cruzeiro",
+      "shield": "/escudos/brasileirao-serie-a/cruzeiro-logo-footylogos.svg",
+      "country": "Brasil",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "brasileirao-serie-a-2026"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "180",
+      "name": "Vitória",
+      "shield": "/escudos/brasileirao-serie-a/vitoria-logo-footylogos.svg",
+      "country": "Brasil",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "brasileirao-serie-a-2026"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "181",
+      "name": "Grêmio",
+      "shield": "/escudos/brasileirao-serie-a/gremio-logo-footylogos.svg",
+      "country": "Brasil",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "brasileirao-serie-a-2026"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "182",
+      "name": "Bahia",
+      "shield": "/escudos/brasileirao-serie-a/bahia-logo-footylogos.svg",
+      "country": "Brasil",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "brasileirao-serie-a-2026"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "336",
+      "name": "Selección de Costa de Marfil",
+      "shield": "/escudos/fifa-world-cup/cote-d-ivoire-national-team-logo-footylogos.svg",
+      "country": "Costa de Marfil",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "fifa-world-cup-2026"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "337",
+      "name": "Selección de República Checa",
+      "shield": "/escudos/fifa-world-cup/czechia-national-team-logo-footylogos.svg",
+      "country": "República Checa",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "fifa-world-cup-2026"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "338",
+      "name": "Selección de Cabo Verde",
+      "shield": "/escudos/fifa-world-cup/cabo-verde-national-team-logo-footylogos.svg",
+      "country": "Cabo Verde",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "fifa-world-cup-2026"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "339",
+      "name": "Selección de Bosnia y Herzegovina",
+      "shield": "/escudos/fifa-world-cup/bosnia-and-herzegovina-national-team-logo-footylogos.svg",
+      "country": "Bosnia y Herzegovina",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "fifa-world-cup-2026"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "340",
+      "name": "Selección de Países Bajos",
+      "shield": "/escudos/fifa-world-cup/netherlands-national-team-dutch-logo-footylogos.png",
+      "country": "Países Bajos",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "fifa-world-cup-2026"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "341",
+      "name": "Selección de Sudáfrica",
+      "shield": "/escudos/fifa-world-cup/south-africa-national-team-logo-footylogos.svg",
+      "country": "Sudáfrica",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "fifa-world-cup-2026"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "342",
+      "name": "Selección de Arabia Saudita",
+      "shield": "/escudos/fifa-world-cup/saudi-arabia-national-team-logo-footylogos.svg",
+      "country": "Arabia Saudita",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "fifa-world-cup-2026"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "343",
+      "name": "Selección de Suiza",
+      "shield": "/escudos/fifa-world-cup/switzerland-national-team-logo-footylogos.svg",
+      "country": "Suiza",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "fifa-world-cup-2026"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "344",
+      "name": "Selección de Nueva Zelanda",
+      "shield": "/escudos/fifa-world-cup/new-zealand-national-team-logo-footylogos.svg",
+      "country": "Nueva Zelanda",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "fifa-world-cup-2026"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "345",
+      "name": "Selección de Uzbekistán",
+      "shield": "/escudos/fifa-world-cup/uzbekistan-national-team-logo-footylogos.svg",
+      "country": "Uzbekistán",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "fifa-world-cup-2026"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "346",
+      "name": "Selección de Australia",
+      "shield": "/escudos/fifa-world-cup/australia-national-team-logo-footylogos.svg",
+      "country": "Australia",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "fifa-world-cup-2026"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "347",
+      "name": "Selección de Argentina",
+      "shield": "/escudos/fifa-world-cup/argentina-national-team-logo-footylogos.svg",
+      "country": "Argentina",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "fifa-world-cup-2026"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "348",
+      "name": "Selección de Escocia",
+      "shield": "/escudos/fifa-world-cup/scotland-national-team-logo-footylogos.svg",
+      "country": "Escocia",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "fifa-world-cup-2026"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "349",
+      "name": "Selección de Paraguay",
+      "shield": "/escudos/fifa-world-cup/paraguay-national-team-logo-footylogos.svg",
+      "country": "Paraguay",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "fifa-world-cup-2026"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "350",
+      "name": "Selección de Portugal",
+      "shield": "/escudos/fifa-world-cup/portugal-national-team-logo-footylogos.svg",
+      "country": "Portugal",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "fifa-world-cup-2026"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "351",
+      "name": "Selección de Colombia",
+      "shield": "/escudos/fifa-world-cup/colombia-national-team-logo-footylogos.svg",
+      "country": "Colombia",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "fifa-world-cup-2026"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "352",
+      "name": "Selección de República Democrática del Congo",
+      "shield": "/escudos/fifa-world-cup/dr-congo-national-team-logo-footylogos.svg",
+      "country": "República Democrática del Congo",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "fifa-world-cup-2026"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "353",
+      "name": "Selección de Marruecos",
+      "shield": "/escudos/fifa-world-cup/morocco-national-team-logo-footylogos.png",
+      "country": "Marruecos",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "fifa-world-cup-2026"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "354",
+      "name": "Selección de Alemania",
+      "shield": "/escudos/fifa-world-cup/germany-national-team-logo-footylogos.svg",
+      "country": "Alemania",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "fifa-world-cup-2026"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "355",
+      "name": "Selección de Ecuador",
+      "shield": "/escudos/fifa-world-cup/ecuador-national-team-logo-footylogos.svg",
+      "country": "Ecuador",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "fifa-world-cup-2026"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "356",
+      "name": "Selección de Curazao",
+      "shield": "/escudos/fifa-world-cup/curacao-national-team-logo-footylogos.svg",
+      "country": "Curazao",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "fifa-world-cup-2026"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "357",
+      "name": "Selección de Túnez",
+      "shield": "/escudos/fifa-world-cup/tunisia-national-team-logo-footylogos.svg",
+      "country": "Túnez",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "fifa-world-cup-2026"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "358",
+      "name": "Selección de Bélgica",
+      "shield": "/escudos/fifa-world-cup/belgium-national-team-logo-footylogos.svg",
+      "country": "Bélgica",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "fifa-world-cup-2026"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "359",
+      "name": "Selección de Uruguay",
+      "shield": "/escudos/fifa-world-cup/uruguay-national-team-logo-footylogos.svg",
+      "country": "Uruguay",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "fifa-world-cup-2026"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "360",
+      "name": "Selección de Senegal",
+      "shield": "/escudos/fifa-world-cup/senegal-national-team-logo-footylogos.svg",
+      "country": "Senegal",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "fifa-world-cup-2026"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "361",
+      "name": "Selección de Argelia",
+      "shield": "/escudos/fifa-world-cup/algeria-national-team-logo-footylogos.svg",
+      "country": "Argelia",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "fifa-world-cup-2026"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "362",
+      "name": "Selección de Austria",
+      "shield": "/escudos/fifa-world-cup/austria-national-team-logo-footylogos.svg",
+      "country": "Austria",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "fifa-world-cup-2026"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "363",
+      "name": "Selección de Inglaterra",
+      "shield": "/escudos/fifa-world-cup/england-national-team-logo-footylogos.svg",
+      "country": "Inglaterra",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "fifa-world-cup-2026"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "364",
+      "name": "Selección de Croacia",
+      "shield": "/escudos/fifa-world-cup/croatia-national-team-logo-footylogos.svg",
+      "country": "Croacia",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "fifa-world-cup-2026"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "365",
+      "name": "Selección de México",
+      "shield": "/escudos/fifa-world-cup/mexico-national-team-logo-footylogos.svg",
+      "country": "México",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "fifa-world-cup-2026"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "366",
+      "name": "Selección de Canadá",
+      "shield": "/escudos/fifa-world-cup/canada-national-team-logo-footylogos.svg",
+      "country": "Canadá",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "fifa-world-cup-2026"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "367",
+      "name": "Selección de Brasil",
+      "shield": "/escudos/fifa-world-cup/brazil-national-team-logo-footylogos.svg",
+      "country": "Brasil",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "fifa-world-cup-2026"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "368",
+      "name": "Selección de Turquía",
+      "shield": "/escudos/fifa-world-cup/turkey-national-team-logo-footylogos.svg",
+      "country": "Turquía",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "fifa-world-cup-2026"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "369",
+      "name": "Selección de Suecia",
+      "shield": "/escudos/fifa-world-cup/sweden-national-team-logo-footylogos.svg",
+      "country": "Suecia",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "fifa-world-cup-2026"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "370",
+      "name": "Selección de Francia",
+      "shield": "/escudos/fifa-world-cup/france-national-team-logo-footylogos.svg",
+      "country": "Francia",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "fifa-world-cup-2026"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "371",
+      "name": "Selección de Noruega",
+      "shield": "/escudos/fifa-world-cup/norway-national-team-logo-footylogos.svg",
+      "country": "Noruega",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "fifa-world-cup-2026"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "372",
+      "name": "Selección de Jordania",
+      "shield": "/escudos/fifa-world-cup/jordan-national-team-logo-footylogos.svg",
+      "country": "Jordania",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "fifa-world-cup-2026"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "373",
+      "name": "Selección de Panamá",
+      "shield": "/escudos/fifa-world-cup/panama-national-team-logo-footylogos.svg",
+      "country": "Panamá",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "fifa-world-cup-2026"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "374",
+      "name": "Selección de Catar",
+      "shield": "/escudos/fifa-world-cup/qatar-national-team-logo-footylogos.png",
+      "country": "Catar",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "fifa-world-cup-2026"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "375",
+      "name": "Selección de Haití",
+      "shield": "/escudos/fifa-world-cup/haiti-national-team-logo-footylogos.png",
+      "country": "Haití",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "fifa-world-cup-2026"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "376",
+      "name": "Selección de Japón",
+      "shield": "/escudos/fifa-world-cup/japan-national-team-logo-footylogos.svg",
+      "country": "Japón",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "fifa-world-cup-2026"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "377",
+      "name": "Selección de Egipto",
+      "shield": "/escudos/fifa-world-cup/egypt-national-team-logo-footylogos.svg",
+      "country": "Egipto",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "fifa-world-cup-2026"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "378",
+      "name": "Selección de España",
+      "shield": "/escudos/fifa-world-cup/spain-national-team-logo-footylogos.svg",
+      "country": "España",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "fifa-world-cup-2026"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "379",
+      "name": "Selección de Ghana",
+      "shield": "/escudos/fifa-world-cup/ghana-national-team-logo-footylogos.svg",
+      "country": "Ghana",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "fifa-world-cup-2026"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "380",
+      "name": "Selección de Irán",
+      "shield": "/escudos/fifa-world-cup/iran-national-team-logo-footylogos.svg",
+      "country": "Irán",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "fifa-world-cup-2026"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "381",
+      "name": "Selección de Irak",
+      "shield": "/escudos/fifa-world-cup/iraq-national-team-logo-footylogos.svg",
+      "country": "Irak",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "fifa-world-cup-2026"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "382",
+      "name": "Selección de Estados Unidos",
+      "shield": "/escudos/fifa-world-cup/usa-national-team-logo-footylogos.svg",
+      "country": "Estados Unidos",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "fifa-world-cup-2026"
+      ],
+      "playerIDs": []
+    },
+    {
+      "id": "383",
+      "name": "Selección de Corea del Sur",
+      "shield": "/escudos/fifa-world-cup/south-korea-national-team-logo-footylogos.svg",
+      "country": "Corea del Sur",
+      "yearOfFoundation": null,
+      "stadiumID": null,
+      "championshipsActive": [
+        "fifa-world-cup-2026"
+      ],
+      "playerIDs": []
     }
   ],
   "campeonatos": [
@@ -747,7 +2911,8 @@
             28
           ]
         }
-      ]
+      ],
+      "teamsIDs": []
     },
     {
       "name": "Copa Libertadores",
@@ -755,68 +2920,389 @@
       "country": "Internacional",
       "type": "COPA",
       "logo": "https://assets.footylogos.com/logos/copa-libertadores/copa-libertadores-logo-footylogos.svg",
-      "id": "3"
+      "id": "3",
+      "teamsIDs": []
+    },
+    {
+      "id": "premier-league-2026-27",
+      "name": "Premier League",
+      "logo": "https://media.api-sports.io/football/leagues/39.png",
+      "type": "LIGA",
+      "teamsIDs": [
+        55,
+        56,
+        57,
+        58,
+        59,
+        60,
+        61,
+        62,
+        63,
+        64,
+        65,
+        66,
+        67,
+        68,
+        69,
+        70,
+        71,
+        72,
+        73,
+        74
+      ],
+      "season": "2026/2027",
+      "country": "Inglaterra"
+    },
+    {
+      "id": "laliga-2026-27",
+      "name": "LaLiga",
+      "logo": "https://media.api-sports.io/football/leagues/140.png",
+      "type": "LIGA",
+      "teamsIDs": [
+        75,
+        76,
+        77,
+        78,
+        79,
+        80,
+        81,
+        82,
+        83,
+        84,
+        85,
+        86,
+        87,
+        88,
+        89,
+        90,
+        91,
+        92,
+        93,
+        94
+      ],
+      "season": "2026/2027",
+      "country": "España"
+    },
+    {
+      "id": "serie-a-2026-27",
+      "name": "Serie A",
+      "logo": "https://media.api-sports.io/football/leagues/135.png",
+      "type": "LIGA",
+      "teamsIDs": [
+        95,
+        96,
+        97,
+        98,
+        99,
+        100,
+        101,
+        102,
+        103,
+        104,
+        105,
+        106,
+        107,
+        108,
+        109,
+        110,
+        111,
+        112,
+        113,
+        114
+      ],
+      "season": "2026/2027",
+      "country": "Italia"
+    },
+    {
+      "id": "bundesliga-2026-27",
+      "name": "Bundesliga",
+      "logo": "https://media.api-sports.io/football/leagues/78.png",
+      "type": "LIGA",
+      "teamsIDs": [
+        115,
+        116,
+        117,
+        118,
+        119,
+        120,
+        121,
+        122,
+        123,
+        124,
+        125,
+        126,
+        127,
+        128,
+        129,
+        130,
+        131,
+        132
+      ],
+      "season": "2026/2027",
+      "country": "Alemania"
+    },
+    {
+      "id": "ligue-1-2026-27",
+      "name": "Ligue 1",
+      "logo": "https://media.api-sports.io/football/leagues/61.png",
+      "type": "LIGA",
+      "teamsIDs": [
+        133,
+        134,
+        135,
+        136,
+        137,
+        138,
+        139,
+        140,
+        141,
+        142,
+        143,
+        144,
+        145,
+        146,
+        147,
+        148,
+        149,
+        150
+      ],
+      "season": "2026/2027",
+      "country": "Francia"
+    },
+    {
+      "id": "uefa-champions-league-2026-27",
+      "name": "UEFA Champions League",
+      "logo": "https://media.api-sports.io/football/leagues/2.png",
+      "type": "COPA",
+      "teamsIDs": [
+        151,
+        56,
+        57,
+        76,
+        117,
+        118,
+        152,
+        101,
+        80,
+        153,
+        154,
+        155,
+        156,
+        157,
+        105,
+        158,
+        68,
+        137,
+        69,
+        70,
+        109,
+        144,
+        159,
+        124,
+        145,
+        87,
+        88,
+        97,
+        160,
+        161,
+        162,
+        163,
+        164,
+        131,
+        165,
+        92
+      ],
+      "season": "2026/2027",
+      "country": "Internacional"
+    },
+    {
+      "id": "liga-profesional-2026",
+      "name": "Liga Profesional de Fútbol",
+      "logo": "https://media.api-sports.io/football/leagues/128.png",
+      "type": "LIGA",
+      "teamsIDs": [
+        166,
+        6,
+        7,
+        28,
+        22,
+        24,
+        19,
+        167,
+        11,
+        27,
+        15,
+        9,
+        16,
+        26,
+        10,
+        8,
+        4,
+        2,
+        5,
+        1,
+        3,
+        23,
+        13,
+        168,
+        17,
+        14,
+        12,
+        18,
+        25,
+        21
+      ],
+      "season": "2026",
+      "country": "Argentina"
+    },
+    {
+      "id": "brasileirao-serie-a-2026",
+      "name": "Brasileirão Serie A",
+      "logo": "https://media.api-sports.io/football/leagues/71.png",
+      "type": "LIGA",
+      "teamsIDs": [
+        169,
+        46,
+        170,
+        33,
+        42,
+        171,
+        172,
+        173,
+        174,
+        175,
+        176,
+        29,
+        39,
+        177,
+        51,
+        178,
+        179,
+        180,
+        181,
+        182
+      ],
+      "season": "2026",
+      "country": "Brasil"
+    },
+    {
+      "id": "fifa-world-cup-2026",
+      "name": "Copa Mundial de la FIFA",
+      "logo": "https://media.api-sports.io/football/leagues/1.png",
+      "type": "COPA",
+      "teamsIDs": [
+        336,
+        337,
+        338,
+        339,
+        340,
+        341,
+        342,
+        343,
+        344,
+        345,
+        346,
+        347,
+        348,
+        349,
+        350,
+        351,
+        352,
+        353,
+        354,
+        355,
+        356,
+        357,
+        358,
+        359,
+        360,
+        361,
+        362,
+        363,
+        364,
+        365,
+        366,
+        367,
+        368,
+        369,
+        370,
+        371,
+        372,
+        373,
+        374,
+        375,
+        376,
+        377,
+        378,
+        379,
+        380,
+        381,
+        382,
+        383
+      ],
+      "season": "2026",
+      "country": "Internacional"
     }
   ],
   "estadios": [
     {
       "id": "1",
       "name": "Mâs Monumental",
-      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/d/d1/Estadio_Monumental_2023.jpg",
+      "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d0/Estadio_mas_monumental.jpg/960px-Estadio_mas_monumental.jpg",
       "capacity": "84567"
     },
     {
       "id": "2",
       "name": "La Bombonera",
-      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/La_Bombonera_Boca_Juniors.jpg/800px-La_Bombonera_Boca_Juniors.jpg",
+      "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8b/Vista_a%C3%A9rea_del_Estadio_Alberto_J._Armando_%22La_Bombonera%22_01.jpg/960px-Vista_a%C3%A9rea_del_Estadio_Alberto_J._Armando_%22La_Bombonera%22_01.jpg",
       "capacity": "54000"
     },
     {
       "id": "3",
       "name": "Presidente Perón (El Cilindro)",
-      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Estadio_Presidente_Peron_Racing_Club.jpg/800px-Estadio_Presidente_Peron_Racing_Club.jpg",
+      "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/34/Estadio_Presidente_Peron.jpg/960px-Estadio_Presidente_Peron.jpg",
       "capacity": "51389"
     },
     {
       "id": "4",
       "name": "Libertadores de América",
-      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Estadio_Libertadores_de_America.jpg/800px-Estadio_Libertadores_de_America.jpg",
+      "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b3/Estadio_Libertadores_de_America_2014.JPG/960px-Estadio_Libertadores_de_America_2014.JPG",
       "capacity": "42069"
     },
     {
       "id": "5",
       "name": "Pedro Bidegain (Nuevo Gasómetro)",
-      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Nuevo_gasometro.jpg/800px-Nuevo_gasometro.jpg",
+      "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/10/Platea_Este_Nuevo_Gasometro_1.jpg/960px-Platea_Este_Nuevo_Gasometro_1.jpg",
       "capacity": "47964"
     },
     {
       "id": "6",
       "name": "Jorge Luis Hirschi (UNO)",
-      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Estadio_UNO_Jorge_Luis_Hirschi.jpg/800px-Estadio_UNO_Jorge_Luis_Hirschi.jpg",
+      "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/24/UNO_20220614_210130.jpg/960px-UNO_20220614_210130.jpg",
       "capacity": "32530"
     },
     {
       "id": "7",
       "name": "Juan Carmelo Zerillo (El Bosque)",
-      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Estadio_Gimnasia_y_Esgrima_La_Plata.jpg/800px-Estadio_Gimnasia_y_Esgrima_La_Plata.jpg",
+      "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/39/Museo_Tripero_-_Estadio_Juan_Carmelo_Zerillo._14.JPG/960px-Museo_Tripero_-_Estadio_Juan_Carmelo_Zerillo._14.JPG",
       "capacity": "24544"
     },
     {
       "id": "8",
       "name": "Gigante de Arroyito",
-      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Estadio_Gigante_de_Arroyito.jpg/800px-Estadio_Gigante_de_Arroyito.jpg",
+      "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/99/2009_Argentina-Brasil_en_el_Gigante.jpg/960px-2009_Argentina-Brasil_en_el_Gigante.jpg",
       "capacity": "41654"
     },
     {
       "id": "9",
       "name": "Marcelo Bielsa (Coloso del Parque)",
-      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Estadio_Marcelo_Bielsa.jpg/800px-Estadio_Marcelo_Bielsa.jpg",
+      "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1f/ColosoDelParque2026.jpg/960px-ColosoDelParque2026.jpg",
       "capacity": "42000"
     },
     {
       "id": "10",
       "name": "José Amalfitani",
-      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Estadio_Jos%C3%A9_Amalfitani.jpg/800px-Estadio_Jos%C3%A9_Amalfitani.jpg",
+      "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e4/Estadio_Jos%C3%A9_Amalfitani_2024.jpg/960px-Estadio_Jos%C3%A9_Amalfitani_2024.jpg",
       "capacity": "49540"
     }
   ],
@@ -44923,206 +47409,6 @@
       }
     },
     {
-      "id": "1056",
-      "name": "Javier Burrai",
-      "photo": "https://placehold.co/64",
-      "age": 36,
-      "position": "ARQ",
-      "currentTeamID": 34,
-      "teamName": "Barcelona SC",
-      "birthDate": "1990-10-09",
-      "nationality": "Ecuador",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "34": 1
-      }
-    },
-    {
-      "id": "1057",
-      "name": "Byron Castillo",
-      "photo": "https://placehold.co/64",
-      "age": 28,
-      "position": "DEF",
-      "currentTeamID": 34,
-      "teamName": "Barcelona SC",
-      "birthDate": "1998-11-10",
-      "nationality": "Ecuador",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "34": 26
-      }
-    },
-    {
-      "id": "1058",
-      "name": "Nicolás Ramírez",
-      "photo": "https://placehold.co/64",
-      "age": 29,
-      "position": "DEF",
-      "currentTeamID": 34,
-      "teamName": "Barcelona SC",
-      "birthDate": "1997-05-01",
-      "nationality": "Chile",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "34": 3
-      }
-    },
-    {
-      "id": "1059",
-      "name": "Luca Sosa",
-      "photo": "https://placehold.co/64",
-      "age": 32,
-      "position": "DEF",
-      "currentTeamID": 34,
-      "teamName": "Barcelona SC",
-      "birthDate": "1994-06-11",
-      "nationality": "Argentina",
-      "preferredFoot": "Izquierdo",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "34": 3
-      }
-    },
-    {
-      "id": "1060",
-      "name": "Aníbal Chalá",
-      "photo": "https://placehold.co/64",
-      "age": 30,
-      "position": "DEF",
-      "currentTeamID": 34,
-      "teamName": "Barcelona SC",
-      "birthDate": "1996-05-09",
-      "nationality": "Ecuador",
-      "preferredFoot": "Izquierdo",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "34": 6
-      }
-    },
-    {
-      "id": "1061",
-      "name": "Jesús Trindade",
-      "photo": "https://placehold.co/64",
-      "age": 33,
-      "position": "MED",
-      "currentTeamID": 34,
-      "teamName": "Barcelona SC",
-      "birthDate": "1993-07-10",
-      "nationality": "Uruguay",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "34": 5
-      }
-    },
-    {
-      "id": "1062",
-      "name": "Leonai Souza",
-      "photo": "https://placehold.co/64",
-      "age": 31,
-      "position": "MED",
-      "currentTeamID": 34,
-      "teamName": "Barcelona SC",
-      "birthDate": "1995-04-28",
-      "nationality": "Brasil",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "34": 22
-      }
-    },
-    {
-      "id": "1063",
-      "name": "Braian Oyola",
-      "photo": "https://placehold.co/64",
-      "age": 30,
-      "position": "MED",
-      "currentTeamID": 34,
-      "teamName": "Barcelona SC",
-      "birthDate": "1996-06-15",
-      "nationality": "Argentina",
-      "preferredFoot": "Izquierdo",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "34": 30
-      }
-    },
-    {
-      "id": "1064",
-      "name": "Janner Corozo",
-      "photo": "https://placehold.co/64",
-      "age": 31,
-      "position": "DEL",
-      "currentTeamID": 34,
-      "teamName": "Barcelona SC",
-      "birthDate": "1995-09-08",
-      "nationality": "Ecuador",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "34": 13
-      }
-    },
-    {
-      "id": "1065",
-      "name": "Octavio Rivero",
-      "photo": "https://placehold.co/64",
-      "age": 34,
-      "position": "DEL",
-      "currentTeamID": 34,
-      "teamName": "Barcelona SC",
-      "birthDate": "1992-01-24",
-      "nationality": "Uruguay",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "34": 29
-      }
-    },
-    {
       "name": "Adonis Preciado",
       "nationality": "Ecuador",
       "position": "Arquero",
@@ -45134,886 +47420,6 @@
         "2": 99
       },
       "currentTeamID": 2
-    },
-    {
-      "id": "1067",
-      "name": "Leandro Requena",
-      "photo": "https://placehold.co/64",
-      "age": 39,
-      "position": "ARQ",
-      "currentTeamID": 35,
-      "teamName": "Cobresal",
-      "birthDate": "1987-09-11",
-      "nationality": "Argentina",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "35": 1
-      }
-    },
-    {
-      "id": "1068",
-      "name": "Guillermo Pacheco",
-      "photo": "https://placehold.co/64",
-      "age": 37,
-      "position": "DEF",
-      "currentTeamID": 35,
-      "teamName": "Cobresal",
-      "birthDate": "1989-04-10",
-      "nationality": "Chile",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "35": 2
-      }
-    },
-    {
-      "id": "1069",
-      "name": "Cristian Toro",
-      "photo": "https://placehold.co/64",
-      "age": 31,
-      "position": "DEF",
-      "currentTeamID": 35,
-      "teamName": "Cobresal",
-      "birthDate": "1995-03-14",
-      "nationality": "Chile",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "35": 4
-      }
-    },
-    {
-      "id": "1070",
-      "name": "Francisco Alarcón",
-      "photo": "https://placehold.co/64",
-      "age": 36,
-      "position": "DEF",
-      "currentTeamID": 35,
-      "teamName": "Cobresal",
-      "birthDate": "1990-02-25",
-      "nationality": "Chile",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "35": 5
-      }
-    },
-    {
-      "id": "1071",
-      "name": "Marcelo Jorquera",
-      "photo": "https://placehold.co/64",
-      "age": 34,
-      "position": "DEF",
-      "currentTeamID": 35,
-      "teamName": "Cobresal",
-      "birthDate": "1992-10-13",
-      "nationality": "Chile",
-      "preferredFoot": "Izquierdo",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "35": 15
-      }
-    },
-    {
-      "id": "1072",
-      "name": "Diego Céspedes",
-      "photo": "https://placehold.co/64",
-      "age": 28,
-      "position": "MED",
-      "currentTeamID": 35,
-      "teamName": "Cobresal",
-      "birthDate": "1998-09-25",
-      "nationality": "Chile",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "35": 6
-      }
-    },
-    {
-      "id": "1073",
-      "name": "Cristopher Mesías",
-      "photo": "https://placehold.co/64",
-      "age": 28,
-      "position": "MED",
-      "currentTeamID": 35,
-      "teamName": "Cobresal",
-      "birthDate": "1998-05-02",
-      "nationality": "Chile",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "35": 8
-      }
-    },
-    {
-      "id": "1074",
-      "name": "Leonardo Valencia",
-      "photo": "https://placehold.co/64",
-      "age": 35,
-      "position": "MED",
-      "currentTeamID": 35,
-      "teamName": "Cobresal",
-      "birthDate": "1991-04-25",
-      "nationality": "Chile",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "35": 10
-      }
-    },
-    {
-      "id": "1075",
-      "name": "Franco García",
-      "photo": "https://placehold.co/64",
-      "age": 29,
-      "position": "DEL",
-      "currentTeamID": 35,
-      "teamName": "Cobresal",
-      "birthDate": "1997-06-04",
-      "nationality": "Argentina",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "35": 11
-      }
-    },
-    {
-      "id": "1076",
-      "name": "Diego Coelho",
-      "photo": "https://placehold.co/64",
-      "age": 31,
-      "position": "DEL",
-      "currentTeamID": 35,
-      "teamName": "Cobresal",
-      "birthDate": "1995-01-28",
-      "nationality": "Uruguay",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "35": 9
-      }
-    },
-    {
-      "id": "1077",
-      "name": "César Munder",
-      "photo": "https://placehold.co/64",
-      "age": 26,
-      "position": "DEL",
-      "currentTeamID": 35,
-      "teamName": "Cobresal",
-      "birthDate": "2000-01-07",
-      "nationality": "Chile",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "35": 7
-      }
-    },
-    {
-      "id": "1078",
-      "name": "Luis Mejía",
-      "photo": "https://placehold.co/64",
-      "age": 35,
-      "position": "ARQ",
-      "currentTeamID": 36,
-      "teamName": "Nacional",
-      "birthDate": "1991-03-16",
-      "nationality": "Panamá",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "36": 1
-      }
-    },
-    {
-      "id": "1079",
-      "name": "Leandro Lozano",
-      "photo": "https://placehold.co/64",
-      "age": 27,
-      "position": "DEF",
-      "currentTeamID": 36,
-      "teamName": "Nacional",
-      "birthDate": "1998-12-19",
-      "nationality": "Uruguay",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "36": 14
-      }
-    },
-    {
-      "id": "1080",
-      "name": "Sebastián Coates",
-      "photo": "https://placehold.co/64",
-      "age": 36,
-      "position": "DEF",
-      "currentTeamID": 36,
-      "teamName": "Nacional",
-      "birthDate": "1990-10-07",
-      "nationality": "Uruguay",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "36": 4
-      }
-    },
-    {
-      "id": "1081",
-      "name": "Diego Polenta",
-      "photo": "https://placehold.co/64",
-      "age": 34,
-      "position": "DEF",
-      "currentTeamID": 36,
-      "teamName": "Nacional",
-      "birthDate": "1992-02-06",
-      "nationality": "Uruguay",
-      "preferredFoot": "Izquierdo",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "36": 23
-      }
-    },
-    {
-      "id": "1082",
-      "name": "Gabriel Báez",
-      "photo": "https://placehold.co/64",
-      "age": 31,
-      "position": "DEF",
-      "currentTeamID": 36,
-      "teamName": "Nacional",
-      "birthDate": "1995-07-21",
-      "nationality": "Argentina",
-      "preferredFoot": "Izquierdo",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "36": 11
-      }
-    },
-    {
-      "id": "1083",
-      "name": "Christian Oliva",
-      "photo": "https://placehold.co/64",
-      "age": 30,
-      "position": "MED",
-      "currentTeamID": 36,
-      "teamName": "Nacional",
-      "birthDate": "1996-06-01",
-      "nationality": "Uruguay",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "36": 5
-      }
-    },
-    {
-      "id": "1084",
-      "name": "Lucas Sanabria",
-      "photo": "https://placehold.co/64",
-      "age": 22,
-      "position": "MED",
-      "currentTeamID": 36,
-      "teamName": "Nacional",
-      "birthDate": "2003-12-26",
-      "nationality": "Uruguay",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "36": 26
-      }
-    },
-    {
-      "id": "1085",
-      "name": "Mauricio Pereyra",
-      "photo": "https://placehold.co/64",
-      "age": 36,
-      "position": "MED",
-      "currentTeamID": 36,
-      "teamName": "Nacional",
-      "birthDate": "1990-03-15",
-      "nationality": "Uruguay",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "36": 10
-      }
-    },
-    {
-      "id": "1086",
-      "name": "Antonio Galeano",
-      "photo": "https://placehold.co/64",
-      "age": 26,
-      "position": "DEL",
-      "currentTeamID": 36,
-      "teamName": "Nacional",
-      "birthDate": "2000-03-22",
-      "nationality": "Paraguay",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "36": 7
-      }
-    },
-    {
-      "id": "1087",
-      "name": "Rubén Bentancourt",
-      "photo": "https://placehold.co/64",
-      "age": 33,
-      "position": "DEL",
-      "currentTeamID": 36,
-      "teamName": "Nacional",
-      "birthDate": "1993-03-02",
-      "nationality": "Uruguay",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "36": 9
-      }
-    },
-    {
-      "id": "1088",
-      "name": "Nicolás López",
-      "photo": "https://placehold.co/64",
-      "age": 33,
-      "position": "DEL",
-      "currentTeamID": 36,
-      "teamName": "Nacional",
-      "birthDate": "1993-10-01",
-      "nationality": "Uruguay",
-      "preferredFoot": "Izquierdo",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "36": 77
-      }
-    },
-    {
-      "id": "1089",
-      "name": "Carlos Lampe",
-      "photo": "https://placehold.co/64",
-      "age": 39,
-      "position": "ARQ",
-      "currentTeamID": 37,
-      "teamName": "Bolívar",
-      "birthDate": "1987-03-17",
-      "nationality": "Bolivia",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "37": 1
-      }
-    },
-    {
-      "id": "1090",
-      "name": "Yomar Rocha",
-      "photo": "https://placehold.co/64",
-      "age": 23,
-      "position": "DEF",
-      "currentTeamID": 37,
-      "teamName": "Bolívar",
-      "birthDate": "2003-06-21",
-      "nationality": "Bolivia",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "37": 14
-      }
-    },
-    {
-      "id": "1091",
-      "name": "Renzo Orihuela",
-      "photo": "https://placehold.co/64",
-      "age": 25,
-      "position": "DEF",
-      "currentTeamID": 37,
-      "teamName": "Bolívar",
-      "birthDate": "2001-04-04",
-      "nationality": "Uruguay",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "37": 4
-      }
-    },
-    {
-      "id": "1092",
-      "name": "José Sagredo",
-      "photo": "https://placehold.co/64",
-      "age": 32,
-      "position": "DEF",
-      "currentTeamID": 37,
-      "teamName": "Bolívar",
-      "birthDate": "1994-03-10",
-      "nationality": "Bolivia",
-      "preferredFoot": "Izquierdo",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "37": 3
-      }
-    },
-    {
-      "id": "1093",
-      "name": "Ervin Vaca",
-      "photo": "https://placehold.co/64",
-      "age": 22,
-      "position": "DEF",
-      "currentTeamID": 37,
-      "teamName": "Bolívar",
-      "birthDate": "2004-03-18",
-      "nationality": "Bolivia",
-      "preferredFoot": "Izquierdo",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "37": 21
-      }
-    },
-    {
-      "id": "1094",
-      "name": "Leonel Justiniano",
-      "photo": "https://placehold.co/64",
-      "age": 34,
-      "position": "MED",
-      "currentTeamID": 37,
-      "teamName": "Bolívar",
-      "birthDate": "1992-07-02",
-      "nationality": "Bolivia",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "37": 23
-      }
-    },
-    {
-      "id": "1095",
-      "name": "Fernando Saucedo",
-      "photo": "https://placehold.co/64",
-      "age": 36,
-      "position": "MED",
-      "currentTeamID": 37,
-      "teamName": "Bolívar",
-      "birthDate": "1990-03-15",
-      "nationality": "Bolivia",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "37": 15
-      }
-    },
-    {
-      "id": "1096",
-      "name": "Ramiro Vaca",
-      "photo": "https://placehold.co/64",
-      "age": 27,
-      "position": "MED",
-      "currentTeamID": 37,
-      "teamName": "Bolívar",
-      "birthDate": "1999-07-01",
-      "nationality": "Bolivia",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "37": 10
-      }
-    },
-    {
-      "id": "1097",
-      "name": "Patricio Rodríguez",
-      "photo": "https://placehold.co/64",
-      "age": 36,
-      "position": "DEL",
-      "currentTeamID": 37,
-      "teamName": "Bolívar",
-      "birthDate": "1990-05-04",
-      "nationality": "Argentina",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "37": 17
-      }
-    },
-    {
-      "id": "1098",
-      "name": "Fábio Gomes",
-      "photo": "https://placehold.co/64",
-      "age": 29,
-      "position": "DEL",
-      "currentTeamID": 37,
-      "teamName": "Bolívar",
-      "birthDate": "1997-05-25",
-      "nationality": "Brasil",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "37": 9
-      }
-    },
-    {
-      "id": "1099",
-      "name": "Bruno Sávio",
-      "photo": "https://placehold.co/64",
-      "age": 32,
-      "position": "DEL",
-      "currentTeamID": 37,
-      "teamName": "Bolívar",
-      "birthDate": "1994-08-01",
-      "nationality": "Brasil",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "37": 11
-      }
-    },
-    {
-      "id": "1100",
-      "name": "Jesús Camargo",
-      "photo": "https://placehold.co/64",
-      "age": 28,
-      "position": "ARQ",
-      "currentTeamID": 38,
-      "teamName": "Deportivo Táchira",
-      "birthDate": "1998-05-05",
-      "nationality": "Venezuela",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "38": 1
-      }
-    },
-    {
-      "id": "1101",
-      "name": "Nelson Hernández",
-      "photo": "https://placehold.co/64",
-      "age": 34,
-      "position": "DEF",
-      "currentTeamID": 38,
-      "teamName": "Deportivo Táchira",
-      "birthDate": "1992-07-11",
-      "nationality": "Venezuela",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "38": 22
-      }
-    },
-    {
-      "id": "1102",
-      "name": "Carlos Vivas",
-      "photo": "https://placehold.co/64",
-      "age": 24,
-      "position": "DEF",
-      "currentTeamID": 38,
-      "teamName": "Deportivo Táchira",
-      "birthDate": "2002-04-04",
-      "nationality": "Venezuela",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "38": 2
-      }
-    },
-    {
-      "id": "1103",
-      "name": "Mauro Maidana",
-      "photo": "https://placehold.co/64",
-      "age": 36,
-      "position": "DEF",
-      "currentTeamID": 38,
-      "teamName": "Deportivo Táchira",
-      "birthDate": "1990-07-12",
-      "nationality": "Argentina",
-      "preferredFoot": "Izquierdo",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "38": 4
-      }
-    },
-    {
-      "id": "1104",
-      "name": "Yanniel Hernández",
-      "photo": "https://placehold.co/64",
-      "age": 29,
-      "position": "DEF",
-      "currentTeamID": 38,
-      "teamName": "Deportivo Táchira",
-      "birthDate": "1997-06-11",
-      "nationality": "Venezuela",
-      "preferredFoot": "Izquierdo",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "38": 15
-      }
-    },
-    {
-      "id": "1105",
-      "name": "Leandro Fioravanti",
-      "photo": "https://placehold.co/64",
-      "age": 34,
-      "position": "MED",
-      "currentTeamID": 38,
-      "teamName": "Deportivo Táchira",
-      "birthDate": "1992-07-30",
-      "nationality": "Argentina",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "38": 5
-      }
-    },
-    {
-      "id": "1106",
-      "name": "Carlos Robles",
-      "photo": "https://placehold.co/64",
-      "age": 34,
-      "position": "MED",
-      "currentTeamID": 38,
-      "teamName": "Deportivo Táchira",
-      "birthDate": "1992-05-16",
-      "nationality": "Colombia",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "38": 6
-      }
-    },
-    {
-      "id": "1107",
-      "name": "Maurice Cova",
-      "photo": "https://placehold.co/64",
-      "age": 34,
-      "position": "MED",
-      "currentTeamID": 38,
-      "teamName": "Deportivo Táchira",
-      "birthDate": "1992-08-11",
-      "nationality": "Venezuela",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "38": 10
-      }
-    },
-    {
-      "id": "1108",
-      "name": "Daniel Saggiomo",
-      "photo": "https://placehold.co/64",
-      "age": 28,
-      "position": "DEL",
-      "currentTeamID": 38,
-      "teamName": "Deportivo Táchira",
-      "birthDate": "1998-07-02",
-      "nationality": "Venezuela",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "38": 11
-      }
-    },
-    {
-      "id": "1109",
-      "name": "Anthony Uribe",
-      "photo": "https://placehold.co/64",
-      "age": 36,
-      "position": "DEL",
-      "currentTeamID": 38,
-      "teamName": "Deportivo Táchira",
-      "birthDate": "1990-10-24",
-      "nationality": "Venezuela",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "38": 9
-      }
-    },
-    {
-      "id": "1110",
-      "name": "Bryan Castillo",
-      "photo": "https://placehold.co/64",
-      "age": 25,
-      "position": "DEL",
-      "currentTeamID": 38,
-      "teamName": "Deportivo Táchira",
-      "birthDate": "2001-05-14",
-      "nationality": "Venezuela",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "38": 19
-      }
     },
     {
       "id": "1111",
@@ -46236,446 +47642,6 @@
       }
     },
     {
-      "id": "1122",
-      "name": "Moisés Ramírez",
-      "photo": "https://placehold.co/64",
-      "age": 26,
-      "position": "ARQ",
-      "currentTeamID": 40,
-      "teamName": "Independiente del Valle",
-      "birthDate": "2000-09-09",
-      "nationality": "Ecuador",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "40": 1
-      }
-    },
-    {
-      "id": "1123",
-      "name": "Matías Fernández",
-      "photo": "https://placehold.co/64",
-      "age": 31,
-      "position": "DEF",
-      "currentTeamID": 40,
-      "teamName": "Independiente del Valle",
-      "birthDate": "1995-08-14",
-      "nationality": "Chile",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "40": 13
-      }
-    },
-    {
-      "id": "1124",
-      "name": "Mateo Carabajal",
-      "photo": "https://placehold.co/64",
-      "age": 29,
-      "position": "DEF",
-      "currentTeamID": 40,
-      "teamName": "Independiente del Valle",
-      "birthDate": "1997-02-21",
-      "nationality": "Argentina",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "40": 14
-      }
-    },
-    {
-      "id": "1125",
-      "name": "Richard Schunke",
-      "photo": "https://placehold.co/64",
-      "age": 34,
-      "position": "DEF",
-      "currentTeamID": 40,
-      "teamName": "Independiente del Valle",
-      "birthDate": "1991-11-26",
-      "nationality": "Ecuador",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "40": 5
-      }
-    },
-    {
-      "id": "1126",
-      "name": "Beder Caicedo",
-      "photo": "https://placehold.co/64",
-      "age": 34,
-      "position": "DEF",
-      "currentTeamID": 40,
-      "teamName": "Independiente del Valle",
-      "birthDate": "1992-05-13",
-      "nationality": "Ecuador",
-      "preferredFoot": "Izquierdo",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "40": 15
-      }
-    },
-    {
-      "id": "1127",
-      "name": "Cristian Zabala",
-      "photo": "https://placehold.co/64",
-      "age": 28,
-      "position": "MED",
-      "currentTeamID": 40,
-      "teamName": "Independiente del Valle",
-      "birthDate": "1998-03-04",
-      "nationality": "Argentina",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "40": 7
-      }
-    },
-    {
-      "id": "1128",
-      "name": "Joao Ortiz",
-      "photo": "https://placehold.co/64",
-      "age": 30,
-      "position": "MED",
-      "currentTeamID": 40,
-      "teamName": "Independiente del Valle",
-      "birthDate": "1996-05-01",
-      "nationality": "Ecuador",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "40": 80
-      }
-    },
-    {
-      "id": "1129",
-      "name": "Junior Sornoza",
-      "photo": "https://placehold.co/64",
-      "age": 32,
-      "position": "MED",
-      "currentTeamID": 40,
-      "teamName": "Independiente del Valle",
-      "birthDate": "1994-01-28",
-      "nationality": "Ecuador",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "40": 10
-      }
-    },
-    {
-      "id": "1130",
-      "name": "Renato Ibarra",
-      "photo": "https://placehold.co/64",
-      "age": 35,
-      "position": "DEL",
-      "currentTeamID": 40,
-      "teamName": "Independiente del Valle",
-      "birthDate": "1991-01-20",
-      "nationality": "Ecuador",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "40": 30
-      }
-    },
-    {
-      "id": "1131",
-      "name": "Michael Hoyos",
-      "photo": "https://placehold.co/64",
-      "age": 35,
-      "position": "DEL",
-      "currentTeamID": 40,
-      "teamName": "Independiente del Valle",
-      "birthDate": "1991-08-02",
-      "nationality": "Argentina",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "40": 11
-      }
-    },
-    {
-      "id": "1132",
-      "name": "Jeison Medina",
-      "photo": "https://placehold.co/64",
-      "age": 31,
-      "position": "DEL",
-      "currentTeamID": 40,
-      "teamName": "Independiente del Valle",
-      "birthDate": "1995-02-27",
-      "nationality": "Colombia",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "40": 9
-      }
-    },
-    {
-      "id": "1133",
-      "name": "Sebastián Lentinelly",
-      "photo": "https://placehold.co/64",
-      "age": 29,
-      "position": "ARQ",
-      "currentTeamID": 41,
-      "teamName": "Liverpool",
-      "birthDate": "1997-08-28",
-      "nationality": "Uruguay",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "41": 21
-      }
-    },
-    {
-      "id": "1134",
-      "name": "Kevin Amaro",
-      "photo": "https://placehold.co/64",
-      "age": 22,
-      "position": "DEF",
-      "currentTeamID": 41,
-      "teamName": "Liverpool",
-      "birthDate": "2004-02-03",
-      "nationality": "Uruguay",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "41": 24
-      }
-    },
-    {
-      "id": "1135",
-      "name": "Jean Pierre Rosso",
-      "photo": "https://placehold.co/64",
-      "age": 29,
-      "position": "DEF",
-      "currentTeamID": 41,
-      "teamName": "Liverpool",
-      "birthDate": "1997-04-07",
-      "nationality": "Uruguay",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "41": 4
-      }
-    },
-    {
-      "id": "1136",
-      "name": "Enzo Martínez",
-      "photo": "https://placehold.co/64",
-      "age": 28,
-      "position": "DEF",
-      "currentTeamID": 41,
-      "teamName": "Liverpool",
-      "birthDate": "1998-04-29",
-      "nationality": "Uruguay",
-      "preferredFoot": "Izquierdo",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "41": 3
-      }
-    },
-    {
-      "id": "1137",
-      "name": "Agustín Cayetano",
-      "photo": "https://placehold.co/64",
-      "age": 27,
-      "position": "DEF",
-      "currentTeamID": 41,
-      "teamName": "Liverpool",
-      "birthDate": "1999-02-11",
-      "nationality": "Uruguay",
-      "preferredFoot": "Izquierdo",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "41": 6
-      }
-    },
-    {
-      "id": "1138",
-      "name": "Lucas Lemos",
-      "photo": "https://placehold.co/64",
-      "age": 25,
-      "position": "MED",
-      "currentTeamID": 41,
-      "teamName": "Liverpool",
-      "birthDate": "2001-02-17",
-      "nationality": "Uruguay",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "41": 8
-      }
-    },
-    {
-      "id": "1139",
-      "name": "Diego Rodríguez",
-      "photo": "https://placehold.co/64",
-      "age": 37,
-      "position": "MED",
-      "currentTeamID": 41,
-      "teamName": "Liverpool",
-      "birthDate": "1989-09-04",
-      "nationality": "Uruguay",
-      "preferredFoot": "Izquierdo",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "41": 5
-      }
-    },
-    {
-      "id": "1140",
-      "name": "Martín Barrios",
-      "photo": "https://placehold.co/64",
-      "age": 27,
-      "position": "MED",
-      "currentTeamID": 41,
-      "teamName": "Liverpool",
-      "birthDate": "1999-01-24",
-      "nationality": "Uruguay",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "41": 10
-      }
-    },
-    {
-      "id": "1141",
-      "name": "Luciano Rodríguez",
-      "photo": "https://placehold.co/64",
-      "age": 23,
-      "position": "DEL",
-      "currentTeamID": 41,
-      "teamName": "Liverpool",
-      "birthDate": "2003-07-16",
-      "nationality": "Uruguay",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "41": 19
-      }
-    },
-    {
-      "id": "1142",
-      "name": "Renzo Machado",
-      "photo": "https://placehold.co/64",
-      "age": 21,
-      "position": "DEL",
-      "currentTeamID": 41,
-      "teamName": "Liverpool",
-      "birthDate": "2005-09-21",
-      "nationality": "Uruguay",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "41": 9
-      }
-    },
-    {
-      "id": "1143",
-      "name": "Hebert Vergara",
-      "photo": "https://placehold.co/64",
-      "age": 30,
-      "position": "DEL",
-      "currentTeamID": 41,
-      "teamName": "Liverpool",
-      "birthDate": "1996-02-13",
-      "nationality": "Uruguay",
-      "preferredFoot": "Izquierdo",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "41": 11
-      }
-    },
-    {
       "id": "1144",
       "name": "Agustín Rossi",
       "photo": "https://placehold.co/64",
@@ -46893,446 +47859,6 @@
       "redCards": 0,
       "dorsals": {
         "42": 27
-      }
-    },
-    {
-      "id": "1155",
-      "name": "Álvaro Montero",
-      "photo": "https://placehold.co/64",
-      "age": 31,
-      "position": "ARQ",
-      "currentTeamID": 43,
-      "teamName": "Millonarios",
-      "birthDate": "1995-03-29",
-      "nationality": "Colombia",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "43": 31
-      }
-    },
-    {
-      "id": "1156",
-      "name": "Delvin Alfonzo",
-      "photo": "https://placehold.co/64",
-      "age": 26,
-      "position": "DEF",
-      "currentTeamID": 43,
-      "teamName": "Millonarios",
-      "birthDate": "2000-09-04",
-      "nationality": "Venezuela",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "43": 22
-      }
-    },
-    {
-      "id": "1157",
-      "name": "Andrés Llinás",
-      "photo": "https://placehold.co/64",
-      "age": 29,
-      "position": "DEF",
-      "currentTeamID": 43,
-      "teamName": "Millonarios",
-      "birthDate": "1997-07-23",
-      "nationality": "Colombia",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "43": 26
-      }
-    },
-    {
-      "id": "1158",
-      "name": "Juan Pablo Vargas",
-      "photo": "https://placehold.co/64",
-      "age": 31,
-      "position": "DEF",
-      "currentTeamID": 43,
-      "teamName": "Millonarios",
-      "birthDate": "1995-06-06",
-      "nationality": "Costa Rica",
-      "preferredFoot": "Izquierdo",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "43": 4
-      }
-    },
-    {
-      "id": "1159",
-      "name": "Danovis Banguero",
-      "photo": "https://placehold.co/64",
-      "age": 37,
-      "position": "DEF",
-      "currentTeamID": 43,
-      "teamName": "Millonarios",
-      "birthDate": "1989-10-27",
-      "nationality": "Colombia",
-      "preferredFoot": "Izquierdo",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "43": 20
-      }
-    },
-    {
-      "id": "1160",
-      "name": "Daniel Giraldo",
-      "photo": "https://placehold.co/64",
-      "age": 34,
-      "position": "MED",
-      "currentTeamID": 43,
-      "teamName": "Millonarios",
-      "birthDate": "1992-07-01",
-      "nationality": "Colombia",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "43": 8
-      }
-    },
-    {
-      "id": "1161",
-      "name": "Stiven Vega",
-      "photo": "https://placehold.co/64",
-      "age": 28,
-      "position": "MED",
-      "currentTeamID": 43,
-      "teamName": "Millonarios",
-      "birthDate": "1998-05-22",
-      "nationality": "Colombia",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "43": 28
-      }
-    },
-    {
-      "id": "1162",
-      "name": "David Mackalister Silva",
-      "photo": "https://placehold.co/64",
-      "age": 39,
-      "position": "MED",
-      "currentTeamID": 43,
-      "teamName": "Millonarios",
-      "birthDate": "1986-12-13",
-      "nationality": "Colombia",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "43": 14
-      }
-    },
-    {
-      "id": "1163",
-      "name": "Daniel Ruiz",
-      "photo": "https://placehold.co/64",
-      "age": 25,
-      "position": "DEL",
-      "currentTeamID": 43,
-      "teamName": "Millonarios",
-      "birthDate": "2001-07-30",
-      "nationality": "Colombia",
-      "preferredFoot": "Izquierdo",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "43": 18
-      }
-    },
-    {
-      "id": "1164",
-      "name": "Leonardo Castro",
-      "photo": "https://placehold.co/64",
-      "age": 34,
-      "position": "DEL",
-      "currentTeamID": 43,
-      "teamName": "Millonarios",
-      "birthDate": "1992-06-14",
-      "nationality": "Colombia",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "43": 23
-      }
-    },
-    {
-      "id": "1165",
-      "name": "Jhon Emerson Córdoba",
-      "photo": "https://placehold.co/64",
-      "age": 26,
-      "position": "DEL",
-      "currentTeamID": 43,
-      "teamName": "Millonarios",
-      "birthDate": "2000-07-15",
-      "nationality": "Colombia",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "43": 15
-      }
-    },
-    {
-      "id": "1166",
-      "name": "César Rigamonti",
-      "photo": "https://placehold.co/64",
-      "age": 39,
-      "position": "ARQ",
-      "currentTeamID": 44,
-      "teamName": "Palestino",
-      "birthDate": "1987-04-07",
-      "nationality": "Argentina",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "44": 1
-      }
-    },
-    {
-      "id": "1167",
-      "name": "Benjamín Rojas",
-      "photo": "https://placehold.co/64",
-      "age": 25,
-      "position": "DEF",
-      "currentTeamID": 44,
-      "teamName": "Palestino",
-      "birthDate": "2001-03-01",
-      "nationality": "Chile",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "44": 2
-      }
-    },
-    {
-      "id": "1168",
-      "name": "Iván Román",
-      "photo": "https://placehold.co/64",
-      "age": 20,
-      "position": "DEF",
-      "currentTeamID": 44,
-      "teamName": "Palestino",
-      "birthDate": "2006-07-12",
-      "nationality": "Chile",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "44": 17
-      }
-    },
-    {
-      "id": "1169",
-      "name": "Cristián Suárez",
-      "photo": "https://placehold.co/64",
-      "age": 39,
-      "position": "DEF",
-      "currentTeamID": 44,
-      "teamName": "Palestino",
-      "birthDate": "1987-02-06",
-      "nationality": "Chile",
-      "preferredFoot": "Izquierdo",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "44": 13
-      }
-    },
-    {
-      "id": "1170",
-      "name": "Dilan Zúñiga",
-      "photo": "https://placehold.co/64",
-      "age": 30,
-      "position": "DEF",
-      "currentTeamID": 44,
-      "teamName": "Palestino",
-      "birthDate": "1996-07-26",
-      "nationality": "Chile",
-      "preferredFoot": "Izquierdo",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "44": 3
-      }
-    },
-    {
-      "id": "1171",
-      "name": "Nicolás Linares",
-      "photo": "https://placehold.co/64",
-      "age": 30,
-      "position": "MED",
-      "currentTeamID": 44,
-      "teamName": "Palestino",
-      "birthDate": "1996-03-06",
-      "nationality": "Argentina",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "44": 5
-      }
-    },
-    {
-      "id": "1172",
-      "name": "Ariel Martínez",
-      "photo": "https://placehold.co/64",
-      "age": 32,
-      "position": "MED",
-      "currentTeamID": 44,
-      "teamName": "Palestino",
-      "birthDate": "1994-01-10",
-      "nationality": "Chile",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "44": 23
-      }
-    },
-    {
-      "id": "1173",
-      "name": "Joe Abrigo",
-      "photo": "https://placehold.co/64",
-      "age": 31,
-      "position": "MED",
-      "currentTeamID": 44,
-      "teamName": "Palestino",
-      "birthDate": "1995-03-22",
-      "nationality": "Chile",
-      "preferredFoot": "Izquierdo",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "44": 14
-      }
-    },
-    {
-      "id": "1174",
-      "name": "Bryan Carrasco",
-      "photo": "https://placehold.co/64",
-      "age": 35,
-      "position": "DEL",
-      "currentTeamID": 44,
-      "teamName": "Palestino",
-      "birthDate": "1991-01-31",
-      "nationality": "Chile",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "44": 7
-      }
-    },
-    {
-      "id": "1175",
-      "name": "Gonzalo Sosa",
-      "photo": "https://placehold.co/64",
-      "age": 37,
-      "position": "DEL",
-      "currentTeamID": 44,
-      "teamName": "Palestino",
-      "birthDate": "1989-01-04",
-      "nationality": "Argentina",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "44": 9
-      }
-    },
-    {
-      "id": "1176",
-      "name": "Jonathan Benítez",
-      "photo": "https://placehold.co/64",
-      "age": 35,
-      "position": "DEL",
-      "currentTeamID": 44,
-      "teamName": "Palestino",
-      "birthDate": "1991-09-04",
-      "nationality": "Argentina",
-      "preferredFoot": "Izquierdo",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "44": 11
       }
     },
     {
@@ -47776,226 +48302,6 @@
       }
     },
     {
-      "id": "1199",
-      "name": "Wuilker Faríñez",
-      "photo": "https://placehold.co/64",
-      "age": 28,
-      "position": "ARQ",
-      "currentTeamID": 47,
-      "teamName": "Caracas FC",
-      "birthDate": "1998-02-15",
-      "nationality": "Venezuela",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "47": 1
-      }
-    },
-    {
-      "id": "1200",
-      "name": "Luis Casiani",
-      "photo": "https://placehold.co/64",
-      "age": 25,
-      "position": "DEF",
-      "currentTeamID": 47,
-      "teamName": "Caracas FC",
-      "birthDate": "2001-07-20",
-      "nationality": "Venezuela",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "47": 2
-      }
-    },
-    {
-      "id": "1201",
-      "name": "Francisco La Mantía",
-      "photo": "https://placehold.co/64",
-      "age": 30,
-      "position": "DEF",
-      "currentTeamID": 47,
-      "teamName": "Caracas FC",
-      "birthDate": "1996-02-24",
-      "nationality": "Venezuela",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "47": 4
-      }
-    },
-    {
-      "id": "1202",
-      "name": "Rubert Quijada",
-      "photo": "https://placehold.co/64",
-      "age": 37,
-      "position": "DEF",
-      "currentTeamID": 47,
-      "teamName": "Caracas FC",
-      "birthDate": "1989-01-28",
-      "nationality": "Venezuela",
-      "preferredFoot": "Izquierdo",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "47": 6
-      }
-    },
-    {
-      "id": "1203",
-      "name": "Renné Rivas",
-      "photo": "https://placehold.co/64",
-      "age": 23,
-      "position": "DEF",
-      "currentTeamID": 47,
-      "teamName": "Caracas FC",
-      "birthDate": "2003-03-21",
-      "nationality": "Venezuela",
-      "preferredFoot": "Izquierdo",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "47": 3
-      }
-    },
-    {
-      "id": "1204",
-      "name": "Vicente Rodríguez",
-      "photo": "https://placehold.co/64",
-      "age": 32,
-      "position": "MED",
-      "currentTeamID": 47,
-      "teamName": "Caracas FC",
-      "birthDate": "1994-09-09",
-      "nationality": "Venezuela",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "47": 5
-      }
-    },
-    {
-      "id": "1205",
-      "name": "Bryant Ortega",
-      "photo": "https://placehold.co/64",
-      "age": 23,
-      "position": "MED",
-      "currentTeamID": 47,
-      "teamName": "Caracas FC",
-      "birthDate": "2003-02-28",
-      "nationality": "Venezuela",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "47": 8
-      }
-    },
-    {
-      "id": "1206",
-      "name": "Anderson Contreras",
-      "photo": "https://placehold.co/64",
-      "age": 25,
-      "position": "MED",
-      "currentTeamID": 47,
-      "teamName": "Caracas FC",
-      "birthDate": "2001-03-30",
-      "nationality": "Venezuela",
-      "preferredFoot": "Izquierdo",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "47": 10
-      }
-    },
-    {
-      "id": "1207",
-      "name": "Ender Echenique",
-      "photo": "https://placehold.co/64",
-      "age": 22,
-      "position": "DEL",
-      "currentTeamID": 47,
-      "teamName": "Caracas FC",
-      "birthDate": "2004-04-02",
-      "nationality": "Venezuela",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "47": 7
-      }
-    },
-    {
-      "id": "1208",
-      "name": "Edwuin Pernía",
-      "photo": "https://placehold.co/64",
-      "age": 31,
-      "position": "DEL",
-      "currentTeamID": 47,
-      "teamName": "Caracas FC",
-      "birthDate": "1995-02-12",
-      "nationality": "Venezuela",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "47": 9
-      }
-    },
-    {
-      "id": "1209",
-      "name": "Danny Pérez",
-      "photo": "https://placehold.co/64",
-      "age": 26,
-      "position": "DEL",
-      "currentTeamID": 47,
-      "teamName": "Caracas FC",
-      "birthDate": "2000-01-23",
-      "nationality": "Venezuela",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "47": 11
-      }
-    },
-    {
       "id": "1210",
       "name": "Alexander Domínguez",
       "photo": "https://placehold.co/64",
@@ -48433,226 +48739,6 @@
       "redCards": 0,
       "dorsals": {
         "49": 20
-      }
-    },
-    {
-      "id": "1232",
-      "name": "Sebastián Britos",
-      "photo": "https://placehold.co/64",
-      "age": 38,
-      "position": "ARQ",
-      "currentTeamID": 50,
-      "teamName": "Universitario",
-      "birthDate": "1988-01-02",
-      "nationality": "Uruguay",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "50": 1
-      }
-    },
-    {
-      "id": "1233",
-      "name": "Aldo Corzo",
-      "photo": "https://placehold.co/64",
-      "age": 37,
-      "position": "DEF",
-      "currentTeamID": 50,
-      "teamName": "Universitario",
-      "birthDate": "1989-05-20",
-      "nationality": "Perú",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "50": 29
-      }
-    },
-    {
-      "id": "1234",
-      "name": "Williams Riveros",
-      "photo": "https://placehold.co/64",
-      "age": 33,
-      "position": "DEF",
-      "currentTeamID": 50,
-      "teamName": "Universitario",
-      "birthDate": "1992-11-20",
-      "nationality": "Paraguay",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "50": 3
-      }
-    },
-    {
-      "id": "1235",
-      "name": "Matías Di Benedetto",
-      "photo": "https://placehold.co/64",
-      "age": 33,
-      "position": "DEF",
-      "currentTeamID": 50,
-      "teamName": "Universitario",
-      "birthDate": "1992-11-19",
-      "nationality": "Argentina",
-      "preferredFoot": "Izquierdo",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "50": 5
-      }
-    },
-    {
-      "id": "1236",
-      "name": "Segundo Portocarrero",
-      "photo": "https://placehold.co/64",
-      "age": 30,
-      "position": "DEF",
-      "currentTeamID": 50,
-      "teamName": "Universitario",
-      "birthDate": "1996-10-15",
-      "nationality": "Ecuador",
-      "preferredFoot": "Izquierdo",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "50": 27
-      }
-    },
-    {
-      "id": "1237",
-      "name": "Rodrigo Ureña",
-      "photo": "https://placehold.co/64",
-      "age": 33,
-      "position": "MED",
-      "currentTeamID": 50,
-      "teamName": "Universitario",
-      "birthDate": "1993-03-01",
-      "nationality": "Chile",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "50": 18
-      }
-    },
-    {
-      "id": "1238",
-      "name": "Martín Pérez Guedes",
-      "photo": "https://placehold.co/64",
-      "age": 35,
-      "position": "MED",
-      "currentTeamID": 50,
-      "teamName": "Universitario",
-      "birthDate": "1991-08-18",
-      "nationality": "Argentina",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "50": 16
-      }
-    },
-    {
-      "id": "1239",
-      "name": "Jairo Concha",
-      "photo": "https://placehold.co/64",
-      "age": 27,
-      "position": "MED",
-      "currentTeamID": 50,
-      "teamName": "Universitario",
-      "birthDate": "1999-05-27",
-      "nationality": "Perú",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "50": 17
-      }
-    },
-    {
-      "id": "1240",
-      "name": "Andy Polo",
-      "photo": "https://placehold.co/64",
-      "age": 32,
-      "position": "DEL",
-      "currentTeamID": 50,
-      "teamName": "Universitario",
-      "birthDate": "1994-09-29",
-      "nationality": "Perú",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "50": 24
-      }
-    },
-    {
-      "id": "1241",
-      "name": "Alex Valera",
-      "photo": "https://placehold.co/64",
-      "age": 30,
-      "position": "DEL",
-      "currentTeamID": 50,
-      "teamName": "Universitario",
-      "birthDate": "1996-05-16",
-      "nationality": "Perú",
-      "preferredFoot": "Izquierdo",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "50": 20
-      }
-    },
-    {
-      "id": "1242",
-      "name": "Edison Flores",
-      "photo": "https://placehold.co/64",
-      "age": 32,
-      "position": "DEL",
-      "currentTeamID": 50,
-      "teamName": "Universitario",
-      "birthDate": "1994-05-14",
-      "nationality": "Perú",
-      "preferredFoot": "Izquierdo",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "50": 19
       }
     },
     {
@@ -49313,226 +49399,6 @@
       "redCards": 0,
       "dorsals": {
         "53": 30
-      }
-    },
-    {
-      "id": "1276",
-      "name": "Fabián Cerda",
-      "photo": "https://placehold.co/64",
-      "age": 37,
-      "position": "ARQ",
-      "currentTeamID": 54,
-      "teamName": "Huachipato",
-      "birthDate": "1989-02-07",
-      "nationality": "Chile",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "54": 1
-      }
-    },
-    {
-      "id": "1277",
-      "name": "Joaquín Gutiérrez",
-      "photo": "https://placehold.co/64",
-      "age": 24,
-      "position": "DEF",
-      "currentTeamID": 54,
-      "teamName": "Huachipato",
-      "birthDate": "2002-07-04",
-      "nationality": "Chile",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "54": 18
-      }
-    },
-    {
-      "id": "1278",
-      "name": "Benjamín Gazzolo",
-      "photo": "https://placehold.co/64",
-      "age": 29,
-      "position": "DEF",
-      "currentTeamID": 54,
-      "teamName": "Huachipato",
-      "birthDate": "1997-07-14",
-      "nationality": "Chile",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "54": 4
-      }
-    },
-    {
-      "id": "1279",
-      "name": "Imanol González",
-      "photo": "https://placehold.co/64",
-      "age": 28,
-      "position": "DEF",
-      "currentTeamID": 54,
-      "teamName": "Huachipato",
-      "birthDate": "1998-01-06",
-      "nationality": "Argentina",
-      "preferredFoot": "Izquierdo",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "54": 26
-      }
-    },
-    {
-      "id": "1280",
-      "name": "Antonio Castillo",
-      "photo": "https://placehold.co/64",
-      "age": 28,
-      "position": "DEF",
-      "currentTeamID": 54,
-      "teamName": "Huachipato",
-      "birthDate": "1998-11-15",
-      "nationality": "Chile",
-      "preferredFoot": "Izquierdo",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "54": 2
-      }
-    },
-    {
-      "id": "1281",
-      "name": "Claudio Sepúlveda",
-      "photo": "https://placehold.co/64",
-      "age": 34,
-      "position": "MED",
-      "currentTeamID": 54,
-      "teamName": "Huachipato",
-      "birthDate": "1992-06-19",
-      "nationality": "Chile",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "54": 6
-      }
-    },
-    {
-      "id": "1282",
-      "name": "Gonzalo Montes",
-      "photo": "https://placehold.co/64",
-      "age": 31,
-      "position": "MED",
-      "currentTeamID": 54,
-      "teamName": "Huachipato",
-      "birthDate": "1994-12-22",
-      "nationality": "Uruguay",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "54": 10
-      }
-    },
-    {
-      "id": "1283",
-      "name": "Santiago Silva",
-      "photo": "https://placehold.co/64",
-      "age": 22,
-      "position": "MED",
-      "currentTeamID": 54,
-      "teamName": "Huachipato",
-      "birthDate": "2004-08-20",
-      "nationality": "Uruguay",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "54": 14
-      }
-    },
-    {
-      "id": "1284",
-      "name": "Maximiliano Gutiérrez",
-      "photo": "https://placehold.co/64",
-      "age": 22,
-      "position": "DEL",
-      "currentTeamID": 54,
-      "teamName": "Huachipato",
-      "birthDate": "2004-05-03",
-      "nationality": "Chile",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "54": 7
-      }
-    },
-    {
-      "id": "1285",
-      "name": "Maximiliano Rodríguez",
-      "photo": "https://placehold.co/64",
-      "age": 26,
-      "position": "DEL",
-      "currentTeamID": 54,
-      "teamName": "Huachipato",
-      "birthDate": "2000-05-31",
-      "nationality": "Chile",
-      "preferredFoot": "Derecho",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "54": 9
-      }
-    },
-    {
-      "id": "1286",
-      "name": "Cris Martínez",
-      "photo": "https://placehold.co/64",
-      "age": 33,
-      "position": "DEL",
-      "currentTeamID": 54,
-      "teamName": "Huachipato",
-      "birthDate": "1993-04-24",
-      "nationality": "Paraguay",
-      "preferredFoot": "Izquierdo",
-      "matchesPlayed": 0,
-      "goals": 0,
-      "assists": 0,
-      "yellowCards": 0,
-      "redCards": 0,
-      "dorsals": {
-        "54": 23
       }
     }
   ],

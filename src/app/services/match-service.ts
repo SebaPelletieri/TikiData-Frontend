@@ -32,7 +32,7 @@ export class MatchService {
     });
   }
 
-  getByID(id: number): void {
+  getByID(id: number | string): void {
     this.loading.set(true);
     this.error.set(null);
 
@@ -49,7 +49,7 @@ export class MatchService {
     });
   }
 
-  getById(id: number): Observable<Match> {
+  getById(id: number | string): Observable<Match> {
     return this.http.get<Match>(`${this.apiUrl}/${id}`).pipe(
       catchError((err) => {
         console.error('Error al obtener partido por ID:', err);
@@ -70,7 +70,7 @@ export class MatchService {
     );
   }
 
-  update(id: number, matchData: Partial<Match>): Observable<Match> {
+  update(id: number | string, matchData: Partial<Match>): Observable<Match> {
     return this.http.patch<Match>(`${this.apiUrl}/${id}`, matchData).pipe(
       tap((updated) => {
         this.matches.update((current) =>

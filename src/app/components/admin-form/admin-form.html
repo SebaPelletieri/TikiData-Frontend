@@ -193,7 +193,7 @@
             <line x1="12" y1="3" x2="12" y2="15" />
           </svg>
           <span class="dropzone-text">Haz clic para subir la foto</span>
-          <span class="dropzone-hint">PNG, JPG (máx. 2MB)</span>
+          <span class="dropzone-hint">{{ isProcessingAvatar() ? 'Procesando imagen…' : 'PNG o JPG · se ajusta automáticamente' }}</span>
         </label>
         <div class="preview-box">
           @if (avatarPreview) {
@@ -216,6 +216,9 @@
           }
         </div>
       </div>
+      @if (avatarError()) {
+        <span class="error-text">{{ avatarError() }}</span>
+      }
     </div>
 
     <!-- Botones de Acción -->

@@ -5,6 +5,7 @@ import { goToLogin } from '../../utils/auth-redirect';
 import { HttpClient } from '@angular/common/http';
 import { forkJoin } from 'rxjs';
 import { AuthService } from '../../services/auth-service';
+import { getCountryFlag as countryFlagUrl } from '../../utils/countries';
 
 @Component({
   selector: 'app-championship-detail',
@@ -186,7 +187,7 @@ export class ChampionshipDetail implements OnInit {
         const currentUser = (this.authService.currentUser as any)();
         if (currentUser && currentUser.favoriteChampionships) {
           const isFav = currentUser.favoriteChampionships.some(
-            (id: any) => Number(id) === Number(champData.id),
+            (id: any) => String(id) === String(champData.id),
           );
           this.isFollowing.set(isFav);
         }
@@ -501,6 +502,11 @@ export class ChampionshipDetail implements OnInit {
     this.activeTab.set(tab);
   }
 
+  /** Bandera del país del campeonato ('' para "Internacional": se muestra 🌎). */
+  countryFlag(country: string | undefined): string {
+    return country ? countryFlagUrl(country) : '';
+  }
+
   toggleFollow() {
     const user = (this.authService.currentUser as any)();
     const champ = this.championship();
@@ -513,10 +519,12 @@ export class ChampionshipDetail implements OnInit {
 
     if (!user || !user.id || !champ) return;
 
-    const champId = Number(champ.id);
-    const currentFavs: number[] = user.favoriteChampionships
-      ? user.favoriteChampionships.map((id: any) => Number(id))
-      : [];
+    // Los ids se guardan como texto: los campeonatos importados tienen ids como
+    // "premier-league-2026-27" y Number() los convertía en NaN (se guardaba null)
+    const champId = String(champ.id);
+    const currentFavs: string[] = (user.favoriteChampionships || [])
+      .map((id: any) => String(id))
+      .filter((id: string) => id && id !== "null");
 
     const updatedFavorites = this.isFollowing()
       ? currentFavs.filter((id) => id !== champId)

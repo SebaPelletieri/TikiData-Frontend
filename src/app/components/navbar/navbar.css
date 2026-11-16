@@ -215,7 +215,7 @@
   list-style: none;
   z-index: 10000;
   box-shadow: 0 14px 32px rgba(var(--shadow-rgb), calc(0.7 * var(--shadow-k)));
-  backdrop-filter: blur(8px);
+  /* Sin backdrop-filter: el fondo es opaco, el desenfoque no se veía y costaba al abrir */
 }
 
 /* Scrollbar personalizado fluido */
@@ -364,7 +364,7 @@
   background-color: var(--surface-raised);
   border: 1px solid var(--border-color);
   border-radius: 30px;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1), filter 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: inset 0 2px 4px rgba(var(--shadow-rgb), calc(0.3 * var(--shadow-k)));
 }
 
@@ -445,7 +445,7 @@
   font-weight: 600;
   font-size: 0.88rem;
   text-decoration: none;
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: color 0.25s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1), transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1), filter 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   cursor: pointer;
   font-family: inherit;
 }
@@ -497,7 +497,7 @@
   cursor: pointer;
   text-decoration: none;
   overflow: hidden;
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: color 0.25s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1), transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1), filter 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .navbar__profile--avatar {
@@ -554,7 +554,7 @@
   display: flex;
   flex-direction: column;
   gap: 4px;
-  backdrop-filter: blur(10px);
+  /* Sin backdrop-filter: el fondo es opaco, el desenfoque no se veía y costaba al abrir */
 }
 
 .navbar__dropdown-user {
@@ -640,7 +640,7 @@
   border: none;
   cursor: pointer;
   font-family: inherit;
-  transition: all 0.2s ease;
+  transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease, opacity 0.2s ease, filter 0.2s ease;
 }
 
 .navbar__dropdown-link i {
@@ -712,8 +712,10 @@
   inset: 0;
   z-index: 0;
   background-color: rgba(var(--nav-rgb), calc(1 - 0.22 * var(--p)));
-  -webkit-backdrop-filter: blur(16px) saturate(160%);
-  backdrop-filter: blur(16px) saturate(160%);
+  /* Sin desenfoque arriba de todo: ahí el fondo es opaco y no hay nada debajo,
+     y el blur sobre una capa que cambia de recorte se recalcula en cada cuadro. */
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
   /* Línea inferior de la barra completa: se desvanece al formarse la isla */
   box-shadow: inset 0 -1px 0 rgba(var(--border-rgb), calc(1 - var(--p)));
   /* Recorte: de toda la barra (70px) a la píldora (1040 × 56, 8px desde arriba) */
@@ -722,6 +724,12 @@
       round calc(28px * var(--p))
   );
   will-change: clip-path;
+}
+
+/* El vidrio esmerilado aparece recién al scrollear (navbar.ts pone la clase) */
+:host(.is-scrolled)::before {
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
 }
 
 :host::after {
@@ -1040,8 +1048,8 @@
     border-radius: 31px;
     border: 1px solid rgba(255, 107, 0, 0.28);
     background-color: rgba(var(--nav-rgb), 0.82);
-    -webkit-backdrop-filter: blur(16px) saturate(160%);
-    backdrop-filter: blur(16px) saturate(160%);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
     box-shadow:
       0 12px 32px rgba(var(--shadow-rgb), calc(0.45 * var(--shadow-k))),
       inset 0 1px 0 rgba(var(--overlay-rgb), 0.06);

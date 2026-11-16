@@ -7,7 +7,8 @@ import { Player } from '../../models/Player';
 import { TeamRoster } from '../team-roster/team-roster';
 import { AuthService } from '../../services/auth-service';
 import { TeamService } from '../../services/team-service';
-import { Stadium } from '../../models/stadium';
+import { Stadium } from '../../models/Stadium';
+import { getCountryFlag as countryFlagUrl } from '../../utils/countries';
 
 @Component({
   selector: 'app-team-detail',
@@ -100,8 +101,9 @@ export class TeamDetail implements OnInit {
     }
     if (!user || !user.id || !currentTeam || !currentTeam.id) return;
 
-    let favoriteTeams: number[] = [...(user.favoriteTeams || [])];
-    const teamIdNum = Number(currentTeam.id);
+    // Ids como texto, igual que los guarda json-server ("4"), para comparar sin conversiones
+    let favoriteTeams: (number | string)[] = [...(user.favoriteTeams || [])];
+    const teamIdNum = String(currentTeam.id);
 
     if (this.isFollowing()) {
       favoriteTeams = favoriteTeams.filter((id: any) => String(id) !== String(teamIdNum));
@@ -112,7 +114,18 @@ export class TeamDetail implements OnInit {
     this.authService.updateUser(user.id, { favoriteTeams }).subscribe();
   }
 
-  formatSpanishDate(dateInput: string | Date | undefined): string {
+  /** Bandera del país del equipo ('' si es "Internacional" u otra región: se muestra 🌎). */
+  countryFlag(country: string | undefined): string {
+    return country ? countryFlagUrl(country) : '';
+  }
+
+  /** "Liga · 2026/2027", "Copa · 2026"... para las tarjetas de campeonatos activos. */
+  championshipLabel(champ: { type?: string; season?: string }): string {
+    const type = champ.type === 'LIGA' ? 'Liga' : champ.type === 'COPA' ? 'Copa' : '';
+    return [type, champ.season].filter(Boolean).join(' · ');
+  }
+
+  formatSpanishDate(dateInput: string | Date | undefined | null): string {
     if (!dateInput) return '';
     let date: Date;
 

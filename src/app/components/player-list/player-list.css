@@ -68,7 +68,7 @@
   font-size: 0.92rem;
   font-weight: 500;
   outline: none;
-  transition: all 0.25s ease;
+  transition: color 0.25s ease, background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease, opacity 0.25s ease, filter 0.25s ease;
 }
 
 .search-box input::placeholder {
@@ -121,7 +121,7 @@
   font-family: inherit;
   cursor: pointer;
   outline: none;
-  transition: all 0.25s ease;
+  transition: color 0.25s ease, background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease, opacity 0.25s ease, filter 0.25s ease;
 }
 
 .trigger-content {
@@ -184,7 +184,7 @@
     0 12px 30px rgba(var(--shadow-rgb), calc(0.65 * var(--shadow-k))),
     0 0 1px rgba(var(--overlay-rgb), 0.1);
   z-index: 100;
-  backdrop-filter: blur(8px);
+  /* Sin backdrop-filter: el fondo es opaco, el desenfoque no se veía y costaba al abrir */
 
   display: flex;
   flex-direction: column;
@@ -243,7 +243,7 @@
   font-family: inherit;
   cursor: pointer;
   outline: none;
-  transition: all 0.2s ease;
+  transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease, opacity 0.2s ease, filter 0.2s ease;
 }
 
 .sub-dropdown-trigger:hover {
@@ -533,7 +533,7 @@
   font-size: 0.85rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease, opacity 0.2s ease, filter 0.2s ease;
 }
 
 .page-btn:hover:not(:disabled) {

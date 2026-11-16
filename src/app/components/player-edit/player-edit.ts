@@ -45,7 +45,7 @@ export class PlayerEdit implements OnInit {
   private playerService = inject(PlayerService);
 
   playerForm!: FormGroup;
-  playerId: number | null = null;
+  playerId: number | string | null = null;
 
   positions: { value: Position; label: string }[] = [
     { value: 'ARQ', label: 'Arquero (ARQ)' },
@@ -106,14 +106,15 @@ export class PlayerEdit implements OnInit {
     this.generateCalendar();
 
     if (this.playerIdInput) {
-      this.playerId = Number(this.playerIdInput);
+      this.playerId = this.playerIdInput;
       this.loadPlayerData(this.playerId);
     } else {
-      this.route.paramMap.subscribe((params) => {
-        const id = params.get('id');
+      // La URL trae el nombre del jugador; el resolver de la ruta deja el id en data
+      this.route.data.subscribe((data) => {
+        const id = data['id'] ?? this.route.snapshot.paramMap.get('id');
         if (id) {
-          this.playerId = Number(id);
-          this.loadPlayerData(this.playerId);
+          this.playerId = id;
+          this.loadPlayerData(id);
         }
       });
     }
@@ -301,7 +302,7 @@ export class PlayerEdit implements OnInit {
     this.calendarDays = days;
   }
 
-  loadPlayerData(id: number) {
+  loadPlayerData(id: number | string) {
     this.playerService.getByID(id).subscribe({
       next: (player: any) => {
         if (player) {

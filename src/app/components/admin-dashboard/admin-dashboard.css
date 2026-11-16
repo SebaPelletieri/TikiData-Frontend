@@ -221,7 +221,7 @@
   min-width: 0;
   position: relative;
   overflow: hidden;
-  transition: all 0.3s ease-in-out;
+  transition: color 0.3s ease-in-out, background-color 0.3s ease-in-out, border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out, opacity 0.3s ease-in-out, filter 0.3s ease-in-out;
   background: linear-gradient(180deg, var(--surface-card) 0%, var(--surface-card-2) 100%);
   border: 1px solid var(--warm-4);
   border-radius: 18px;
@@ -507,7 +507,7 @@
   font-weight: 600;
   font-size: 0.84rem;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease, opacity 0.2s ease, filter 0.2s ease;
   text-decoration: none;
 }
 
@@ -530,7 +530,7 @@
   font-weight: 600;
   font-size: 0.84rem;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease, opacity 0.2s ease, filter 0.2s ease;
   text-decoration: none;
 }
 
@@ -553,7 +553,7 @@
   font-weight: 600;
   font-size: 0.84rem;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease, opacity 0.2s ease, filter 0.2s ease;
 }
 
 .btn-action-delete-custom:hover {
@@ -572,7 +572,7 @@
   font-weight: 600;
   font-size: 0.84rem;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease, opacity 0.2s ease, filter 0.2s ease;
   text-decoration: none;
   background-color: transparent;
   min-width: 165px;
@@ -650,7 +650,7 @@
   font-size: 0.86rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease, opacity 0.2s ease, filter 0.2s ease;
   flex-shrink: 0;
 }
 
@@ -668,7 +668,7 @@
   line-height: 1;
   padding: 0 0 2px 0;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease, opacity 0.2s ease, filter 0.2s ease;
   flex-shrink: 0;
 }
 
@@ -706,12 +706,27 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(2, 8, 19, 0.8);
+  background-color: rgba(2, 8, 19, 0.82);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1000;
-  backdrop-filter: blur(4px);
+  /* Sin backdrop-filter: desenfocar toda la página (tablas, escudos) al abrir el modal
+     era lo que lo hacía aparecer con tirón. Con el fondo tan oscuro ni se notaba. */
+  animation: modalBackdropIn 0.18s ease-out both;
+}
+
+@keyframes modalBackdropIn {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes modalBoxIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.97);
+  }
 }
 
 .custom-modal-box {
@@ -723,6 +738,9 @@
   max-width: 420px;
   text-align: center;
   box-shadow: 0 20px 40px rgba(var(--shadow-rgb), calc(0.6 * var(--shadow-k)));
+  /* Entrada solo con transform y opacity (las anima la GPU sin redibujar) */
+  animation: modalBoxIn 0.22s cubic-bezier(0.16, 1, 0.3, 1) both;
+  contain: layout paint;
 }
 
 .modal-icon-warning {
@@ -759,7 +777,7 @@
   height: 42px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease, opacity 0.2s ease, filter 0.2s ease;
 }
 
 .btn-modal-cancel:hover {
@@ -778,7 +796,7 @@
   font-weight: 700;
   cursor: pointer;
   box-shadow: 0 4px 16px rgba(239, 68, 68, 0.4);
-  transition: all 0.2s ease;
+  transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease, opacity 0.2s ease, filter 0.2s ease;
 }
 
 .btn-modal-confirm:hover {

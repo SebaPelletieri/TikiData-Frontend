@@ -1,4 +1,4 @@
-@if (match) {
+@if (match(); as match) {
   <div class="match-card" [routerLink]="['/match', match.id]">
     <div class="match-card-header">
       <span class="championship-badge">
@@ -13,8 +13,9 @@
       <!-- EQUIPO LOCAL -->
       <div class="team-column">
         <div class="shield-container">
-          <img
+          <img loading="lazy" decoding="async"
             [src]="localTeam()?.shield || 'https://placehold.co/45'"
+            (error)="$any($event.target).src = 'https://placehold.co/45?text=%E2%9A%BD'"
             class="team-shield"
             [alt]="localTeam()?.name"
           />
@@ -32,8 +33,9 @@
       <!-- EQUIPO VISITANTE -->
       <div class="team-column">
         <div class="shield-container">
-          <img
+          <img loading="lazy" decoding="async"
             [src]="awayTeam()?.shield || 'https://placehold.co/45'"
+            (error)="$any($event.target).src = 'https://placehold.co/45?text=%E2%9A%BD'"
             class="team-shield"
             [alt]="awayTeam()?.name"
           />

@@ -123,7 +123,7 @@
   font-size: 0.92rem;
   font-weight: 500;
   outline: none;
-  transition: all 0.25s ease;
+  transition: color 0.25s ease, background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease, opacity 0.25s ease, filter 0.25s ease;
   box-sizing: border-box;
 }
 
@@ -171,7 +171,7 @@
   font-family: inherit;
   cursor: pointer;
   outline: none;
-  transition: all 0.25s ease;
+  transition: color 0.25s ease, background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease, opacity 0.25s ease, filter 0.25s ease;
 }
 
 .dropdown-trigger:hover {
@@ -252,7 +252,7 @@
   box-shadow:
     0 12px 30px rgba(var(--shadow-rgb), calc(0.65 * var(--shadow-k))),
     0 0 1px rgba(255, 107, 0, 0.15);
-  backdrop-filter: blur(8px);
+  /* Sin backdrop-filter: el fondo es opaco, el desenfoque no se veía y costaba al abrir */
   animation: dropdownFadeIn 0.18s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
@@ -338,7 +338,7 @@
   font-family: inherit;
   cursor: pointer;
   outline: none;
-  transition: all 0.25s ease;
+  transition: color 0.25s ease, background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease, opacity 0.25s ease, filter 0.25s ease;
   position: relative;
   z-index: 5;
 }
@@ -390,7 +390,7 @@
   border: 1px solid var(--warm-border);
   border-radius: 12px;
   box-shadow: 0 14px 32px rgba(var(--shadow-rgb), calc(0.7 * var(--shadow-k)));
-  backdrop-filter: blur(8px);
+  /* Sin backdrop-filter: el fondo es opaco, el desenfoque no se veía y costaba al abrir */
   padding: 0.75rem 0.6rem;
   z-index: 1000;
   animation: dropdownFadeIn 0.18s cubic-bezier(0.16, 1, 0.3, 1) forwards;
@@ -451,7 +451,7 @@
   flex-shrink: 0;
   padding: 0;
   line-height: 1;
-  transition: all 0.2s ease;
+  transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease, opacity 0.2s ease, filter 0.2s ease;
 }
 
 .calendar-nav-btn:hover {
@@ -491,7 +491,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.15s ease;
+  transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease, opacity 0.15s ease, filter 0.15s ease;
 }
 
 .calendar-day:hover {
@@ -521,7 +521,7 @@
   padding: 6px 10px;
   gap: 6px;
   position: relative;
-  transition: all 0.25s ease;
+  transition: color 0.25s ease, background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease, opacity 0.25s ease, filter 0.25s ease;
 }
 
 .search-tag-container:hover {
@@ -586,7 +586,7 @@
   overflow-y: auto;
   z-index: 100;
   box-shadow: 0 14px 32px rgba(var(--shadow-rgb), calc(0.7 * var(--shadow-k)));
-  backdrop-filter: blur(8px);
+  /* Sin backdrop-filter: el fondo es opaco, el desenfoque no se veía y costaba al abrir */
 }
 
 .suggestion-item {
@@ -652,7 +652,7 @@
   justify-content: center;
   padding: 2px;
   border-radius: 50%;
-  transition: all 0.15s ease;
+  transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease, opacity 0.15s ease, filter 0.15s ease;
 }
 
 .tag-remove-btn:hover {
@@ -704,7 +704,7 @@
   border: 1px solid var(--warm-border);
   border-radius: 10px;
   padding: 6px 10px;
-  transition: all 0.25s ease;
+  transition: color 0.25s ease, background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease, opacity 0.25s ease, filter 0.25s ease;
   z-index: 50;
 }
 
@@ -741,7 +741,7 @@
   font-weight: 600;
   cursor: pointer;
   box-shadow: 0 4px 14px rgba(255, 107, 0, 0.4);
-  transition: all 0.2s ease;
+  transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease, opacity 0.2s ease, filter 0.2s ease;
 }
 
 .btn-add-player:hover:not(:disabled) {
@@ -823,7 +823,7 @@
   justify-content: center;
   font-size: 10px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease, opacity 0.2s ease, filter 0.2s ease;
 }
 
 .btn-remove-chip:hover {
@@ -851,7 +851,7 @@
   font-weight: 500;
   font-family: inherit;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease, opacity 0.2s ease, filter 0.2s ease;
 }
 
 .btn-cancel:hover {
@@ -873,7 +873,7 @@
   font-family: inherit;
   cursor: pointer;
   box-shadow: 0 4px 14px rgba(255, 107, 0, 0.4);
-  transition: all 0.2s ease;
+  transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease, opacity 0.2s ease, filter 0.2s ease;
 }
 
 .btn-submit:hover:not(:disabled) {

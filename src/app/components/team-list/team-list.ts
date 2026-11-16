@@ -5,6 +5,8 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { TeamService } from '../../services/team-service';
 import { Team } from '../../models/Team';
+import { getCountryFlag as countryFlagUrl } from '../../utils/countries';
+import { compareEs, sortByName } from '../../utils/sort';
 
 interface Championship {
   id: number | string;
@@ -68,7 +70,7 @@ export class TeamList implements OnInit {
     const options: FilterOption[] = [{ value: 'ALL', label: 'Todos los países' }];
 
     Array.from(countrySet)
-      .sort()
+      .sort(compareEs)
       .forEach((country) => {
         options.push({ value: country, label: country });
       });
@@ -76,60 +78,9 @@ export class TeamList implements OnInit {
     return options;
   });
 
-  // Función 100% dinámica y universal para obtener la bandera de CUALQUIER país del mundo (con excepciones robustas)
+  // Bandera del país: usa la lista completa compartida (utils/countries.ts)
   getCountryFlag(countryName: string | number): string {
-    if (!countryName) return 'https://flagcdn.com/w40/xx.png';
-
-    const strCountry = String(countryName);
-
-    // Diccionario completo con códigos ISO oficiales (incluyendo Angola, Haití, etc.)
-    const universalIsoExceptions: Record<string, string> = {
-      argentina: 'ar',
-      brasil: 'br',
-      brazil: 'br',
-      espana: 'es',
-      spain: 'es',
-      inglaterra: 'gb-eng',
-      england: 'gb-eng',
-      alemania: 'de',
-      germany: 'de',
-      italia: 'it',
-      italy: 'it',
-      uruguay: 'uy',
-      colombia: 'co',
-      chile: 'cl',
-      ecuador: 'ec',
-      paraguay: 'py',
-      bolivia: 'bo',
-      peru: 'pe',
-      venezuela: 've',
-      mexico: 'mx',
-      francia: 'fr',
-      portugal: 'pt',
-      japon: 'jp',
-      estadosunidos: 'us',
-      reinounido: 'gb',
-      suiza: 'ch',
-      republicacheca: 'cz',
-      angola: 'ao',
-      haiti: 'ht',
-      costarica: 'cr',
-      panama: 'pa',
-      eslovenia: 'si',
-      siria: 'sy',
-    };
-
-    const normalized = strCountry
-      .toLowerCase()
-      .trim()
-      .normalize('NFD')
-      .replace(/[\u0300-\u036f]/g, '')
-      .replace(/\s+/g, '');
-
-    // Si está en las excepciones usa su ISO exacto; si no, toma las primeras 2 letras de respaldo
-    const isoCode = universalIsoExceptions[normalized] || normalized.substring(0, 2);
-
-    return `https://flagcdn.com/w40/${isoCode}.png`;
+    return countryFlagUrl(countryName);
   }
 
   openCountries = signal<Record<string, boolean>>({});
@@ -204,6 +155,11 @@ export class TeamList implements OnInit {
     return inChampionship || inTeam;
   }
 
+  /** Las selecciones se crean con el nombre "Selección de <país>". */
+  private isNationalTeam(team: Team): boolean {
+    return /^selecci[oó]n\b/i.test(team.name || '');
+  }
+
   /** Compara países sin importar mayúsculas ni tildes ("Perú" = "peru"). */
   private sameCountry(a: string | undefined, b: string | undefined): boolean {
     const norm = (s?: string) =>
@@ -227,15 +183,26 @@ export class TeamList implements OnInit {
       return matchSearch && matchCountry;
     });
 
-    const uniqueCountries = Array.from(new Set(filtered.map((t) => t.country).filter(Boolean)));
+    // Países en orden alfabético (al agregar un equipo de un país nuevo, aparece solo en su lugar)
+    const uniqueCountries = Array.from(
+      new Set(filtered.map((t) => t.country).filter(Boolean)),
+    ).sort(compareEs);
     const result: CountryGroup[] = [];
 
     for (const country of uniqueCountries) {
       const countryTeams = filtered.filter((t) => t.country === country);
-      // Solo los campeonatos de tipo LIGA de ese país subdividen (las copas no)
-      const countryLeagues = champs.filter(
-        (c) => c.type === 'LIGA' && this.sameCountry(c.country, country),
-      );
+      // Solo los campeonatos de tipo LIGA subdividen (las copas no). Se toman las ligas
+      // del país y también las de otro país donde juega algún equipo de este
+      // (ej. Toronto FC es de Canadá pero juega la MLS de Estados Unidos).
+      // Las ligas se muestran en orden alfabético.
+      const countryLeagues = champs
+        .filter(
+          (c) =>
+            c.type === 'LIGA' &&
+            (this.sameCountry(c.country, country) ||
+              countryTeams.some((t) => this.isTeamInLeague(t, c))),
+        )
+        .sort((a, b) => compareEs(a.name, b.name));
 
       const leaguesMap: LeagueGroup[] = [];
       // Un equipo juega una sola liga: si por error figura en dos, queda en la primera
@@ -250,20 +217,31 @@ export class TeamList implements OnInit {
           leaguesMap.push({
             leagueName: league.name,
             leagueLogo: league.logo,
-            teams: teamsInLeague,
+            teams: sortByName(teamsInLeague),
           });
           teamsInLeague.forEach((t) => assignedTeamIds.add(String(t.id)));
         }
       }
 
-      const unassignedTeams = countryTeams.filter((t) => !assignedTeamIds.has(String(t.id)));
+      const remaining = countryTeams.filter((t) => !assignedTeamIds.has(String(t.id)));
+      // La selección nacional va en su propio bloque, no mezclada con clubes sin liga
+      const nationalTeams = remaining.filter((t) => this.isNationalTeam(t));
+      const unassignedTeams = remaining.filter((t) => !this.isNationalTeam(t));
 
       if (unassignedTeams.length > 0) {
         leaguesMap.push({
           // Si el país no tiene ninguna liga cargada, no tiene sentido decir "sin liga"
           leagueName: leaguesMap.length ? 'Sin liga asignada' : 'Equipos',
           leagueLogo: undefined,
-          teams: unassignedTeams,
+          teams: sortByName(unassignedTeams),
+        });
+      }
+
+      if (nationalTeams.length > 0) {
+        leaguesMap.push({
+          leagueName: 'Selección nacional',
+          leagueLogo: undefined,
+          teams: sortByName(nationalTeams),
         });
       }
 

@@ -116,7 +116,7 @@
   color: var(--text-strong);
   font-size: 0.95rem;
   outline: none;
-  transition: all 0.22s ease;
+  transition: color 0.22s ease, background-color 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease, transform 0.22s ease, opacity 0.22s ease, filter 0.22s ease;
 }
 
 .form-group input::placeholder {
@@ -213,7 +213,7 @@
   cursor: pointer;
   text-align: center;
   padding: 1rem;
-  transition: all 0.25s ease;
+  transition: color 0.25s ease, background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease, opacity 0.25s ease, filter 0.25s ease;
 }
 
 .dropzone:hover {
@@ -302,7 +302,7 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease, opacity 0.2s ease, filter 0.2s ease;
 }
 
 .btn-remove-shield:hover {
@@ -365,7 +365,7 @@
   font-weight: 700;
   font-family: inherit;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease, opacity 0.2s ease, filter 0.2s ease;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -388,7 +388,7 @@
   font-family: inherit;
   cursor: pointer;
   box-shadow: 0 4px 16px rgba(234, 88, 12, 0.4);
-  transition: all 0.2s ease;
+  transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease, opacity 0.2s ease, filter 0.2s ease;
   display: inline-flex;
   align-items: center;
   justify-content: center;

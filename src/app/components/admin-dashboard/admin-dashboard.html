@@ -241,7 +241,7 @@
                   <tr>
                     <td>{{ (currentPage() - 1) * itemsPerPage + idx + 1 }}</td>
                     <td>
-                      <div class="table-logo"><img [src]="team.shield" [alt]="team.name" /></div>
+                      <div class="table-logo"><img loading="lazy" decoding="async" [src]="team.shield" [alt]="team.name" /></div>
                     </td>
                     <td>
                       <strong>{{ team.name }}</strong>
@@ -271,7 +271,7 @@
                         <button
                           type="button"
                           class="btn-action-edit-custom"
-                          [routerLink]="['/team/edit', team.id]"
+                          [routerLink]="['/team/edit', teamEditSlug(team)]"
                         >
                           <svg
                             viewBox="0 0 24 24"
@@ -498,7 +498,7 @@
                   <tr>
                     <td>{{ (currentChampPage() - 1) * itemsPerPageChamps + idx + 1 }}</td>
                     <td>
-                      <div class="table-logo"><img [src]="champ.logo" [alt]="champ.name" /></div>
+                      <div class="table-logo"><img loading="lazy" decoding="async" [src]="champ.logo" [alt]="champ.name" /></div>
                     </td>
                     <td>
                       <strong>{{ champ.name }}</strong>
@@ -535,7 +535,7 @@
                         <button
                           type="button"
                           class="btn-action-edit-custom"
-                          [routerLink]="['/championship/edit', champ.id]"
+                          [routerLink]="['/championship/edit', champEditSlug(champ)]"
                         >
                           <svg
                             viewBox="0 0 24 24"
@@ -760,7 +760,7 @@
                         <button
                           type="button"
                           class="btn-action-edit-custom"
-                          [routerLink]="['/match/edit', match.id]"
+                          [routerLink]="['/match/edit', matchEditSlug(match)]"
                         >
                           <svg
                             viewBox="0 0 24 24"
@@ -988,7 +988,7 @@
                   <tr>
                     <td>{{ (currentPlayerPage() - 1) * itemsPerPagePlayers + idx + 1 }}</td>
                     <td>
-                      <div class="table-logo"><img [src]="player.photo" [alt]="player.name" /></div>
+                      <div class="table-logo"><img loading="lazy" decoding="async" [src]="player.photo" [alt]="player.name" /></div>
                     </td>
                     <td>
                       <strong>{{ player.name }}</strong>
@@ -1019,7 +1019,7 @@
                         <button
                           type="button"
                           class="btn-action-edit-custom"
-                          [routerLink]="['/player/edit', player.id]"
+                          [routerLink]="['/player/edit', playerEditSlug(player)]"
                         >
                           <svg
                             viewBox="0 0 24 24"

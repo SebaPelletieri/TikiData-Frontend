@@ -21,14 +21,15 @@ export class ChampionshipEditPage implements OnInit {
   private router = inject(Router);
   private location = inject(Location);
 
-  championshipId = signal<number | null>(null);
+  // El id puede ser texto ("premier-league-2026-27"). Antes se pasaba por Number(),
+  // quedaba NaN y la página de edición se mostraba vacía.
+  championshipId = signal<string | null>(null);
 
   ngOnInit() {
-    this.route.paramMap.subscribe((params) => {
-      const id = params.get('id');
-      if (id) {
-        this.championshipId.set(Number(id));
-      }
+    // La URL trae el nombre (/championship/edit/premier-league); el resolver deja el id en data
+    this.route.data.subscribe((data) => {
+      const id = data['id'];
+      if (id) this.championshipId.set(String(id));
     });
   }
 

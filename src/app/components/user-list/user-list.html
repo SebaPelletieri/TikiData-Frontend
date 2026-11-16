@@ -1,7 +1,7 @@
 <div class="admin-container">
   <div class="header-section">
-    <h2>Gestión de Usuarios</h2>
-    <p>Panel de control exclusivo para administradores del sistema.</p>
+    <h2>{{ 'ui.gestionDeUsuarios' | transloco }}</h2>
+    <p>{{ 'ui.panelDeControlExclusivoParaAdministradores' | transloco }}</p>
   </div>
 
   @if (errorMessage()) {
@@ -12,11 +12,11 @@
     <table class="users-table">
       <thead>
         <tr>
-          <th>ID</th>
-          <th>Usuario</th>
-          <th>Email</th>
-          <th>Rol</th>
-          <th>Acciones</th>
+          <th>{{ 'ui.id' | transloco }}</th>
+          <th>{{ 'ui.usuario' | transloco }}</th>
+          <th>{{ 'ui.email2' | transloco }}</th>
+          <th>{{ 'ui.rol' | transloco }}</th>
+          <th>{{ 'ui.acciones' | transloco }}</th>
         </tr>
       </thead>
       <tbody>
@@ -29,21 +29,21 @@
             <td>{{ u.email }}</td>
             <td>
               <span class="role-badge" [class.admin]="u.role === 'Administrador'">
-                {{ u.role }}
+                {{ 'role.' + u.role | transloco }}
               </span>
             </td>
             <td>
               <div class="action-buttons">
-                <button type="button" class="btn-role" (click)="toggleRole(u)">Cambiar Rol</button>
+                <button type="button" class="btn-role" (click)="toggleRole(u)">{{ 'ui.cambiarRol' | transloco }}</button>
                 <button type="button" class="btn-delete" (click)="deleteUser(u.id)">
-                  Eliminar
+                  {{ 'ui.eliminar' | transloco }}
                 </button>
               </div>
             </td>
           </tr>
         } @empty {
           <tr>
-            <td colspan="5" class="empty-state">No hay usuarios registrados.</td>
+            <td colspan="5" class="empty-state">{{ 'ui.noHayUsuariosRegistrados' | transloco }}</td>
           </tr>
         }
       </tbody>

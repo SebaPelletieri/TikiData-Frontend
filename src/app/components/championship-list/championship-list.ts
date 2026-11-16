@@ -1,4 +1,7 @@
 import { CommonModule } from '@angular/common';
+import { TranslocoPipe } from '@jsverse/transloco';
+import { compareCountries, CountryPipe } from '../../i18n/country.pipe';
+import { LanguageService } from '../../i18n/language-service';
 import { Component, computed, inject, OnInit, signal, HostListener } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -23,13 +26,15 @@ interface ChampionshipGroup {
 
 @Component({
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule],
+  imports: [CommonModule, FormsModule, RouterModule, TranslocoPipe, CountryPipe],
   selector: 'app-championship-list',
   styleUrl: './championship-list.css',
   templateUrl: './championship-list.html',
 })
 export class ChampionshipList implements OnInit {
   public championshipService = inject(ChampionshipService);
+  // Para ordenar los países por su nombre en el idioma elegido
+  private language = inject(LanguageService);
 
   searchText = signal('');
 
@@ -41,9 +46,9 @@ export class ChampionshipList implements OnInit {
   isCountryDropdownOpen = false;
 
   typeOptions: FilterOption[] = [
-    { value: 'ALL', label: 'Todas las competencias' },
-    { value: 'LIGA', label: 'Liga' },
-    { value: 'COPA', label: 'Copa' },
+    { value: 'ALL', label: 'champList.allTypes' },
+    { value: 'LIGA', label: 'type.LIGA' },
+    { value: 'COPA', label: 'type.COPA' },
   ];
 
   // Bandera del país: usa la lista completa compartida (utils/countries.ts)
@@ -65,12 +70,12 @@ export class ChampionshipList implements OnInit {
     });
 
     const options: FilterOption[] = [
-      { value: 'ALL', label: 'Todos los países' },
-      { value: 'Internacional', label: 'Competencias Internacionales' },
+      { value: 'ALL', label: 'common.allCountries' },
+      { value: 'Internacional', label: 'champList.international' },
     ];
 
     Array.from(countriesSet)
-      .sort(compareEs)
+      .sort(compareCountries(this.language.current()))
       .forEach((country) => {
         options.push({
           value: country,
@@ -149,12 +154,12 @@ export class ChampionshipList implements OnInit {
 
   get selectedTypeLabel(): string {
     const current = this.selectedType();
-    return this.typeOptions.find((t) => t.value === current)?.label || 'Todas las competencias';
+    return this.typeOptions.find((t) => t.value === current)?.label || 'champList.allTypes';
   }
 
   get selectedCountryLabel(): string {
     const current = this.selectedCountry();
-    return this.countryOptions().find((c) => c.value === current)?.label || 'Todos los países';
+    return this.countryOptions().find((c) => c.value === current)?.label || 'common.allCountries';
   }
 
   getTypeBadgeLabel(type: ChampionshipType): string {
@@ -224,7 +229,9 @@ export class ChampionshipList implements OnInit {
 
     // Países en orden alfabético ("Competencias Internacionales" queda siempre primero).
     // Es un computed: al agregar un campeonato de un país nuevo, aparece solo en su lugar.
-    const uniqueCountries = Array.from(new Set(nationalChamps.map((c) => c.country))).sort(compareEs);
+    const uniqueCountries = Array.from(new Set(nationalChamps.map((c) => c.country))).sort(
+      compareCountries(this.language.current()),
+    );
 
     for (const country of uniqueCountries) {
       const champsInCountry = nationalChamps.filter((c) => c.country === country);

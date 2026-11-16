@@ -15,13 +15,13 @@
               } @else {
                 <span class="meta-flag-emoji">🌎</span>
               }
-              {{ champ.country }}
+              {{ champ.country | country }}
             </span>
             <span class="separator">•</span>
-            <span class="meta-item">{{ champ.type }}</span>
+            <span class="meta-item">{{ 'type.' + champ.type | transloco }}</span>
             @if (champ.season) {
               <span class="separator">•</span>
-              <span class="meta-item">Temporada {{ champ.season }}</span>
+              <span class="meta-item">{{ 'detail.season' | transloco }} {{ champ.season }}</span>
             }
           </div>
         </div>
@@ -32,13 +32,13 @@
         class="btn-follow-champ"
         [class.following]="isFollowing()"
         (click)="toggleFollow()"
-        [title]="isLoggedIn() ? '' : 'Iniciá sesión para seguir'"
+        [title]="isLoggedIn() ? '' : ('detail.loginToFollow' | transloco)"
       >
         <span class="follow-icon">
           {{ isFollowing() ? '✓' : '+' }}
         </span>
         <span>
-          {{ isFollowing() ? 'Siguiendo' : 'Seguir' }}
+          {{ (isFollowing() ? 'detail.following' : 'detail.follow') | transloco }}
         </span>
       </button>
     </div>
@@ -50,27 +50,27 @@
         [class.active]="activeTab() === 'general'"
         (click)="setTab('general')"
       >
-        Vista general
+        {{ 'detail.overview' | transloco }}
       </button>
       <button class="tab-btn" [class.active]="activeTab() === 'table'" (click)="setTab('table')">
-        Tabla
+        {{ 'detail.table' | transloco }}
       </button>
       <button
         class="tab-btn"
         [class.active]="activeTab() === 'matches'"
         (click)="setTab('matches')"
       >
-        Partidos
+        {{ 'detail.matches' | transloco }}
       </button>
       <button
         class="tab-btn"
         [class.active]="activeTab() === 'scorers'"
         (click)="setTab('scorers')"
       >
-        Goleadores
+        {{ 'detail.scorers' | transloco }}
       </button>
       <button class="tab-btn" [class.active]="activeTab() === 'cards'" (click)="setTab('cards')">
-        Tarjetas
+        {{ 'detail.cards' | transloco }}
       </button>
     </div>
 
@@ -82,7 +82,7 @@
             @for (zone of zoneTables(); track zone.zoneName) {
               <div class="card-box half-card">
                 <div class="card-header-row">
-                  <h3>Tabla de posiciones - {{ zone.zoneName }}</h3>
+                  <h3>{{ 'champDetail.standings' | transloco }} - {{ zone.zoneName | round }}</h3>
                 </div>
 
                 <div class="table-responsive">
@@ -90,10 +90,10 @@
                     <thead>
                       <tr>
                         <th class="text-center" style="width: 40px">#</th>
-                        <th>Equipo</th>
+                        <th>{{ 'detail.team' | transloco }}</th>
                         <th class="text-center">PJ</th>
                         <th class="text-center">DG</th>
-                        <th class="text-center">Pts</th>
+                        <th class="text-center">{{ 'detail.pts' | transloco }}</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -113,7 +113,7 @@
                       } @empty {
                         <tr>
                           <td colspan="5" class="text-center placeholder-text">
-                            Sin equipos cargados en {{ zone.zoneName }}.
+                            {{ 'champDetail.noTeamsIn' | transloco: { zone: (zone.zoneName | round) } }}
                           </td>
                         </tr>
                       }
@@ -127,7 +127,7 @@
                     class="link-action-btn"
                     (click)="openZoneTable(zone.zoneName)"
                   >
-                    Ver {{ zone.zoneName }} completa ➔
+                    {{ 'champDetail.seeZone' | transloco: { zone: (zone.zoneName | round) } }}
                   </button>
                 </div>
               </div>
@@ -136,7 +136,7 @@
         } @else {
           <div class="card-box full-width-card">
             <div class="card-header-row">
-              <h3>Tabla de posiciones</h3>
+              <h3>{{ 'champDetail.standings' | transloco }}</h3>
             </div>
 
             <div class="table-responsive">
@@ -144,13 +144,13 @@
                 <thead>
                   <tr>
                     <th class="text-center" style="width: 50px">#</th>
-                    <th>Equipo</th>
+                    <th>{{ 'detail.team' | transloco }}</th>
                     <th class="text-center">PJ</th>
                     <th class="text-center">G</th>
                     <th class="text-center">E</th>
                     <th class="text-center">P</th>
                     <th class="text-center">DG</th>
-                    <th class="text-center">Pts</th>
+                    <th class="text-center">{{ 'detail.pts' | transloco }}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -173,7 +173,7 @@
                   } @empty {
                     <tr>
                       <td colspan="8" class="text-center placeholder-text">
-                        No hay equipos registrados en este campeonato.
+                        {{ 'champDetail.noTeams' | transloco }}
                       </td>
                     </tr>
                   }
@@ -183,7 +183,7 @@
 
             <div class="card-footer-link">
               <button type="button" class="link-action-btn" (click)="setTab('table')">
-                Ver tabla completa ➔
+                {{ 'detail.fullTableArrow' | transloco }}
               </button>
             </div>
           </div>
@@ -193,9 +193,9 @@
         <div class="lower-grid-row">
           <div class="card-box half-card">
             <div class="card-header-row">
-              <h3>Próximos partidos</h3>
+              <h3>{{ 'champDetail.upcoming' | transloco }}</h3>
               <button type="button" class="link-action-btn" (click)="setTab('matches')">
-                Ver todos ➔
+                {{ 'detail.seeAllArrow' | transloco }}
               </button>
             </div>
 
@@ -216,16 +216,16 @@
                   </div>
                 </div>
               } @empty {
-                <p class="placeholder-text">No hay próximos partidos programados.</p>
+                <p class="placeholder-text">{{ 'champDetail.noUpcoming' | transloco }}</p>
               }
             </div>
           </div>
 
           <div class="card-box half-card">
             <div class="card-header-row">
-              <h3>Goleadores</h3>
+              <h3>{{ 'detail.scorers' | transloco }}</h3>
               <button type="button" class="link-action-btn" (click)="setTab('scorers')">
-                Ver todos ➔
+                {{ 'detail.seeAllArrow' | transloco }}
               </button>
             </div>
 
@@ -234,8 +234,8 @@
                 <thead>
                   <tr>
                     <th style="width: 40px">#</th>
-                    <th>Jugador</th>
-                    <th class="text-end">Goles</th>
+                    <th>{{ 'detail.player' | transloco }}</th>
+                    <th class="text-end">{{ 'detail.goals' | transloco }}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -253,7 +253,7 @@
                   } @empty {
                     <tr>
                       <td colspan="3" class="text-center placeholder-text">
-                        Sin goles registrados.
+                        {{ 'champDetail.noGoals' | transloco }}
                       </td>
                     </tr>
                   }
@@ -276,7 +276,7 @@
               [class.active]="selectedZone() === 'ALL'"
               (click)="selectedZone.set('ALL')"
             >
-              Todas las zonas
+              {{ 'champDetail.allZones' | transloco }}
             </button>
             @for (zone of zoneTables(); track zone.zoneName) {
               <button
@@ -285,7 +285,7 @@
                 [class.active]="selectedZone() === zone.zoneName"
                 (click)="selectedZone.set(zone.zoneName)"
               >
-                {{ zone.zoneName }}
+                {{ zone.zoneName | round }}
               </button>
             }
           </div>
@@ -293,7 +293,7 @@
           @for (zone of filteredZoneTables(); track zone.zoneName) {
             <div class="card-box">
               <div class="card-header-row">
-                <h3>{{ zone.zoneName }} ({{ zone.rows.length }} equipos)</h3>
+                <h3>{{ 'champDetail.zoneTeams' | transloco: { zone: (zone.zoneName | round), count: zone.rows.length } }}</h3>
               </div>
 
               <div class="table-responsive">
@@ -301,7 +301,7 @@
                   <thead>
                     <tr>
                       <th class="text-center" style="width: 50px">#</th>
-                      <th>Equipo</th>
+                      <th>{{ 'detail.team' | transloco }}</th>
                       <th class="text-center">PJ</th>
                       <th class="text-center">G</th>
                       <th class="text-center">E</th>
@@ -309,7 +309,7 @@
                       <th class="text-center">GF</th>
                       <th class="text-center">GC</th>
                       <th class="text-center">DG</th>
-                      <th class="text-center">Pts</th>
+                      <th class="text-center">{{ 'detail.pts' | transloco }}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -334,7 +334,7 @@
                     } @empty {
                       <tr>
                         <td colspan="10" class="text-center placeholder-text">
-                          No hay equipos asignados a {{ zone.zoneName }}.
+                          {{ 'champDetail.noTeamsZone' | transloco: { zone: (zone.zoneName | round) } }}
                         </td>
                       </tr>
                     }
@@ -347,7 +347,7 @@
       } @else {
         <div class="card-box">
           <div class="card-header-row">
-            <h3>Tabla de posiciones completa ({{ fullStandings().length }} equipos)</h3>
+            <h3>{{ 'champDetail.fullStandings' | transloco: { count: fullStandings().length } }}</h3>
           </div>
 
           <div class="table-responsive">
@@ -355,7 +355,7 @@
               <thead>
                 <tr>
                   <th class="text-center" style="width: 50px">#</th>
-                  <th>Equipo</th>
+                  <th>{{ 'detail.team' | transloco }}</th>
                   <th class="text-center">PJ</th>
                   <th class="text-center">G</th>
                   <th class="text-center">E</th>
@@ -363,7 +363,7 @@
                   <th class="text-center">GF</th>
                   <th class="text-center">GC</th>
                   <th class="text-center">DG</th>
-                  <th class="text-center">Pts</th>
+                  <th class="text-center">{{ 'detail.pts' | transloco }}</th>
                 </tr>
               </thead>
               <tbody>
@@ -388,7 +388,7 @@
                 } @empty {
                   <tr>
                     <td colspan="10" class="text-center placeholder-text">
-                      No hay equipos asignados a este campeonato.
+                      {{ 'champDetail.noTeamsAssigned' | transloco }}
                     </td>
                   </tr>
                 }
@@ -403,7 +403,7 @@
     @if (activeTab() === 'matches') {
       <div class="card-box">
         <div class="card-header-row">
-          <h3>Calendario de partidos por fecha ({{ allTournamentMatches().length }})</h3>
+          <h3>{{ 'champDetail.calendar' | transloco: { count: allTournamentMatches().length } }}</h3>
         </div>
 
         <div class="rounds-accordion-list">
@@ -415,10 +415,9 @@
                 (click)="toggleRound(group.roundTitle)"
               >
                 <div class="round-header-left">
-                  <span class="round-title-text">{{ group.roundTitle }}</span>
+                  <span class="round-title-text">{{ group.roundTitle | round }}</span>
                   <span class="round-count-badge">
-                    {{ group.matches.length }}
-                    {{ group.matches.length === 1 ? 'partido' : 'partidos' }}
+                    {{ (group.matches.length === 1 ? 'matchList.count_one' : 'matchList.count_other') | transloco: { count: group.matches.length } }}
                   </span>
                 </div>
 
@@ -456,7 +455,7 @@
               }
             </div>
           } @empty {
-            <p class="placeholder-text">No hay partidos registrados para este campeonato.</p>
+            <p class="placeholder-text">{{ 'champDetail.noMatches' | transloco }}</p>
           }
         </div>
       </div>
@@ -466,7 +465,7 @@
     @if (activeTab() === 'scorers') {
       <div class="card-box">
         <div class="card-header-row">
-          <h3>Tabla de Goleadores</h3>
+          <h3>{{ 'champDetail.scorersTable' | transloco }}</h3>
         </div>
 
         <div class="table-responsive">
@@ -474,9 +473,9 @@
             <thead>
               <tr>
                 <th style="width: 50px">#</th>
-                <th>Jugador</th>
-                <th>Equipo</th>
-                <th class="text-end">Goles</th>
+                <th>{{ 'detail.player' | transloco }}</th>
+                <th>{{ 'detail.team' | transloco }}</th>
+                <th class="text-end">{{ 'detail.goals' | transloco }}</th>
               </tr>
             </thead>
             <tbody>
@@ -495,7 +494,7 @@
               } @empty {
                 <tr>
                   <td colspan="4" class="text-center placeholder-text">
-                    Aún no hay goles registrados en este torneo.
+                    {{ 'champDetail.noGoalsYet' | transloco }}
                   </td>
                 </tr>
               }
@@ -509,7 +508,7 @@
     @if (activeTab() === 'cards') {
       <div class="card-box">
         <div class="card-header-row">
-          <h3>Tarjetas y Disciplina</h3>
+          <h3>{{ 'champDetail.discipline' | transloco }}</h3>
         </div>
 
         <div class="table-responsive">
@@ -517,10 +516,10 @@
             <thead>
               <tr>
                 <th style="width: 50px">#</th>
-                <th>Jugador</th>
-                <th>Equipo</th>
-                <th class="text-center">🟨 Amarillas</th>
-                <th class="text-center">🟥 Rojas</th>
+                <th>{{ 'detail.player' | transloco }}</th>
+                <th>{{ 'detail.team' | transloco }}</th>
+                <th class="text-center">{{ 'champDetail.yellowsIcon' | transloco }}</th>
+                <th class="text-center">{{ 'champDetail.redsIcon' | transloco }}</th>
               </tr>
             </thead>
             <tbody>
@@ -542,7 +541,7 @@
               } @empty {
                 <tr>
                   <td colspan="5" class="text-center placeholder-text">
-                    No hay tarjetas registradas para los jugadores de este torneo.
+                    {{ 'champDetail.noCards' | transloco }}
                   </td>
                 </tr>
               }
@@ -552,6 +551,6 @@
       </div>
     }
   } @else {
-    <p class="placeholder-text">Cargando información del campeonato...</p>
+    <p class="placeholder-text">{{ 'champDetail.loading' | transloco }}</p>
   }
 </div>

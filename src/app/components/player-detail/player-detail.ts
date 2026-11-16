@@ -1,4 +1,7 @@
 import { Component, input, signal, inject, computed } from '@angular/core';
+import { TranslocoPipe } from '@jsverse/transloco';
+import { CountryPipe } from '../../i18n/country.pipe';
+import { LocalizedDatePipe, TranslateOrOriginalPipe } from '../../i18n/data.pipes';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { Player } from '../../models/Player';
@@ -8,7 +11,7 @@ import { AuthService } from '../../services/auth-service';
 @Component({
   selector: 'app-player-detail',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, TranslocoPipe, CountryPipe, TranslateOrOriginalPipe, LocalizedDatePipe],
   templateUrl: './player-detail.html',
   styleUrl: './player-detail.css',
 })

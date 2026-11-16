@@ -17,8 +17,8 @@
       </svg>
     </div>
     <div>
-      <h3>Editar Campeonato</h3>
-      <p>Configura las reglas, formato y datos generales del torneo.</p>
+      <h3>{{ 'ui.editarCampeonato' | transloco }}</h3>
+      <p>{{ 'ui.configuraLasReglasFormatoYDatos' | transloco }}</p>
     </div>
   </div>
 
@@ -26,21 +26,21 @@
     <!-- Nombre y Temporada -->
     <div class="form-row">
       <div class="form-group">
-        <label>Nombre del Campeonato <span class="required">*</span></label>
-        <input type="text" formControlName="name" placeholder="Ej. Liga Profesional" />
+        <label>{{ 'ui.nombreDelCampeonato2' | transloco }} <span class="required">*</span></label>
+        <input type="text" formControlName="name" [placeholder]="'ui.ejLigaProfesional' | transloco" />
         @if (champForm.get('name')?.invalid && champForm.get('name')?.touched) {
           <div class="error-feedback">
-            <span class="error-text">El nombre es obligatorio.</span>
+            <span class="error-text">{{ 'ui.elNombreEsObligatorio' | transloco }}</span>
           </div>
         }
       </div>
 
       <div class="form-group">
-        <label>Temporada</label>
-        <input type="text" formControlName="season" placeholder="Ej. 2026 o 2026/2027" />
+        <label>{{ 'ui.temporada' | transloco }}</label>
+        <input type="text" formControlName="season" [placeholder]="'ui.ej2026O20262027' | transloco" />
         @if (champForm.hasError('duplicate')) {
           <div class="error-feedback">
-            <span class="error-text">Ya existe un campeonato con ese nombre y temporada.</span>
+            <span class="error-text">{{ 'ui.yaExisteUnCampeonatoConEse' | transloco }}</span>
           </div>
         }
       </div>
@@ -50,7 +50,7 @@
     <div class="form-row">
       <!-- Selector de País -->
       <div class="form-group country-group">
-        <label>País / Región <span class="required">*</span></label>
+        <label>{{ 'ui.paisRegion' | transloco }} <span class="required">*</span></label>
         <div class="custom-dropdown" [class.open]="isCountryOpen">
           <button type="button" class="dropdown-trigger" (click)="toggleCountryDropdown($event)">
             <div class="dropdown-item-content">
@@ -64,7 +64,7 @@
                 }
               }
               <span [class.placeholder]="!selectedCountry">
-                {{ selectedCountryLabel || 'Seleccionar país...' }}
+                {{ selectedCountryLabel || ('ui.seleccionarPais' | transloco) }}
               </span>
             </div>
             <span class="triangle-icon"></span>
@@ -109,11 +109,11 @@
 
       <!-- Selector de Tipo de Torneo -->
       <div class="form-group type-group">
-        <label>Tipo de Torneo <span class="required">*</span></label>
+        <label>{{ 'ui.tipoDeTorneo' | transloco }} <span class="required">*</span></label>
         <div class="custom-dropdown" [class.open]="isTypeOpen">
           <button type="button" class="dropdown-trigger" (click)="toggleTypeDropdown($event)">
             <span [class.placeholder]="!champForm.get('type')?.value">
-              {{ champForm.get('type')?.value || 'Seleccionar tipo...' }}
+              {{ champForm.get('type')?.value || ('ui.seleccionarTipo' | transloco) }}
             </span>
             <span class="triangle-icon"></span>
           </button>
@@ -132,15 +132,15 @@
 
     <!-- URL del Logo -->
     <div class="form-group">
-      <label>URL del Logo <span class="required">*</span></label>
-      <input type="text" formControlName="logo" placeholder="https://..." />
+      <label>{{ 'ui.urlDelLogo' | transloco }} <span class="required">*</span></label>
+      <input type="text" formControlName="logo" [placeholder]="'ui.https' | transloco" />
     </div>
 
     <!-- Botones de Acción -->
     <div class="form-actions">
-      <button type="button" class="btn-cancel" (click)="onCancel()">Cancelar</button>
+      <button type="button" class="btn-cancel" (click)="onCancel()">{{ 'ui.cancelar' | transloco }}</button>
       <button type="submit" class="btn-submit" [disabled]="champForm.invalid">
-        Guardar Cambios
+        {{ 'ui.guardarCambios' | transloco }}
       </button>
     </div>
   </form>

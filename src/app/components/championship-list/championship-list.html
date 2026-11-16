@@ -1,6 +1,6 @@
 <div class="championship-list-container">
   <div class="header-title-section">
-    <h2>Campeonatos</h2>
+    <h2>{{ 'champList.title' | transloco }}</h2>
   </div>
 
   <!-- Barra de Búsqueda y Botón de Filtrar -->
@@ -20,7 +20,7 @@
         type="text"
         [ngModel]="searchText()"
         (ngModelChange)="searchText.set($event)"
-        placeholder="Buscar campeonatos..."
+        [placeholder]="'champList.searchPlaceholder' | transloco"
       />
     </div>
 
@@ -29,7 +29,7 @@
       <button type="button" class="filter-main-btn" (click)="toggleFilterPanel($event)">
         <div class="trigger-content">
           <i class="fas fa-filter"></i>
-          <span>Filtrar</span>
+          <span>{{ 'common.filter' | transloco }}</span>
         </div>
         <span class="triangle-icon" [class.rotate]="isFilterPanelOpen()"></span>
       </button>
@@ -38,14 +38,14 @@
         <div class="filter-panel-inner">
           <!-- Sección 1: Tipo de competencia -->
           <div class="filter-panel-section">
-            <span class="filter-panel-title">Tipo de competencia</span>
+            <span class="filter-panel-title">{{ 'champList.type' | transloco }}</span>
             <div class="sub-dropdown" [class.open]="isTypeDropdownOpen">
               <button
                 type="button"
                 class="sub-dropdown-trigger"
                 (click)="toggleTypeDropdown($event)"
               >
-                <span>{{ selectedTypeLabel }}</span>
+                <span>{{ selectedTypeLabel | transloco }}</span>
                 <span class="triangle-icon" [class.rotate]="isTypeDropdownOpen"></span>
               </button>
 
@@ -57,7 +57,7 @@
                       [class.active]="selectedType() === opt.value"
                       (click)="selectType(opt.value)"
                     >
-                      <span>{{ opt.label }}</span>
+                      <span>{{ opt.label | transloco }}</span>
                       @if (selectedType() === opt.value) {
                         <i class="fas fa-check check-icon"></i>
                       }
@@ -70,14 +70,14 @@
 
           <!-- Sección 2: País -->
           <div class="filter-panel-section">
-            <span class="filter-panel-title">País</span>
+            <span class="filter-panel-title">{{ 'common.country' | transloco }}</span>
             <div class="sub-dropdown" [class.open]="isCountryDropdownOpen">
               <button
                 type="button"
                 class="sub-dropdown-trigger"
                 (click)="toggleCountryDropdown($event)"
               >
-                <span>{{ selectedCountryLabel }}</span>
+                <span>{{ selectedCountry() === 'ALL' || selectedCountry() === 'Internacional' ? (selectedCountryLabel | transloco) : (selectedCountry() | country) }}</span>
                 <span class="triangle-icon" [class.rotate]="isCountryDropdownOpen"></span>
               </button>
 
@@ -99,7 +99,7 @@
                             <img loading="lazy" decoding="async" [src]="getCountryFlag(opt.value)" [alt]="opt.label" />
                           </div>
                         }
-                        <span>{{ opt.label }}</span>
+                        <span>{{ opt.value === 'ALL' || opt.value === 'Internacional' ? (opt.label | transloco) : (opt.value | country) }}</span>
                       </div>
                       @if (selectedCountry() === opt.value) {
                         <i class="fas fa-check check-icon"></i>
@@ -129,7 +129,7 @@
                 <img loading="lazy" decoding="async" [src]="group.groupFlag" [alt]="group.groupName" />
               </div>
             }
-            <h3>{{ group.groupName }}</h3>
+            <h3>{{ group.isInternational ? ('champList.international' | transloco) : (group.groupName | country) }}</h3>
           </div>
           <span class="triangle-icon" [class.rotate]="isGroupOpen(group.groupName)"></span>
         </div>
@@ -167,7 +167,7 @@
                       [class.league]="champ.type === 'LIGA'"
                       [class.cup]="champ.type === 'COPA'"
                     >
-                      {{ getTypeBadgeLabel(champ.type) }}
+                      {{ 'type.' + champ.type | transloco }}
                     </span>
                   </div>
                 </div>
@@ -178,7 +178,7 @@
       </div>
     } @empty {
       <div class="empty-state">
-        <p>No se encontraron campeonatos registrados en el sistema.</p>
+        <p>{{ 'champList.empty' | transloco }}</p>
       </div>
     }
   </div>

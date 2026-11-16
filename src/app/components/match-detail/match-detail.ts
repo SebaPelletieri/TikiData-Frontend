@@ -1,4 +1,6 @@
 import { Component, OnInit, inject, signal, computed } from '@angular/core';
+import { TranslocoPipe } from '@jsverse/transloco';
+import { IncidencePipe, TranslateOrOriginalPipe } from '../../i18n/data.pipes';
 import { CommonModule, DatePipe } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
@@ -24,7 +26,7 @@ export interface StandingRow {
 @Component({
   selector: 'app-match-detail',
   standalone: true,
-  imports: [CommonModule, RouterModule, DatePipe],
+  imports: [CommonModule, RouterModule, DatePipe, TranslocoPipe, TranslateOrOriginalPipe, IncidencePipe],
   templateUrl: './match-detail.html',
   styleUrl: './match-detail.css',
 })

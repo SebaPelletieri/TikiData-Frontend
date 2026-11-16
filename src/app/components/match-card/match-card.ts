@@ -3,11 +3,13 @@ import { ChangeDetectionStrategy, Component, computed, inject, input } from '@an
 import { RouterLink } from '@angular/router';
 import { Match } from '../../models/Match';
 import { TeamService } from '../../services/team-service';
+import { TranslocoPipe } from '@jsverse/transloco';
+import { RoundPipe } from '../../i18n/data.pipes';
 
 @Component({
   selector: 'app-match-card',
   standalone: true,
-  imports: [CommonModule, RouterLink, DatePipe],
+  imports: [CommonModule, RouterLink, DatePipe, TranslocoPipe, RoundPipe],
   styleUrl: './match-card.css',
   templateUrl: './match-card.html',
   changeDetection: ChangeDetectionStrategy.OnPush,

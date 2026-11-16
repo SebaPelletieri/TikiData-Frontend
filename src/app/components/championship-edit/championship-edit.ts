@@ -7,6 +7,7 @@ import {
   inject,
   HostListener,
 } from '@angular/core';
+import { TranslocoPipe } from '@jsverse/transloco';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ChampionshipService } from '../../services/championship-service';
@@ -20,7 +21,7 @@ import {
 @Component({
   selector: 'app-championship-edit',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, TranslocoPipe],
   templateUrl: './championship-edit.html',
   styleUrl: './championship-edit.css',
 })

@@ -21,7 +21,7 @@
         </a>
         @if (match()?.status) {
           <span class="status-badge-hero" [class.live]="match()?.status === 'En Vivo'">
-            {{ match()?.status }}
+            {{ 'status.' + match()?.status | transloco }}
           </span>
         }
       </div>
@@ -84,7 +84,7 @@
           [class.active]="activeTab() === tab"
           (click)="setTab(tab)"
         >
-          {{ tab }}
+          {{ 'matchDetail.tabs.' + tab | transloco }}
         </button>
       }
     </div>
@@ -102,7 +102,7 @@
             <img [src]="localTeam()?.shield" class="side-team-logo" alt="" />
             <span>{{ localTeam()?.name }}</span>
           </div>
-          <h3>Estadísticas del Partido</h3>
+          <h3>{{ 'matchDetail.stats' | transloco }}</h3>
           <div class="pitch-title-with-logo">
             <span>{{ awayTeam()?.name }}</span>
             <img [src]="awayTeam()?.shield" class="side-team-logo" alt="" />
@@ -114,7 +114,7 @@
             <div class="stat-bar-group">
               <div class="stat-labels-row">
                 <span>{{ stat.local }}{{ stat.unit || '' }}</span>
-                <span class="s-name">{{ stat.label }}</span>
+                <span class="s-name">{{ stat.label | tr: 'stats' }}</span>
                 <span>{{ stat.away }}{{ stat.unit || '' }}</span>
               </div>
               <div class="dual-progress-bar">
@@ -134,13 +134,13 @@
             </div>
           }
         } @else {
-          <p class="empty-msg">No hay estadísticas disponibles para este partido.</p>
+          <p class="empty-msg">{{ 'matchDetail.noStats' | transloco }}</p>
         }
       </div>
     } @else if (activeTab() === 'Alineaciones') {
       <!-- ================= PESTAÑA: ALINEACIONES ================= -->
       <div class="fs-card lineups-card-area">
-        <h3>Alineaciones del Partido</h3>
+        <h3>{{ 'matchDetail.lineups' | transloco }}</h3>
 
         @if (dynamicLineups(); as lineups) {
           <div class="lineups-lists-grid">
@@ -154,14 +154,14 @@
               </div>
 
               <div class="lineup-group-block">
-                <span class="section-subtitle-mini">Titulares</span>
+                <span class="section-subtitle-mini">{{ 'detail.starters' | transloco }}</span>
                 <div class="table-responsive">
                   <table class="sub-table">
                     <thead>
                       <tr>
                         <th>N°</th>
-                        <th>Jugador</th>
-                        <th>Pos</th>
+                        <th>{{ 'detail.player' | transloco }}</th>
+                        <th>{{ 'detail.pos' | transloco }}</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -181,7 +181,7 @@
                         </tr>
                       } @empty {
                         <tr>
-                          <td colspan="3" class="empty-lineup-cell">Sin titulares cargados</td>
+                          <td colspan="3" class="empty-lineup-cell">{{ 'matchDetail.noStarters' | transloco }}</td>
                         </tr>
                       }
                     </tbody>
@@ -190,14 +190,14 @@
               </div>
 
               <div class="lineup-group-block subs-divider">
-                <span class="section-subtitle-mini">Suplentes</span>
+                <span class="section-subtitle-mini">{{ 'detail.subs' | transloco }}</span>
                 <div class="table-responsive">
                   <table class="sub-table">
                     <thead>
                       <tr>
                         <th>N°</th>
-                        <th>Jugador</th>
-                        <th>Pos</th>
+                        <th>{{ 'detail.player' | transloco }}</th>
+                        <th>{{ 'detail.pos' | transloco }}</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -217,7 +217,7 @@
                         </tr>
                       } @empty {
                         <tr>
-                          <td colspan="3" class="empty-lineup-cell">Sin suplentes cargados</td>
+                          <td colspan="3" class="empty-lineup-cell">{{ 'matchDetail.noSubs' | transloco }}</td>
                         </tr>
                       }
                     </tbody>
@@ -236,14 +236,14 @@
               </div>
 
               <div class="lineup-group-block">
-                <span class="section-subtitle-mini">Titulares</span>
+                <span class="section-subtitle-mini">{{ 'detail.starters' | transloco }}</span>
                 <div class="table-responsive">
                   <table class="sub-table">
                     <thead>
                       <tr>
                         <th>N°</th>
-                        <th>Jugador</th>
-                        <th>Pos</th>
+                        <th>{{ 'detail.player' | transloco }}</th>
+                        <th>{{ 'detail.pos' | transloco }}</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -263,7 +263,7 @@
                         </tr>
                       } @empty {
                         <tr>
-                          <td colspan="3" class="empty-lineup-cell">Sin titulares cargados</td>
+                          <td colspan="3" class="empty-lineup-cell">{{ 'matchDetail.noStarters' | transloco }}</td>
                         </tr>
                       }
                     </tbody>
@@ -272,14 +272,14 @@
               </div>
 
               <div class="lineup-group-block subs-divider">
-                <span class="section-subtitle-mini">Suplentes</span>
+                <span class="section-subtitle-mini">{{ 'detail.subs' | transloco }}</span>
                 <div class="table-responsive">
                   <table class="sub-table">
                     <thead>
                       <tr>
                         <th>N°</th>
-                        <th>Jugador</th>
-                        <th>Pos</th>
+                        <th>{{ 'detail.player' | transloco }}</th>
+                        <th>{{ 'detail.pos' | transloco }}</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -299,7 +299,7 @@
                         </tr>
                       } @empty {
                         <tr>
-                          <td colspan="3" class="empty-lineup-cell">Sin suplentes cargados</td>
+                          <td colspan="3" class="empty-lineup-cell">{{ 'matchDetail.noSubs' | transloco }}</td>
                         </tr>
                       }
                     </tbody>
@@ -309,13 +309,13 @@
             </div>
           </div>
         } @else {
-          <p class="empty-msg">No hay alineaciones disponibles para este partido.</p>
+          <p class="empty-msg">{{ 'matchDetail.noLineups' | transloco }}</p>
         }
       </div>
     } @else if (activeTab() === 'Eventos') {
       <!-- ================= PESTAÑA: EVENTOS ================= -->
       <div class="fs-card events-card-area">
-        <h3>Cronología de Eventos</h3>
+        <h3>{{ 'matchDetail.timeline' | transloco }}</h3>
         <div class="events-timeline">
           @for (inc of match()?.incidences; track $index) {
             <div class="event-row">
@@ -331,27 +331,27 @@
                   🔄
                 }
               </span>
-              <span class="ev-desc">{{ inc.text }}</span>
+              <span class="ev-desc">{{ inc.text | incidence }}</span>
             </div>
           } @empty {
-            <p class="empty-msg">No hay eventos registrados para este partido.</p>
+            <p class="empty-msg">{{ 'matchDetail.noEvents' | transloco }}</p>
           }
         </div>
       </div>
     } @else if (activeTab() === 'Cara a cara') {
       <!-- ================= PESTAÑA: CARA A CARA (H2H) ================= -->
       <div class="fs-card">
-        <h3>Historial Cara a Cara</h3>
+        <h3>{{ 'matchDetail.h2h' | transloco }}</h3>
 
         @if (h2hData(); as h2h) {
           <div style="margin-bottom: 1.5rem">
             <div class="stat-labels-row" style="margin-bottom: 0.5rem">
               <span
-                ><strong>{{ localTeam()?.name }}:</strong> {{ h2h.localWins }} PG</span
+                ><strong>{{ localTeam()?.name }}:</strong> {{ h2h.localWins }} {{ 'matchDetail.wins' | transloco }}</span
               >
-              <span class="s-name">Empates: {{ h2h.draws }} (Total: {{ h2h.totalMatches }})</span>
+              <span class="s-name">{{ 'matchDetail.draws' | transloco: { draws: h2h.draws, total: h2h.totalMatches } }}</span>
               <span
-                ><strong>{{ awayTeam()?.name }}:</strong> {{ h2h.awayWins }} PG</span
+                ><strong>{{ awayTeam()?.name }}:</strong> {{ h2h.awayWins }} {{ 'matchDetail.wins' | transloco }}</span
               >
             </div>
             <div class="dual-progress-bar">
@@ -374,16 +374,16 @@
             </div>
           </div>
 
-          <span class="section-subtitle-mini">Últimos enfrentamientos</span>
+          <span class="section-subtitle-mini">{{ 'matchDetail.lastMeetings' | transloco }}</span>
           <div class="table-responsive">
             <table class="sub-table">
               <thead>
                 <tr>
-                  <th>Fecha</th>
-                  <th>Competición</th>
-                  <th>Local</th>
-                  <th style="text-align: center">Resultado</th>
-                  <th>Visitante</th>
+                  <th>{{ 'matchDetail.date' | transloco }}</th>
+                  <th>{{ 'matchDetail.competition' | transloco }}</th>
+                  <th>{{ 'matchDetail.home' | transloco }}</th>
+                  <th style="text-align: center">{{ 'matchDetail.result' | transloco }}</th>
+                  <th>{{ 'matchDetail.away' | transloco }}</th>
                 </tr>
               </thead>
               <tbody>
@@ -400,7 +400,7 @@
                 } @empty {
                   <tr>
                     <td colspan="5" class="empty-lineup-cell">
-                      Sin enfrentamientos previos cargados
+                      {{ 'matchDetail.noMeetings' | transloco }}
                     </td>
                   </tr>
                 }
@@ -408,13 +408,13 @@
             </table>
           </div>
         } @else {
-          <p class="empty-msg">No hay historial cara a cara cargado para este cruce.</p>
+          <p class="empty-msg">{{ 'matchDetail.noH2h' | transloco }}</p>
         }
       </div>
     } @else if (activeTab() === 'Tabla') {
       <!-- ================= PESTAÑA: TABLA DE POSICIONES ================= -->
       <div class="fs-card">
-        <h3>Tabla de Posiciones — {{ championship()?.name || match()?.championshipName }}</h3>
+        <h3>{{ 'matchDetail.standingsOf' | transloco }} — {{ championship()?.name || match()?.championshipName }}</h3>
 
         @if (standings().length) {
           <div class="table-responsive">
@@ -422,7 +422,7 @@
               <thead>
                 <tr>
                   <th>#</th>
-                  <th>Equipo</th>
+                  <th>{{ 'detail.team' | transloco }}</th>
                   <th>PJ</th>
                   <th>PG</th>
                   <th>PE</th>
@@ -430,7 +430,7 @@
                   <th>GF</th>
                   <th>GC</th>
                   <th>DG</th>
-                  <th>PTS</th>
+                  <th>{{ 'detail.pts' | transloco }}</th>
                 </tr>
               </thead>
               <tbody>
@@ -467,7 +467,7 @@
             </table>
           </div>
         } @else {
-          <p class="empty-msg">No hay datos de tabla disponibles para este campeonato.</p>
+          <p class="empty-msg">{{ 'matchDetail.noTable' | transloco }}</p>
         }
       </div>
     } @else {
@@ -475,7 +475,7 @@
       <div class="footstat-layout-grid">
         <!-- 1. EVENTOS -->
         <div class="fs-card events-card-area">
-          <h3>Eventos del partido</h3>
+          <h3>{{ 'matchDetail.events' | transloco }}</h3>
           <div class="events-timeline">
             @for (inc of match()?.incidences; track $index) {
               <div class="event-row">
@@ -491,23 +491,23 @@
                     🔄
                   }
                 </span>
-                <span class="ev-desc">{{ inc.text }}</span>
+                <span class="ev-desc">{{ inc.text | incidence }}</span>
               </div>
             } @empty {
-              <p class="empty-msg">No hay eventos registrados.</p>
+              <p class="empty-msg">{{ 'matchDetail.noEventsShort' | transloco }}</p>
             }
           </div>
         </div>
 
         <!-- 2. ESTADÍSTICAS -->
         <div class="fs-card stats-card-area">
-          <h3>Estadísticas del partido</h3>
+          <h3>{{ 'matchDetail.stats' | transloco }}</h3>
           @if (match()?.statistics?.length) {
             @for (stat of match()?.statistics; track stat.label) {
               <div class="stat-bar-group">
                 <div class="stat-labels-row">
                   <span>{{ stat.local }}{{ stat.unit || '' }}</span>
-                  <span class="s-name">{{ stat.label }}</span>
+                  <span class="s-name">{{ stat.label | tr: 'stats' }}</span>
                   <span>{{ stat.away }}{{ stat.unit || '' }}</span>
                 </div>
                 <div class="dual-progress-bar">
@@ -529,7 +529,7 @@
               </div>
             }
           } @else {
-            <p class="empty-msg">No hay estadísticas disponibles.</p>
+            <p class="empty-msg">{{ 'matchDetail.noStatsShort' | transloco }}</p>
           }
         </div>
 
@@ -537,7 +537,7 @@
         <div class="right-sidebar-area">
           @if (match()?.summary?.manOfTheMatch; as mvp) {
             <div class="fs-card">
-              <h3>Figura del partido</h3>
+              <h3>{{ 'matchDetail.mvp' | transloco }}</h3>
               <div class="mvp-box-fs">
                 <div class="mvp-avatar-placeholder">👤</div>
                 <div class="mvp-info">
@@ -563,13 +563,13 @@
 
           @if (match()?.summary?.text) {
             <div class="fs-card" style="margin-top: 1rem">
-              <h3>Crónica del partido</h3>
+              <h3>{{ 'matchDetail.report' | transloco }}</h3>
               <p class="summary-text">{{ match()?.summary?.text }}</p>
             </div>
           }
 
           <div class="fs-card" style="margin-top: 1rem">
-            <h3>Estadio</h3>
+            <h3>{{ 'detail.stadium' | transloco }}</h3>
             <div class="stadium-card-fs">
               <div class="stadium-img-box">🏟️ {{ match()?.stadium }}</div>
             </div>
@@ -579,7 +579,7 @@
         <!-- 4. ALINEACIONES EN LISTA EN LA PESTAÑA RESUMEN -->
         @if (dynamicLineups(); as lineups) {
           <div class="fs-card lineups-card-area">
-            <h3>Alineaciones Iniciales</h3>
+            <h3>{{ 'matchDetail.startingLineups' | transloco }}</h3>
             <div class="pitches-grid">
               <!-- Lista Local -->
               <div class="pitch-box">
@@ -591,14 +591,14 @@
                 </div>
 
                 <div class="lineup-group-block">
-                  <span class="section-subtitle-mini">Titulares</span>
+                  <span class="section-subtitle-mini">{{ 'detail.starters' | transloco }}</span>
                   <div class="table-responsive">
                     <table class="sub-table">
                       <thead>
                         <tr>
                           <th>N°</th>
-                          <th>Jugador</th>
-                          <th>Pos</th>
+                          <th>{{ 'detail.player' | transloco }}</th>
+                          <th>{{ 'detail.pos' | transloco }}</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -624,14 +624,14 @@
 
                 @if (lineups.localSubstitutes?.length) {
                   <div class="lineup-group-block subs-divider">
-                    <span class="section-subtitle-mini">Suplentes</span>
+                    <span class="section-subtitle-mini">{{ 'detail.subs' | transloco }}</span>
                     <div class="table-responsive">
                       <table class="sub-table">
                         <thead>
                           <tr>
                             <th>N°</th>
-                            <th>Jugador</th>
-                            <th>Pos</th>
+                            <th>{{ 'detail.player' | transloco }}</th>
+                            <th>{{ 'detail.pos' | transloco }}</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -667,14 +667,14 @@
                 </div>
 
                 <div class="lineup-group-block">
-                  <span class="section-subtitle-mini">Titulares</span>
+                  <span class="section-subtitle-mini">{{ 'detail.starters' | transloco }}</span>
                   <div class="table-responsive">
                     <table class="sub-table">
                       <thead>
                         <tr>
                           <th>N°</th>
-                          <th>Jugador</th>
-                          <th>Pos</th>
+                          <th>{{ 'detail.player' | transloco }}</th>
+                          <th>{{ 'detail.pos' | transloco }}</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -700,14 +700,14 @@
 
                 @if (lineups.awaySubstitutes?.length) {
                   <div class="lineup-group-block subs-divider">
-                    <span class="section-subtitle-mini">Suplentes</span>
+                    <span class="section-subtitle-mini">{{ 'detail.subs' | transloco }}</span>
                     <div class="table-responsive">
                       <table class="sub-table">
                         <thead>
                           <tr>
                             <th>N°</th>
-                            <th>Jugador</th>
-                            <th>Pos</th>
+                            <th>{{ 'detail.player' | transloco }}</th>
+                            <th>{{ 'detail.pos' | transloco }}</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -740,8 +740,8 @@
   </div>
 } @else if (errorLoading()) {
   <div class="loading-fs">
-    <p>No se pudo cargar el partido. Verifica que json-server esté corriendo en el puerto 3000.</p>
+    <p>{{ 'matchDetail.loadError' | transloco }}</p>
   </div>
 } @else {
-  <div class="loading-fs"><p>Cargando detalles...</p></div>
+  <div class="loading-fs"><p>{{ 'matchDetail.loading' | transloco }}</p></div>
 }

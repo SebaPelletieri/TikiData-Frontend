@@ -1,4 +1,7 @@
 import { Component, input, output, computed, signal, inject, OnInit } from '@angular/core';
+import { TranslocoPipe } from '@jsverse/transloco';
+import { CountryPipe } from '../../i18n/country.pipe';
+import { TranslateOrOriginalPipe } from '../../i18n/data.pipes';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
@@ -7,7 +10,7 @@ import { Player } from '../../models/Player';
 @Component({
   selector: 'app-team-roster',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, TranslocoPipe, CountryPipe, TranslateOrOriginalPipe],
   templateUrl: './team-roster.html',
   styleUrl: './team-roster.css',
 })

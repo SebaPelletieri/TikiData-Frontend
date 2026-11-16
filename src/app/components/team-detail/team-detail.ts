@@ -1,4 +1,7 @@
 import { Component, input, output, signal, inject, computed, OnInit } from '@angular/core';
+import { TranslocoPipe } from '@jsverse/transloco';
+import { CountryPipe } from '../../i18n/country.pipe';
+import { LocalizedDatePipe } from '../../i18n/data.pipes';
 import { CommonModule, DatePipe } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { goToLogin } from '../../utils/auth-redirect';
@@ -13,7 +16,7 @@ import { getCountryFlag as countryFlagUrl } from '../../utils/countries';
 @Component({
   selector: 'app-team-detail',
   standalone: true,
-  imports: [CommonModule, DatePipe, TeamRoster],
+  imports: [CommonModule, DatePipe, TeamRoster, TranslocoPipe, CountryPipe, LocalizedDatePipe],
   templateUrl: './team-detail.html',
   styleUrl: './team-detail.css',
 })

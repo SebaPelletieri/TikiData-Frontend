@@ -16,21 +16,21 @@
       </svg>
     </div>
     <div>
-      <h2>Nuevo Jugador</h2>
-      <p>Completa la ficha técnica y deportiva del jugador.</p>
+      <h2>{{ 'ui.nuevoJugador' | transloco }}</h2>
+      <p>{{ 'ui.completaLaFichaTecnicaYDeportiva' | transloco }}</p>
     </div>
   </div>
 
   <form [formGroup]="formulario" (ngSubmit)="savePlayer()">
     <!-- Nombre -->
     <div class="form-group">
-      <label for="name">Nombre completo <span class="required">*</span></label>
+      <label for="name">{{ 'ui.nombreCompleto' | transloco }} <span class="required">*</span></label>
       <input
         id="name"
         type="text"
         formControlName="name"
         (input)="onNameInput($event)"
-        placeholder="Ej. Lionel Messi"
+        [placeholder]="'ui.ejLionelMessi' | transloco"
       />
 
       @if (formulario.controls['name'].touched && formulario.controls['name'].invalid) {
@@ -47,7 +47,7 @@
             <line x1="12" y1="16" x2="12.01" y2="16"></line>
           </svg>
           <span class="error-text">
-            El nombre es obligatorio (mínimo 3 caracteres sin números).
+            {{ 'ui.elNombreEsObligatorioMinimo3' | transloco }}
           </span>
         </div>
       }
@@ -56,7 +56,7 @@
     <!-- Nacionalidad y Posición -->
     <div class="form-row">
       <div class="form-group nationality-group">
-        <label>Nacionalidad <span class="required">*</span></label>
+        <label>{{ 'ui.nacionalidad' | transloco }} <span class="required">*</span></label>
         <div
           class="custom-dropdown"
           [class.open]="isNationalityOpen"
@@ -72,7 +72,7 @@
                 </div>
               }
               <span [class.placeholder]="!selectedNationality">
-                {{ selectedNationality || 'Selecciona nacionalidad' }}
+                {{ selectedNationality || ('ui.seleccionaNacionalidad' | transloco) }}
               </span>
             </div>
             <span class="triangle-icon"></span>
@@ -83,7 +83,7 @@
               <li class="nationality-search">
                 <input
                   type="text"
-                  placeholder="Buscar país..."
+                  [placeholder]="'ui.buscarPais' | transloco"
                   autocomplete="off"
                   [value]="nationalitySearch"
                   (input)="nationalitySearch = $any($event.target).value"
@@ -117,7 +117,7 @@
                   }
                 </li>
               } @empty {
-                <li class="nationality-empty">No se encontraron países</li>
+                <li class="nationality-empty">{{ 'ui.noSeEncontraronPaises' | transloco }}</li>
               }
             </ul>
           }
@@ -138,13 +138,13 @@
               <line x1="12" y1="8" x2="12" y2="12"></line>
               <line x1="12" y1="16" x2="12.01" y2="16"></line>
             </svg>
-            <span class="error-text">La nacionalidad es obligatoria.</span>
+            <span class="error-text">{{ 'ui.laNacionalidadEsObligatoria' | transloco }}</span>
           </div>
         }
       </div>
 
       <div class="form-group">
-        <label>Posición <span class="required">*</span></label>
+        <label>{{ 'ui.posicion' | transloco }} <span class="required">*</span></label>
         <div
           class="custom-dropdown"
           [class.open]="isPositionOpen"
@@ -158,7 +158,7 @@
                 formulario.controls['position'].value ? 'var(--text-strong)' : 'var(--text-faint)'
               "
             >
-              {{ selectedPositionLabel || 'Selecciona posición' }}
+              {{ formulario.controls['position'].value ? ('positionName.' + formulario.controls['position'].value | transloco) + ' (' + ('position.' + formulario.controls['position'].value | transloco) + ')' : ('ui.seleccionaPosicion' | transloco) }}
             </span>
             <span class="triangle-icon"></span>
           </button>
@@ -172,7 +172,7 @@
                   (click)="selectPosition(pos.value)"
                 >
                   <div class="item-content">
-                    <span>{{ pos.label }}</span>
+                    <span>{{ 'positionName.' + pos.value | transloco }} ({{ 'position.' + pos.value | transloco }})</span>
                   </div>
                   @if (formulario.controls['position'].value === pos.value) {
                     <svg
@@ -206,7 +206,7 @@
               <line x1="12" y1="8" x2="12" y2="12"></line>
               <line x1="12" y1="16" x2="12.01" y2="16"></line>
             </svg>
-            <span class="error-text">La posición es obligatoria.</span>
+            <span class="error-text">{{ 'ui.laPosicionEsObligatoria' | transloco }}</span>
           </div>
         }
       </div>
@@ -215,7 +215,7 @@
     <!-- Fecha de Nacimiento y Edad -->
     <div class="form-row">
       <div class="form-group calendar-field-container">
-        <label>Fecha de nacimiento <span class="required">*</span></label>
+        <label>{{ 'ui.fechaDeNacimiento' | transloco }} <span class="required">*</span></label>
         <button
           type="button"
           class="calendar-trigger"
@@ -226,7 +226,7 @@
           (click)="toggleCalendar()"
         >
           <span [style.color]="formattedBirthDate ? 'var(--text-strong)' : 'var(--text-faint)'">
-            {{ formattedBirthDate || 'Selecciona fecha' }}
+            {{ formattedBirthDate || ('ui.seleccionaFecha' | transloco) }}
           </span>
           <svg
             class="calendar-icon"
@@ -270,13 +270,13 @@
             </div>
 
             <div class="calendar-weekdays">
-              <span class="calendar-weekday">Do</span>
-              <span class="calendar-weekday">Lu</span>
-              <span class="calendar-weekday">Ma</span>
-              <span class="calendar-weekday">Mi</span>
-              <span class="calendar-weekday">Ju</span>
-              <span class="calendar-weekday">Vi</span>
-              <span class="calendar-weekday">Sá</span>
+              <span class="calendar-weekday">{{ 'ui.do' | transloco }}</span>
+              <span class="calendar-weekday">{{ 'ui.lu' | transloco }}</span>
+              <span class="calendar-weekday">{{ 'ui.ma' | transloco }}</span>
+              <span class="calendar-weekday">{{ 'ui.mi' | transloco }}</span>
+              <span class="calendar-weekday">{{ 'ui.ju' | transloco }}</span>
+              <span class="calendar-weekday">{{ 'ui.vi' | transloco }}</span>
+              <span class="calendar-weekday">{{ 'ui.sa' | transloco }}</span>
             </div>
 
             <div class="calendar-grid">
@@ -308,25 +308,25 @@
               <line x1="12" y1="8" x2="12" y2="12"></line>
               <line x1="12" y1="16" x2="12.01" y2="16"></line>
             </svg>
-            <span class="error-text">Fecha obligatoria.</span>
+            <span class="error-text">{{ 'ui.fechaObligatoria' | transloco }}</span>
           </div>
         }
         @if (formulario.hasError('duplicate') && formulario.controls['birthDate'].touched) {
           <div class="error-feedback">
             <span class="error-text"
-              >Ya existe un jugador con ese nombre y fecha de nacimiento.</span
+              >{{ 'ui.yaExisteUnJugadorConEse' | transloco }}</span
             >
           </div>
         }
       </div>
 
       <div class="form-group">
-        <label for="age">Edad (Años)</label>
+        <label for="age">{{ 'ui.edadAnos' | transloco }}</label>
         <input
           id="age"
           type="number"
           formControlName="age"
-          placeholder="Auto"
+          [placeholder]="'ui.auto' | transloco"
           readonly
           class="input-readonly"
         />
@@ -335,7 +335,7 @@
 
     <!-- Pie Hábil -->
     <div class="form-group">
-      <label>Pie hábil <span class="required">*</span></label>
+      <label>{{ 'ui.pieHabil' | transloco }} <span class="required">*</span></label>
       <div
         class="custom-dropdown"
         [class.open]="isFootOpen"
@@ -352,7 +352,7 @@
                 : 'var(--text-faint)'
             "
           >
-            {{ formulario.controls['preferredFoot'].value || 'Selecciona pie hábil' }}
+            {{ formulario.controls['preferredFoot'].value ? (formulario.controls['preferredFoot'].value | tr: 'foot') : ('ui.seleccionaPieHabil' | transloco) }}
           </span>
           <span class="triangle-icon"></span>
         </button>
@@ -366,7 +366,7 @@
                 (click)="selectFoot(foot)"
               >
                 <div class="item-content">
-                  <span>{{ foot }}</span>
+                  <span>{{ foot | tr: 'foot' }}</span>
                 </div>
                 @if (formulario.controls['preferredFoot'].value === foot) {
                   <svg
@@ -402,30 +402,30 @@
             <line x1="12" y1="8" x2="12" y2="12"></line>
             <line x1="12" y1="16" x2="12.01" y2="16"></line>
           </svg>
-          <span class="error-text">El pie hábil es obligatorio.</span>
+          <span class="error-text">{{ 'ui.elPieHabilEsObligatorio' | transloco }}</span>
         </div>
       }
     </div>
 
     <!-- Foto del Jugador (URL) -->
     <div class="form-group">
-      <label for="photo">Foto del jugador <span class="required">*</span></label>
+      <label for="photo">{{ 'ui.fotoDelJugador' | transloco }} <span class="required">*</span></label>
       <div class="shield-container">
         <div class="url-input-wrapper">
           <input
             id="photo"
             type="url"
             formControlName="photo"
-            placeholder="https://ejemplo.com/jugador.png"
+            [placeholder]="'ui.httpsEjemploComJugadorPng' | transloco"
           />
-          <span class="dropzone-hint">Ingresa la URL pública de la foto del jugador</span>
+          <span class="dropzone-hint">{{ 'ui.ingresaLaUrlPublicaDeLa2' | transloco }}</span>
         </div>
 
         <div class="preview-box">
           @if (formulario.controls['photo'].value) {
             <img
               [src]="formulario.controls['photo'].value"
-              alt="Foto Jugador"
+              [alt]="'ui.fotoJugador' | transloco"
               class="uploaded-shield-img"
             />
             <button type="button" class="btn-remove-shield" (click)="removePhoto($event)">✕</button>
@@ -440,7 +440,7 @@
               <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
               <circle cx="12" cy="7" r="4"></circle>
             </svg>
-            <span class="preview-text">Vista previa</span>
+            <span class="preview-text">{{ 'ui.vistaPrevia' | transloco }}</span>
           }
         </div>
       </div>
@@ -458,28 +458,28 @@
             <line x1="12" y1="8" x2="12" y2="12"></line>
             <line x1="12" y1="16" x2="12.01" y2="16"></line>
           </svg>
-          <span class="error-text">La URL de la foto del jugador es obligatoria.</span>
+          <span class="error-text">{{ 'ui.laUrlDeLaFotoDel' | transloco }}</span>
         </div>
       }
     </div>
 
     <!-- Estadísticas Iniciales (Opcionales con placeholders distintos) -->
-    <div class="section-subtitle">Estadísticas iniciales</div>
+    <div class="section-subtitle">{{ 'ui.estadisticasIniciales' | transloco }}</div>
 
     <!-- Fila 1: Partidos jugados y Goles -->
     <div class="form-row">
       <div class="form-group">
         <label for="matchesPlayed"
-          >Partidos jugados
+          >{{ 'ui.partidosJugados' | transloco }}
           <span style="color: var(--text-muted); font-weight: normal; font-size: 0.78rem"
-            >(Opcional)</span
+            >{{ 'ui.opcional' | transloco }}</span
           ></label
         >
         <input
           id="matchesPlayed"
           type="text"
           inputmode="numeric"
-          placeholder="Ingrese los partidos jugados"
+          [placeholder]="'ui.ingreseLosPartidosJugados' | transloco"
           formControlName="matchesPlayed"
           (input)="onNumericInput('matchesPlayed', $event)"
         />
@@ -487,16 +487,16 @@
 
       <div class="form-group">
         <label for="goals"
-          >Goles
+          >{{ 'ui.goles' | transloco }}
           <span style="color: var(--text-muted); font-weight: normal; font-size: 0.78rem"
-            >(Opcional)</span
+            >{{ 'ui.opcional' | transloco }}</span
           ></label
         >
         <input
           id="goals"
           type="text"
           inputmode="numeric"
-          placeholder="Ingrese los goles"
+          [placeholder]="'ui.ingreseLosGoles' | transloco"
           formControlName="goals"
           (input)="onNumericInput('goals', $event)"
         />
@@ -507,16 +507,16 @@
     <div class="form-row">
       <div class="form-group">
         <label for="assists"
-          >Asistencias
+          >{{ 'ui.asistencias' | transloco }}
           <span style="color: var(--text-muted); font-weight: normal; font-size: 0.78rem"
-            >(Opcional)</span
+            >{{ 'ui.opcional' | transloco }}</span
           ></label
         >
         <input
           id="assists"
           type="text"
           inputmode="numeric"
-          placeholder="Ingrese las asistencias"
+          [placeholder]="'ui.ingreseLasAsistencias' | transloco"
           formControlName="assists"
           (input)="onNumericInput('assists', $event)"
         />
@@ -524,16 +524,16 @@
 
       <div class="form-group">
         <label for="yellowCards"
-          >Tarjetas amarillas
+          >{{ 'ui.tarjetasAmarillas' | transloco }}
           <span style="color: var(--text-muted); font-weight: normal; font-size: 0.78rem"
-            >(Opcional)</span
+            >{{ 'ui.opcional' | transloco }}</span
           ></label
         >
         <input
           id="yellowCards"
           type="text"
           inputmode="numeric"
-          placeholder="Ingrese las tarjetas amarillas"
+          [placeholder]="'ui.ingreseLasTarjetasAmarillas' | transloco"
           formControlName="yellowCards"
           (input)="onNumericInput('yellowCards', $event)"
         />
@@ -544,16 +544,16 @@
     <div class="form-row">
       <div class="form-group">
         <label for="redCards"
-          >Tarjetas rojas
+          >{{ 'ui.tarjetasRojas' | transloco }}
           <span style="color: var(--text-muted); font-weight: normal; font-size: 0.78rem"
-            >(Opcional)</span
+            >{{ 'ui.opcional' | transloco }}</span
           ></label
         >
         <input
           id="redCards"
           type="text"
           inputmode="numeric"
-          placeholder="Ingrese las tarjetas rojas"
+          [placeholder]="'ui.ingreseLasTarjetasRojas' | transloco"
           formControlName="redCards"
           (input)="onNumericInput('redCards', $event)"
         />
@@ -563,9 +563,9 @@
 
     <!-- Botones de Acción -->
     <div class="form-actions">
-      <button type="button" class="btn-cancel" (click)="cancel()">Cancelar</button>
+      <button type="button" class="btn-cancel" (click)="cancel()">{{ 'ui.cancelar' | transloco }}</button>
       <button type="submit" class="btn-save" [disabled]="formulario.invalid">
-        Guardar Jugador
+        {{ 'ui.guardarJugador' | transloco }}
       </button>
     </div>
   </form>

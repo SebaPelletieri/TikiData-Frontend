@@ -1,17 +1,17 @@
 <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="auth-form">
   <!-- Encabezado adentro de la tarjeta -->
   <div class="auth-header">
-    <h2 class="auth-title">Bienvenido a TikiData</h2>
-    <p class="auth-subtitle">Ingresa tus datos para acceder</p>
+    <h2 class="auth-title">{{ 'ui.bienvenidoATikidata' | transloco }}</h2>
+    <p class="auth-subtitle">{{ 'ui.ingresaTusDatosParaAcceder' | transloco }}</p>
   </div>
 
   <div class="form-group">
-    <label for="email">Correo electrónico</label>
+    <label for="email">{{ 'ui.correoElectronico' | transloco }}</label>
     <input
       id="email"
       type="email"
       formControlName="email"
-      placeholder="usuario@email.com"
+      [placeholder]="'ui.usuarioEmailCom' | transloco"
       [class.input-error]="
         (loginForm.get('email')?.invalid && loginForm.get('email')?.touched) || !!errorMessage
       "
@@ -30,13 +30,13 @@
           <line x1="12" y1="8" x2="12" y2="12"></line>
           <line x1="12" y1="16" x2="12.01" y2="16"></line>
         </svg>
-        <span class="error-text">Por favor, ingresa un correo electrónico válido.</span>
+        <span class="error-text">{{ 'ui.porFavorIngresaUnCorreoElectronico' | transloco }}</span>
       </div>
     }
   </div>
 
   <div class="form-group">
-    <label for="password">Contraseña</label>
+    <label for="password">{{ 'ui.contrasena' | transloco }}</label>
     <div class="password-input-wrapper">
       <input
         id="password"
@@ -53,7 +53,7 @@
         type="button"
         class="toggle-password-btn"
         (click)="togglePasswordVisibility()"
-        aria-label="Alternar visibilidad de contraseña"
+        [attr.aria-label]="'ui.alternarVisibilidadDeContrasena' | transloco"
       >
         @if (showPassword()) {
           <svg
@@ -96,7 +96,7 @@
           <line x1="12" y1="8" x2="12" y2="12"></line>
           <line x1="12" y1="16" x2="12.01" y2="16"></line>
         </svg>
-        <span class="error-text">La contraseña debe tener al menos 6 caracteres.</span>
+        <span class="error-text">{{ 'ui.laContrasenaDebeTenerAlMenos' | transloco }}</span>
       </div>
     }
   </div>
@@ -114,8 +114,8 @@
   }
 
   <button type="submit" class="btn-primary" [disabled]="loginForm.invalid || isSubmitting">
-    {{ isSubmitting ? 'Ingresando...' : 'Iniciar Sesión' }}
+    {{ isSubmitting ? ('ui.ingresando' | transloco) : ('ui.iniciarSesion' | transloco) }}
   </button>
 
-  <p class="auth-footer">¿No tienes una cuenta? <a routerLink="/register">Regístrate aquí</a></p>
+  <p class="auth-footer">{{ 'ui.noTienesUnaCuenta' | transloco }} <a routerLink="/register">{{ 'ui.registrateAqui' | transloco }}</a></p>
 </form>

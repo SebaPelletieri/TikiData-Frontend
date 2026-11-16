@@ -1,4 +1,8 @@
 import { Component, OnInit, inject, signal, computed, HostListener } from '@angular/core';
+import { localizedMonths } from '../../i18n/months';
+import { LanguageService } from '../../i18n/language-service';
+import { TranslocoService } from '@jsverse/transloco';
+import { TranslocoPipe } from '@jsverse/transloco';
 import { CommonModule, Location } from '@angular/common';
 import { goBackOr } from '../../utils/navigation';
 import { HttpClient } from '@angular/common/http';
@@ -49,11 +53,13 @@ interface ChampionshipLite {
 @Component({
   selector: 'app-team-edit',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, TranslocoPipe],
   templateUrl: './team-edit.html',
   styleUrl: './team-edit.css',
 })
 export class TeamEdit implements OnInit {
+  private language = inject(LanguageService);
+  private i18n = inject(TranslocoService);
   private fb = inject(FormBuilder);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
@@ -664,20 +670,13 @@ export class TeamEdit implements OnInit {
   currentMonth = new Date().getMonth();
   currentYear = new Date().getFullYear();
 
-  months = [
-    'Enero',
-    'Febrero',
-    'Marzo',
-    'Abril',
-    'Mayo',
-    'Junio',
-    'Julio',
-    'Agosto',
-    'Septiembre',
-    'Octubre',
-    'Noviembre',
-    'Diciembre',
-  ];
+  // Nombres de los meses en el idioma elegido (antes estaban fijos en español)
+
+  get months(): string[] {
+
+    return localizedMonths(this.language.locale());
+
+  }
   weekDays = ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'];
 
   get yearsList(): number[] {
@@ -763,7 +762,7 @@ export class TeamEdit implements OnInit {
       },
       error: (err) => {
         console.error('Error al cargar los datos del equipo:', err);
-        this.loadError.set('No se pudieron cargar los datos del equipo.');
+        this.loadError.set(this.i18n.translate('ui.noSePudieronCargarLosDatos'));
         this.isLoading.set(false);
       },
     });
@@ -982,7 +981,7 @@ export class TeamEdit implements OnInit {
     };
 
     if (this.playersList.some((p) => String(p.id) === String(toAdd!.id))) {
-      this.errorMessage.set('Este jugador ya forma parte del plantel.');
+      this.errorMessage.set(this.i18n.translate('ui.esteJugadorYaFormaParteDel'));
       return;
     }
 
@@ -1067,7 +1066,7 @@ export class TeamEdit implements OnInit {
       next: () => goBackOr(this.location, this.router),
       error: (err: any) => {
         console.error('Error al actualizar:', err);
-        this.errorMessage.set('No se pudieron guardar los cambios.');
+        this.errorMessage.set(this.i18n.translate('ui.noSePudieronGuardarLosCambios'));
       },
     });
   }

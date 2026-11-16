@@ -17,8 +17,8 @@
       </svg>
     </div>
     <div>
-      <h3>Editar Equipo</h3>
-      <p>Modifica los datos principales del club y gestiona los futbolistas de su plantilla.</p>
+      <h3>{{ 'ui.editarEquipo' | transloco }}</h3>
+      <p>{{ 'ui.modificaLosDatosPrincipalesDelClub' | transloco }}</p>
     </div>
   </div>
 
@@ -32,15 +32,15 @@
   <form [formGroup]="teamForm" (ngSubmit)="onSubmit()" class="team-form">
     <!-- Nombre -->
     <div class="form-group">
-      <label for="team-name">Nombre del Equipo <span class="required">*</span></label>
-      <input type="text" id="team-name" formControlName="name" placeholder="Ej. Fluminense" />
+      <label for="team-name">{{ 'ui.nombreDelEquipo2' | transloco }} <span class="required">*</span></label>
+      <input type="text" id="team-name" formControlName="name" [placeholder]="'ui.ejFluminense' | transloco" />
       @if (teamForm.get('name')?.invalid && teamForm.get('name')?.touched) {
         <div class="error-feedback">
           <span class="error-text">
             @if (teamForm.get('name')?.hasError('duplicate')) {
-              Ya existe otro equipo con ese nombre.
+              {{ 'ui.yaExisteOtroEquipoConEse' | transloco }}
             } @else {
-              El nombre del equipo es obligatorio.
+              {{ 'ui.elNombreDelEquipoEsObligatorio' | transloco }}
             }
           </span>
         </div>
@@ -50,7 +50,7 @@
     <!-- Fila: País y Fecha de fundación -->
     <div class="form-row">
       <div class="form-group">
-        <label>País de Origen <span class="required">*</span></label>
+        <label>{{ 'ui.paisDeOrigen' | transloco }} <span class="required">*</span></label>
         <div
           class="custom-dropdown"
           [class.open]="isCountryOpen()"
@@ -67,7 +67,7 @@
                 </div>
               }
               <span [class.placeholder]="!teamForm.get('country')?.value">
-                {{ teamForm.get('country')?.value || 'Seleccionar país...' }}
+                {{ teamForm.get('country')?.value || ('ui.seleccionarPais' | transloco) }}
               </span>
             </div>
             <span class="triangle-icon"></span>
@@ -106,13 +106,13 @@
         </div>
         @if (teamForm.get('country')?.touched && teamForm.get('country')?.invalid) {
           <div class="error-feedback">
-            <span class="error-text">El país es obligatorio.</span>
+            <span class="error-text">{{ 'ui.elPaisEsObligatorio' | transloco }}</span>
           </div>
         }
       </div>
 
       <div class="form-group calendar-field-container">
-        <label for="foundation">Fecha de fundación <span class="required">*</span></label>
+        <label for="foundation">{{ 'ui.fechaDeFundacion' | transloco }} <span class="required">*</span></label>
 
         <button
           type="button"
@@ -124,7 +124,7 @@
           (click)="toggleCalendar($event)"
         >
           <span [class.placeholder]="!formattedSelectedDate">
-            {{ formattedSelectedDate || 'Selecciona una fecha' }}
+            {{ formattedSelectedDate || ('ui.seleccionaUnaFecha' | transloco) }}
           </span>
           <svg
             class="calendar-icon"
@@ -236,7 +236,7 @@
           teamForm.get('yearOfFoundation')?.touched && teamForm.get('yearOfFoundation')?.invalid
         ) {
           <div class="error-feedback">
-            <span class="error-text">La fecha de fundación es obligatoria.</span>
+            <span class="error-text">{{ 'ui.laFechaDeFundacionEsObligatoria' | transloco }}</span>
           </div>
         }
       </div>
@@ -244,23 +244,23 @@
 
     <!-- Escudo (URL) -->
     <div class="form-group">
-      <label for="team-shield">Escudo (URL) <span class="required">*</span></label>
+      <label for="team-shield">{{ 'ui.escudoUrl' | transloco }} <span class="required">*</span></label>
       <input
         type="url"
         id="team-shield"
         formControlName="shield"
-        placeholder="https://ejemplo.com/escudo.png"
+        [placeholder]="'ui.httpsEjemploComEscudoPng' | transloco"
       />
       @if (teamForm.get('shield')?.invalid && teamForm.get('shield')?.touched) {
         <div class="error-feedback">
-          <span class="error-text">La URL del escudo es obligatoria.</span>
+          <span class="error-text">{{ 'ui.laUrlDelEscudoEsObligatoria' | transloco }}</span>
         </div>
       }
     </div>
 
     <!-- Estadio Principal -->
     <div class="form-group">
-      <label for="stadium-search">Estadio Principal <span class="required">*</span></label>
+      <label for="stadium-search">{{ 'ui.estadioPrincipal' | transloco }} <span class="required">*</span></label>
       <div class="search-tag-container" [class.is-invalid]="stadiumError()">
         <div class="direct-search-input-box">
           <svg
@@ -278,7 +278,7 @@
             type="text"
             id="stadium-search"
             [formControl]="stadiumSearchCtrl"
-            placeholder="Escribe para buscar estadio..."
+            [placeholder]="'ui.escribeParaBuscarEstadio' | transloco"
             autocomplete="off"
           />
         </div>
@@ -287,7 +287,7 @@
             @for (std of filteredStadiums; track std.id) {
               <li class="suggestion-item" (click)="selectStadium(std)">
                 <span>{{ std.name }}</span>
-                <span class="add-action-text">Seleccionar</span>
+                <span class="add-action-text">{{ 'ui.seleccionar' | transloco }}</span>
               </li>
             }
           </ul>
@@ -295,14 +295,14 @@
       </div>
       @if (stadiumError()) {
         <div class="error-feedback">
-          <span class="error-text">Elige un estadio de la lista.</span>
+          <span class="error-text">{{ 'ui.eligeUnEstadioDeLaLista' | transloco }}</span>
         </div>
       }
     </div>
 
     <!-- Campeonatos activos -->
     <div class="form-group">
-      <label for="championship-search">Campeonatos activos <span class="required">*</span></label>
+      <label for="championship-search">{{ 'ui.campeonatosActivos' | transloco }} <span class="required">*</span></label>
 
       <div
         class="search-tag-container"
@@ -331,7 +331,7 @@
             (focus)="isChampionshipsFocused.set(true)"
             (blur)="teamForm.get('championshipsActive')?.markAsTouched()"
             [ngModelOptions]="{ standalone: true }"
-            placeholder="Escribe para buscar y añadir campeonatos..."
+            [placeholder]="'ui.escribeParaBuscarYAnadirCampeonatos' | transloco"
           />
         </div>
 
@@ -347,13 +347,13 @@
               >
                 <span>{{ item.name }}</span>
                 @if (chosenLeague) {
-                  <span class="blocked-badge">Ya juega {{ chosenLeague }}</span>
+                  <span class="blocked-badge">{{ 'ui.yaJuega' | transloco }} {{ chosenLeague }}</span>
                 } @else if (item.type === 'LIGA') {
-                  <span class="type-badge">Liga</span>
+                  <span class="type-badge">{{ 'ui.liga' | transloco }}</span>
                 }
               </li>
             } @empty {
-              <li class="suggestion-empty">No se encontraron campeonatos disponibles</li>
+              <li class="suggestion-empty">{{ 'ui.noSeEncontraronCampeonatosDisponibles' | transloco }}</li>
             }
           </ul>
         }
@@ -376,7 +376,7 @@
         teamForm.get('championshipsActive')?.touched && teamForm.get('championshipsActive')?.invalid
       ) {
         <div class="error-feedback">
-          <span class="error-text">Debes seleccionar al menos un campeonato.</span>
+          <span class="error-text">{{ 'ui.debesSeleccionarAlMenosUnCampeonato' | transloco }}</span>
         </div>
       }
     </div>
@@ -384,15 +384,15 @@
     <!-- SECCIÓN: Plantel de Futbolistas -->
     <div class="section-divider"></div>
     <div class="section-title-box">
-      <h4>Plantel de Futbolistas</h4>
-      <p>Busca e incorpora nuevos jugadores a la plantilla actual del equipo.</p>
+      <h4>{{ 'ui.plantelDeFutbolistas' | transloco }}</h4>
+      <p>{{ 'ui.buscaEIncorporaNuevosJugadoresA' | transloco }}</p>
     </div>
 
     <!-- Buscador de jugadores y Dorsal (1 a 99) -->
     <div class="player-adder-box">
       <div class="form-row player-row-grid">
         <div class="form-group search-player-group">
-          <label for="player-search">Nombre del Jugador</label>
+          <label for="player-search">{{ 'ui.nombreDelJugador' | transloco }}</label>
           <div class="direct-search-input-box">
             <svg
               viewBox="0 0 24 24"
@@ -409,7 +409,7 @@
               type="text"
               id="player-search"
               [formControl]="playerSearchCtrl"
-              placeholder="Buscar jugador..."
+              [placeholder]="'ui.buscarJugador' | transloco"
             />
           </div>
           @if (filteredPlayers.length > 0) {
@@ -419,7 +419,7 @@
                   <span
                     >{{ fp.name }} <small>({{ fp.position }})</small></span
                   >
-                  <span class="add-action-text">Seleccionar</span>
+                  <span class="add-action-text">{{ 'ui.seleccionar' | transloco }}</span>
                 </li>
               }
             </ul>
@@ -427,14 +427,14 @@
         </div>
 
         <div class="form-group number-col">
-          <label for="player-number">Dorsal (#)</label>
+          <label for="player-number">{{ 'ui.dorsal' | transloco }}</label>
           <input
             type="number"
             id="player-number"
             [formControl]="playerNumberCtrl"
             min="1"
             max="99"
-            placeholder="Ej. 10"
+            [placeholder]="'ui.ej10' | transloco"
           />
         </div>
 
@@ -446,7 +446,7 @@
             [disabled]="!isPlayerAdderValid()"
             (click)="addPlayer()"
           >
-            Añadir
+            {{ 'ui.anadir' | transloco }}
           </button>
         </div>
       </div>
@@ -455,7 +455,7 @@
     <!-- Chips / Lista visual de jugadores actuales -->
     @if (playersList.length > 0) {
       <div class="added-players-container">
-        <span class="players-counter-badge">Plantel actual ({{ playersList.length }})</span>
+        <span class="players-counter-badge">{{ 'ui.plantelActual' | transloco }}{{ playersList.length }})</span>
         <div class="players-chips-grid">
           @for (p of playersList; track p.id; let i = $index) {
             <div class="player-chip-card">
@@ -470,7 +470,7 @@
                 type="button"
                 class="btn-remove-chip"
                 (click)="removePlayer(i)"
-                title="Quitar jugador"
+                [title]="'ui.quitarJugador' | transloco"
               >
                 ✕
               </button>
@@ -489,9 +489,9 @@
 
     <!-- Botones de Acción -->
     <div class="form-actions">
-      <button type="button" class="btn-cancel" (click)="onCancel()">Cancelar</button>
+      <button type="button" class="btn-cancel" (click)="onCancel()">{{ 'ui.cancelar' | transloco }}</button>
       <button type="submit" class="btn-submit" [disabled]="teamForm.invalid || isLoading()">
-        {{ isLoading() ? 'Guardando...' : 'Guardar Cambios' }}
+        {{ isLoading() ? ('ui.guardando' | transloco) : ('ui.guardarCambios' | transloco) }}
       </button>
     </div>
   </form>

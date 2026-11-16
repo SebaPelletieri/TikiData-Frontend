@@ -1,4 +1,8 @@
 import { Component, OnInit, inject, Output, EventEmitter, HostListener } from '@angular/core';
+import { localizedMonths } from '../../i18n/months';
+import { LanguageService } from '../../i18n/language-service';
+import { TranslocoPipe } from '@jsverse/transloco';
+import { TranslateOrOriginalPipe } from '../../i18n/data.pipes';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { PlayerService } from '../../services/player-service';
@@ -20,11 +24,12 @@ interface CalendarDay {
 @Component({
   selector: 'app-player-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, TranslocoPipe, TranslateOrOriginalPipe],
   templateUrl: './player-form.html',
   styleUrls: ['./player-form.css'],
 })
 export class PlayerForm implements OnInit {
+  private language = inject(LanguageService);
   private fb = inject(FormBuilder);
   public playerService = inject(PlayerService);
 
@@ -94,20 +99,10 @@ export class PlayerForm implements OnInit {
   currentDate: Date = new Date();
   calendarDays: CalendarDay[] = [];
   yearsList: number[] = [];
-  monthsNames: string[] = [
-    'Enero',
-    'Febrero',
-    'Marzo',
-    'Abril',
-    'Mayo',
-    'Junio',
-    'Julio',
-    'Agosto',
-    'Septiembre',
-    'Octubre',
-    'Noviembre',
-    'Diciembre',
-  ];
+  // Nombres de los meses en el idioma elegido (antes estaban fijos en español)
+  get monthsNames(): string[] {
+    return localizedMonths(this.language.locale());
+  }
 
   ngOnInit(): void {
         if (this.playerService.players().length === 0) {

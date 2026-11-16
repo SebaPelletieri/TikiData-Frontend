@@ -1,4 +1,6 @@
 import { Component, EventEmitter, inject, Output, signal } from '@angular/core';
+import { TranslocoService } from '@jsverse/transloco';
+import { TranslocoPipe } from '@jsverse/transloco';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { RegisterRequest } from '../../models/RegisterRequest';
@@ -7,11 +9,12 @@ import { AuthService, RegisterTakenError } from '../../services/auth-service';
 @Component({
   selector: 'app-register-form',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterLink],
+  imports: [ReactiveFormsModule, RouterLink, TranslocoPipe],
   styleUrl: './register-form.css',
   templateUrl: './register-form.html',
 })
 export class RegisterForm {
+  private i18n = inject(TranslocoService);
   private fb = inject(FormBuilder);
   showPassword = signal(false);
   private emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -53,7 +56,7 @@ export class RegisterForm {
       this.authService.register(data).subscribe({
         next: () => {
           this.isSubmitting.set(false);
-          alert('¡Registro exitoso! Ya podés iniciar sesión.');
+          alert(this.i18n.translate('ui.registroExitosoYaPodesIniciarSesion'));
           this.router.navigate(['/login']);
         },
         error: (err) => {

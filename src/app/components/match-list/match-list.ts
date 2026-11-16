@@ -6,6 +6,9 @@ import { MatchCard } from '../match-card/match-card';
 import { Match } from '../../models/Match';
 import { getCountryFlag } from '../../utils/countries';
 import { compareEs } from '../../utils/sort';
+import { TranslocoPipe } from '@jsverse/transloco';
+import { compareCountries, CountryPipe } from '../../i18n/country.pipe';
+import { LanguageService } from '../../i18n/language-service';
 
 interface ChampionshipGroup {
   key: string;
@@ -25,7 +28,7 @@ const INTERNATIONAL = 'Internacional';
 
 @Component({
   standalone: true,
-  imports: [CommonModule, MatchCard],
+  imports: [CommonModule, MatchCard, TranslocoPipe, CountryPipe],
   selector: 'app-match-list',
   styleUrl: './match-list.css',
   templateUrl: './match-list.html',
@@ -35,6 +38,8 @@ export class MatchList implements OnInit {
   private championshipService = inject(ChampionshipService);
 
   selectedFilter = signal<string>('TODOS');
+  // Para ordenar los países por su nombre en el idioma elegido
+  private language = inject(LanguageService);
 
   // Cada campeonato muestra pocos partidos y suma más con "Ver más", para que la
   // página no se haga eterna (la Copa de la Liga sola tiene casi 200)
@@ -71,7 +76,7 @@ export class MatchList implements OnInit {
       if (!champs.has(key)) {
         champs.set(key, {
           key,
-          name: champ?.name || match.championshipName || 'Otros partidos',
+          name: champ?.name || match.championshipName || '',
           logo: champ?.logo,
           matches: [],
         });
@@ -80,10 +85,11 @@ export class MatchList implements OnInit {
     }
 
     const time = (m: Match) => new Date(m.date as string).getTime() || 0;
+    const byCountry_ = compareCountries(this.language.current());
     const isIntl = (c: string) => c.toLowerCase() === INTERNATIONAL.toLowerCase();
 
     return [...byCountry.entries()]
-      .sort(([a], [b]) => Number(isIntl(b)) - Number(isIntl(a)) || compareEs(a, b))
+      .sort(([a], [b]) => Number(isIntl(b)) - Number(isIntl(a)) || byCountry_(a, b))
       .map(([country, champs]) => {
         const championships = [...champs.values()]
           .sort((a, b) => compareEs(a.name, b.name))

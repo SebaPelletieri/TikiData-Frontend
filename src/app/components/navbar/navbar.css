@@ -1108,3 +1108,124 @@
     background-color: rgba(255, 107, 0, 0.24);
   }
 }
+
+/* =====================================================================
+   SELECTOR DE IDIOMA (bandera + código, menú desplegable)
+   ===================================================================== */
+.navbar__lang {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.navbar__lang-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 34px;
+  padding: 0 10px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--bg-search);
+  color: var(--text-soft);
+  font-family: inherit;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.navbar__lang-btn:hover,
+.navbar__lang--open .navbar__lang-btn {
+  border-color: #ff6b00;
+  color: var(--brand-orange-text, #ff6b00);
+}
+
+.navbar__lang-flag {
+  width: 20px;
+  height: 14px;
+  border-radius: 3px;
+  object-fit: cover;
+  flex-shrink: 0;
+  box-shadow: 0 0 0 1px rgba(var(--overlay-rgb), 0.15);
+}
+
+.navbar__lang-menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  min-width: 170px;
+  margin: 0;
+  padding: 6px;
+  list-style: none;
+  background-color: var(--surface-card);
+  border: 1px solid var(--warm-border, var(--border));
+  border-radius: 12px;
+  box-shadow: 0 14px 32px rgba(var(--shadow-rgb), calc(0.7 * var(--shadow-k)));
+  z-index: 10001;
+  animation: langMenuIn 0.16s ease-out both;
+}
+
+@keyframes langMenuIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
+.navbar__lang-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 10px;
+  border-radius: 8px;
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--text-soft);
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.navbar__lang-item:hover {
+  background-color: rgba(255, 107, 0, 0.12);
+  color: var(--brand-orange-text, #ff6b00);
+}
+
+.navbar__lang-item--active {
+  color: var(--brand-orange-text, #ff6b00);
+  font-weight: 700;
+}
+
+.navbar__lang-check {
+  margin-left: auto;
+  font-size: 0.75rem;
+}
+
+/* Celular y tablet: botón más chico, sin el código */
+@media (max-width: 900px) {
+  .navbar__lang-btn {
+    padding: 0 8px;
+  }
+
+  .navbar__lang-code {
+    display: none;
+  }
+}
+
+/* Celulares angostos (≤ 420px): con el selector de idioma sumado, el logo y los
+   botones no entraban y el ícono de búsqueda quedaba encima de "TikiData" */
+@media (max-width: 420px) {
+  .navbar__logo,
+  .navbar__logo:hover {
+    transform: scale(1.05);
+  }
+
+  .navbar__utils {
+    gap: 6px;
+  }
+
+  .navbar__lang-btn {
+    padding: 0 7px;
+  }
+}

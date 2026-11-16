@@ -9,6 +9,8 @@ import {
   inject,
   signal,
 } from '@angular/core';
+import { TranslocoService } from '@jsverse/transloco';
+import { TranslocoPipe } from '@jsverse/transloco';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth-service';
@@ -18,11 +20,12 @@ import { compressImage } from '../../utils/image';
 @Component({
   selector: 'app-admin-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, TranslocoPipe],
   templateUrl: './admin-form.html',
   styleUrl: './admin-form.css',
 })
 export class AdminForm implements OnInit {
+  private i18n = inject(TranslocoService);
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
 
@@ -86,7 +89,7 @@ export class AdminForm implements OnInit {
       },
       error: (err) => {
         console.error('Error al cargar usuario para editar:', err);
-        this.errorMessage.set('No se pudo cargar la información del administrador.');
+        this.errorMessage.set(this.i18n.translate('ui.noSePudoCargarLaInformacion'));
         this.isLoading.set(false);
       },
     });
@@ -109,7 +112,7 @@ export class AdminForm implements OnInit {
       this.adminForm.patchValue({ avatar: compressed });
       this.adminForm.get('avatar')?.markAsTouched();
     } catch (err) {
-      this.avatarError.set(err instanceof Error ? err.message : 'No se pudo cargar la imagen.');
+      this.avatarError.set(err instanceof Error ? err.message : this.i18n.translate('ui.noSePudoCargarLaImagen'));
       fileInput.value = '';
     } finally {
       this.isProcessingAvatar.set(false);
@@ -145,13 +148,13 @@ export class AdminForm implements OnInit {
 
       this.authService.updateUser(this.userIdToEdit, updateData).subscribe({
         next: () => {
-          this.successMessage.set('Administrador actualizado con éxito.');
+          this.successMessage.set(this.i18n.translate('ui.administradorActualizadoConExito'));
           this.isLoading.set(false);
           setTimeout(() => this.closePanel.emit(), 1000);
         },
         error: (err) => {
           console.error('Error al actualizar:', err);
-          this.errorMessage.set('Ocurrió un error al actualizar los datos.');
+          this.errorMessage.set(this.i18n.translate('ui.ocurrioUnErrorAlActualizarLos'));
           this.isLoading.set(false);
         },
       });
@@ -170,7 +173,7 @@ export class AdminForm implements OnInit {
 
       this.authService.register(newUserData as any).subscribe({
         next: () => {
-          this.successMessage.set('Administrador creado con éxito en el sistema.');
+          this.successMessage.set(this.i18n.translate('ui.administradorCreadoConExitoEnEl'));
           this.isLoading.set(false);
           this.adminForm.reset();
           this.avatarPreview = null;
@@ -178,7 +181,7 @@ export class AdminForm implements OnInit {
         },
         error: (err) => {
           console.error('Error al crear:', err);
-          this.errorMessage.set('Ocurrió un error al registrar el administrador.');
+          this.errorMessage.set(this.i18n.translate('ui.ocurrioUnErrorAlRegistrarEl'));
           this.isLoading.set(false);
         },
       });

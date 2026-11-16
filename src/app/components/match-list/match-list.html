@@ -6,28 +6,28 @@
       [class.active]="selectedFilter() === 'TODOS'"
       (click)="setFilter('TODOS')"
     >
-      Todos
+      {{ 'matchList.all' | transloco }}
     </button>
     <button
       type="button"
       [class.active]="selectedFilter() === 'En Vivo'"
       (click)="setFilter('En Vivo')"
     >
-      🔴 En Vivo
+      🔴 {{ 'matchList.live' | transloco }}
     </button>
     <button
       type="button"
       [class.active]="selectedFilter() === 'Programado'"
       (click)="setFilter('Programado')"
     >
-      Programados
+      {{ 'matchList.scheduled' | transloco }}
     </button>
     <button
       type="button"
       [class.active]="selectedFilter() === 'Finalizado'"
       (click)="setFilter('Finalizado')"
     >
-      Finalizados
+      {{ 'matchList.finished' | transloco }}
     </button>
   </div>
 
@@ -35,7 +35,7 @@
   @if (matchService.loading()) {
     <div class="loading-state">
       <div class="spinner"></div>
-      <p>Cargando partidos...</p>
+      <p>{{ 'matchList.loading' | transloco }}</p>
     </div>
   }
 
@@ -58,9 +58,9 @@
               } @else {
                 <span class="country-globe">🌎</span>
               }
-              <h3>{{ group.country }}</h3>
+              <h3>{{ group.country | country }}</h3>
               <span class="country-count">
-                {{ group.total }} {{ group.total === 1 ? 'partido' : 'partidos' }}
+                {{ (group.total === 1 ? 'matchList.count_one' : 'matchList.count_other') | transloco: { count: group.total } }}
               </span>
             </div>
             <span class="triangle-icon" [class.rotate]="isCountryOpen(group.country)"></span>
@@ -78,9 +78,9 @@
                     } @else {
                       <span class="league-icon"><i class="fas fa-trophy"></i></span>
                     }
-                    <h4>{{ champ.name }}</h4>
+                    <h4>{{ champ.name || ('matchList.otherMatches' | transloco) }}</h4>
                     <span class="league-count">
-                      {{ champ.matches.length }} {{ champ.matches.length === 1 ? 'partido' : 'partidos' }}
+                      {{ (champ.matches.length === 1 ? 'matchList.count_one' : 'matchList.count_other') | transloco: { count: champ.matches.length } }}
                     </span>
                   </div>
 
@@ -93,13 +93,13 @@
                   @if (remaining(champ) > 0) {
                     <div class="show-more-wrapper">
                       <button type="button" class="show-more-btn" (click)="showMore(champ)">
-                        Ver más partidos <span class="show-more-count">({{ remaining(champ) }})</span>
+                        {{ 'matchList.seeMore' | transloco }} <span class="show-more-count">({{ remaining(champ) }})</span>
                       </button>
                     </div>
                   } @else if (champ.matches.length > 6) {
                     <div class="show-more-wrapper">
                       <button type="button" class="show-more-btn show-less-btn" (click)="showLess(champ)">
-                        Ver menos
+                        {{ 'matchList.seeLess' | transloco }}
                       </button>
                     </div>
                   }
@@ -110,7 +110,7 @@
         </div>
       } @empty {
         <div class="empty-state">
-          <p>No hay partidos en esta categoría en este momento.</p>
+          <p>{{ 'matchList.empty' | transloco }}</p>
         </div>
       }
     </div>

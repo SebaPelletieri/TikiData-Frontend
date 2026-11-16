@@ -10,8 +10,8 @@
         </svg>
       </div>
       <div>
-        <h2>Editar Perfil</h2>
-        <p class="edit-subtitle">Actualiza la información y preferencias de tu cuenta.</p>
+        <h2>{{ 'ui.editarPerfil' | transloco }}</h2>
+        <p class="edit-subtitle">{{ 'ui.actualizaLaInformacionYPreferenciasDe' | transloco }}</p>
       </div>
     </div>
 
@@ -25,12 +25,12 @@
     <form [formGroup]="profileForm" (ngSubmit)="onSave()" class="edit-form-grid">
       <!-- Nombre de usuario -->
       <div class="form-group">
-        <label for="username">Nombre de usuario <span class="required">*</span></label>
+        <label for="username">{{ 'ui.nombreDeUsuario2' | transloco }} <span class="required">*</span></label>
         <input
           id="username"
           type="text"
           formControlName="username"
-          placeholder="Ej. Sebastian"
+          [placeholder]="'ui.ejSebastian' | transloco"
           [class.input-error]="
             profileForm.controls['username'].touched && profileForm.controls['username'].invalid
           "
@@ -51,10 +51,10 @@
             </svg>
             <span class="error-text">
               @if (profileForm.controls['username'].hasError('required')) {
-                El nombre de usuario es obligatorio.
+                {{ 'ui.elNombreDeUsuarioEsObligatorio' | transloco }}
               }
               @if (profileForm.controls['username'].hasError('minlength')) {
-                Mínimo 3 caracteres.
+                {{ 'ui.minimo3Caracteres' | transloco }}
               }
             </span>
           </div>
@@ -63,12 +63,12 @@
 
       <!-- Correo electrónico -->
       <div class="form-group">
-        <label for="email">Correo electrónico <span class="required">*</span></label>
+        <label for="email">{{ 'ui.correoElectronico' | transloco }} <span class="required">*</span></label>
         <input
           id="email"
           type="email"
           formControlName="email"
-          placeholder="Ej. correo@ejemplo.com"
+          [placeholder]="'ui.ejCorreoEjemploCom' | transloco"
           [class.input-error]="
             profileForm.controls['email'].touched && profileForm.controls['email'].invalid
           "
@@ -89,10 +89,10 @@
             </svg>
             <span class="error-text">
               @if (profileForm.controls['email'].hasError('required')) {
-                El correo es obligatorio.
+                {{ 'ui.elCorreoEsObligatorio' | transloco }}
               }
               @if (profileForm.controls['email'].hasError('email')) {
-                Ingresa un correo válido.
+                {{ 'ui.ingresaUnCorreoValido' | transloco }}
               }
             </span>
           </div>
@@ -101,7 +101,7 @@
 
       <!-- Contraseña -->
       <div class="form-group password-group-full">
-        <label for="password">Nueva contraseña (opcional)</label>
+        <label for="password">{{ 'ui.nuevaContrasenaOpcional' | transloco }}</label>
         <div class="password-input-wrapper">
           <input
             id="password"
@@ -116,7 +116,7 @@
             type="button"
             class="toggle-password-btn"
             (click)="togglePasswordVisibility()"
-            title="Mostrar/Ocultar contraseña"
+            [title]="'ui.mostrarOcultarContrasena' | transloco"
           >
             @if (showPassword) {
               <svg
@@ -159,14 +159,14 @@
               <line x1="12" y1="8" x2="12" y2="12"></line>
               <line x1="12" y1="16" x2="12.01" y2="16"></line>
             </svg>
-            <span class="error-text">La contraseña debe tener al menos 4 caracteres.</span>
+            <span class="error-text">{{ 'ui.laContrasenaDebeTenerAlMenos2' | transloco }}</span>
           </div>
         }
       </div>
 
       <!-- Zona de Foto de Perfil -->
       <div class="form-group upload-section-full">
-        <label>Foto de Perfil</label>
+        <label>{{ 'ui.fotoDePerfil' | transloco }}</label>
         <div class="shield-container">
           <label class="dropzone" for="avatar-file">
             <input
@@ -189,18 +189,18 @@
               <polyline points="17 8 12 3 7 8"></polyline>
               <line x1="12" y1="3" x2="12" y2="15"></line>
             </svg>
-            <span class="dropzone-text">Haz clic para subir la foto</span>
-            <span class="dropzone-hint">{{ isProcessingAvatar ? 'Procesando imagen…' : 'PNG o JPG · se ajusta automáticamente' }}</span>
+            <span class="dropzone-text">{{ 'ui.hazClicParaSubirLaFoto' | transloco }}</span>
+            <span class="dropzone-hint">{{ isProcessingAvatar ? ('ui.procesandoImagen' | transloco) : ('ui.pngOJpgSeAjustaAutomaticamente' | transloco) }}</span>
           </label>
 
           <div class="preview-box">
             @if (previewAvatar) {
-              <img [src]="previewAvatar" alt="Vista previa" class="uploaded-shield-img" />
+              <img [src]="previewAvatar" [alt]="'ui.vistaPrevia' | transloco" class="uploaded-shield-img" />
               <button
                 type="button"
                 class="btn-remove-shield"
                 (click)="removeAvatar()"
-                title="Quitar foto"
+                [title]="'ui.quitarFoto' | transloco"
               >
                 ✕
               </button>
@@ -215,7 +215,7 @@
                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                 <circle cx="12" cy="7" r="4"></circle>
               </svg>
-              <span class="preview-text">Vista previa</span>
+              <span class="preview-text">{{ 'ui.vistaPrevia' | transloco }}</span>
             }
           </div>
         </div>
@@ -226,9 +226,9 @@
 
       <!-- Botones de Acción -->
       <div class="form-actions-full">
-        <button type="button" class="btn-cancel" routerLink="/profile">Cancelar</button>
+        <button type="button" class="btn-cancel" routerLink="/profile">{{ 'ui.cancelar' | transloco }}</button>
         <button type="submit" class="btn-save-championship" [disabled]="profileForm.invalid">
-          Guardar Cambios
+          {{ 'ui.guardarCambios' | transloco }}
         </button>
       </div>
     </form>

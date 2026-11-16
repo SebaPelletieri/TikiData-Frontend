@@ -16,12 +16,12 @@
       </svg>
     </div>
     <div>
-      <h3>{{ isEditMode() ? 'Editar Administrador' : 'Nuevo Administrador' }}</h3>
+      <h3>{{ isEditMode() ? ('ui.editarAdministrador' | transloco) : ('ui.nuevoAdministrador' | transloco) }}</h3>
       <p>
         {{
           isEditMode()
-            ? 'Modifica los datos del administrador.'
-            : 'Completa los campos para registrar un nuevo administrador.'
+            ? ('ui.modificaLosDatosDelAdministrador' | transloco)
+            : ('ui.completaLosCamposParaRegistrarUn' | transloco)
         }}
       </p>
     </div>
@@ -38,12 +38,12 @@
   <form [formGroup]="adminForm" (ngSubmit)="onSubmit()" class="team-form">
     <!-- Nombre de Usuario -->
     <div class="form-group">
-      <label for="username">Nombre de usuario <span class="required">*</span></label>
+      <label for="username">{{ 'ui.nombreDeUsuario2' | transloco }} <span class="required">*</span></label>
       <input
         type="text"
         id="username"
         formControlName="username"
-        placeholder="Ej: admin_tiki"
+        [placeholder]="'ui.ejAdminTiki' | transloco"
         [class.invalid]="adminForm.get('username')?.invalid && adminForm.get('username')?.touched"
       />
       @if (adminForm.get('username')?.invalid && adminForm.get('username')?.touched) {
@@ -59,19 +59,19 @@
             <line x1="12" y1="8" x2="12" y2="12"></line>
             <line x1="12" y1="16" x2="12.01" y2="16"></line>
           </svg>
-          <span class="error-text">El nombre de usuario es obligatorio (mínimo 3 caracteres).</span>
+          <span class="error-text">{{ 'ui.elNombreDeUsuarioEsObligatorio2' | transloco }}</span>
         </div>
       }
     </div>
 
     <!-- Correo Electrónico -->
     <div class="form-group">
-      <label for="email">Correo electrónico <span class="required">*</span></label>
+      <label for="email">{{ 'ui.correoElectronico' | transloco }} <span class="required">*</span></label>
       <input
         type="email"
         id="email"
         formControlName="email"
-        placeholder="Ej: admin@tikidata.com"
+        [placeholder]="'ui.ejAdminTikidataCom' | transloco"
         [class.invalid]="adminForm.get('email')?.invalid && adminForm.get('email')?.touched"
       />
       @if (adminForm.get('email')?.invalid && adminForm.get('email')?.touched) {
@@ -87,7 +87,7 @@
             <line x1="12" y1="8" x2="12" y2="12"></line>
             <line x1="12" y1="16" x2="12.01" y2="16"></line>
           </svg>
-          <span class="error-text">Ingresa un correo electrónico válido.</span>
+          <span class="error-text">{{ 'ui.ingresaUnCorreoElectronicoValido' | transloco }}</span>
         </div>
       }
     </div>
@@ -95,14 +95,14 @@
     <!-- Contraseña (Solo requerida si no está en modo edición) -->
     @if (!isEditMode()) {
       <div class="form-group">
-        <label for="password">Contraseña <span class="required">*</span></label>
+        <label for="password">{{ 'ui.contrasena' | transloco }} <span class="required">*</span></label>
 
         <div class="password-input-wrapper">
           <input
             [type]="showPassword ? 'text' : 'password'"
             id="password"
             formControlName="password"
-            placeholder="Mínimo 6 caracteres"
+            [placeholder]="'ui.minimo6Caracteres' | transloco"
             [class.invalid]="
               adminForm.get('password')?.invalid && adminForm.get('password')?.touched
             "
@@ -111,7 +111,7 @@
             type="button"
             class="toggle-password-btn"
             (click)="togglePasswordVisibility()"
-            [attr.aria-label]="showPassword ? 'Ocultar contraseña' : 'Ver contraseña'"
+            [attr.aria-label]="showPassword ? ('ui.ocultarContrasena' | transloco) : ('ui.verContrasena' | transloco)"
           >
             @if (showPassword) {
               <svg
@@ -160,7 +160,7 @@
               <line x1="12" y1="8" x2="12" y2="12"></line>
               <line x1="12" y1="16" x2="12.01" y2="16"></line>
             </svg>
-            <span class="error-text">La contraseña debe tener al menos 6 caracteres.</span>
+            <span class="error-text">{{ 'ui.laContrasenaDebeTenerAlMenos' | transloco }}</span>
           </div>
         }
       </div>
@@ -168,7 +168,7 @@
 
     <!-- Foto de Perfil (Opcional) -->
     <div class="form-group">
-      <label>Foto de perfil</label>
+      <label>{{ 'ui.fotoDePerfil2' | transloco }}</label>
       <div class="shield-container">
         <label class="dropzone" for="avatar-file">
           <input
@@ -192,12 +192,12 @@
             <polyline points="17 8 12 3 7 8" />
             <line x1="12" y1="3" x2="12" y2="15" />
           </svg>
-          <span class="dropzone-text">Haz clic para subir la foto</span>
-          <span class="dropzone-hint">{{ isProcessingAvatar() ? 'Procesando imagen…' : 'PNG o JPG · se ajusta automáticamente' }}</span>
+          <span class="dropzone-text">{{ 'ui.hazClicParaSubirLaFoto' | transloco }}</span>
+          <span class="dropzone-hint">{{ isProcessingAvatar() ? ('ui.procesandoImagen' | transloco) : ('ui.pngOJpgSeAjustaAutomaticamente' | transloco) }}</span>
         </label>
         <div class="preview-box">
           @if (avatarPreview) {
-            <img [src]="avatarPreview" alt="Foto Perfil" class="uploaded-shield-img" />
+            <img [src]="avatarPreview" [alt]="'ui.fotoPerfil' | transloco" class="uploaded-shield-img" />
             <button type="button" class="btn-remove-shield" (click)="removeAvatar($event)">
               ✕
             </button>
@@ -212,7 +212,7 @@
               <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
               <circle cx="12" cy="7" r="4"></circle>
             </svg>
-            <span class="preview-text">Vista previa</span>
+            <span class="preview-text">{{ 'ui.vistaPrevia' | transloco }}</span>
           }
         </div>
       </div>
@@ -223,14 +223,14 @@
 
     <!-- Botones de Acción -->
     <div class="form-actions">
-      <button type="button" class="btn-cancel" (click)="onCancel()">Cancelar</button>
+      <button type="button" class="btn-cancel" (click)="onCancel()">{{ 'ui.cancelar' | transloco }}</button>
       <button type="submit" class="btn-submit" [disabled]="adminForm.invalid || isLoading()">
         {{
           isLoading()
-            ? 'Guardando...'
+            ? ('ui.guardando' | transloco)
             : isEditMode()
-              ? 'Actualizar Administrador'
-              : 'Crear Administrador'
+              ? ('ui.actualizarAdministrador' | transloco)
+              : ('ui.crearAdministrador' | transloco)
         }}
       </button>
     </div>

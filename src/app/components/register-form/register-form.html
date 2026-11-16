@@ -1,18 +1,18 @@
 <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="auth-form">
   <!-- Encabezado dentro de la tarjeta -->
   <div class="auth-header">
-    <h2 class="auth-title">Unite a TikiData</h2>
-    <p class="auth-subtitle">Crea tu cuenta para acceder a todas las funciones</p>
+    <h2 class="auth-title">{{ 'ui.uniteATikidata' | transloco }}</h2>
+    <p class="auth-subtitle">{{ 'ui.creaTuCuentaParaAccederA' | transloco }}</p>
   </div>
 
   <!-- Nombre de Usuario -->
   <div class="form-group">
-    <label for="userName">Nombre de Usuario</label>
+    <label for="userName">{{ 'ui.nombreDeUsuario' | transloco }}</label>
     <input
       id="userName"
       type="text"
       formControlName="userName"
-      placeholder="Ej: Nombre Apellido"
+      [placeholder]="'ui.ejNombreApellido' | transloco"
       [class.input-error]="
         registerForm.get('userName')?.invalid && registerForm.get('userName')?.touched
       "
@@ -32,11 +32,11 @@
         </svg>
         <span class="error-text">
           @if (registerForm.get('userName')?.errors?.['taken']) {
-            Ese nombre de usuario ya está en uso. Probá con otro.
+            {{ 'ui.eseNombreDeUsuarioYaEsta' | transloco }}
           } @else if (registerForm.get('userName')?.errors?.['required']) {
-            El nombre de usuario es obligatorio.
+            {{ 'ui.elNombreDeUsuarioEsObligatorio' | transloco }}
           } @else {
-            El nombre de usuario debe tener al menos 3 caracteres.
+            {{ 'ui.elNombreDeUsuarioDebeTener' | transloco }}
           }
         </span>
       </div>
@@ -45,12 +45,12 @@
 
   <!-- Correo Electrónico -->
   <div class="form-group">
-    <label for="email">Correo electrónico</label>
+    <label for="email">{{ 'ui.correoElectronico' | transloco }}</label>
     <input
       id="email"
       type="email"
       formControlName="email"
-      placeholder="usuario@email.com"
+      [placeholder]="'ui.usuarioEmailCom' | transloco"
       [class.input-error]="registerForm.get('email')?.invalid && registerForm.get('email')?.touched"
     />
     @if (registerForm.get('email')?.touched) {
@@ -61,7 +61,7 @@
             <line x1="12" y1="8" x2="12" y2="12"></line>
             <line x1="12" y1="16" x2="12.01" y2="16"></line>
           </svg>
-          <span class="error-text">El correo electrónico es obligatorio.</span>
+          <span class="error-text">{{ 'ui.elCorreoElectronicoEsObligatorio' | transloco }}</span>
         </div>
       } @else if (registerForm.get('email')?.errors?.['pattern']) {
         <div class="error-feedback">
@@ -70,7 +70,7 @@
             <line x1="12" y1="8" x2="12" y2="12"></line>
             <line x1="12" y1="16" x2="12.01" y2="16"></line>
           </svg>
-          <span class="error-text">Ingresá un correo válido (ej: usuario@gmail.com).</span>
+          <span class="error-text">{{ 'ui.ingresaUnCorreoValidoEjUsuario' | transloco }}</span>
         </div>
       } @else if (registerForm.get('email')?.errors?.['taken']) {
         <div class="error-feedback">
@@ -80,8 +80,8 @@
             <line x1="12" y1="16" x2="12.01" y2="16"></line>
           </svg>
           <span class="error-text">
-            Ya existe una cuenta con este correo.
-            <a routerLink="/login" class="error-link">Iniciá sesión</a>
+            {{ 'ui.yaExisteUnaCuentaConEste' | transloco }}
+            <a routerLink="/login" class="error-link">{{ 'ui.iniciaSesion' | transloco }}</a>
           </span>
         </div>
       }
@@ -90,7 +90,7 @@
 
   <!-- Contraseña -->
   <div class="form-group">
-    <label for="password">Contraseña</label>
+    <label for="password">{{ 'ui.contrasena' | transloco }}</label>
     <div class="password-input-wrapper">
       <input
         id="password"
@@ -105,7 +105,7 @@
         type="button"
         class="toggle-password-btn"
         (click)="togglePasswordVisibility()"
-        aria-label="Alternar visibilidad de contraseña"
+        [attr.aria-label]="'ui.alternarVisibilidadDeContrasena' | transloco"
       >
         @if (showPassword()) {
           <svg
@@ -147,7 +147,7 @@
           <line x1="12" y1="8" x2="12" y2="12"></line>
           <line x1="12" y1="16" x2="12.01" y2="16"></line>
         </svg>
-        <span class="error-text">La contraseña debe tener al menos 6 caracteres.</span>
+        <span class="error-text">{{ 'ui.laContrasenaDebeTenerAlMenos' | transloco }}</span>
       </div>
     }
   </div>
@@ -166,8 +166,8 @@
   }
 
   <button type="submit" class="btn-primary" [disabled]="registerForm.invalid || isSubmitting()">
-    {{ isSubmitting() ? 'Creando cuenta...' : 'Crear Cuenta' }}
+    {{ isSubmitting() ? ('ui.creandoCuenta' | transloco) : ('ui.crearCuenta' | transloco) }}
   </button>
 
-  <p class="auth-footer">¿Ya tienes una cuenta? <a routerLink="/login">Inicia sesión aquí</a></p>
+  <p class="auth-footer">{{ 'ui.yaTienesUnaCuenta' | transloco }} <a routerLink="/login">{{ 'ui.iniciaSesionAqui' | transloco }}</a></p>
 </form>

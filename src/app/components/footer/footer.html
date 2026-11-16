@@ -6,40 +6,39 @@
         <h3>Tiki<span class="brand-accent">Data</span></h3>
       </div>
       <p class="footer-desc">
-        La plataforma definitiva para seguir el fútbol argentino e internacional. Gestiona equipos,
-        campeonatos, jugadores y estadísticas en tiempo real.
+        {{ 'footer.desc' | transloco }}
       </p>
     </div>
 
     <div class="footer-links-col">
-      <h4>Navegación</h4>
+      <h4>{{ 'footer.navigation' | transloco }}</h4>
       <ul>
         <li>
-          <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Inicio</a>
+          <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">{{ 'nav.home' | transloco }}</a>
         </li>
         <li>
-          <a routerLink="/matches" routerLinkActive="active">Partidos</a>
+          <a routerLink="/matches" routerLinkActive="active">{{ 'nav.matches' | transloco }}</a>
         </li>
         <li>
-          <a routerLink="/championships" routerLinkActive="active">Campeonatos</a>
+          <a routerLink="/championships" routerLinkActive="active">{{ 'nav.championships' | transloco }}</a>
         </li>
         <li>
-          <a routerLink="/teams" routerLinkActive="active">Equipos</a>
+          <a routerLink="/teams" routerLinkActive="active">{{ 'nav.teams' | transloco }}</a>
         </li>
         <li>
-          <a routerLink="/players" routerLinkActive="active">Jugadores</a>
+          <a routerLink="/players" routerLinkActive="active">{{ 'nav.players' | transloco }}</a>
         </li>
       </ul>
     </div>
 
     <div class="footer-info-col">
-      <h4>Sistema</h4>
-      <p>Panel de Gestión y Estadísticas</p>
-      <p class="footer-version">Versión 1.0.0 - 2026</p>
+      <h4>{{ 'footer.system' | transloco }}</h4>
+      <p>{{ 'footer.panel' | transloco }}</p>
+      <p class="footer-version">{{ 'footer.version' | transloco }}</p>
     </div>
   </div>
 
   <div class="footer-bottom">
-    <p>&copy; 2026 <strong>Tiki<span class="brand-accent">Data</span></strong>. Todos los derechos reservados.</p>
+    <p>&copy; 2026 <strong>Tiki<span class="brand-accent">Data</span></strong>. {{ 'footer.rights' | transloco }}</p>
   </div>
 </footer>

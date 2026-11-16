@@ -1,15 +1,18 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
+import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
 import { User } from '../../models/User';
 import { UserManagementService } from '../../services/user-management-service';
 
 @Component({
   selector: 'app-user-list',
   standalone: true,
+  imports: [TranslocoPipe],
   templateUrl: './user-list.html',
   styleUrl: './user-list.css',
 })
 export class UserList implements OnInit {
   private userManagementService = inject(UserManagementService);
+  private i18n = inject(TranslocoService);
 
   users = signal<User[]>([]);
   errorMessage = signal('');
@@ -21,7 +24,7 @@ export class UserList implements OnInit {
   loadUsers(): void {
     this.userManagementService.getAllUsers().subscribe({
       next: (data) => this.users.set(data),
-      error: () => this.errorMessage.set('Error al cargar los usuarios del sistema.'),
+      error: () => this.errorMessage.set(this.i18n.translate('admin.loadUsersError')),
     });
   }
 
@@ -35,18 +38,18 @@ export class UserList implements OnInit {
           list.map((u) => (u.id === user.id ? { ...u, role: newRole } : u)),
         );
       },
-      error: () => alert('No se pudo actualizar el rol.'),
+      error: () => alert(this.i18n.translate('admin.roleError')),
     });
   }
 
   deleteUser(id?: number): void {
-    if (!id || !confirm('¿Estás seguro de eliminar este usuario?')) return;
+    if (!id || !confirm(this.i18n.translate('admin.confirmDelete'))) return;
 
     this.userManagementService.deleteUser(id).subscribe({
       next: () => {
         this.users.update((list) => list.filter((u) => u.id !== id));
       },
-      error: () => alert('No se pudo eliminar el usuario.'),
+      error: () => alert(this.i18n.translate('admin.deleteUserError')),
     });
   }
 }

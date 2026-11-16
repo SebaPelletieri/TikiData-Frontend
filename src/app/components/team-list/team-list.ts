@@ -7,6 +7,9 @@ import { TeamService } from '../../services/team-service';
 import { Team } from '../../models/Team';
 import { getCountryFlag as countryFlagUrl } from '../../utils/countries';
 import { compareEs, sortByName } from '../../utils/sort';
+import { TranslocoPipe } from '@jsverse/transloco';
+import { compareCountries, CountryPipe } from '../../i18n/country.pipe';
+import { LanguageService } from '../../i18n/language-service';
 
 interface Championship {
   id: number | string;
@@ -25,6 +28,8 @@ interface FilterOption {
 interface LeagueGroup {
   leagueName: string;
   leagueLogo?: string;
+  /** Bloques que no son una liga real ("Sin liga asignada"...): se muestran traducidos */
+  leagueKey?: string;
   teams: Team[];
 }
 
@@ -37,7 +42,7 @@ interface CountryGroup {
 
 @Component({
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule],
+  imports: [CommonModule, FormsModule, RouterModule, TranslocoPipe, CountryPipe],
   selector: 'app-team-list',
   styleUrl: './team-list.css',
   templateUrl: './team-list.html',
@@ -47,6 +52,8 @@ export class TeamList implements OnInit {
   private http = inject(HttpClient);
 
   searchText = signal('');
+  // Para ordenar los países por su nombre en el idioma elegido
+  private language = inject(LanguageService);
   selectedCountry = signal('ALL');
 
   // Estados para los paneles flotantes con la misma fluidez
@@ -70,7 +77,7 @@ export class TeamList implements OnInit {
     const options: FilterOption[] = [{ value: 'ALL', label: 'Todos los países' }];
 
     Array.from(countrySet)
-      .sort(compareEs)
+      .sort(compareCountries(this.language.current()))
       .forEach((country) => {
         options.push({ value: country, label: country });
       });
@@ -186,7 +193,7 @@ export class TeamList implements OnInit {
     // Países en orden alfabético (al agregar un equipo de un país nuevo, aparece solo en su lugar)
     const uniqueCountries = Array.from(
       new Set(filtered.map((t) => t.country).filter(Boolean)),
-    ).sort(compareEs);
+    ).sort(compareCountries(this.language.current()));
     const result: CountryGroup[] = [];
 
     for (const country of uniqueCountries) {
@@ -232,6 +239,7 @@ export class TeamList implements OnInit {
         leaguesMap.push({
           // Si el país no tiene ninguna liga cargada, no tiene sentido decir "sin liga"
           leagueName: leaguesMap.length ? 'Sin liga asignada' : 'Equipos',
+          leagueKey: leaguesMap.length ? 'teamList.unassigned' : 'teamList.teams',
           leagueLogo: undefined,
           teams: sortByName(unassignedTeams),
         });
@@ -240,6 +248,7 @@ export class TeamList implements OnInit {
       if (nationalTeams.length > 0) {
         leaguesMap.push({
           leagueName: 'Selección nacional',
+          leagueKey: 'teamList.national',
           leagueLogo: undefined,
           teams: sortByName(nationalTeams),
         });

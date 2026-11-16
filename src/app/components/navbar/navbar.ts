@@ -22,6 +22,8 @@ import { Championship } from '../../models/Championship';
 import { Team } from '../../models/Team';
 import { Player } from '../../models/Player';
 import { getCountryFlag as countryFlagUrl } from '../../utils/countries';
+import { TranslocoPipe } from '@jsverse/transloco';
+import { AppLang, LanguageService } from '../../i18n/language-service';
 
 interface SearchResult {
   id: number | string;
@@ -36,7 +38,7 @@ interface SearchResult {
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule],
+  imports: [CommonModule, RouterModule, FormsModule, TranslocoPipe],
   templateUrl: './navbar.html',
   styleUrl: './navbar.css',
   host: { '[class.is-island]': 'isIsland()' },
@@ -50,6 +52,10 @@ export class Navbar implements OnInit, AfterViewInit, OnDestroy {
 
   isLightMode = signal(false);
   isProfileMenuOpen = signal(false);
+
+  // Selector de idioma
+  languageService = inject(LanguageService);
+  isLangMenuOpen = signal(false);
 
   // =====================================================================
   // Isla flotante ligada al scroll
@@ -393,6 +399,9 @@ export class Navbar implements OnInit, AfterViewInit, OnDestroy {
     if (!target.closest('.navbar__user-dropdown')) {
       this.closeProfileMenu();
     }
+    if (!target.closest('.navbar__lang')) {
+      this.isLangMenuOpen.set(false);
+    }
     if (!target.closest('.navbar__search')) {
       this.isSearchFocused.set(false);
     }
@@ -405,6 +414,24 @@ export class Navbar implements OnInit, AfterViewInit, OnDestroy {
 
   closeProfileMenu(): void {
     this.isProfileMenuOpen.set(false);
+  }
+
+  toggleLangMenu(event: MouseEvent): void {
+    event.stopPropagation();
+    this.isLangMenuOpen.update((open) => !open);
+    this.closeProfileMenu();
+  }
+
+  selectLang(lang: AppLang): void {
+    this.languageService.setLang(lang);
+    this.isLangMenuOpen.set(false);
+    // Los textos cambian de largo ("Partidos" / "Matches" / "Partidas"): se vuelve a medir
+    // cuánto se desliza cada pieza al formar la isla, cuando el texto nuevo ya está dibujado
+    this.zone.runOutsideAngular(() => setTimeout(() => this.measureIsland(), 60));
+  }
+
+  flagUrl(code: string): string {
+    return 'https://flagcdn.com/w40/' + code + '.png';
   }
 
   onLogout(): void {

@@ -8,10 +8,10 @@
 
   <div class="profile-top-bar">
     <div>
-      <span class="breadcrumb">Administración > Panel General</span>
-      <h2>Panel de Administración</h2>
+      <span class="breadcrumb">{{ 'profile.administration' | transloco }} > {{ 'ui.panelGeneral' | transloco }}</span>
+      <h2>{{ 'ui.panelDeAdministracion' | transloco }}</h2>
       <p class="subtitle">
-        Gestiona la información de equipos, jugadores, campeonatos, partidos y usuarios del sistema.
+        {{ 'ui.gestionaLaInformacionDeEquiposJugadores' | transloco }}
       </p>
     </div>
   </div>
@@ -27,8 +27,8 @@
         </div>
       </div>
       <div class="user-main-info">
-        <h3>Panel de Administrador</h3>
-        <p class="admin-banner-subtitle">Gestión centralizada del sistema TikiData</p>
+        <h3>{{ 'ui.panelDeAdministrador' | transloco }}</h3>
+        <p class="admin-banner-subtitle">{{ 'ui.gestionCentralizadaDelSistemaTikidata' | transloco }}</p>
       </div>
     </div>
   </div>
@@ -41,11 +41,11 @@
         <i class="fas fa-shield-alt"></i>
       </div>
       <div class="stat-data">
-        <span class="stat-label">Equipos</span>
+        <span class="stat-label">{{ 'ui.equipos' | transloco }}</span>
         <div class="stat-main-row">
           <span class="stat-number">{{ totalTeamsCount() }}</span>
         </div>
-        <span class="stat-footer">Total de equipos registrados</span>
+        <span class="stat-footer">{{ 'ui.totalDeEquiposRegistrados' | transloco }}</span>
       </div>
     </div>
 
@@ -55,11 +55,11 @@
         <i class="fas fa-trophy"></i>
       </div>
       <div class="stat-data">
-        <span class="stat-label">Campeonatos</span>
+        <span class="stat-label">{{ 'ui.campeonatos' | transloco }}</span>
         <div class="stat-main-row">
           <span class="stat-number">{{ totalChampionshipsCount() }}</span>
         </div>
-        <span class="stat-footer">Total de campeonatos registrados</span>
+        <span class="stat-footer">{{ 'ui.totalDeCampeonatosRegistrados' | transloco }}</span>
       </div>
     </div>
 
@@ -69,11 +69,11 @@
         <i class="fas fa-futbol"></i>
       </div>
       <div class="stat-data">
-        <span class="stat-label">Partidos</span>
+        <span class="stat-label">{{ 'ui.partidos' | transloco }}</span>
         <div class="stat-main-row">
           <span class="stat-number">{{ totalMatchesCount() }}</span>
         </div>
-        <span class="stat-footer">Total de partidos registrados</span>
+        <span class="stat-footer">{{ 'ui.totalDePartidosRegistrados' | transloco }}</span>
       </div>
     </div>
 
@@ -83,11 +83,11 @@
         <i class="fas fa-tshirt"></i>
       </div>
       <div class="stat-data">
-        <span class="stat-label">Jugadores</span>
+        <span class="stat-label">{{ 'ui.jugadores' | transloco }}</span>
         <div class="stat-main-row">
           <span class="stat-number">{{ totalPlayersCount() }}</span>
         </div>
-        <span class="stat-footer">Total de jugadores registrados</span>
+        <span class="stat-footer">{{ 'ui.totalDeJugadoresRegistrados' | transloco }}</span>
       </div>
     </div>
 
@@ -97,11 +97,11 @@
         <i class="fas fa-user"></i>
       </div>
       <div class="stat-data">
-        <span class="stat-label">Usuarios</span>
+        <span class="stat-label">{{ 'ui.usuarios' | transloco }}</span>
         <div class="stat-main-row">
           <span class="stat-number">{{ totalUsersCount() }}</span>
         </div>
-        <span class="stat-footer">Total de usuarios en el sistema</span>
+        <span class="stat-footer">{{ 'ui.totalDeUsuariosEnElSistema' | transloco }}</span>
       </div>
     </div>
   </div>
@@ -115,8 +115,8 @@
         <div class="teams-title-block">
           <div class="team-shield-icon-box">🛡️</div>
           <div>
-            <h3>Equipos</h3>
-            <p>Lista de equipos registrados en el sistema.</p>
+            <h3>{{ 'ui.equipos' | transloco }}</h3>
+            <p>{{ 'ui.listaDeEquiposRegistradosEnEl' | transloco }}</p>
           </div>
         </div>
       </div>
@@ -132,7 +132,7 @@
             type="text"
             [ngModel]="adminSearchText()"
             (ngModelChange)="adminSearchText.set($event); currentPage.set(1)"
-            placeholder="Buscar equipo..."
+            [placeholder]="'ui.buscarEquipo' | transloco"
           />
         </div>
 
@@ -146,7 +146,7 @@
             class="filter-dropdown-box dropdown-trigger"
             (click)="toggleCountryDropdown($event)"
           >
-            <span>{{ selectedCountryLabel }}</span>
+            <span>{{ selectedCountryLabel | tr: 'adminOpt' | country }}</span>
             <span class="triangle-icon"></span>
           </button>
           @if (isCountryDropdownOpen) {
@@ -157,7 +157,7 @@
                   [class.active]="selectedAdminCountry() === opt.value"
                   (click)="selectAdminCountry(opt.value)"
                 >
-                  <span>{{ opt.label }}</span>
+                  <span>{{ opt.label | tr: 'adminOpt' | country }}</span>
                   @if (selectedAdminCountry() === opt.value) {
                     <svg
                       class="check-icon"
@@ -187,7 +187,7 @@
             class="filter-dropdown-box dropdown-trigger"
             (click)="toggleChampionshipDropdown($event)"
           >
-            <span>{{ selectedChampionshipLabel }}</span>
+            <span>{{ selectedChampionshipLabel | tr: 'adminOpt' | country }}</span>
             <span class="triangle-icon"></span>
           </button>
           @if (isChampionshipDropdownOpen) {
@@ -198,7 +198,7 @@
                   [class.active]="selectedAdminChampionship() === opt.value"
                   (click)="selectAdminChampionship(opt.value)"
                 >
-                  <span>{{ opt.label }}</span>
+                  <span>{{ opt.label | tr: 'adminOpt' | country }}</span>
                   @if (selectedAdminChampionship() === opt.value) {
                     <svg
                       class="check-icon"
@@ -222,18 +222,18 @@
       <!-- Tabla fija -->
       <div class="admin-table-fixed-container">
         @if (paginatedTeamsForAdmin().length === 0) {
-          <p class="empty-msg">No se encontraron equipos con los filtros seleccionados.</p>
+          <p class="empty-msg">{{ 'ui.noSeEncontraronEquiposConLos' | transloco }}</p>
         } @else {
           <div class="admin-table-wrapper">
             <table class="admin-table">
               <thead>
                 <tr>
                   <th>#</th>
-                  <th>Escudo</th>
-                  <th>Nombre</th>
-                  <th>País</th>
-                  <th>Fundación</th>
-                  <th>Acciones</th>
+                  <th>{{ 'ui.escudo' | transloco }}</th>
+                  <th>{{ 'ui.nombre' | transloco }}</th>
+                  <th>{{ 'ui.pais' | transloco }}</th>
+                  <th>{{ 'ui.fundacion' | transloco }}</th>
+                  <th>{{ 'ui.acciones' | transloco }}</th>
                 </tr>
               </thead>
               <tbody>
@@ -246,7 +246,7 @@
                     <td>
                       <strong>{{ team.name }}</strong>
                     </td>
-                    <td>{{ team.country }}</td>
+                    <td>{{ team.country | country }}</td>
                     <td>{{ team.yearOfFoundation | date: 'yyyy' }}</td>
                     <td>
                       <div class="table-actions">
@@ -266,7 +266,7 @@
                             <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
                             <circle cx="12" cy="12" r="3"></circle>
                           </svg>
-                          Ver
+                          {{ 'ui.ver' | transloco }}
                         </button>
                         <button
                           type="button"
@@ -288,7 +288,7 @@
                               d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"
                             ></path>
                           </svg>
-                          Editar
+                          {{ 'ui.editar' | transloco }}
                         </button>
                         <button
                           type="button"
@@ -308,7 +308,7 @@
                               d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
                             ></path>
                           </svg>
-                          Eliminar
+                          {{ 'ui.eliminar' | transloco }}
                         </button>
                       </div>
                     </td>
@@ -372,8 +372,8 @@
         <div class="teams-title-block">
           <div class="team-shield-icon-box">🏆</div>
           <div>
-            <h3>Campeonatos</h3>
-            <p>Lista de torneos y ligas registradas en el sistema.</p>
+            <h3>{{ 'ui.campeonatos' | transloco }}</h3>
+            <p>{{ 'ui.listaDeTorneosYLigasRegistradas' | transloco }}</p>
           </div>
         </div>
       </div>
@@ -389,7 +389,7 @@
             type="text"
             [ngModel]="championshipSearchText()"
             (ngModelChange)="championshipSearchText.set($event); currentChampPage.set(1)"
-            placeholder="Buscar campeonato..."
+            [placeholder]="'ui.buscarCampeonato' | transloco"
           />
         </div>
 
@@ -403,7 +403,7 @@
             class="filter-dropdown-box dropdown-trigger"
             (click)="toggleChampCountryDropdown($event)"
           >
-            <span>{{ selectedChampCountryLabel }}</span>
+            <span>{{ selectedChampCountryLabel | tr: 'adminOpt' | country }}</span>
             <span class="triangle-icon"></span>
           </button>
           @if (isChampCountryDropdownOpen) {
@@ -414,7 +414,7 @@
                   [class.active]="selectedChampionshipCountry() === opt.value"
                   (click)="selectChampCountry(opt.value)"
                 >
-                  <span>{{ opt.label }}</span>
+                  <span>{{ opt.label | tr: 'adminOpt' | country }}</span>
                   @if (selectedChampionshipCountry() === opt.value) {
                     <svg
                       class="check-icon"
@@ -444,7 +444,7 @@
             class="filter-dropdown-box dropdown-trigger"
             (click)="toggleChampTypeDropdown($event)"
           >
-            <span>{{ selectedChampTypeLabel }}</span>
+            <span>{{ selectedChampTypeLabel | tr: 'adminOpt' | country }}</span>
             <span class="triangle-icon"></span>
           </button>
           @if (isChampTypeDropdownOpen) {
@@ -455,7 +455,7 @@
                   [class.active]="selectedChampionshipType() === opt.value"
                   (click)="selectChampType(opt.value)"
                 >
-                  <span>{{ opt.label }}</span>
+                  <span>{{ opt.label | tr: 'adminOpt' | country }}</span>
                   @if (selectedChampionshipType() === opt.value) {
                     <svg
                       class="check-icon"
@@ -479,18 +479,18 @@
       <!-- Tabla fija de campeonatos paginada -->
       <div class="admin-table-fixed-container">
         @if (paginatedChampionshipsForAdmin().length === 0) {
-          <p class="empty-msg">No se encontraron campeonatos con los filtros seleccionados.</p>
+          <p class="empty-msg">{{ 'ui.noSeEncontraronCampeonatosConLos' | transloco }}</p>
         } @else {
           <div class="admin-table-wrapper">
             <table class="admin-table">
               <thead>
                 <tr>
                   <th>#</th>
-                  <th>Logo</th>
-                  <th>Nombre</th>
-                  <th>Tipo</th>
-                  <th>País</th>
-                  <th>Acciones</th>
+                  <th>{{ 'ui.logo' | transloco }}</th>
+                  <th>{{ 'ui.nombre' | transloco }}</th>
+                  <th>{{ 'ui.tipo' | transloco }}</th>
+                  <th>{{ 'ui.pais' | transloco }}</th>
+                  <th>{{ 'ui.acciones' | transloco }}</th>
                 </tr>
               </thead>
               <tbody>
@@ -503,8 +503,8 @@
                     <td>
                       <strong>{{ champ.name }}</strong>
                     </td>
-                    <td>{{ champ.type }}</td>
-                    <td>{{ champ.country }}</td>
+                    <td>{{ 'type.' + champ.type | transloco }}</td>
+                    <td>{{ champ.country | country }}</td>
                     <td>
                       <div class="table-actions">
                         <button
@@ -530,7 +530,7 @@
                             <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
                             <circle cx="12" cy="12" r="3"></circle>
                           </svg>
-                          Ver
+                          {{ 'ui.ver' | transloco }}
                         </button>
                         <button
                           type="button"
@@ -552,7 +552,7 @@
                               d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"
                             ></path>
                           </svg>
-                          Editar
+                          {{ 'ui.editar' | transloco }}
                         </button>
                         <button
                           type="button"
@@ -572,7 +572,7 @@
                               d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
                             ></path>
                           </svg>
-                          Eliminar
+                          {{ 'ui.eliminar' | transloco }}
                         </button>
                       </div>
                     </td>
@@ -636,8 +636,8 @@
         <div class="teams-title-block">
           <div class="team-shield-icon-box">⚽</div>
           <div>
-            <h3>Partidos</h3>
-            <p>Lista de partidos programados y resultados registrados.</p>
+            <h3>{{ 'ui.partidos' | transloco }}</h3>
+            <p>{{ 'ui.listaDePartidosProgramadosYResultados' | transloco }}</p>
           </div>
         </div>
       </div>
@@ -653,7 +653,7 @@
             type="text"
             [ngModel]="matchSearchText()"
             (ngModelChange)="matchSearchText.set($event); currentMatchPage.set(1)"
-            placeholder="Buscar partido (equipos)..."
+            [placeholder]="'ui.buscarPartidoEquipos' | transloco"
           />
         </div>
 
@@ -667,7 +667,7 @@
             class="filter-dropdown-box dropdown-trigger"
             (click)="toggleMatchStatusDropdown($event)"
           >
-            <span>{{ selectedMatchStatusLabel }}</span>
+            <span>{{ selectedMatchStatusLabel | tr: 'adminOpt' | country }}</span>
             <span class="triangle-icon"></span>
           </button>
           @if (isMatchStatusDropdownOpen) {
@@ -678,7 +678,7 @@
                   [class.active]="selectedMatchStatus() === opt.value"
                   (click)="selectMatchStatus(opt.value)"
                 >
-                  <span>{{ opt.label }}</span>
+                  <span>{{ opt.label | tr: 'adminOpt' | country }}</span>
                   @if (selectedMatchStatus() === opt.value) {
                     <svg
                       class="check-icon"
@@ -702,18 +702,18 @@
       <!-- Tabla fija de partidos paginada -->
       <div class="admin-table-fixed-container">
         @if (paginatedMatchesForAdmin().length === 0) {
-          <p class="empty-msg">No se encontraron partidos con los filtros seleccionados.</p>
+          <p class="empty-msg">{{ 'ui.noSeEncontraronPartidosConLos' | transloco }}</p>
         } @else {
           <div class="admin-table-wrapper">
             <table class="admin-table">
               <thead>
                 <tr>
                   <th>#</th>
-                  <th>Fecha</th>
-                  <th>Encuentro</th>
-                  <th>Resultado</th>
-                  <th>Estado</th>
-                  <th>Acciones</th>
+                  <th>{{ 'ui.fecha' | transloco }}</th>
+                  <th>{{ 'ui.encuentro' | transloco }}</th>
+                  <th>{{ 'ui.resultado' | transloco }}</th>
+                  <th>{{ 'ui.estado' | transloco }}</th>
+                  <th>{{ 'ui.acciones' | transloco }}</th>
                 </tr>
               </thead>
               <tbody>
@@ -734,7 +734,7 @@
                         [class.live]="match.status === 'En Vivo'"
                         [class.finished]="match.status === 'Finalizado'"
                       >
-                        {{ match.status || 'Programado' }}
+                        {{ 'status.' + (match.status || 'Programado') | transloco }}
                       </span>
                     </td>
                     <td>
@@ -755,7 +755,7 @@
                             <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
                             <circle cx="12" cy="12" r="3"></circle>
                           </svg>
-                          Ver
+                          {{ 'ui.ver' | transloco }}
                         </button>
                         <button
                           type="button"
@@ -777,7 +777,7 @@
                               d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"
                             ></path>
                           </svg>
-                          Editar
+                          {{ 'ui.editar' | transloco }}
                         </button>
                         <button
                           type="button"
@@ -797,7 +797,7 @@
                               d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
                             ></path>
                           </svg>
-                          Eliminar
+                          {{ 'ui.eliminar' | transloco }}
                         </button>
                       </div>
                     </td>
@@ -861,8 +861,8 @@
         <div class="teams-title-block">
           <div class="team-shield-icon-box">👥</div>
           <div>
-            <h3>Jugadores</h3>
-            <p>Lista de futbolistas registrados en el sistema.</p>
+            <h3>{{ 'ui.jugadores' | transloco }}</h3>
+            <p>{{ 'ui.listaDeFutbolistasRegistradosEnEl' | transloco }}</p>
           </div>
         </div>
       </div>
@@ -878,7 +878,7 @@
             type="text"
             [ngModel]="playerSearchText()"
             (ngModelChange)="playerSearchText.set($event); currentPlayerPage.set(1)"
-            placeholder="Buscar jugador..."
+            [placeholder]="'ui.buscarJugador' | transloco"
           />
         </div>
 
@@ -892,7 +892,7 @@
             class="filter-dropdown-box dropdown-trigger"
             (click)="togglePlayerPositionDropdown($event)"
           >
-            <span>{{ selectedPlayerPositionLabel }}</span>
+            <span>{{ selectedPlayerPositionLabel | tr: 'adminOpt' | country }}</span>
             <span class="triangle-icon"></span>
           </button>
           @if (isPlayerPositionDropdownOpen) {
@@ -903,7 +903,7 @@
                   [class.active]="selectedPlayerPosition() === opt.value"
                   (click)="selectPlayerPosition(opt.value)"
                 >
-                  <span>{{ opt.label }}</span>
+                  <span>{{ opt.label | tr: 'adminOpt' | country }}</span>
                   @if (selectedPlayerPosition() === opt.value) {
                     <svg
                       class="check-icon"
@@ -933,7 +933,7 @@
             class="filter-dropdown-box dropdown-trigger"
             (click)="togglePlayerNationalityDropdown($event)"
           >
-            <span>{{ selectedPlayerNationalityLabel }}</span>
+            <span>{{ selectedPlayerNationalityLabel | tr: 'adminOpt' | country }}</span>
             <span class="triangle-icon"></span>
           </button>
           @if (isPlayerNationalityDropdownOpen) {
@@ -944,7 +944,7 @@
                   [class.active]="selectedPlayerNationality() === opt.value"
                   (click)="selectPlayerNationality(opt.value)"
                 >
-                  <span>{{ opt.label }}</span>
+                  <span>{{ opt.label | tr: 'adminOpt' | country }}</span>
                   @if (selectedPlayerNationality() === opt.value) {
                     <svg
                       class="check-icon"
@@ -968,19 +968,19 @@
       <!-- Tabla fija de jugadores paginada -->
       <div class="admin-table-fixed-container">
         @if (paginatedPlayersForAdmin().length === 0) {
-          <p class="empty-msg">No se encontraron jugadores con los filtros seleccionados.</p>
+          <p class="empty-msg">{{ 'ui.noSeEncontraronJugadoresConLos' | transloco }}</p>
         } @else {
           <div class="admin-table-wrapper">
             <table class="admin-table">
               <thead>
                 <tr>
                   <th>#</th>
-                  <th>Foto</th>
-                  <th>Nombre</th>
-                  <th>Posición</th>
-                  <th>Nacionalidad</th>
-                  <th>Edad</th>
-                  <th>Acciones</th>
+                  <th>{{ 'ui.foto' | transloco }}</th>
+                  <th>{{ 'ui.nombre' | transloco }}</th>
+                  <th>{{ 'ui.posicion' | transloco }}</th>
+                  <th>{{ 'ui.nacionalidad' | transloco }}</th>
+                  <th>{{ 'ui.edad' | transloco }}</th>
+                  <th>{{ 'ui.acciones' | transloco }}</th>
                 </tr>
               </thead>
               <tbody>
@@ -993,8 +993,8 @@
                     <td>
                       <strong>{{ player.name }}</strong>
                     </td>
-                    <td>{{ player.position }}</td>
-                    <td>{{ player.nationality }}</td>
+                    <td>{{ player.position | tr: 'position' }}</td>
+                    <td>{{ player.nationality | country }}</td>
                     <td>{{ player.age }}</td>
                     <td>
                       <div class="table-actions">
@@ -1014,7 +1014,7 @@
                             <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
                             <circle cx="12" cy="12" r="3"></circle>
                           </svg>
-                          Ver
+                          {{ 'ui.ver' | transloco }}
                         </button>
                         <button
                           type="button"
@@ -1036,7 +1036,7 @@
                               d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"
                             ></path>
                           </svg>
-                          Editar
+                          {{ 'ui.editar' | transloco }}
                         </button>
                         <button
                           type="button"
@@ -1056,7 +1056,7 @@
                               d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
                             ></path>
                           </svg>
-                          Eliminar
+                          {{ 'ui.eliminar' | transloco }}
                         </button>
                       </div>
                     </td>
@@ -1120,8 +1120,8 @@
         <div class="teams-title-block">
           <div class="team-shield-icon-box">👤</div>
           <div>
-            <h3>Usuarios</h3>
-            <p>Lista de usuarios registrados en el sistema.</p>
+            <h3>{{ 'ui.usuarios' | transloco }}</h3>
+            <p>{{ 'ui.listaDeUsuariosRegistradosEnEl' | transloco }}</p>
           </div>
         </div>
       </div>
@@ -1137,7 +1137,7 @@
             type="text"
             [ngModel]="userSearchText()"
             (ngModelChange)="userSearchText.set($event); currentUserPage.set(1)"
-            placeholder="Buscar por nombre o email..."
+            [placeholder]="'ui.buscarPorNombreOEmail' | transloco"
           />
         </div>
 
@@ -1151,7 +1151,7 @@
             class="filter-dropdown-box dropdown-trigger"
             (click)="toggleUserRoleDropdown($event)"
           >
-            <span>{{ selectedUserRoleLabel }}</span>
+            <span>{{ selectedUserRoleLabel | tr: 'adminOpt' | country }}</span>
             <span class="triangle-icon"></span>
           </button>
           @if (isUserRoleDropdownOpen) {
@@ -1162,7 +1162,7 @@
                   [class.active]="selectedUserRole() === opt.value"
                   (click)="selectUserRole(opt.value)"
                 >
-                  <span>{{ opt.label }}</span>
+                  <span>{{ opt.label | tr: 'adminOpt' | country }}</span>
                   @if (selectedUserRole() === opt.value) {
                     <svg
                       class="check-icon"
@@ -1186,17 +1186,17 @@
       <!-- Tabla fija de usuarios paginada -->
       <div class="admin-table-fixed-container">
         @if (paginatedUsersForAdmin().length === 0) {
-          <p class="empty-msg">No se encontraron usuarios con los filtros seleccionados.</p>
+          <p class="empty-msg">{{ 'ui.noSeEncontraronUsuariosConLos' | transloco }}</p>
         } @else {
           <div class="admin-table-wrapper">
             <table class="admin-table">
               <thead>
                 <tr>
                   <th>#</th>
-                  <th>Usuario</th>
-                  <th>Correo Electrónico</th>
-                  <th>Rol</th>
-                  <th>Acciones</th>
+                  <th>{{ 'ui.usuario' | transloco }}</th>
+                  <th>{{ 'ui.correoElectronico2' | transloco }}</th>
+                  <th>{{ 'ui.rol' | transloco }}</th>
+                  <th>{{ 'ui.acciones' | transloco }}</th>
                 </tr>
               </thead>
               <tbody>
@@ -1209,7 +1209,7 @@
                     <td>{{ user.email }}</td>
                     <td>
                       <span [style.color]="user.role === 'Administrador' ? '#38bdf8' : 'var(--text-soft)'">
-                        {{ user.role }}
+                        {{ 'role.' + user.role | transloco }}
                       </span>
                     </td>
                     <td>
@@ -1230,7 +1230,7 @@
                             <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
                             <circle cx="12" cy="12" r="3"></circle>
                           </svg>
-                          Ver
+                          {{ 'ui.ver' | transloco }}
                         </button>
 
                         <button
@@ -1241,9 +1241,9 @@
                           (click)="confirmToggleRole(user)"
                         >
                           @if (user.role === 'Administrador') {
-                            <span>Convertir en Usuario</span>
+                            <span>{{ 'ui.convertirEnUsuario' | transloco }}</span>
                           } @else {
-                            <span>Convertir en Admin</span>
+                            <span>{{ 'ui.convertirEnAdmin' | transloco }}</span>
                           }
                         </button>
 
@@ -1265,7 +1265,7 @@
                               d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
                             ></path>
                           </svg>
-                          Eliminar
+                          {{ 'ui.eliminar' | transloco }}
                         </button>
                       </div>
                     </td>
@@ -1322,16 +1322,16 @@
     <div class="custom-modal-backdrop">
       <div class="custom-modal-box">
         <div class="modal-icon-warning">🔄</div>
-        <h3>¿Estás seguro?</h3>
+        <h3>{{ 'ui.estasSeguro' | transloco }}</h3>
         <p>
-          Estás a punto de cambiar el rol de
-          <strong>{{ userToChangeRole()?.user?.username }}</strong> a
-          <strong>{{ userToChangeRole()?.newRole }}</strong
+          {{ 'ui.estasAPuntoDeCambiarEl' | transloco }}
+          <strong>{{ userToChangeRole()?.user?.username }}</strong> {{ 'admin.to' | transloco }}
+          <strong>{{ 'role.' + userToChangeRole()?.newRole | transloco }}</strong
           >.
         </p>
         <div class="modal-actions">
           <button type="button" class="btn-modal-cancel" (click)="cancelToggleRole()">
-            Cancelar
+            {{ 'ui.cancelar' | transloco }}
           </button>
           <button
             type="button"
@@ -1342,7 +1342,7 @@
             "
             (click)="executeToggleRole()"
           >
-            Sí, cambiar rol
+            {{ 'ui.siCambiarRol' | transloco }}
           </button>
         </div>
       </div>
@@ -1353,12 +1353,12 @@
     <div class="custom-modal-backdrop">
       <div class="custom-modal-box">
         <div class="modal-icon-warning">⚠️</div>
-        <h3>¿Estás seguro?</h3>
-        <p>Esta acción eliminará el equipo del sistema de forma permanente.</p>
+        <h3>{{ 'ui.estasSeguro' | transloco }}</h3>
+        <p>{{ 'ui.estaAccionEliminaraElEquipoDel' | transloco }}</p>
         <div class="modal-actions">
-          <button type="button" class="btn-modal-cancel" (click)="cancelDelete()">Cancelar</button>
+          <button type="button" class="btn-modal-cancel" (click)="cancelDelete()">{{ 'ui.cancelar' | transloco }}</button>
           <button type="button" class="btn-modal-confirm" (click)="executeDelete()">
-            Sí, eliminar
+            {{ 'ui.siEliminar' | transloco }}
           </button>
         </div>
       </div>
@@ -1369,14 +1369,14 @@
     <div class="custom-modal-backdrop">
       <div class="custom-modal-box">
         <div class="modal-icon-warning">⚠️</div>
-        <h3>¿Estás seguro?</h3>
-        <p>Esta acción eliminará el campeonato del sistema de forma permanente.</p>
+        <h3>{{ 'ui.estasSeguro' | transloco }}</h3>
+        <p>{{ 'ui.estaAccionEliminaraElCampeonatoDel' | transloco }}</p>
         <div class="modal-actions">
           <button type="button" class="btn-modal-cancel" (click)="cancelDeleteChampionship()">
-            Cancelar
+            {{ 'ui.cancelar' | transloco }}
           </button>
           <button type="button" class="btn-modal-confirm" (click)="executeDeleteChampionship()">
-            Sí, eliminar
+            {{ 'ui.siEliminar' | transloco }}
           </button>
         </div>
       </div>
@@ -1387,14 +1387,14 @@
     <div class="custom-modal-backdrop">
       <div class="custom-modal-box">
         <div class="modal-icon-warning">⚠️</div>
-        <h3>¿Estás seguro?</h3>
-        <p>Esta acción eliminará el partido del sistema de forma permanente.</p>
+        <h3>{{ 'ui.estasSeguro' | transloco }}</h3>
+        <p>{{ 'ui.estaAccionEliminaraElPartidoDel' | transloco }}</p>
         <div class="modal-actions">
           <button type="button" class="btn-modal-cancel" (click)="cancelDeleteMatch()">
-            Cancelar
+            {{ 'ui.cancelar' | transloco }}
           </button>
           <button type="button" class="btn-modal-confirm" (click)="executeDeleteMatch()">
-            Sí, eliminar
+            {{ 'ui.siEliminar' | transloco }}
           </button>
         </div>
       </div>
@@ -1405,14 +1405,14 @@
     <div class="custom-modal-backdrop">
       <div class="custom-modal-box">
         <div class="modal-icon-warning">⚠️</div>
-        <h3>¿Estás seguro?</h3>
-        <p>Esta acción eliminará al jugador del sistema de forma permanente.</p>
+        <h3>{{ 'ui.estasSeguro' | transloco }}</h3>
+        <p>{{ 'ui.estaAccionEliminaraAlJugadorDel' | transloco }}</p>
         <div class="modal-actions">
           <button type="button" class="btn-modal-cancel" (click)="cancelDeletePlayer()">
-            Cancelar
+            {{ 'ui.cancelar' | transloco }}
           </button>
           <button type="button" class="btn-modal-confirm" (click)="executeDeletePlayer()">
-            Sí, eliminar
+            {{ 'ui.siEliminar' | transloco }}
           </button>
         </div>
       </div>
@@ -1423,14 +1423,14 @@
     <div class="custom-modal-backdrop">
       <div class="custom-modal-box">
         <div class="modal-icon-warning">⚠️</div>
-        <h3>¿Estás seguro?</h3>
-        <p>Esta acción eliminará al usuario del sistema de forma permanente.</p>
+        <h3>{{ 'ui.estasSeguro' | transloco }}</h3>
+        <p>{{ 'ui.estaAccionEliminaraAlUsuarioDel' | transloco }}</p>
         <div class="modal-actions">
           <button type="button" class="btn-modal-cancel" (click)="cancelDeleteUser()">
-            Cancelar
+            {{ 'ui.cancelar' | transloco }}
           </button>
           <button type="button" class="btn-modal-confirm" (click)="executeDeleteUser()">
-            Sí, eliminar
+            {{ 'ui.siEliminar' | transloco }}
           </button>
         </div>
       </div>

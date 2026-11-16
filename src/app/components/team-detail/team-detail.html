@@ -22,11 +22,11 @@
             } @else {
               <span class="flag-emoji">🌎</span>
             }
-            {{ t.country }}
+            {{ t.country | country }}
           </span>
           @if (t.yearOfFoundation) {
             <span class="dot-separator">•</span>
-            <span class="meta-item">Fundado en {{ t.yearOfFoundation | date: 'yyyy' }}</span>
+            <span class="meta-item">{{ 'teamDetail.foundedIn' | transloco: { year: (t.yearOfFoundation | date: 'yyyy') } }}</span>
           }
         </div>
         <button
@@ -34,13 +34,13 @@
           class="btn-follow"
           [class.following]="isFollowing()"
           (click)="toggleFollowTeam()"
-          [title]="isLoggedIn() ? '' : 'Iniciá sesión para seguir'"
+          [title]="isLoggedIn() ? '' : ('detail.loginToFollow' | transloco)"
         >
           <span class="follow-icon">
             {{ isFollowing() ? '✓' : '+' }}
           </span>
           <span>
-            {{ isFollowing() ? 'Siguiendo' : 'Seguir' }}
+            {{ (isFollowing() ? 'detail.following' : 'detail.follow') | transloco }}
           </span>
         </button>
       </div>
@@ -55,17 +55,17 @@
         [class.active]="activeTab() === 'general'"
         (click)="setTab('general')"
       >
-        Vista general
+        {{ 'detail.overview' | transloco }}
       </button>
       <button class="tab-btn" [class.active]="activeTab() === 'squad'" (click)="setTab('squad')">
-        Plantel
+        {{ 'teamDetail.squad' | transloco }}
       </button>
       <button
         class="tab-btn"
         [class.active]="activeTab() === 'matches'"
         (click)="setTab('matches')"
       >
-        Partidos
+        {{ 'detail.matches' | transloco }}
       </button>
     </div>
   </div>
@@ -77,29 +77,29 @@
       <div class="overview-grid">
         <!-- Tarjeta Información -->
         <div class="card info-card">
-          <h3>Información</h3>
+          <h3>{{ 'teamDetail.info' | transloco }}</h3>
           <ul class="info-list">
             <li>
-              <span class="label">País</span>
+              <span class="label">{{ 'teamDetail.country' | transloco }}</span>
               <span class="value with-icon">
                 @if (countryFlag(t.country)) {
                   <img [src]="countryFlag(t.country)" [alt]="t.country" class="flag-icon" />
                 } @else {
                   <span class="flag-emoji">🌎</span>
                 }
-                {{ t.country }}
+                {{ t.country | country }}
               </span>
             </li>
             <li>
-              <span class="label">Fundación</span>
-              <span class="value">{{ formatSpanishDate(t.yearOfFoundation) || 'No disponible' }}</span>
+              <span class="label">{{ 'teamDetail.founded' | transloco }}</span>
+              <span class="value">{{ (t.yearOfFoundation | ldate: 'long') || ('detail.notAvailable' | transloco) }}</span>
             </li>
             <li>
-              <span class="label">Estadio</span>
-              <span class="value">{{ stadium()?.name || 'No disponible' }}</span>
+              <span class="label">{{ 'detail.stadium' | transloco }}</span>
+              <span class="value">{{ stadium()?.name || ('detail.notAvailable' | transloco) }}</span>
             </li>
             <li>
-              <span class="label">Capacidad</span>
+              <span class="label">{{ 'teamDetail.capacity' | transloco }}</span>
               <span class="value">{{ (stadium()?.capacity | number: '1.0-0') || '-' }}</span>
             </li>
           </ul>
@@ -107,12 +107,12 @@
 
         <!-- Tarjeta Estadio -->
         <div class="card stadium-card">
-          <h3>Estadio {{ stadium()?.name || '' }}</h3>
+          <h3>{{ 'teamDetail.stadiumOf' | transloco: { name: stadium()?.name || '' } }}</h3>
           <div class="stadium-image-wrapper">
             @if (stadium()?.imageUrl) {
               <img [src]="stadium()?.imageUrl" [alt]="stadium()?.name" class="stadium-img" />
             } @else {
-              <div class="stadium-placeholder">Sin imagen de estadio</div>
+              <div class="stadium-placeholder">{{ 'teamDetail.noStadiumImage' | transloco }}</div>
             }
           </div>
         </div>
@@ -120,7 +120,7 @@
 
       <!-- CAMPEONATOS ACTIVOS -->
       <div class="card active-champs-card">
-        <h3>Campeonatos activos</h3>
+        <h3>{{ 'teamDetail.activeComps' | transloco }}</h3>
         <div class="champs-row">
           @for (champ of championships(); track champ.id) {
             <div class="mini-champ-card">
@@ -131,7 +131,7 @@
               </div>
             </div>
           } @empty {
-            <span class="empty-text">No hay competiciones registradas.</span>
+            <span class="empty-text">{{ 'teamDetail.noComps' | transloco }}</span>
           }
         </div>
       </div>
@@ -139,9 +139,9 @@
       <!-- ÚLTIMOS PARTIDOS -->
       <div class="card recent-matches-card">
         <div class="card-header">
-          <h3>Últimos partidos</h3>
+          <h3>{{ 'teamDetail.lastMatches' | transloco }}</h3>
           <button type="button" class="view-all-link-btn" (click)="setTab('matches')">
-            Ver todos los partidos ➔
+            {{ 'teamDetail.allMatchesArrow' | transloco }}
           </button>
         </div>
 
@@ -163,7 +163,7 @@
               </tr>
             } @empty {
               <tr>
-                <td colspan="5" class="empty-table-text">No hay partidos registrados.</td>
+                <td colspan="5" class="empty-table-text">{{ 'teamDetail.noMatchesShort' | transloco }}</td>
               </tr>
             }
           </tbody>
@@ -184,7 +184,7 @@
     @if (activeTab() === 'matches') {
       <div class="card recent-matches-card">
         <div class="card-header">
-          <h3>Todos los partidos ({{ matches().length }})</h3>
+          <h3>{{ 'teamDetail.allMatches' | transloco: { count: matches().length } }}</h3>
         </div>
 
         <table class="matches-table">
@@ -206,7 +206,7 @@
             } @empty {
               <tr>
                 <td colspan="5" class="empty-table-text">
-                  No hay partidos registrados para este equipo.
+                  {{ 'teamDetail.noMatches' | transloco }}
                 </td>
               </tr>
             }
@@ -217,6 +217,6 @@
   </div>
 } @else {
   <div class="loading-container" style="text-align: center; padding: 5rem 1rem; color: var(--text-muted)">
-    <p>Cargando información del equipo...</p>
+    <p>{{ 'teamDetail.loading' | transloco }}</p>
   </div>
 }

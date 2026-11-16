@@ -5,6 +5,9 @@ import { RouterModule } from '@angular/router';
 import { PlayerService } from '../../services/player-service';
 import { getCountryFlag as countryFlagUrl } from '../../utils/countries';
 import { compareEs, sortByName } from '../../utils/sort';
+import { TranslocoPipe } from '@jsverse/transloco';
+import { compareCountries, CountryPipe } from '../../i18n/country.pipe';
+import { LanguageService } from '../../i18n/language-service';
 
 interface FilterOption {
   value: string | number;
@@ -21,13 +24,15 @@ function getVisiblePages(total: number, current: number, size = MAX_VISIBLE_PAGE
 
 @Component({
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule],
+  imports: [CommonModule, FormsModule, RouterModule, TranslocoPipe, CountryPipe],
   selector: 'app-player-list',
   styleUrl: './player-list.css',
   templateUrl: './player-list.html',
 })
 export class PlayerList implements OnInit {
   public playerService = inject(PlayerService);
+  // Para ordenar los países por su nombre en el idioma elegido
+  private language = inject(LanguageService);
 
   searchText = signal('');
 
@@ -42,11 +47,11 @@ export class PlayerList implements OnInit {
   pageSize = 20; // 20 registros fijos por página
 
   positions: FilterOption[] = [
-    { value: 'ALL', label: 'Todas las posiciones' },
-    { value: 'ARQ', label: 'Arquero' },
-    { value: 'DEF', label: 'Defensor' },
-    { value: 'MED', label: 'Mediocampista' },
-    { value: 'DEL', label: 'Delantero' },
+    { value: 'ALL', label: 'playerList.allPositions' },
+    { value: 'ARQ', label: 'positionName.ARQ' },
+    { value: 'DEF', label: 'positionName.DEF' },
+    { value: 'MED', label: 'positionName.MED' },
+    { value: 'DEL', label: 'positionName.DEL' },
   ];
 
   // Nacionalidades dinámicas extraídas de todos los jugadores registrados
@@ -64,7 +69,7 @@ export class PlayerList implements OnInit {
     const options: FilterOption[] = [{ value: 'ALL', label: 'Todas las nacionalidades' }];
 
     Array.from(nationalitiesSet)
-      .sort(compareEs) // "España" entre "Escocia" y "Estados Unidos"
+      .sort(compareCountries(this.language.current())) // por nombre en el idioma elegido
       .forEach((nationality) => {
         options.push({ value: nationality, label: nationality });
       });
@@ -138,7 +143,7 @@ export class PlayerList implements OnInit {
 
   get selectedPositionLabel(): string {
     const current = this.selectedPosition();
-    return this.positions.find((p) => p.value === current)?.label || 'Todas las posiciones';
+    return this.positions.find((p) => p.value === current)?.label || 'playerList.allPositions';
   }
 
   get selectedNationalityLabel(): string {
@@ -151,7 +156,7 @@ export class PlayerList implements OnInit {
 
   getTeamName(player: any): string {
     const teamId = player.teamID ?? player.currentTeamID;
-    if (!teamId) return 'Agente libre';
+    if (!teamId) return '';
     return player.teamName || 'Equipo TikiData';
   }
 
@@ -192,14 +197,12 @@ export class PlayerList implements OnInit {
     return list.slice(start, start + this.pageSize);
   });
 
-  paginationInfoText = computed(() => {
-    const list = this.filteredPlayersList();
-    const total = list.length;
-    if (total === 0) return 'Mostrando 0 registros';
-
-    const start = (this.currentPage() - 1) * this.pageSize + 1;
+  /** Datos del texto "Mostrando X - Y de Z jugadores" (el texto se arma traducido en el template) */
+  paginationInfo = computed(() => {
+    const total = this.filteredPlayersList().length;
+    const start = total === 0 ? 0 : (this.currentPage() - 1) * this.pageSize + 1;
     const end = Math.min(this.currentPage() * this.pageSize, total);
-    return `Mostrando ${start} - ${end} de ${total} jugadores`;
+    return { start, end, total };
   });
 
   goToPage(page: number): void {

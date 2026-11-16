@@ -1,4 +1,5 @@
 import { Component, OnInit, inject, signal, computed, DestroyRef } from '@angular/core';
+import { TranslocoPipe } from '@jsverse/transloco';
 import { CommonModule, Location } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -18,7 +19,7 @@ const API = 'http://localhost:3000';
 @Component({
   selector: 'app-profile-detail',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, TranslocoPipe],
   templateUrl: './profile-detail.html',
   styleUrls: ['./profile-detail.css'],
 })

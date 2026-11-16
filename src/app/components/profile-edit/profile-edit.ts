@@ -1,4 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
+import { TranslocoService } from '@jsverse/transloco';
+import { TranslocoPipe } from '@jsverse/transloco';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
@@ -8,11 +10,12 @@ import { compressImage } from '../../utils/image';
 @Component({
   selector: 'app-profile-edit',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterLink],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink, TranslocoPipe],
   templateUrl: './profile-edit.html',
   styleUrls: ['./profile-edit.css'],
 })
 export class ProfileEdit implements OnInit {
+  private i18n = inject(TranslocoService);
   private authService = inject(AuthService) as AuthService;
   private router = inject(Router);
   private fb = inject(FormBuilder);
@@ -64,7 +67,7 @@ export class ProfileEdit implements OnInit {
       this.profileForm.patchValue({ avatar: compressed });
       this.profileForm.markAsDirty();
     } catch (err) {
-      this.avatarError = err instanceof Error ? err.message : 'No se pudo cargar la imagen.';
+      this.avatarError = err instanceof Error ? err.message : this.i18n.translate('ui.noSePudoCargarLaImagen');
       input.value = '';
     } finally {
       this.isProcessingAvatar = false;
@@ -91,13 +94,13 @@ export class ProfileEdit implements OnInit {
     if (userValue && userValue.id) {
       this.authService.updateUser(userValue.id, updatedData).subscribe({
         next: () => {
-          this.successMessage = '¡Perfil actualizado correctamente!';
+          this.successMessage = this.i18n.translate('ui.perfilActualizadoCorrectamente');
           setTimeout(() => {
             this.router.navigate(['/profile']);
           }, 1500);
         },
         error: () => {
-          this.errorMessage = 'Hubo un error al actualizar los datos.';
+          this.errorMessage = this.i18n.translate('ui.huboUnErrorAlActualizarLos');
         },
       });
     }

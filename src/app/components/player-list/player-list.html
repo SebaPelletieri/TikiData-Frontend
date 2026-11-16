@@ -1,6 +1,6 @@
 <div class="player-list-container">
   <div class="header-title-section">
-    <h2>Jugadores</h2>
+    <h2>{{ 'playerList.title' | transloco }}</h2>
   </div>
 
   <!-- Barra de Búsqueda y Botón de Filtrar Unificado -->
@@ -20,7 +20,7 @@
         type="text"
         [ngModel]="searchText()"
         (ngModelChange)="onSearchChange($event)"
-        placeholder="Buscar jugadores..."
+        [placeholder]="'playerList.searchPlaceholder' | transloco"
       />
     </div>
 
@@ -29,7 +29,7 @@
       <button type="button" class="filter-main-btn" (click)="toggleFilterPanel($event)">
         <div class="trigger-content">
           <i class="fas fa-filter"></i>
-          <span>Filtrar</span>
+          <span>{{ 'common.filter' | transloco }}</span>
         </div>
         <span class="triangle-icon" [class.rotate]="isFilterPanelOpen()"></span>
       </button>
@@ -37,14 +37,14 @@
       <div class="filter-panel" (click)="$event.stopPropagation()">
         <!-- Sección 1: Posición -->
         <div class="filter-panel-section">
-          <span class="filter-panel-title">Posición</span>
+          <span class="filter-panel-title">{{ 'playerList.position' | transloco }}</span>
           <div class="sub-dropdown" [class.open]="isPositionDropdownOpen">
             <button
               type="button"
               class="sub-dropdown-trigger"
               (click)="togglePositionDropdown($event)"
             >
-              <span>{{ selectedPositionLabel }}</span>
+              <span>{{ selectedPositionLabel | transloco }}</span>
               <span class="triangle-icon" [class.rotate]="isPositionDropdownOpen"></span>
             </button>
 
@@ -57,7 +57,7 @@
                       [class.active]="selectedPosition() === pos.value"
                       (click)="selectPosition(pos.value)"
                     >
-                      <span>{{ pos.label }}</span>
+                      <span>{{ pos.label | transloco }}</span>
                       @if (selectedPosition() === pos.value) {
                         <i class="fas fa-check check-icon"></i>
                       }
@@ -71,14 +71,14 @@
 
         <!-- Sección 2: Nacionalidad -->
         <div class="filter-panel-section">
-          <span class="filter-panel-title">Nacionalidad</span>
+          <span class="filter-panel-title">{{ 'playerList.nationality' | transloco }}</span>
           <div class="sub-dropdown" [class.open]="isNationalityDropdownOpen">
             <button
               type="button"
               class="sub-dropdown-trigger"
               (click)="toggleNationalityDropdown($event)"
             >
-              <span>{{ selectedNationalityLabel }}</span>
+              <span>{{ selectedNationality() === 'ALL' ? ('playerList.allNationalities' | transloco) : (selectedNationality() | country) }}</span>
               <span class="triangle-icon" [class.rotate]="isNationalityDropdownOpen"></span>
             </button>
 
@@ -99,7 +99,7 @@
                         } @else {
                           <span class="all-countries-icon">🌐</span>
                         }
-                        <span>{{ nat.label }}</span>
+                        <span>{{ nat.value === 'ALL' ? ('playerList.allNationalities' | transloco) : (nat.value | country) }}</span>
                       </div>
                       @if (selectedNationality() === nat.value) {
                         <i class="fas fa-check check-icon"></i>
@@ -120,11 +120,11 @@
     <table class="styled-table">
       <thead>
         <tr>
-          <th class="col-photo">Jugador</th>
+          <th class="col-photo">{{ 'playerList.player' | transloco }}</th>
           <th></th>
-          <th>Posición</th>
-          <th>Equipo</th>
-          <th>Edad</th>
+          <th>{{ 'playerList.position' | transloco }}</th>
+          <th>{{ 'playerList.team' | transloco }}</th>
+          <th>{{ 'playerList.age' | transloco }}</th>
           <th class="col-action"></th>
         </tr>
       </thead>
@@ -145,10 +145,10 @@
               <span class="name">{{ player.name }}</span>
             </td>
             <td>
-              <span class="position-text">{{ player.position }}</span>
+              <span class="position-text">{{ player.position ? ('position.' + player.position | transloco) : '-' }}</span>
             </td>
             <td class="team-cell">
-              {{ getTeamName(player) }}
+              {{ getTeamName(player) || ('playerList.freeAgent' | transloco) }}
             </td>
             <td>
               <span class="age-text">{{ player.age || '-' }}</span>
@@ -160,7 +160,7 @@
         } @empty {
           <tr>
             <td colspan="6" class="empty-state">
-              No se encontraron jugadores registrados que coincidan con la búsqueda.
+              {{ 'playerList.empty' | transloco }}
             </td>
           </tr>
         }
@@ -169,7 +169,7 @@
 
     <!-- Paginación Inferior Dinámica (Máximo 20 pestañas visibles) -->
     <div class="pagination-container">
-      <span class="pagination-info">{{ paginationInfoText() }}</span>
+      <span class="pagination-info">{{ paginationInfo().total === 0 ? ('playerList.paginationEmpty' | transloco) : ('playerList.pagination' | transloco: paginationInfo()) }}</span>
       <div class="pagination-controls">
         <button
           type="button"

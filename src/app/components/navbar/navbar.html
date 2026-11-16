@@ -11,33 +11,33 @@
       routerLinkActive="navbar__item--active"
       [routerLinkActiveOptions]="{ exact: true }"
     >
-      <a class="navbar__link" routerLink="/" title="Inicio">
+      <a class="navbar__link" routerLink="/" [title]="'nav.home' | transloco">
         <i class="fas fa-home navbar__icon"></i>
-        <span class="navbar__label">Inicio</span>
+        <span class="navbar__label">{{ 'nav.home' | transloco }}</span>
       </a>
     </li>
     <li class="navbar__item" routerLinkActive="navbar__item--active">
-      <a class="navbar__link" routerLink="/matches" title="Partidos">
+      <a class="navbar__link" routerLink="/matches" [title]="'nav.matches' | transloco">
         <i class="fas fa-futbol navbar__icon"></i>
-        <span class="navbar__label">Partidos</span>
+        <span class="navbar__label">{{ 'nav.matches' | transloco }}</span>
       </a>
     </li>
     <li class="navbar__item" routerLinkActive="navbar__item--active">
-      <a class="navbar__link" routerLink="/championships" title="Campeonatos">
+      <a class="navbar__link" routerLink="/championships" [title]="'nav.championships' | transloco">
         <i class="fas fa-trophy navbar__icon"></i>
-        <span class="navbar__label">Campeonatos</span>
+        <span class="navbar__label">{{ 'nav.championships' | transloco }}</span>
       </a>
     </li>
     <li class="navbar__item" routerLinkActive="navbar__item--active">
-      <a class="navbar__link" routerLink="/teams" title="Equipos">
+      <a class="navbar__link" routerLink="/teams" [title]="'nav.teams' | transloco">
         <i class="fas fa-shield-alt navbar__icon"></i>
-        <span class="navbar__label">Equipos</span>
+        <span class="navbar__label">{{ 'nav.teams' | transloco }}</span>
       </a>
     </li>
     <li class="navbar__item" routerLinkActive="navbar__item--active">
-      <a class="navbar__link" routerLink="/players" title="Jugadores">
+      <a class="navbar__link" routerLink="/players" [title]="'nav.players' | transloco">
         <i class="fas fa-users navbar__icon"></i>
-        <span class="navbar__label">Jugadores</span>
+        <span class="navbar__label">{{ 'nav.players' | transloco }}</span>
       </a>
     </li>
   </ul>
@@ -47,7 +47,7 @@
     <button
       type="button"
       class="navbar__search-toggle"
-      aria-label="Buscar"
+      [attr.aria-label]="'nav.search' | transloco"
       (click)="openMobileSearch()"
     >
       <i class="fas fa-search"></i>
@@ -63,14 +63,14 @@
         (ngModelChange)="searchText.set($event); isSearchFocused.set(true)"
         (focus)="isSearchFocused.set(true)"
         (click)="isSearchFocused.set(true)"
-        placeholder="Buscar equipos, ligas o jugadores..."
+        [placeholder]="'nav.searchPlaceholder' | transloco"
         (keydown.escape)="closeMobileSearch()"
       />
       <!-- Solo se ve en celular, con el buscador abierto -->
       <button
         type="button"
         class="navbar__search-close"
-        aria-label="Cerrar búsqueda"
+        [attr.aria-label]="'nav.closeSearch' | transloco"
         (click)="closeMobileSearch()"
       >
         <i class="fas fa-times"></i>
@@ -105,10 +105,49 @@
                   }
                 </div>
               </div>
-              <span class="search-badge" [class]="item.type">{{ item.type }}</span>
+              <span class="search-badge" [class]="item.type">{{ 'searchType.' + item.type | transloco }}</span>
             </li>
           } @empty {
-            <li class="search-empty">No se encontraron resultados</li>
+            <li class="search-empty">{{ 'nav.noResults' | transloco }}</li>
+          }
+        </ul>
+      }
+    </div>
+
+    <!-- Selector de idioma -->
+    <div class="navbar__lang" [class.navbar__lang--open]="isLangMenuOpen()">
+      <button
+        type="button"
+        class="navbar__lang-btn"
+        (click)="toggleLangMenu($event)"
+        [attr.aria-label]="'lang.title' | transloco"
+        [attr.aria-expanded]="isLangMenuOpen()"
+        [title]="'lang.title' | transloco"
+      >
+        <img
+          class="navbar__lang-flag"
+          [src]="flagUrl(languageService.option().flag)"
+          [alt]="languageService.option().label"
+        />
+        <span class="navbar__lang-code">{{ languageService.option().short }}</span>
+      </button>
+
+      @if (isLangMenuOpen()) {
+        <ul class="navbar__lang-menu" role="listbox">
+          @for (lang of languageService.languages; track lang.code) {
+            <li
+              class="navbar__lang-item"
+              role="option"
+              [class.navbar__lang-item--active]="lang.code === languageService.current()"
+              [attr.aria-selected]="lang.code === languageService.current()"
+              (click)="selectLang(lang.code)"
+            >
+              <img class="navbar__lang-flag" [src]="flagUrl(lang.flag)" [alt]="" />
+              <span>{{ lang.label }}</span>
+              @if (lang.code === languageService.current()) {
+                <i class="fas fa-check navbar__lang-check"></i>
+              }
+            </li>
           }
         </ul>
       }
@@ -138,7 +177,7 @@
           class="navbar__profile navbar__profile--avatar"
           [class.navbar__profile--active]="isProfileMenuOpen()"
           (click)="toggleProfileMenu($event)"
-          aria-label="Menú de usuario"
+          [attr.aria-label]="'nav.userMenu' | transloco"
         >
           @if (authService.currentUser()?.avatar) {
             <img [src]="authService.currentUser()?.avatar" alt="Avatar" class="navbar-avatar-img" />
@@ -164,7 +203,7 @@
               <div class="navbar__dropdown-user-info">
                 <span class="navbar__dropdown-name">{{ userName() }}</span>
                 <span class="navbar__dropdown-email">{{
-                  authService.currentUser()?.email || 'Usuario'
+                  authService.currentUser()?.email || ('nav.user' | transloco)
                 }}</span>
               </div>
             </div>
@@ -173,13 +212,13 @@
 
             <a routerLink="/profile" class="navbar__dropdown-link" (click)="closeProfileMenu()">
               <i class="fas fa-user-circle"></i>
-              Mi Perfil
+              {{ 'nav.myProfile' | transloco }}
             </a>
 
             @if (isAdmin()) {
               <a routerLink="/admin" class="navbar__dropdown-link" (click)="closeProfileMenu()">
                 <i class="fas fa-cog"></i>
-                Panel de Administración
+                {{ 'nav.admin' | transloco }}
               </a>
             }
 
@@ -191,7 +230,7 @@
               (click)="onLogout()"
             >
               <i class="fas fa-sign-out-alt"></i>
-              Cerrar Sesión
+              {{ 'nav.logout' | transloco }}
             </button>
           </div>
         }
@@ -200,18 +239,18 @@
       <div class="navbar__auth-buttons">
         <a routerLink="/login" class="navbar__auth-btn navbar__login-btn">
           <i class="fas fa-sign-in-alt"></i>
-          <span>Iniciar Sesión</span>
+          <span>{{ 'nav.login' | transloco }}</span>
         </a>
         <a routerLink="/register" class="navbar__auth-btn navbar__register-btn">
           <i class="fas fa-user-plus"></i>
-          <span>Registrarse</span>
+          <span>{{ 'nav.register' | transloco }}</span>
         </a>
       </div>
     }
   </div>
 </nav>
 <!-- Celular y tablet: los 5 links en una barra fija abajo, como en las apps -->
-<nav class="bottom-nav" aria-label="Navegación principal">
+<nav class="bottom-nav" [attr.aria-label]="'nav.mainNav' | transloco">
   <a
     class="bottom-nav__item"
     routerLink="/"
@@ -219,11 +258,11 @@
     [routerLinkActiveOptions]="{ exact: true }"
   >
     <span class="bottom-nav__icon"><i class="fas fa-home"></i></span>
-    <span class="bottom-nav__label">Inicio</span>
+    <span class="bottom-nav__label">{{ 'nav.home' | transloco }}</span>
   </a>
   <a class="bottom-nav__item" routerLink="/matches" routerLinkActive="bottom-nav__item--active">
     <span class="bottom-nav__icon"><i class="fas fa-futbol"></i></span>
-    <span class="bottom-nav__label">Partidos</span>
+    <span class="bottom-nav__label">{{ 'nav.matches' | transloco }}</span>
   </a>
   <a
     class="bottom-nav__item"
@@ -231,14 +270,14 @@
     routerLinkActive="bottom-nav__item--active"
   >
     <span class="bottom-nav__icon"><i class="fas fa-trophy"></i></span>
-    <span class="bottom-nav__label">Campeonatos</span>
+    <span class="bottom-nav__label">{{ 'nav.championships' | transloco }}</span>
   </a>
   <a class="bottom-nav__item" routerLink="/teams" routerLinkActive="bottom-nav__item--active">
     <span class="bottom-nav__icon"><i class="fas fa-shield-alt"></i></span>
-    <span class="bottom-nav__label">Equipos</span>
+    <span class="bottom-nav__label">{{ 'nav.teams' | transloco }}</span>
   </a>
   <a class="bottom-nav__item" routerLink="/players" routerLinkActive="bottom-nav__item--active">
     <span class="bottom-nav__icon"><i class="fas fa-users"></i></span>
-    <span class="bottom-nav__label">Jugadores</span>
+    <span class="bottom-nav__label">{{ 'nav.players' | transloco }}</span>
   </a>
 </nav>

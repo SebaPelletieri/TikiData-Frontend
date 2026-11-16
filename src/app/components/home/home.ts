@@ -8,9 +8,11 @@ import { TeamService } from '../../services/team-service';
 import { Team } from '../../models/Team';
 import { Match } from '../../models/Match';
 import { Player } from '../../models/Player';
+import { TranslocoPipe } from '@jsverse/transloco';
+import { LanguageService } from '../../i18n/language-service';
 
 @Component({
-  imports: [RouterLink, DatePipe],
+  imports: [RouterLink, DatePipe, TranslocoPipe],
   selector: 'app-home',
   standalone: true,
   styleUrl: './home.css',
@@ -28,7 +30,18 @@ export class Home implements OnInit {
   featuredMatches = signal<Match[]>([]);
   topScorers = this.playerService.topScorers;
 
-  fechaActual: string = '';
+  private languageService = inject(LanguageService);
+
+  /** Fecha de hoy en el idioma elegido: "Lunes, 16 de noviembre" / "Monday, November 16" */
+  fechaActual = computed(() => {
+    this.languageService.current();
+    const texto = new Date().toLocaleDateString(this.languageService.locale(), {
+      weekday: 'long',
+      day: 'numeric',
+      month: 'long',
+    });
+    return texto.charAt(0).toUpperCase() + texto.slice(1);
+  });
 
   featuredLeagues = computed(() =>
     this.campeonatos()
@@ -42,14 +55,6 @@ export class Home implements OnInit {
   });
 
   ngOnInit(): void {
-    const opciones: Intl.DateTimeFormatOptions = {
-      weekday: 'long',
-      day: 'numeric',
-      month: 'long',
-    };
-    const fechaFormateada = new Date().toLocaleDateString('es-ES', opciones);
-    this.fechaActual = fechaFormateada.charAt(0).toUpperCase() + fechaFormateada.slice(1);
-
     this.championshipService.getAll();
     this.playerService.getTopScorers();
 

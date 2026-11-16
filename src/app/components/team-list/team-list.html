@@ -1,6 +1,6 @@
 <div class="team-list-container">
   <div class="header-title-section">
-    <h2>Equipos</h2>
+    <h2>{{ 'teamList.title' | transloco }}</h2>
   </div>
 
   <!-- Barra de Filtros y Búsqueda -->
@@ -20,7 +20,7 @@
         type="text"
         [ngModel]="searchText()"
         (ngModelChange)="searchText.set($event)"
-        placeholder="Buscar equipos..."
+        [placeholder]="'teamList.searchPlaceholder' | transloco"
       />
     </div>
 
@@ -29,7 +29,7 @@
       <button type="button" class="filter-main-btn" (click)="toggleFilterPanel($event)">
         <div class="trigger-content">
           <i class="fas fa-filter"></i>
-          <span>Filtrar</span>
+          <span>{{ 'common.filter' | transloco }}</span>
         </div>
         <span class="triangle-icon" [class.rotate]="isFilterPanelOpen()"></span>
       </button>
@@ -37,7 +37,7 @@
       <div class="filter-panel" (click)="$event.stopPropagation()">
         <!-- Sección: País -->
         <div class="filter-panel-section">
-          <span class="filter-panel-title">País</span>
+          <span class="filter-panel-title">{{ 'common.country' | transloco }}</span>
           <div class="sub-dropdown" [class.open]="isCountryDropdownOpen">
             <button
               type="button"
@@ -45,7 +45,7 @@
               (click)="toggleCountryDropdown($event)"
             >
               <span>{{
-                selectedCountry() === 'ALL' ? 'Todos los países' : selectedCountry()
+                selectedCountry() === 'ALL' ? ('common.allCountries' | transloco) : (selectedCountry() | country)
               }}</span>
               <span class="triangle-icon" [class.rotate]="isCountryDropdownOpen"></span>
             </button>
@@ -67,7 +67,7 @@
                         } @else {
                           <span class="all-countries-icon">🌐</span>
                         }
-                        <span>{{ opt.label }}</span>
+                        <span>{{ opt.value === 'ALL' ? ('common.allCountries' | transloco) : (opt.value | country) }}</span>
                       </div>
                       @if (selectedCountry() === opt.value) {
                         <i class="fas fa-check check-icon"></i>
@@ -93,7 +93,7 @@
             <div class="country-flag-wrapper">
               <img loading="lazy" decoding="async" [src]="group.countryFlag" [alt]="group.countryName" />
             </div>
-            <h3>{{ group.countryName }}</h3>
+            <h3>{{ group.countryName | country }}</h3>
           </div>
           <span class="triangle-icon" [class.rotate]="isCountryOpen(group.countryName)"></span>
         </div>
@@ -112,9 +112,9 @@
                   } @else {
                     <span class="league-icon"><i class="fas fa-shield-alt"></i></span>
                   }
-                  <h4>{{ league.leagueName }}</h4>
+                  <h4>{{ league.leagueKey ? (league.leagueKey | transloco) : league.leagueName }}</h4>
                   <span class="league-count">
-                    {{ league.teams.length }} {{ league.teams.length === 1 ? 'equipo' : 'equipos' }}
+                    {{ (league.teams.length === 1 ? 'teamList.count_one' : 'teamList.count_other') | transloco: { count: league.teams.length } }}
                   </span>
                 </div>
 
@@ -138,7 +138,7 @@
                       </div>
                       <div class="team-info">
                         <h5 class="team-name" [title]="team.name">{{ team.name }}</h5>
-                        <span class="team-country">{{ team.country }}</span>
+                        <span class="team-country">{{ team.country | country }}</span>
                       </div>
                     </div>
                   }
@@ -150,7 +150,7 @@
       </div>
     } @empty {
       <div class="empty-state">
-        <p>No se encontraron equipos registrados que coincidan con la búsqueda.</p>
+        <p>{{ 'teamList.empty' | transloco }}</p>
       </div>
     }
   </div>

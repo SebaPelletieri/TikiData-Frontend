@@ -1,4 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
+import { TranslocoService } from '@jsverse/transloco';
 import { LoginForm } from '../../components/login-form/login-form';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -13,6 +14,7 @@ import { safeReturnUrl } from '../../utils/auth-redirect';
   templateUrl: './login.html',
 })
 export class Login {
+  private i18n = inject(TranslocoService);
   private authService = inject(AuthService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
@@ -37,8 +39,8 @@ export class Login {
         // Error de conexión con el servidor vs. datos que no coinciden con ninguna cuenta
         this.loginError.set(
           err instanceof HttpErrorResponse
-            ? 'No pudimos conectarnos con el servidor. Intentá de nuevo en unos segundos.'
-            : 'No encontramos una cuenta con ese correo y contraseña. Revisá los datos e intentá de nuevo.',
+            ? this.i18n.translate('ui.noPudimosConectarnosConElServidor')
+            : this.i18n.translate('ui.noEncontramosUnaCuentaConEse'),
         );
       },
     });

@@ -2,10 +2,10 @@
   <div class="match-card" [routerLink]="['/match', match.id]">
     <div class="match-card-header">
       <span class="championship-badge">
-        {{ match.championship?.name || match.championshipName || 'TORNEO' }}
+        {{ (match.championship?.name || match.championshipName | round) || ('matchCard.tournament' | transloco) }}
       </span>
       <span class="status-badge" [class.live]="match.status === 'En Vivo'">
-        {{ match.status || 'Finalizado' }}
+        {{ 'status.' + (match.status || 'Finalizado') | transloco }}
       </span>
     </div>
 
@@ -20,7 +20,7 @@
             [alt]="localTeam()?.name"
           />
         </div>
-        <span class="team-title">{{ localTeam()?.name || 'Cargando...' }}</span>
+        <span class="team-title">{{ localTeam()?.name || ('common.loading' | transloco) }}</span>
       </div>
 
       <!-- MARCADOR CENTRAL -->
@@ -40,7 +40,7 @@
             [alt]="awayTeam()?.name"
           />
         </div>
-        <span class="team-title">{{ awayTeam()?.name || 'Cargando...' }}</span>
+        <span class="team-title">{{ awayTeam()?.name || ('common.loading' | transloco) }}</span>
       </div>
     </div>
 

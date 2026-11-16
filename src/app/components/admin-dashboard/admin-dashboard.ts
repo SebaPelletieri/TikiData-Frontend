@@ -1,6 +1,10 @@
 import { Component, OnInit, signal, computed, inject, HostListener } from '@angular/core';
 import { buildSlugMap, matchBaseName } from '../../utils/slug';
 import { compareEs } from '../../utils/sort';
+import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
+import { CountryPipe } from '../../i18n/country.pipe';
+import { TranslateOrOriginalPipe } from '../../i18n/data.pipes';
+import { LanguageService } from '../../i18n/language-service';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -35,13 +39,14 @@ function getVisiblePages(total: number, current: number, size = MAX_VISIBLE_PAGE
     ChampionshipForm,
     PlayerForm,
     AdminForm,
-    MatchForm,
-  ],
+    MatchForm, TranslocoPipe, CountryPipe, TranslateOrOriginalPipe],
   templateUrl: './admin-dashboard.html',
   styleUrl: './admin-dashboard.css',
 })
 export class AdminDashboard implements OnInit {
   private authService = inject(AuthService);
+  private i18n = inject(TranslocoService);
+  private language = inject(LanguageService);
   private teamService = inject(TeamService);
   private championshipService = inject(ChampionshipService);
   private playerService = inject(PlayerService);
@@ -241,14 +246,17 @@ export class AdminDashboard implements OnInit {
     if (this.authService.updateUserRole) {
       this.authService.updateUserRole(user.id, newRole).subscribe({
         next: () => {
-          this.successMessage = `Rol de ${user.username} actualizado a ${newRole} con éxito.`;
+          this.successMessage = this.i18n.translate('admin.roleUpdated', {
+            user: user.username,
+            role: this.i18n.translate('role.' + newRole),
+          });
           this.loadAdminData();
           this.userToChangeRole.set(null);
           setTimeout(() => (this.successMessage = ''), 3000);
         },
         error: (err: any) => {
           console.error('Error al actualizar rol:', err);
-          this.errorMessage = 'No se pudo actualizar el rol del usuario.';
+          this.errorMessage = this.i18n.translate('ui.noSePudoActualizarElRol');
           this.userToChangeRole.set(null);
           setTimeout(() => (this.errorMessage = ''), 3000);
         },
@@ -477,11 +485,12 @@ export class AdminDashboard implements OnInit {
   );
   pagesArray = computed(() => getVisiblePages(this.totalPages(), this.currentPage()));
   paginationInfoText = computed(() => {
+    this.language.current();
     const total = this.filteredTeams().length;
-    if (total === 0) return 'No hay registros';
+    if (total === 0) return this.i18n.translate('admin.noRecords');
     const start = (this.currentPage() - 1) * this.itemsPerPage + 1;
     const end = Math.min(this.currentPage() * this.itemsPerPage, total);
-    return `Mostrando ${start} - ${end} de ${total} registros`;
+    return this.i18n.translate('admin.showing', { start, end, total });
   });
   changePage(page: number): void {
     if (page >= 1 && page <= this.totalPages()) this.currentPage.set(page);
@@ -520,11 +529,12 @@ export class AdminDashboard implements OnInit {
     getVisiblePages(this.totalChampPages(), this.currentChampPage()),
   );
   champPaginationInfoText = computed(() => {
+    this.language.current();
     const total = this.filteredChampionships().length;
-    if (total === 0) return 'No hay registros';
+    if (total === 0) return this.i18n.translate('admin.noRecords');
     const start = (this.currentChampPage() - 1) * this.itemsPerPageChamps + 1;
     const end = Math.min(this.currentChampPage() * this.itemsPerPageChamps, total);
-    return `Mostrando ${start} - ${end} de ${total} registros`;
+    return this.i18n.translate('admin.showing', { start, end, total });
   });
   changeChampPage(page: number): void {
     if (page >= 1 && page <= this.totalChampPages()) this.currentChampPage.set(page);
@@ -559,11 +569,12 @@ export class AdminDashboard implements OnInit {
   );
 
   matchPaginationInfoText = computed(() => {
+    this.language.current();
     const total = this.filteredMatches().length;
-    if (total === 0) return 'No hay registros';
+    if (total === 0) return this.i18n.translate('admin.noRecords');
     const start = (this.currentMatchPage() - 1) * this.itemsPerPageMatches + 1;
     const end = Math.min(this.currentMatchPage() * this.itemsPerPageMatches, total);
-    return `Mostrando ${start} - ${end} de ${total} registros`;
+    return this.i18n.translate('admin.showing', { start, end, total });
   });
 
   changeMatchPage(page: number): void {
@@ -596,11 +607,12 @@ export class AdminDashboard implements OnInit {
     getVisiblePages(this.totalPlayerPages(), this.currentPlayerPage()),
   );
   playerPaginationInfoText = computed(() => {
+    this.language.current();
     const total = this.filteredPlayers().length;
-    if (total === 0) return 'No hay registros';
+    if (total === 0) return this.i18n.translate('admin.noRecords');
     const start = (this.currentPlayerPage() - 1) * this.itemsPerPagePlayers + 1;
     const end = Math.min(this.currentPlayerPage() * this.itemsPerPagePlayers, total);
-    return `Mostrando ${start} - ${end} de ${total} registros`;
+    return this.i18n.translate('admin.showing', { start, end, total });
   });
   changePlayerPage(page: number): void {
     if (page >= 1 && page <= this.totalPlayerPages()) this.currentPlayerPage.set(page);
@@ -638,11 +650,12 @@ export class AdminDashboard implements OnInit {
   );
   userPagesArray = computed(() => getVisiblePages(this.totalUserPages(), this.currentUserPage()));
   userPaginationInfoText = computed(() => {
+    this.language.current();
     const total = this.filteredUsers().length;
-    if (total === 0) return 'No hay registros';
+    if (total === 0) return this.i18n.translate('admin.noRecords');
     const start = (this.currentUserPage() - 1) * this.itemsPerPageUsers + 1;
     const end = Math.min(this.currentUserPage() * this.itemsPerPageUsers, total);
-    return `Mostrando ${start} - ${end} de ${total} registros`;
+    return this.i18n.translate('admin.showing', { start, end, total });
   });
   changeUserPage(page: number): void {
     if (page >= 1 && page <= this.totalUserPages()) this.currentUserPage.set(page);

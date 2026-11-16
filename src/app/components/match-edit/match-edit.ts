@@ -8,6 +8,11 @@ import {
   HostListener,
   ChangeDetectorRef,
 } from '@angular/core';
+import { localizedMonths } from '../../i18n/months';
+import { LanguageService } from '../../i18n/language-service';
+import { TranslocoService } from '@jsverse/transloco';
+import { TranslocoPipe } from '@jsverse/transloco';
+import { IncidencePipe } from '../../i18n/data.pipes';
 import { CommonModule } from '@angular/common';
 import {
   FormBuilder,
@@ -76,13 +81,17 @@ const POSITION_ORDER: Record<string, number> = { ARQ: 0, POR: 0, DEF: 1, MED: 2,
 @Component({
   selector: 'app-match-edit',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, TranslocoPipe, IncidencePipe],
   templateUrl: './match-edit.html',
   styleUrl: './match-edit.css',
 })
 export class MatchEdit implements OnInit {
   @Input() matchIdInput!: number | string;
   @Output() closePanel = new EventEmitter<void>();
+
+  private language = inject(LanguageService);
+
+  private i18n = inject(TranslocoService);
 
   private fb = inject(FormBuilder);
   private route = inject(ActivatedRoute);
@@ -169,20 +178,13 @@ export class MatchEdit implements OnInit {
   selectedMinute: string = '00';
   today: Date = new Date();
 
-  months = [
-    'Enero',
-    'Febrero',
-    'Marzo',
-    'Abril',
-    'Mayo',
-    'Junio',
-    'Julio',
-    'Agosto',
-    'Septiembre',
-    'Octubre',
-    'Noviembre',
-    'Diciembre',
-  ];
+  // Nombres de los meses en el idioma elegido (antes estaban fijos en español)
+
+  get months(): string[] {
+
+    return localizedMonths(this.language.locale());
+
+  }
   weekDays = ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'];
 
   get yearsList(): number[] {
@@ -461,8 +463,8 @@ export class MatchEdit implements OnInit {
     const name = this.rosterSelection[side];
     if (!name) {
       return this.availableRoster(side).length
-        ? 'Seleccionar jugador del plantel...'
-        : 'No quedan jugadores disponibles';
+        ? this.i18n.translate('ui.seleccionarJugadorDelPlantel')
+        : this.i18n.translate('ui.noQuedanJugadoresDisponibles');
     }
     const p = this.rosterOf(side).find((r) => r.name === name);
     return (p?.number ? `#${p.number} · ` : '') + name + (p?.position ? ` (${p.position})` : '');
@@ -490,7 +492,7 @@ export class MatchEdit implements OnInit {
   }
 
   displayTeamName(team: TeamSide): string {
-    return this.teamName(team) || (team === 'local' ? 'Equipo local' : 'Equipo visitante');
+    return this.teamName(team) || (team === 'local' ? this.i18n.translate('ui.equipoLocal2') : this.i18n.translate('ui.equipoVisitante2'));
   }
 
   teamShield(team: TeamSide): string {
@@ -810,11 +812,11 @@ export class MatchEdit implements OnInit {
       !this.startersOf(this.newIncidenceTeam).length &&
       !this.substitutesOf(this.newIncidenceTeam).length
     ) {
-      return 'Primero cargá la formación de este equipo';
+      return this.i18n.translate('ui.primeroCargaLaFormacionDeEste');
     }
     return this.newIncidenceType === 'GOAL'
-      ? 'No hay jugadores en cancha disponibles'
-      : 'No hay jugadores citados disponibles';
+      ? this.i18n.translate('ui.noHayJugadoresEnCanchaDisponibles')
+      : this.i18n.translate('ui.noHayJugadoresCitadosDisponibles');
   }
 
   private validMinute(m: number | null): boolean {
@@ -878,15 +880,15 @@ export class MatchEdit implements OnInit {
   getIncidenceTypeLabel(type: string): string {
     switch (type) {
       case 'YELLOW_CARD':
-        return 'Tarjeta Amarilla';
+        return this.i18n.translate('ui.tarjetaAmarilla');
       case 'RED_CARD':
-        return 'Tarjeta Roja';
+        return this.i18n.translate('ui.tarjetaRoja');
       case 'GOAL':
-        return 'Gol';
+        return this.i18n.translate('ui.gol');
       case 'SUBSTITUTION':
-        return 'Sustitución';
+        return this.i18n.translate('ui.sustitucion');
       default:
-        return 'Seleccionar tipo';
+        return this.i18n.translate('ui.seleccionarTipo2');
     }
   }
 

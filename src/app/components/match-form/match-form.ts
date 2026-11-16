@@ -11,6 +11,10 @@ import {
   ChangeDetectorRef,
   HostListener,
 } from '@angular/core';
+import { localizedMonths } from '../../i18n/months';
+import { LanguageService } from '../../i18n/language-service';
+import { TranslocoService } from '@jsverse/transloco';
+import { TranslocoPipe } from '@jsverse/transloco';
 import { CommonModule } from '@angular/common';
 import {
   FormBuilder,
@@ -33,12 +37,14 @@ interface CalendarDay {
 @Component({
   selector: 'app-match-form',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, TranslocoPipe],
   templateUrl: './match-form.html',
   styleUrls: ['./match-form.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MatchForm implements OnInit {
+  private language = inject(LanguageService);
+  private i18n = inject(TranslocoService);
   private fb = inject(FormBuilder);
   private matchService = inject(MatchService);
   public teamService = inject(TeamService);
@@ -77,20 +83,13 @@ export class MatchForm implements OnInit {
   selectedMinute: string = '00';
   today: Date = new Date();
 
-  months = [
-    'Enero',
-    'Febrero',
-    'Marzo',
-    'Abril',
-    'Mayo',
-    'Junio',
-    'Julio',
-    'Agosto',
-    'Septiembre',
-    'Octubre',
-    'Noviembre',
-    'Diciembre',
-  ];
+  // Nombres de los meses en el idioma elegido (antes estaban fijos en español)
+
+  get months(): string[] {
+
+    return localizedMonths(this.language.locale());
+
+  }
   weekDays = ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'];
 
   get yearsList(): number[] {
@@ -499,14 +498,14 @@ export class MatchForm implements OnInit {
   saveMatch(): void {
     if (this.matchForm.invalid) {
       this.matchForm.markAllAsTouched();
-      this.errorMessage = 'Por favor completa los campos obligatorios.';
+      this.errorMessage = this.i18n.translate('ui.porFavorCompletaLosCamposObligatorios');
       return;
     }
 
     const formValues = this.matchForm.value;
 
     if (String(formValues.localTeamID) === String(formValues.awayTeamID)) {
-      this.errorMessage = 'El equipo local y visitante no pueden ser el mismo.';
+      this.errorMessage = this.i18n.translate('ui.elEquipoLocalYVisitanteNo');
       return;
     }
 
@@ -517,7 +516,7 @@ export class MatchForm implements OnInit {
         next: () => this.handleSuccess(),
         error: (err: any) => {
           console.error('Error al actualizar:', err);
-          this.errorMessage = 'Error al actualizar el partido.';
+          this.errorMessage = this.i18n.translate('ui.errorAlActualizarElPartido');
           this.cdr.markForCheck();
         },
       });
@@ -526,7 +525,7 @@ export class MatchForm implements OnInit {
         next: () => this.handleSuccess(),
         error: (err: any) => {
           console.error('Error al crear:', err);
-          this.errorMessage = 'Error al registrar el partido.';
+          this.errorMessage = this.i18n.translate('ui.errorAlRegistrarElPartido');
           this.cdr.markForCheck();
         },
       });

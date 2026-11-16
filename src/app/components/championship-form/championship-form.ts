@@ -1,4 +1,5 @@
 import { Component, inject, signal, computed, OnInit, HostListener } from '@angular/core';
+import { TranslocoPipe } from '@jsverse/transloco';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormsModule, FormBuilder, Validators } from '@angular/forms';
 import { Championship, ChampionshipType } from '../../models/Championship';
@@ -17,7 +18,7 @@ import {
 @Component({
   selector: 'app-championship-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, TranslocoPipe],
   styleUrl: './championship-form.css',
   templateUrl: './championship-form.html',
 })

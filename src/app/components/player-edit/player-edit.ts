@@ -7,6 +7,10 @@ import {
   inject,
   HostListener,
 } from '@angular/core';
+import { localizedMonths } from '../../i18n/months';
+import { LanguageService } from '../../i18n/language-service';
+import { TranslocoPipe } from '@jsverse/transloco';
+import { TranslateOrOriginalPipe } from '../../i18n/data.pipes';
 import { CommonModule, Location } from '@angular/common';
 import { goBackOr } from '../../utils/navigation';
 import {
@@ -30,13 +34,15 @@ interface CalendarDay {
 @Component({
   selector: 'app-player-edit',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, TranslocoPipe, TranslateOrOriginalPipe],
   templateUrl: './player-edit.html',
   styleUrl: './player-edit.css',
 })
 export class PlayerEdit implements OnInit {
   @Input() playerIdInput!: number | string;
   @Output() closePanel = new EventEmitter<void>();
+
+  private language = inject(LanguageService);
 
   private fb = inject(FormBuilder);
   private route = inject(ActivatedRoute);
@@ -82,20 +88,10 @@ export class PlayerEdit implements OnInit {
   currentDate: Date = new Date();
   calendarDays: CalendarDay[] = [];
   yearsList: number[] = [];
-  monthsNames: string[] = [
-    'Enero',
-    'Febrero',
-    'Marzo',
-    'Abril',
-    'Mayo',
-    'Junio',
-    'Julio',
-    'Agosto',
-    'Septiembre',
-    'Octubre',
-    'Noviembre',
-    'Diciembre',
-  ];
+  // Nombres de los meses en el idioma elegido (antes estaban fijos en español)
+  get monthsNames(): string[] {
+    return localizedMonths(this.language.locale());
+  }
 
   ngOnInit(): void {
     if (this.playerService.players().length === 0) {

@@ -1,10 +1,11 @@
 import { Component, EventEmitter, inject, Input, Output, signal } from '@angular/core';
+import { TranslocoPipe } from '@jsverse/transloco';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { LoginRequest } from '../../models/LoginRequest';
 import { RouterLink } from '@angular/router';
 
 @Component({
-  imports: [ReactiveFormsModule, RouterLink],
+  imports: [ReactiveFormsModule, RouterLink, TranslocoPipe],
   selector: 'app-login-form',
   styleUrl: './login-form.css',
   templateUrl: './login-form.html',

@@ -4,20 +4,20 @@
   <div class="profile-top-bar">
     <div>
       @if (own) {
-        <span class="breadcrumb">Inicio > Mi Perfil</span>
-        <h2>Mi Perfil</h2>
-        <p class="subtitle">Gestiona tu información, estadísticas y preferencias de usuario.</p>
+        <span class="breadcrumb">{{ 'nav.home' | transloco }} > {{ 'ui.miPerfil' | transloco }}</span>
+        <h2>{{ 'ui.miPerfil' | transloco }}</h2>
+        <p class="subtitle">{{ 'ui.gestionaTuInformacionEstadisticasYPreferencias' | transloco }}</p>
       } @else {
-        <span class="breadcrumb">Administración > Usuarios > {{ displayName() }}</span>
-        <h2>Perfil de {{ displayName() }}</h2>
-        <p class="subtitle">Vista de solo lectura de la cuenta y los favoritos del usuario.</p>
+        <span class="breadcrumb">{{ 'profile.administration' | transloco }} > {{ 'profile.users' | transloco }} > {{ displayName() }}</span>
+        <h2>{{ 'ui.perfilDe' | transloco }} {{ displayName() }}</h2>
+        <p class="subtitle">{{ 'ui.vistaDeSoloLecturaDeLa' | transloco }}</p>
       }
     </div>
     @if (own) {
-      <button type="button" class="btn-edit-profile" (click)="navigateToEdit()">Editar Perfil</button>
+      <button type="button" class="btn-edit-profile" (click)="navigateToEdit()">{{ 'ui.editarPerfil' | transloco }}</button>
     } @else {
       <button type="button" class="btn-edit-profile btn-back-profile" (click)="goBack()">
-        <i class="fas fa-arrow-left"></i> Volver
+        <i class="fas fa-arrow-left"></i> {{ 'ui.volver' | transloco }}
       </button>
     }
   </div>
@@ -30,9 +30,9 @@
       </div>
       <div class="user-main-info">
         <h3>{{ displayName() }}</h3>
-        <p class="admin-banner-subtitle">Email: {{ profileUser()?.email }}</p>
+        <p class="admin-banner-subtitle">{{ 'ui.email' | transloco }} {{ profileUser()?.email }}</p>
         @if (!own) {
-          <span class="readonly-badge"><i class="fas fa-eye"></i> Solo lectura · {{ profileUser()?.role || 'Usuario' }}</span>
+          <span class="readonly-badge"><i class="fas fa-eye"></i> {{ 'ui.soloLectura' | transloco }} {{ 'role.' + (profileUser()?.role || 'Usuario') | transloco }}</span>
         }
       </div>
     </div>
@@ -43,27 +43,27 @@
     <div class="stat-card">
       <div class="stat-icon-wrapper blue-shield">🛡️</div>
       <div class="stat-data">
-        <span class="stat-label">Equipos favoritos</span>
+        <span class="stat-label">{{ 'ui.equiposFavoritos' | transloco }}</span>
         <span class="stat-number">{{ favoriteTeamsCount() }}</span>
-        <span class="stat-footer">Equipos seguidos en la plataforma</span>
+        <span class="stat-footer">{{ 'ui.equiposSeguidosEnLaPlataforma' | transloco }}</span>
       </div>
     </div>
 
     <div class="stat-card">
       <div class="stat-icon-wrapper blue-group">👤</div>
       <div class="stat-data">
-        <span class="stat-label">Jugadores favoritos</span>
+        <span class="stat-label">{{ 'ui.jugadoresFavoritos' | transloco }}</span>
         <span class="stat-number">{{ favoritePlayersCount() }}</span>
-        <span class="stat-footer">Futbolistas seguidos</span>
+        <span class="stat-footer">{{ 'ui.futbolistasSeguidos' | transloco }}</span>
       </div>
     </div>
 
     <div class="stat-card">
       <div class="stat-icon-wrapper blue-trophy">🏆</div>
       <div class="stat-data">
-        <span class="stat-label">Campeonatos favoritos</span>
+        <span class="stat-label">{{ 'ui.campeonatosFavoritos' | transloco }}</span>
         <span class="stat-number">{{ favoriteChampionshipsCount() }}</span>
-        <span class="stat-footer">Torneos y ligas seguidas</span>
+        <span class="stat-footer">{{ 'ui.torneosYLigasSeguidas' | transloco }}</span>
       </div>
     </div>
   </div>
@@ -74,9 +74,9 @@
       <div class="teams-title-block">
         <div class="team-shield-icon-box">🛡️</div>
         <div>
-          <h3>{{ own ? 'Mis Equipos Favoritos' : 'Equipos favoritos' }}</h3>
+          <h3>{{ own ? ('ui.misEquiposFavoritos' | transloco) : ('ui.equiposFavoritos' | transloco) }}</h3>
           <p>
-            {{ own ? 'Listado de equipos que tienes marcados como favoritos.' : 'Equipos que este usuario sigue.' }}
+            {{ own ? ('ui.listadoDeEquiposQueTienesMarcados' | transloco) : ('ui.equiposQueEsteUsuarioSigue' | transloco) }}
           </p>
         </div>
       </div>
@@ -97,7 +97,7 @@
                 type="button"
                 class="btn-icon-action delete"
                 (click)="removeFavorite('team', team.id)"
-                title="Eliminar de favoritos"
+                [title]="'ui.eliminarDeFavoritos' | transloco"
               >
                 🗑️
               </button>
@@ -106,7 +106,7 @@
         </div>
       } @empty {
         <p class="empty-msg">
-          {{ own ? 'No tienes equipos favoritos guardados todavía.' : 'Este usuario no sigue ningún equipo.' }}
+          {{ own ? ('ui.noTienesEquiposFavoritosGuardadosTodavia' | transloco) : ('ui.esteUsuarioNoSigueNingunEquipo' | transloco) }}
         </p>
       }
     </div>
@@ -118,9 +118,9 @@
       <div class="teams-title-block">
         <div class="team-shield-icon-box">🏆</div>
         <div>
-          <h3>{{ own ? 'Mis Campeonatos Favoritos' : 'Campeonatos favoritos' }}</h3>
+          <h3>{{ own ? ('ui.misCampeonatosFavoritos' | transloco) : ('ui.campeonatosFavoritos' | transloco) }}</h3>
           <p>
-            {{ own ? 'Listado de torneos y ligas que sigues de cerca.' : 'Torneos y ligas que este usuario sigue.' }}
+            {{ own ? ('ui.listadoDeTorneosYLigasQue' | transloco) : ('ui.torneosYLigasQueEsteUsuario' | transloco) }}
           </p>
         </div>
       </div>
@@ -141,7 +141,7 @@
                 type="button"
                 class="btn-icon-action delete"
                 (click)="removeFavorite('championship', champ.id)"
-                title="Eliminar de favoritos"
+                [title]="'ui.eliminarDeFavoritos' | transloco"
               >
                 🗑️
               </button>
@@ -150,7 +150,7 @@
         </div>
       } @empty {
         <p class="empty-msg">
-          {{ own ? 'No tienes campeonatos favoritos guardados todavía.' : 'Este usuario no sigue ningún campeonato.' }}
+          {{ own ? ('ui.noTienesCampeonatosFavoritosGuardadosTodavia' | transloco) : ('ui.esteUsuarioNoSigueNingunCampeonato' | transloco) }}
         </p>
       }
     </div>
@@ -162,9 +162,9 @@
       <div class="teams-title-block">
         <div class="team-shield-icon-box">👤</div>
         <div>
-          <h3>{{ own ? 'Mis Jugadores Favoritos' : 'Jugadores favoritos' }}</h3>
+          <h3>{{ own ? ('ui.misJugadoresFavoritos' | transloco) : ('ui.jugadoresFavoritos' | transloco) }}</h3>
           <p>
-            {{ own ? 'Listado de futbolistas que sigues en la plataforma.' : 'Futbolistas que este usuario sigue.' }}
+            {{ own ? ('ui.listadoDeFutbolistasQueSiguesEn' | transloco) : ('ui.futbolistasQueEsteUsuarioSigue' | transloco) }}
           </p>
         </div>
       </div>
@@ -187,7 +187,7 @@
                 type="button"
                 class="btn-icon-action delete"
                 (click)="removeFavorite('player', player.id)"
-                title="Eliminar de favoritos"
+                [title]="'ui.eliminarDeFavoritos' | transloco"
               >
                 🗑️
               </button>
@@ -196,7 +196,7 @@
         </div>
       } @empty {
         <p class="empty-msg">
-          {{ own ? 'No tienes jugadores favoritos guardados todavía.' : 'Este usuario no sigue ningún jugador.' }}
+          {{ own ? ('ui.noTienesJugadoresFavoritosGuardadosTodavia' | transloco) : ('ui.esteUsuarioNoSigueNingunJugador' | transloco) }}
         </p>
       }
     </div>

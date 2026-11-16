@@ -1,4 +1,7 @@
 import { Component, signal, computed, OnInit, inject } from '@angular/core';
+import { TranslocoPipe } from '@jsverse/transloco';
+import { RoundPipe } from '../../i18n/data.pipes';
+import { CountryPipe } from '../../i18n/country.pipe';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { goToLogin } from '../../utils/auth-redirect';
@@ -10,7 +13,7 @@ import { getCountryFlag as countryFlagUrl } from '../../utils/countries';
 @Component({
   selector: 'app-championship-detail',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, TranslocoPipe, RoundPipe, CountryPipe],
   templateUrl: './championship-detail.html',
   styleUrls: ['./championship-detail.css'],
 })

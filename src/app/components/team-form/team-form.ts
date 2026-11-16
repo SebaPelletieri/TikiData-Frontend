@@ -9,6 +9,10 @@ import {
   HostListener,
   OnInit,
 } from '@angular/core';
+import { localizedMonths } from '../../i18n/months';
+import { LanguageService } from '../../i18n/language-service';
+import { TranslocoService } from '@jsverse/transloco';
+import { TranslocoPipe } from '@jsverse/transloco';
 import {
   FormBuilder,
   FormControl,
@@ -38,7 +42,7 @@ interface CalendarDay {
 }
 
 @Component({
-  imports: [CommonModule, ReactiveFormsModule, FormsModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, TranslocoPipe],
   selector: 'app-team-form',
   standalone: true,
   styleUrl: './team-form.css',
@@ -46,6 +50,8 @@ interface CalendarDay {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TeamForm implements OnInit {
+  private language = inject(LanguageService);
+  private i18n = inject(TranslocoService);
   teamService = inject(TeamService);
   championshipService = inject(ChampionshipService);
   playerService = inject(PlayerService);
@@ -220,7 +226,7 @@ export class TeamForm implements OnInit {
     };
 
     if (this.playersList.some((p) => String(p.id) === String(toAdd!.id))) {
-      this.errorMessage.set('Este jugador ya forma parte del plantel.');
+      this.errorMessage.set(this.i18n.translate('ui.esteJugadorYaFormaParteDel'));
       return;
     }
 
@@ -817,20 +823,13 @@ export class TeamForm implements OnInit {
   currentMonth = new Date().getMonth();
   currentYear = new Date().getFullYear();
 
-  months = [
-    'Enero',
-    'Febrero',
-    'Marzo',
-    'Abril',
-    'Mayo',
-    'Junio',
-    'Julio',
-    'Agosto',
-    'Septiembre',
-    'Octubre',
-    'Noviembre',
-    'Diciembre',
-  ];
+  // Nombres de los meses en el idioma elegido (antes estaban fijos en español)
+
+  get months(): string[] {
+
+    return localizedMonths(this.language.locale());
+
+  }
   weekDays = ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'];
 
   get yearsList(): number[] {

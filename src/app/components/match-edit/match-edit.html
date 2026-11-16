@@ -17,15 +17,15 @@
       </svg>
     </div>
     <div>
-      <h3>Editar Partido</h3>
-      <p>Configura campeonatos, equipos, sustituciones, incidencias y alineaciones.</p>
+      <h3>{{ 'ui.editarPartido' | transloco }}</h3>
+      <p>{{ 'ui.configuraCampeonatosEquiposSustitucionesIncidenciasY' | transloco }}</p>
     </div>
   </div>
 
   <form [formGroup]="matchForm" (ngSubmit)="onSubmit()" class="team-form">
     <!-- Campeonato -->
     <div class="form-group championship-group">
-      <label>Campeonato <span class="required">*</span></label>
+      <label>{{ 'ui.campeonato' | transloco }} <span class="required">*</span></label>
       <div class="direct-search-input-box">
         <svg
           class="search-lens-icon"
@@ -42,7 +42,7 @@
         <input
           type="text"
           [formControl]="championshipSearchCtrl"
-          placeholder="Buscar campeonato..."
+          [placeholder]="'ui.buscarCampeonato' | transloco"
           autocomplete="off"
           (focus)="isChampDropdownOpen = filteredChampionships.length > 0"
         />
@@ -51,7 +51,7 @@
             @for (c of filteredChampionships; track c.id) {
               <li class="suggestion-item" (click)="selectChampionship(c)">
                 <span>{{ c.name }}</span
-                ><span class="add-action-text">Seleccionar</span>
+                ><span class="add-action-text">{{ 'ui.seleccionar' | transloco }}</span>
               </li>
             }
           </ul>
@@ -61,7 +61,7 @@
 
     <!-- Fecha y Hora -->
     <div class="form-group calendar-field-container">
-      <label>Fecha y Hora <span class="required">*</span></label>
+      <label>{{ 'ui.fechaYHora' | transloco }} <span class="required">*</span></label>
       <button
         type="button"
         class="calendar-trigger"
@@ -69,7 +69,7 @@
         (click)="toggleCalendar($event)"
       >
         <span [class.placeholder]="!selectedDate">{{
-          formattedSelectedDateTime || 'Seleccione fecha'
+          formattedSelectedDateTime || ('ui.seleccioneFecha' | transloco)
         }}</span>
         <svg
           class="calendar-icon"
@@ -167,7 +167,7 @@
               @if (isTimeOpen) {
                 <div class="time-popover-menu">
                   <div class="time-column">
-                    <div class="time-col-title">Hora</div>
+                    <div class="time-col-title">{{ 'ui.hora' | transloco }}</div>
                     <div class="time-options-list">
                       @for (h of hoursList; track h) {
                         <div
@@ -181,7 +181,7 @@
                     </div>
                   </div>
                   <div class="time-column">
-                    <div class="time-col-title">Min</div>
+                    <div class="time-col-title">{{ 'ui.min' | transloco }}</div>
                     <div class="time-options-list">
                       @for (m of ['00', '15', '30', '45']; track m) {
                         <div
@@ -204,16 +204,16 @@
 
     <!-- Estado -->
     <div class="form-group status-group">
-      <label>Estado <span class="required">*</span></label>
+      <label>{{ 'ui.estado' | transloco }} <span class="required">*</span></label>
       <div class="custom-dropdown" [class.open]="isStatusOpen">
         <button type="button" class="dropdown-trigger" (click)="toggleStatusDropdown($event)">
-          <span>{{ matchForm.get('status')?.value || 'Seleccionar...' }}</span
+          <span>{{ matchForm.get('status')?.value ? ('status.' + matchForm.get('status')?.value | transloco) : ('ui.seleccionar2' | transloco) }}</span
           ><span class="triangle-icon"></span>
         </button>
         @if (isStatusOpen) {
           <ul class="dropdown-menu">
             @for (st of statuses; track st) {
-              <li class="dropdown-item" (click)="selectStatus(st)">{{ st }}</li>
+              <li class="dropdown-item" (click)="selectStatus(st)">{{ 'status.' + st | transloco }}</li>
             }
           </ul>
         }
@@ -222,7 +222,7 @@
 
     <!-- Equipo Local -->
     <div class="form-group local-group">
-      <label>Equipo Local <span class="required">*</span></label>
+      <label>{{ 'ui.equipoLocal' | transloco }} <span class="required">*</span></label>
       <div class="direct-search-input-box">
         <svg
           class="search-lens-icon"
@@ -239,7 +239,7 @@
         <input
           type="text"
           [formControl]="localSearchCtrl"
-          placeholder="Buscar local..."
+          [placeholder]="'ui.buscarLocal' | transloco"
           autocomplete="off"
           (focus)="isLocalDropdownOpen = filteredLocalTeams.length > 0"
         />
@@ -248,7 +248,7 @@
             @for (t of filteredLocalTeams; track t.id) {
               <li class="suggestion-item" (click)="selectLocalTeam(t)">
                 <span>{{ t.name }}</span
-                ><span class="add-action-text">Seleccionar</span>
+                ><span class="add-action-text">{{ 'ui.seleccionar' | transloco }}</span>
               </li>
             }
           </ul>
@@ -258,7 +258,7 @@
 
     <!-- Equipo Visitante -->
     <div class="form-group visitor-group">
-      <label>Equipo Visitante <span class="required">*</span></label>
+      <label>{{ 'ui.equipoVisitante' | transloco }} <span class="required">*</span></label>
       <div class="direct-search-input-box">
         <svg
           class="search-lens-icon"
@@ -275,7 +275,7 @@
         <input
           type="text"
           [formControl]="visitorSearchCtrl"
-          placeholder="Buscar visitante..."
+          [placeholder]="'ui.buscarVisitante' | transloco"
           autocomplete="off"
           (focus)="isVisitorDropdownOpen = filteredVisitorTeams.length > 0"
         />
@@ -284,7 +284,7 @@
             @for (t of filteredVisitorTeams; track t.id) {
               <li class="suggestion-item" (click)="selectVisitorTeam(t)">
                 <span>{{ t.name }}</span
-                ><span class="add-action-text">Seleccionar</span>
+                ><span class="add-action-text">{{ 'ui.seleccionar' | transloco }}</span>
               </li>
             }
           </ul>
@@ -294,19 +294,19 @@
 
     <!-- Goles Local -->
     <div class="form-group">
-      <label>Goles Local</label>
+      <label>{{ 'ui.golesLocal' | transloco }}</label>
       <input type="number" formControlName="localGoals" min="0" />
     </div>
 
     <!-- Goles Visitante -->
     <div class="form-group">
-      <label>Goles Visitante</label>
+      <label>{{ 'ui.golesVisitante' | transloco }}</label>
       <input type="number" formControlName="awayGoals" min="0" />
     </div>
 
     <!-- Estadio Principal -->
     <div class="form-group stadium-group">
-      <label>Estadio Principal <span class="required">*</span></label>
+      <label>{{ 'ui.estadioPrincipal' | transloco }} <span class="required">*</span></label>
       <div class="direct-search-input-box">
         <svg
           class="search-lens-icon"
@@ -323,7 +323,7 @@
         <input
           type="text"
           [formControl]="stadiumSearchCtrl"
-          placeholder="Estadio..."
+          [placeholder]="'ui.estadio2' | transloco"
           autocomplete="off"
           (focus)="isStadiumDropdownOpen = filteredStadiums.length > 0"
         />
@@ -332,7 +332,7 @@
             @for (stad of filteredStadiums; track stad) {
               <li class="suggestion-item" (click)="selectStadium(stad)">
                 <span>{{ stad }}</span
-                ><span class="add-action-text">Seleccionar</span>
+                ><span class="add-action-text">{{ 'ui.seleccionar' | transloco }}</span>
               </li>
             }
           </ul>
@@ -342,7 +342,7 @@
 
     <!-- SUSTITUCIONES (2 columnas) -->
     <div class="sub-section-box">
-      <h4>Sustituciones</h4>
+      <h4>{{ 'ui.sustituciones' | transloco }}</h4>
       <div class="sub-grid-row substitution-row">
         <!-- Equipo -->
         <div class="custom-dropdown menu-dropdown" [class.open]="openMenu === 'subTeam'">
@@ -384,7 +384,7 @@
           type="number"
           [(ngModel)]="newSubMinute"
           [ngModelOptions]="{ standalone: true }"
-          placeholder="Min (1-120)"
+          [placeholder]="'ui.min1120' | transloco"
           min="1"
           max="120"
         />
@@ -407,7 +407,7 @@
             <input
               type="text"
               [formControl]="subOutSearchCtrl"
-              placeholder="Jugador que sale..."
+              [placeholder]="'ui.jugadorQueSale' | transloco"
               autocomplete="off"
               (focus)="isSubOutOpen = true; isSubInOpen = false"
             />
@@ -416,10 +416,10 @@
                 @for (c of subOutCandidates; track c.name) {
                   <li class="suggestion-item" (click)="selectSubOut(c)">
                     <span>{{ c.label }}</span>
-                    <span class="add-action-text">Seleccionar</span>
+                    <span class="add-action-text">{{ 'ui.seleccionar' | transloco }}</span>
                   </li>
                 } @empty {
-                  <li class="suggestion-empty">No hay jugadores en cancha disponibles</li>
+                  <li class="suggestion-empty">{{ 'ui.noHayJugadoresEnCanchaDisponibles' | transloco }}</li>
                 }
               </ul>
             }
@@ -444,7 +444,7 @@
             <input
               type="text"
               [formControl]="subInSearchCtrl"
-              placeholder="Jugador que entra..."
+              [placeholder]="'ui.jugadorQueEntra' | transloco"
               autocomplete="off"
               (focus)="isSubInOpen = true; isSubOutOpen = false"
             />
@@ -453,10 +453,10 @@
                 @for (c of subInCandidates; track c.name) {
                   <li class="suggestion-item" (click)="selectSubIn(c)">
                     <span>{{ c.label }}</span>
-                    <span class="add-action-text">Seleccionar</span>
+                    <span class="add-action-text">{{ 'ui.seleccionar' | transloco }}</span>
                   </li>
                 } @empty {
-                  <li class="suggestion-empty">No quedan suplentes en el banco</li>
+                  <li class="suggestion-empty">{{ 'ui.noQuedanSuplentesEnElBanco' | transloco }}</li>
                 }
               </ul>
             }
@@ -469,7 +469,7 @@
           [disabled]="!canAddSubstitution"
           (click)="addSubstitution()"
         >
-          Añadir
+          {{ 'ui.anadir' | transloco }}
         </button>
       </div>
 
@@ -506,14 +506,14 @@
                   <button
                     type="button"
                     class="event-remove"
-                    title="Quitar"
+                    [title]="'ui.quitar' | transloco"
                     (click)="removeIncidenceAt(e.index)"
                   >
                     ✕
                   </button>
                 </li>
               } @empty {
-                <li class="events-empty">Sin sustituciones</li>
+                <li class="events-empty">{{ 'ui.sinSustituciones' | transloco }}</li>
               }
             </ul>
           </div>
@@ -522,15 +522,15 @@
 
       @if (unassignedSubstitutionEvents.length) {
         <div class="events-unassigned">
-          <span class="events-unassigned-title">Sin equipo identificado</span>
+          <span class="events-unassigned-title">{{ 'ui.sinEquipoIdentificado' | transloco }}</span>
           @for (e of unassignedSubstitutionEvents; track e.index) {
             <div class="event-row">
               <span class="event-minute">{{ e.inc.minute }}'</span>
-              <span class="event-body">{{ e.inc.text }}</span>
+              <span class="event-body">{{ e.inc.text | incidence }}</span>
               <button
                 type="button"
                 class="event-remove"
-                title="Quitar"
+                [title]="'ui.quitar' | transloco"
                 (click)="removeIncidenceAt(e.index)"
               >
                 ✕
@@ -543,7 +543,7 @@
 
     <!-- INCIDENCIAS (2 columnas) -->
     <div class="sub-section-box">
-      <h4>Incidencias (Tarjetas / Goles)</h4>
+      <h4>{{ 'ui.incidenciasTarjetasGoles' | transloco }}</h4>
       <div class="sub-grid-row incidence-row">
         <!-- Tipo -->
         <div class="custom-dropdown menu-dropdown" [class.open]="openMenu === 'incType'">
@@ -554,10 +554,10 @@
           @if (openMenu === 'incType') {
             <ul class="dropdown-menu">
               <li class="dropdown-item" (click)="selectIncidenceType('YELLOW_CARD')">
-                Tarjeta Amarilla
+                {{ 'ui.tarjetaAmarilla' | transloco }}
               </li>
-              <li class="dropdown-item" (click)="selectIncidenceType('RED_CARD')">Tarjeta Roja</li>
-              <li class="dropdown-item" (click)="selectIncidenceType('GOAL')">Gol</li>
+              <li class="dropdown-item" (click)="selectIncidenceType('RED_CARD')">{{ 'ui.tarjetaRoja' | transloco }}</li>
+              <li class="dropdown-item" (click)="selectIncidenceType('GOAL')">{{ 'ui.gol' | transloco }}</li>
             </ul>
           }
         </div>
@@ -602,7 +602,7 @@
           type="number"
           [(ngModel)]="newIncidenceMinute"
           [ngModelOptions]="{ standalone: true }"
-          placeholder="Min (1-120)"
+          [placeholder]="'ui.min1120' | transloco"
           min="1"
           max="120"
         />
@@ -625,7 +625,7 @@
             <input
               type="text"
               [formControl]="incPlayerSearchCtrl"
-              placeholder="Buscar jugador..."
+              [placeholder]="'ui.buscarJugador' | transloco"
               autocomplete="off"
               (focus)="isIncPlayerOpen = true"
             />
@@ -634,7 +634,7 @@
                 @for (c of incPlayerCandidates; track c.name) {
                   <li class="suggestion-item" (click)="selectIncPlayer(c)">
                     <span>{{ c.label }}</span>
-                    <span class="add-action-text">Seleccionar</span>
+                    <span class="add-action-text">{{ 'ui.seleccionar' | transloco }}</span>
                   </li>
                 } @empty {
                   <li class="suggestion-empty">{{ incPlayerEmptyText }}</li>
@@ -650,7 +650,7 @@
           [disabled]="!canAddIncidence"
           (click)="addIncidence()"
         >
-          Añadir
+          {{ 'ui.anadir' | transloco }}
         </button>
       </div>
 
@@ -684,7 +684,7 @@
                   }
                   <span class="event-body">
                     <span class="event-player" [title]="e.player || e.inc.text">
-                      {{ e.player || e.inc.text }}
+                      {{ e.player || (e.inc.text | incidence) }}
                     </span>
                   </span>
                   @if (e.inc.type === 'GOAL' && e.score) {
@@ -693,14 +693,14 @@
                   <button
                     type="button"
                     class="event-remove"
-                    title="Quitar"
+                    [title]="'ui.quitar' | transloco"
                     (click)="removeIncidenceAt(e.index)"
                   >
                     ✕
                   </button>
                 </li>
               } @empty {
-                <li class="events-empty">Sin incidencias</li>
+                <li class="events-empty">{{ 'ui.sinIncidencias' | transloco }}</li>
               }
             </ul>
           </div>
@@ -709,18 +709,18 @@
 
       @if (unassignedIncidenceEvents.length) {
         <div class="events-unassigned">
-          <span class="events-unassigned-title">Sin equipo identificado</span>
+          <span class="events-unassigned-title">{{ 'ui.sinEquipoIdentificado' | transloco }}</span>
           @for (e of unassignedIncidenceEvents; track e.index) {
             <div class="event-row">
               <span class="event-minute">{{ e.inc.minute }}'</span>
-              <span class="event-body">{{ e.inc.text }}</span>
+              <span class="event-body">{{ e.inc.text | incidence }}</span>
               @if (e.inc.type === 'GOAL' && e.score) {
                 <span class="event-score">{{ e.score }}</span>
               }
               <button
                 type="button"
                 class="event-remove"
-                title="Quitar"
+                [title]="'ui.quitar' | transloco"
                 (click)="removeIncidenceAt(e.index)"
               >
                 ✕
@@ -733,7 +733,7 @@
 
     <!-- FORMACIÓN Y ALINEACIONES (ancho completo) -->
     <div class="sub-section-box lineups-section">
-      <h4>Formaciones y Planteles</h4>
+      <h4>{{ 'ui.formacionesYPlanteles' | transloco }}</h4>
 
       <div class="lineups-grid">
         @for (side of sides; track side) {
@@ -746,13 +746,13 @@
                 }
               </div>
               <div class="lineup-team-titles">
-                <span class="lineup-team-side">{{ side === 'local' ? 'Local' : 'Visitante' }}</span>
+                <span class="lineup-team-side">{{ side === 'local' ? ('ui.local' | transloco) : ('ui.visitante' | transloco) }}</span>
                 <span class="lineup-team-name">{{ displayTeamName(side) }}</span>
               </div>
             </div>
 
             @if (!hasRosterTeam(side)) {
-              <p class="lineup-placeholder">Elegí el equipo para cargar su plantel.</p>
+              <p class="lineup-placeholder">{{ 'ui.elegiElEquipoParaCargarSu' | transloco }}</p>
             } @else {
               <!-- Selector de jugador + botones -->
               <div class="roster-selector-row">
@@ -784,7 +784,7 @@
                           }
                         </li>
                       } @empty {
-                        <li class="suggestion-empty">No quedan jugadores disponibles</li>
+                        <li class="suggestion-empty">{{ 'ui.noQuedanJugadoresDisponibles' | transloco }}</li>
                       }
                     </ul>
                   }
@@ -795,7 +795,7 @@
                   [disabled]="!rosterSelection[side] || startersList(side).length >= MAX_STARTERS"
                   (click)="addSelectedToLineup(side, 'starters')"
                 >
-                  + Titular
+                  {{ 'ui.titular' | transloco }}
                 </button>
                 <button
                   type="button"
@@ -803,7 +803,7 @@
                   [disabled]="!rosterSelection[side]"
                   (click)="addSelectedToLineup(side, 'substitutes')"
                 >
-                  + Suplente
+                  {{ 'ui.suplente' | transloco }}
                 </button>
               </div>
 
@@ -811,7 +811,7 @@
               <div class="lineup-columns">
                 <div class="lineup-column starters">
                   <div class="lineup-column-header">
-                    <span>Titulares</span>
+                    <span>{{ 'ui.titulares' | transloco }}</span>
                     <span
                       class="lineup-count"
                       [class.full]="startersList(side).length === MAX_STARTERS"
@@ -832,21 +832,21 @@
                         <button
                           type="button"
                           class="lineup-remove"
-                          title="Quitar"
+                          [title]="'ui.quitar' | transloco"
                           (click)="removeLineupPlayer(side, 'starters', i)"
                         >
                           ✕
                         </button>
                       </li>
                     } @empty {
-                      <li class="lineup-empty">Sin titulares cargados</li>
+                      <li class="lineup-empty">{{ 'ui.sinTitularesCargados' | transloco }}</li>
                     }
                   </ul>
                 </div>
 
                 <div class="lineup-column substitutes">
                   <div class="lineup-column-header">
-                    <span>Suplentes</span>
+                    <span>{{ 'ui.suplentes' | transloco }}</span>
                     <span class="lineup-count">{{ substitutesList(side).length }}</span>
                   </div>
                   <ul class="lineup-list">
@@ -862,14 +862,14 @@
                         <button
                           type="button"
                           class="lineup-remove"
-                          title="Quitar"
+                          [title]="'ui.quitar' | transloco"
                           (click)="removeLineupPlayer(side, 'substitutes', i)"
                         >
                           ✕
                         </button>
                       </li>
                     } @empty {
-                      <li class="lineup-empty">Sin suplentes cargados</li>
+                      <li class="lineup-empty">{{ 'ui.sinSuplentesCargados' | transloco }}</li>
                     }
                   </ul>
                 </div>
@@ -882,9 +882,9 @@
 
     <!-- Botones -->
     <div class="form-actions">
-      <button type="button" class="btn-cancel" (click)="onCancel()">Cancelar</button>
+      <button type="button" class="btn-cancel" (click)="onCancel()">{{ 'ui.cancelar' | transloco }}</button>
       <button type="submit" class="btn-submit" [disabled]="matchForm.invalid">
-        Guardar Cambios
+        {{ 'ui.guardarCambios' | transloco }}
       </button>
     </div>
   </form>

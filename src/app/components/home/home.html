@@ -2,18 +2,16 @@
   <!-- 1. HERO SECTION -->
   <section class="hero-section">
     <div class="hero-content">
-      <h1>EL FÚTBOL<br /><span class="text-brand">EN DATOS</span></h1>
-      <p>
-        Resultados en vivo, estadísticas, posiciones y mucho más. Todo el fútbol en un solo lugar.
-      </p>
+      <h1>{{ 'home.heroTitle1' | transloco }}<br /><span class="text-brand">{{ 'home.heroTitle2' | transloco }}</span></h1>
+      <p>{{ 'home.heroText' | transloco }}</p>
       <div class="hero-buttons">
-        <button class="btn btn-primary" routerLink="/matches">Ver partidos</button>
-        <button class="btn btn-outline" routerLink="/championships">Explorar ligas</button>
+        <button class="btn btn-primary" routerLink="/matches">{{ 'home.seeMatches' | transloco }}</button>
+        <button class="btn btn-outline" routerLink="/championships">{{ 'home.exploreLeagues' | transloco }}</button>
       </div>
     </div>
     <div class="hero-side-badge">
-      <span class="badge-title">MÁS QUE RESULTADOS,</span>
-      <span class="badge-subtitle">ES FÚTBOL EN DATOS.</span>
+      <span class="badge-title">{{ 'home.badgeTitle' | transloco }}</span>
+      <span class="badge-subtitle">{{ 'home.badgeSubtitle' | transloco }}</span>
     </div>
   </section>
 
@@ -40,7 +38,7 @@
 
       <a class="league-card more-leagues" routerLink="/championships">
         <span class="dots">+</span>
-        <span>Más campeonatos</span>
+        <span>{{ 'home.moreChampionships' | transloco }}</span>
       </a>
     </div>
   </section>
@@ -50,7 +48,7 @@
     <!-- COLUMNA 1: PARTIDOS DESTACADOS -->
     <div class="dash-card panel-partidos">
       <div class="dash-header">
-        <h3>Partidos destacados de hoy</h3>
+        <h3>{{ 'home.featuredMatches' | transloco }}</h3>
         <div class="date-badge">
           <svg
             class="calendar-icon"
@@ -68,7 +66,7 @@
             <line x1="8" y1="2" x2="8" y2="6"></line>
             <line x1="3" y1="10" x2="21" y2="10"></line>
           </svg>
-          <span>{{ fechaActual }}</span>
+          <span>{{ fechaActual() }}</span>
         </div>
       </div>
 
@@ -84,7 +82,7 @@
                 class="team-name text-right clickable-link"
                 [routerLink]="['/team', match.localTeamID]"
               >
-                {{ local?.name || 'Local' }}
+                {{ local?.name || ('home.home' | transloco) }}
               </a>
               <img loading="lazy" decoding="async"
                 [src]="local?.shield || '/Escudos Liga Argentina/default.png'"
@@ -104,7 +102,7 @@
                 [alt]="away?.name || ''"
               />
               <a class="team-name clickable-link" [routerLink]="['/team', match.awayTeamID]">
-                {{ away?.name || 'Visitante' }}
+                {{ away?.name || ('home.away' | transloco) }}
               </a>
             </div>
             <div class="match-info-right">
@@ -126,26 +124,26 @@
                   <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
                   <circle cx="12" cy="12" r="3"></circle>
                 </svg>
-                Ver
+                {{ 'home.see' | transloco }}
               </a>
             </div>
           </div>
         } @empty {
-          <p class="empty-msg">No hay partidos cargados en este momento.</p>
+          <p class="empty-msg">{{ 'home.noMatches' | transloco }}</p>
         }
       </div>
 
       <div class="bottom-link-container">
-        <a class="link-action" routerLink="/matches">Ver todos los partidos &rarr;</a>
+        <a class="link-action" routerLink="/matches">{{ 'home.allMatches' | transloco }} &rarr;</a>
       </div>
     </div>
 
     <!-- COLUMNA 2: TABLA DE POSICIONES -->
     <div class="dash-card panel-posiciones">
       <div class="dash-header">
-        <h3>Posiciones - Liga Profesional</h3>
+        <h3>{{ 'home.standings' | transloco: { league: 'Liga Profesional' } }}</h3>
         <a class="link-action" [routerLink]="['/championship', ligaProfesionalName()]">
-          Ver tabla completa &rarr;
+          {{ 'home.fullTable' | transloco }} &rarr;
         </a>
       </div>
       <div class="table-container">
@@ -153,10 +151,10 @@
           <thead>
             <tr>
               <th>#</th>
-              <th>Equipo</th>
-              <th>Pts</th>
-              <th>PJ</th>
-              <th>DG</th>
+              <th>{{ 'home.team' | transloco }}</th>
+              <th>{{ 'home.pts' | transloco }}</th>
+              <th>{{ 'home.played' | transloco }}</th>
+              <th>{{ 'home.goalDiff' | transloco }}</th>
             </tr>
           </thead>
           <tbody>
@@ -185,7 +183,7 @@
               }
             } @empty {
               <tr>
-                <td colspan="5" class="empty-msg">Cargando posiciones...</td>
+                <td colspan="5" class="empty-msg">{{ 'home.loadingStandings' | transloco }}</td>
               </tr>
             }
           </tbody>
@@ -196,13 +194,13 @@
     <!-- COLUMNA 3: GOLEADORES -->
     <div class="dash-card panel-goleadores">
       <div class="dash-header">
-        <h3>Goleadores - Liga Profesional</h3>
+        <h3>{{ 'home.scorers' | transloco: { league: 'Liga Profesional' } }}</h3>
         <a
           class="link-action"
           [routerLink]="['/championship', ligaProfesionalName()]"
           [queryParams]="{ tab: 'goleadores' }"
         >
-          Ver todos &rarr;
+          {{ 'home.seeAll' | transloco }} &rarr;
         </a>
       </div>
       <div class="table-container">
@@ -210,9 +208,9 @@
           <thead>
             <tr>
               <th>#</th>
-              <th>Jugador</th>
-              <th>Equipo</th>
-              <th>Goles</th>
+              <th>{{ 'home.player' | transloco }}</th>
+              <th>{{ 'home.team' | transloco }}</th>
+              <th>{{ 'home.goals' | transloco }}</th>
             </tr>
           </thead>
           <tbody>
@@ -234,7 +232,7 @@
                         {{ playerTeam.name }}
                       </a>
                     } @else {
-                      <span>Sin equipo</span>
+                      <span>{{ 'home.noTeam' | transloco }}</span>
                     }
                   </td>
                   <td>
@@ -244,7 +242,7 @@
               }
             } @empty {
               <tr>
-                <td colspan="4" class="empty-msg">No hay goleadores cargados aún.</td>
+                <td colspan="4" class="empty-msg">{{ 'home.noScorers' | transloco }}</td>
               </tr>
             }
           </tbody>

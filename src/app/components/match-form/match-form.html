@@ -16,8 +16,8 @@
       </svg>
     </div>
     <div>
-      <h2>{{ isEditing ? 'Editar Partido' : 'Nuevo Partido' }}</h2>
-      <p>Configura los detalles y equipos del encuentro.</p>
+      <h2>{{ isEditing ? ('ui.editarPartido' | transloco) : ('ui.nuevoPartido' | transloco) }}</h2>
+      <p>{{ 'ui.configuraLosDetallesYEquiposDel' | transloco }}</p>
     </div>
   </div>
 
@@ -28,7 +28,7 @@
   <form [formGroup]="matchForm" class="team-form" (ngSubmit)="saveMatch()">
     <!-- ================= CAMPEONATO ================= -->
     <div class="form-group">
-      <label>Campeonato <span class="required">*</span></label>
+      <label>{{ 'ui.campeonato' | transloco }} <span class="required">*</span></label>
 
       <div
         class="search-tag-container"
@@ -58,7 +58,7 @@
               (focus)="isChampionshipFocused.set(true)"
               (blur)="matchForm.controls['championshipID'].markAsTouched()"
               [ngModelOptions]="{ standalone: true }"
-              placeholder="Escribe para buscar un campeonato..."
+              [placeholder]="'ui.escribeParaBuscarUnCampeonato' | transloco"
               autocomplete="off"
             />
           </div>
@@ -75,7 +75,7 @@
                   </div>
                 </li>
               } @empty {
-                <li class="no-results-msg">No se encontraron campeonatos</li>
+                <li class="no-results-msg">{{ 'ui.noSeEncontraronCampeonatos' | transloco }}</li>
               }
             </ul>
           }
@@ -106,14 +106,14 @@
             <line x1="12" y1="8" x2="12" y2="12"></line>
             <line x1="12" y1="16" x2="12.01" y2="16"></line>
           </svg>
-          <span class="error-text">El campeonato es obligatorio.</span>
+          <span class="error-text">{{ 'ui.elCampeonatoEsObligatorio' | transloco }}</span>
         </div>
       }
     </div>
 
     <!-- ================= FECHA Y HORA ================= -->
     <div class="form-group calendar-field-container">
-      <label>Fecha y Hora <span class="required">*</span></label>
+      <label>{{ 'ui.fechaYHora' | transloco }} <span class="required">*</span></label>
 
       <button
         type="button"
@@ -125,7 +125,7 @@
         (click)="toggleCalendar($event)"
       >
         <span [class.placeholder]="!selectedDate">
-          {{ formattedSelectedDateTime || 'Seleccione una fecha' }}
+          {{ formattedSelectedDateTime || ('ui.seleccioneUnaFecha' | transloco) }}
         </span>
         <svg
           class="calendar-icon"
@@ -258,7 +258,7 @@
                 <div class="time-popover-menu">
                   <!-- Horas -->
                   <div class="time-column">
-                    <div class="time-col-title">Hora</div>
+                    <div class="time-col-title">{{ 'ui.hora' | transloco }}</div>
                     <div class="time-options-list">
                       @for (h of hoursList; track h) {
                         <div
@@ -274,7 +274,7 @@
 
                   <!-- Minutos -->
                   <div class="time-column">
-                    <div class="time-col-title">Min</div>
+                    <div class="time-col-title">{{ 'ui.min' | transloco }}</div>
                     <div class="time-options-list">
                       @for (m of ['00', '15', '30', '45']; track m) {
                         <div
@@ -307,14 +307,14 @@
             <line x1="12" y1="8" x2="12" y2="12"></line>
             <line x1="12" y1="16" x2="12.01" y2="16"></line>
           </svg>
-          <span class="error-text">La fecha y hora son obligatorias.</span>
+          <span class="error-text">{{ 'ui.laFechaYHoraSonObligatorias' | transloco }}</span>
         </div>
       }
     </div>
 
     <!-- ================= EQUIPO LOCAL ================= -->
     <div class="form-group">
-      <label>Equipo Local <span class="required">*</span></label>
+      <label>{{ 'ui.equipoLocal' | transloco }} <span class="required">*</span></label>
 
       <div
         class="search-tag-container"
@@ -343,7 +343,7 @@
               (focus)="isLocalFocused.set(true)"
               (blur)="matchForm.controls['localTeamID'].markAsTouched()"
               [ngModelOptions]="{ standalone: true }"
-              placeholder="Buscar equipo local..."
+              [placeholder]="'ui.buscarEquipoLocal' | transloco"
               autocomplete="off"
             />
           </div>
@@ -366,7 +366,7 @@
                     <span class="result-meta">
                       <img
                         [src]="'https://flagcdn.com/w40/' + getCountryCode(team.country) + '.png'"
-                        alt="Bandera"
+                        [alt]="'ui.bandera' | transloco"
                         class="flag-icon"
                       />
                       <span>{{ team.country || 'Argentina' }}</span>
@@ -374,7 +374,7 @@
                   </div>
                 </li>
               } @empty {
-                <li class="no-results-msg">No se encontraron equipos</li>
+                <li class="no-results-msg">{{ 'ui.noSeEncontraronEquipos' | transloco }}</li>
               }
             </ul>
           }
@@ -407,14 +407,14 @@
             <line x1="12" y1="8" x2="12" y2="12"></line>
             <line x1="12" y1="16" x2="12.01" y2="16"></line>
           </svg>
-          <span class="error-text">El equipo local es obligatorio.</span>
+          <span class="error-text">{{ 'ui.elEquipoLocalEsObligatorio' | transloco }}</span>
         </div>
       }
     </div>
 
     <!-- ================= EQUIPO VISITANTE ================= -->
     <div class="form-group">
-      <label>Equipo Visitante <span class="required">*</span></label>
+      <label>{{ 'ui.equipoVisitante' | transloco }} <span class="required">*</span></label>
 
       <div
         class="search-tag-container"
@@ -443,7 +443,7 @@
               (focus)="isAwayFocused.set(true)"
               (blur)="matchForm.controls['awayTeamID'].markAsTouched()"
               [ngModelOptions]="{ standalone: true }"
-              placeholder="Buscar equipo visitante..."
+              [placeholder]="'ui.buscarEquipoVisitante' | transloco"
               autocomplete="off"
             />
           </div>
@@ -466,7 +466,7 @@
                     <span class="result-meta">
                       <img
                         [src]="'https://flagcdn.com/w40/' + getCountryCode(team.country) + '.png'"
-                        alt="Bandera"
+                        [alt]="'ui.bandera' | transloco"
                         class="flag-icon"
                       />
                       <span>{{ team.country || 'Argentina' }}</span>
@@ -474,7 +474,7 @@
                   </div>
                 </li>
               } @empty {
-                <li class="no-results-msg">No se encontraron equipos</li>
+                <li class="no-results-msg">{{ 'ui.noSeEncontraronEquipos' | transloco }}</li>
               }
             </ul>
           }
@@ -507,14 +507,14 @@
             <line x1="12" y1="8" x2="12" y2="12"></line>
             <line x1="12" y1="16" x2="12.01" y2="16"></line>
           </svg>
-          <span class="error-text">El equipo visitante es obligatorio.</span>
+          <span class="error-text">{{ 'ui.elEquipoVisitanteEsObligatorio' | transloco }}</span>
         </div>
       }
     </div>
 
     <!-- ================= ESTADIO ================= -->
     <div class="form-group">
-      <label>Estadio <span class="required">*</span></label>
+      <label>{{ 'ui.estadio' | transloco }} <span class="required">*</span></label>
 
       <div
         class="search-tag-container"
@@ -543,7 +543,7 @@
               (focus)="isStadiumFocused.set(true)"
               (blur)="matchForm.controls['stadium'].markAsTouched()"
               [ngModelOptions]="{ standalone: true }"
-              placeholder="Escribe o busca estadio..."
+              [placeholder]="'ui.escribeOBuscaEstadio' | transloco"
               autocomplete="off"
             />
           </div>
@@ -565,7 +565,7 @@
                   (click)="selectStadium(stadiumSearchText()); isStadiumFocused.set(false)"
                 >
                   <div class="result-info">
-                    <span class="result-name">Usar: "{{ stadiumSearchText() }}"</span>
+                    <span class="result-name">{{ 'ui.usar' | transloco }}{{ stadiumSearchText() }}"</span>
                   </div>
                 </li>
               }
@@ -594,16 +594,16 @@
             <line x1="12" y1="8" x2="12" y2="12"></line>
             <line x1="12" y1="16" x2="12.01" y2="16"></line>
           </svg>
-          <span class="error-text">El estadio es obligatorio.</span>
+          <span class="error-text">{{ 'ui.elEstadioEsObligatorio' | transloco }}</span>
         </div>
       }
     </div>
 
     <!-- ================= ACCIONES ================= -->
     <div class="form-actions">
-      <button type="button" class="btn-cancel" (click)="onCancel()">Cancelar</button>
+      <button type="button" class="btn-cancel" (click)="onCancel()">{{ 'ui.cancelar' | transloco }}</button>
       <button type="submit" class="btn-save" [disabled]="matchForm.invalid">
-        {{ isEditing ? 'Actualizar Partido' : 'Guardar Partido' }}
+        {{ isEditing ? ('ui.actualizarPartido' | transloco) : ('ui.guardarPartido' | transloco) }}
       </button>
     </div>
   </form>

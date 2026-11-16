@@ -17,25 +17,25 @@
       </svg>
     </div>
     <div>
-      <h3>Editar Jugador</h3>
-      <p>Modifica la ficha técnica, datos personales y características del futbolista.</p>
+      <h3>{{ 'ui.editarJugador' | transloco }}</h3>
+      <p>{{ 'ui.modificaLaFichaTecnicaDatosPersonales' | transloco }}</p>
     </div>
   </div>
 
   <form [formGroup]="playerForm" (ngSubmit)="onSubmit()" class="team-form">
     <!-- Nombre Completo -->
     <div class="form-group">
-      <label for="name">Nombre Completo <span class="required">*</span></label>
-      <input id="name" type="text" formControlName="name" placeholder="Ej. Lionel Messi" />
+      <label for="name">{{ 'ui.nombreCompleto2' | transloco }} <span class="required">*</span></label>
+      <input id="name" type="text" formControlName="name" [placeholder]="'ui.ejLionelMessi' | transloco" />
       @if (playerForm.get('name')?.invalid && playerForm.get('name')?.touched) {
         <div class="error-feedback">
-          <span class="error-text">El nombre es obligatorio.</span>
+          <span class="error-text">{{ 'ui.elNombreEsObligatorio' | transloco }}</span>
         </div>
       }
       @if (playerForm.hasError('duplicate')) {
         <div class="error-feedback">
           <span class="error-text">
-            Ya existe otro jugador con ese nombre y fecha de nacimiento.
+            {{ 'ui.yaExisteOtroJugadorConEse' | transloco }}
           </span>
         </div>
       }
@@ -45,7 +45,7 @@
     <div class="form-row">
       <!-- Selector de Nacionalidad -->
       <div class="form-group">
-        <label for="nationality">Nacionalidad <span class="required">*</span></label>
+        <label for="nationality">{{ 'ui.nacionalidad' | transloco }} <span class="required">*</span></label>
         <div class="custom-dropdown" [class.open]="isCountryOpen">
           <button type="button" class="dropdown-trigger" (click)="toggleCountryDropdown($event)">
             <div class="dropdown-item-content">
@@ -55,7 +55,7 @@
                 </div>
               }
               <span [class.placeholder]="!selectedNationality">
-                {{ selectedNationality || 'Seleccionar nacionalidad...' }}
+                {{ selectedNationality || ('ui.seleccionarNacionalidad' | transloco) }}
               </span>
             </div>
             <span class="triangle-icon"></span>
@@ -65,7 +65,7 @@
               <li class="nationality-search">
                 <input
                   type="text"
-                  placeholder="Buscar país..."
+                  [placeholder]="'ui.buscarPais' | transloco"
                   autocomplete="off"
                   [value]="nationalitySearch"
                   (input)="nationalitySearch = $any($event.target).value"
@@ -99,7 +99,7 @@
                   }
                 </li>
               } @empty {
-                <li class="nationality-empty">No se encontraron países</li>
+                <li class="nationality-empty">{{ 'ui.noSeEncontraronPaises' | transloco }}</li>
               }
             </ul>
           }
@@ -108,11 +108,11 @@
 
       <!-- Selector de Posición -->
       <div class="form-group">
-        <label>Posición <span class="required">*</span></label>
+        <label>{{ 'ui.posicion' | transloco }} <span class="required">*</span></label>
         <div class="custom-dropdown" [class.open]="isPositionOpen">
           <button type="button" class="dropdown-trigger" (click)="togglePositionDropdown($event)">
             <span [style.color]="playerForm.get('position')?.value ? 'var(--text-strong)' : 'var(--text-faint)'">
-              {{ selectedPositionLabel || 'Seleccionar posición...' }}
+              {{ playerForm.get('position')?.value ? ('positionName.' + playerForm.get('position')?.value | transloco) + ' (' + ('position.' + playerForm.get('position')?.value | transloco) + ')' : ('ui.seleccionarPosicion' | transloco) }}
             </span>
             <span class="triangle-icon"></span>
           </button>
@@ -120,7 +120,7 @@
             <ul class="dropdown-menu">
               @for (pos of positions; track pos.value) {
                 <li class="dropdown-item" (click)="selectPosition(pos.value)">
-                  <span>{{ pos.label }}</span>
+                  <span>{{ 'positionName.' + pos.value | transloco }} ({{ 'position.' + pos.value | transloco }})</span>
                 </li>
               }
             </ul>
@@ -132,7 +132,7 @@
     <!-- Fecha de Nacimiento y Edad -->
     <div class="form-row">
       <div class="form-group calendar-field-container">
-        <label>Fecha de Nacimiento <span class="required">*</span></label>
+        <label>{{ 'ui.fechaDeNacimiento2' | transloco }} <span class="required">*</span></label>
         <button
           type="button"
           class="calendar-trigger"
@@ -143,7 +143,7 @@
           (click)="toggleCalendar()"
         >
           <span [style.color]="formattedBirthDate ? 'var(--text-strong)' : 'var(--text-faint)'">
-            {{ formattedBirthDate || 'Selecciona fecha' }}
+            {{ formattedBirthDate || ('ui.seleccionaFecha' | transloco) }}
           </span>
           <svg
             class="calendar-icon"
@@ -220,13 +220,13 @@
             </div>
 
             <div class="calendar-weekdays">
-              <span class="calendar-weekday">Do</span>
-              <span class="calendar-weekday">Lu</span>
-              <span class="calendar-weekday">Ma</span>
-              <span class="calendar-weekday">Mi</span>
-              <span class="calendar-weekday">Ju</span>
-              <span class="calendar-weekday">Vi</span>
-              <span class="calendar-weekday">Sá</span>
+              <span class="calendar-weekday">{{ 'ui.do' | transloco }}</span>
+              <span class="calendar-weekday">{{ 'ui.lu' | transloco }}</span>
+              <span class="calendar-weekday">{{ 'ui.ma' | transloco }}</span>
+              <span class="calendar-weekday">{{ 'ui.mi' | transloco }}</span>
+              <span class="calendar-weekday">{{ 'ui.ju' | transloco }}</span>
+              <span class="calendar-weekday">{{ 'ui.vi' | transloco }}</span>
+              <span class="calendar-weekday">{{ 'ui.sa' | transloco }}</span>
             </div>
 
             <div class="calendar-grid">
@@ -247,12 +247,12 @@
       </div>
 
       <div class="form-group">
-        <label for="age">Edad (Años)</label>
+        <label for="age">{{ 'ui.edadAnos' | transloco }}</label>
         <input
           id="age"
           type="number"
           formControlName="age"
-          placeholder="Auto"
+          [placeholder]="'ui.auto' | transloco"
           readonly
           class="input-readonly"
         />
@@ -262,11 +262,11 @@
     <!-- Pie Hábil -->
     <div class="form-row">
       <div class="form-group">
-        <label>Pie Hábil</label>
+        <label>{{ 'ui.pieHabil2' | transloco }}</label>
         <div class="custom-dropdown" [class.open]="isFootOpen">
           <button type="button" class="dropdown-trigger" (click)="toggleFootDropdown($event)">
             <span [class.placeholder]="!playerForm.get('preferredFoot')?.value">
-              {{ playerForm.get('preferredFoot')?.value || 'Seleccionar pie hábil...' }}
+              {{ playerForm.get('preferredFoot')?.value ? (playerForm.get('preferredFoot')?.value | tr: 'foot') : ('ui.seleccionarPieHabil' | transloco) }}
             </span>
             <span class="triangle-icon"></span>
           </button>
@@ -274,7 +274,7 @@
             <ul class="dropdown-menu">
               @for (f of footPreferences; track f) {
                 <li class="dropdown-item" (click)="selectFoot(f)">
-                  <span>{{ f }}</span>
+                  <span>{{ f | tr: 'foot' }}</span>
                 </li>
               }
             </ul>
@@ -285,15 +285,15 @@
 
     <!-- URL de la Foto -->
     <div class="form-group">
-      <label>URL de la Foto</label>
-      <input type="text" formControlName="photo" placeholder="https://..." />
+      <label>{{ 'ui.urlDeLaFoto' | transloco }}</label>
+      <input type="text" formControlName="photo" [placeholder]="'ui.https' | transloco" />
     </div>
 
     <!-- Botones de Acción -->
     <div class="form-actions">
-      <button type="button" class="btn-cancel" (click)="onCancel()">Cancelar</button>
+      <button type="button" class="btn-cancel" (click)="onCancel()">{{ 'ui.cancelar' | transloco }}</button>
       <button type="submit" class="btn-submit" [disabled]="playerForm.invalid">
-        Guardar Cambios
+        {{ 'ui.guardarCambios' | transloco }}
       </button>
     </div>
   </form>

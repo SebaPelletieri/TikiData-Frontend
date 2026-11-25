@@ -10,7 +10,7 @@ import { MatchService } from '../../services/match-service';
 import { Match } from '../../models/Match';
 import { ChampionshipService } from '../../services/championship-service';
 import { Championship } from '../../models/Championship';
-import { Stadium } from '../../models/Stadium';
+import { Stadium } from '../../models/stadium';
 import { HttpClient } from '@angular/common/http';
 
 @Component({

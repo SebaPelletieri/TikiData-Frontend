@@ -271,10 +271,13 @@
   justify-content: flex-start;
   gap: 0.5rem;
   flex: 1;
+  min-width: 0;
 }
 
 .team-name {
-  width: 95px;
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: 110px;
   font-weight: 500;
   white-space: nowrap;
   overflow: hidden;
@@ -289,6 +292,7 @@
   width: 18px;
   height: 18px;
   object-fit: contain;
+  flex-shrink: 0;
 }
 
 .vs {
@@ -301,12 +305,17 @@
   align-items: center;
   gap: 8px;
   margin-left: auto;
+  flex-shrink: 0;
+  min-width: 0;
 }
 
 .match-league {
   color: var(--text-secondary, var(--text-muted));
   font-size: 0.7rem;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 130px;
 }
 
 .btn-ver {
@@ -322,6 +331,8 @@
   display: flex;
   align-items: center;
   gap: 5px;
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
 .btn-ver:hover {
@@ -394,6 +405,12 @@
 }
 
 /* --- RESPONSIVE --- */
+@media (max-width: 1500px) {
+  .match-league {
+    display: none;
+  }
+}
+
 @media (max-width: 1200px) {
   .dashboard-grid {
     grid-template-columns: 1fr;

@@ -10,8 +10,8 @@ import { Player } from '../../models/Player';
 import { TeamRoster } from '../team-roster/team-roster';
 import { AuthService } from '../../services/auth-service';
 import { TeamService } from '../../services/team-service';
-import { Stadium } from '../../models/Stadium';
 import { getCountryFlag as countryFlagUrl } from '../../utils/countries';
+import { Stadium } from '../../models/stadium';
 
 @Component({
   selector: 'app-team-detail',
